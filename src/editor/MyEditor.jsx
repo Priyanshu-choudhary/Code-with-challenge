@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import "./editor.css"
-import Button from 'react-bootstrap/Button';
 import JDoodleExample from '../JDoodle/JDoodleExample';
 import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
@@ -32,23 +31,6 @@ function MyEditor({ myfun }) {
   const createFileFromString = (str, fileName) => {
     const blob = new Blob([str], { type: 'text/plain' });
     return new File([blob], fileName, { type: 'text/plain' });
-  };
-
-  const uploadFile = async (formData) => {
-    try {
-      const response = await fetch('YOUR_SERVER_ENDPOINT', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-      const result = await response.json();
-      console.log('File uploaded successfully', result);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
   };
 
   const getCode = async () => {
@@ -92,7 +74,7 @@ function MyEditor({ myfun }) {
         height="430px"
         width="auto"
         defaultLanguage={Language}
-        theme='vs-dark'
+        // theme='vs-dark'
         defaultValue={`//Example code
 import java.util.*;
 public class MyClass {

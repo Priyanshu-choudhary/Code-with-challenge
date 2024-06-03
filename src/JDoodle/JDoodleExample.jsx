@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const JDoodleExample = async (javaCode) => {
+const JDoodleExample = async (Code,language) => {
     const AUTH_API_URL = 'https://api.jdoodle.com/v1/auth-token';
     const EXECUTE_API_URL = 'https://api.jdoodle.com/v1/execute';
     const CLIENT_ID = '37dd0e92aceba3fee89463288adc4e4e';
@@ -9,6 +9,7 @@ const JDoodleExample = async (javaCode) => {
     let token = '';
 
     const authenticate = async () => {
+        console.log(">>>>>>>"+language);
         try {
             const authResponse = await axios.post(AUTH_API_URL, {
                 clientId: CLIENT_ID,
@@ -24,8 +25,8 @@ const JDoodleExample = async (javaCode) => {
     try {
         await authenticate();
         const executionResponse = await axios.post(EXECUTE_API_URL, {
-            script: javaCode,
-            language: 'java',
+            script: Code,
+            language: language,
             versionIndex: '3',
             clientId: CLIENT_ID,
             clientSecret: CLIENT_SECRET,

@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginUser from './loginSigin/LoginUser';
 import EditorPosts from './UploadSection/EditorPosts';
 import Home from './home/Home';
-import StandAloneEditor from './editor/StandAloneEditor';
+
 import { UserProvider } from './Context/UserContext';
-import { Logo } from '@react-login-page/page2';
+
 import LogOut from './loginSigin/LogOut';
 import YourProfile from './Profile/YourProfile';
-import JDoodleExample from './JDoodle/JDoodleExample';
+
+import EditorComponent from './editor/EditorComponent';
 
 function App() {
   console.log("app rerender");
@@ -19,11 +20,11 @@ function App() {
       
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/editor" element={<StandAloneEditor />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/Upload" element={<EditorPosts />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
+          <Route path="/EditorComponent" element={<EditorComponent />} />
           
    
         </Routes>

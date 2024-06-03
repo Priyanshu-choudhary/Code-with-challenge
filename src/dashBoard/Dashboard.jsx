@@ -7,7 +7,6 @@ import { UserContext } from '../Context/UserContext';
 import "./css.css"
 
 
-import MyOptions from './MyOptions';
 
 
 
@@ -22,7 +21,7 @@ const myuser = {
 const navigation = [
    
     { name: 'Code', href: '/', current: false },
-    { name: 'Editor', href: '/editor', current: false },
+    { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Upload', href: '/Upload', current: false },
     { name: 'Your Profile', href: '/yourProfile', current: false },
   
@@ -91,8 +90,7 @@ function classNames(...classes) {
                                     
                                         <div className="ml-4 flex items-center md:ml-6">
 
-                                     
-                                        <MyOptions/>
+                                 
                                         
                                             <button
                                                 type="button"

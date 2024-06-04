@@ -1,3 +1,14 @@
-.editor{
+.button-container {
+    display: flex;
+    align-items: center; /* Align items to the center */
+    margin-top: 10px;
+  }
   
-}
+  .button-container .btn {
+    margin-left: 10px; /* Add space between buttons */
+  }
+  
+  .editor {
+    margin-bottom: 10px; /* Space between editor and buttons */
+  }
+  

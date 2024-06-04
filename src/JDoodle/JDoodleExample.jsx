@@ -36,8 +36,8 @@ const JDoodleExample = async (Code,language) => {
         });
         return executionResponse.data.output;
     } catch (error) {
-        console.error('Error compiling Java code:', error);
-        return 'Error compiling Java code. Please try again.';
+        console.error('Error compiling ${language} code:', error);
+        return 'Error compiling ${language} code. Please try again.';
     }
 };
 

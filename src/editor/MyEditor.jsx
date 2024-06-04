@@ -1,9 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useCallback } from 'react';
 import Editor from '@monaco-editor/react';
 import "./editor.css"
 import JDoodleExample from '../JDoodle/JDoodleExample';
 import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
+
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 function MyEditor({ myfun }) {
   const [language, setLanguage] = useState("java");
@@ -43,7 +47,9 @@ function MyEditor({ myfun }) {
       setOutput(output);
     }
   };
-
+  const handleLanguageChange = useCallback((lang) => {
+    setLanguage(lang)
+}, []);
   const options = {
     autoIndent: 'full',
     contextmenu: true,
@@ -54,11 +60,11 @@ function MyEditor({ myfun }) {
     matchBrackets: 'always',
     suggestOnTriggerCharacters: true,
     minimap: {
-      enabled: true,
+      enabled: false,
     },
     scrollbar: {
-      horizontalSliderSize: 4,
-      verticalSliderSize: 18,
+      horizontal: 'hidden',
+      vertical: 'hidden',
     },
     selectOnLineNumbers: true,
     roundedSelection: false,
@@ -96,11 +102,34 @@ public class MyClass {
   <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
   <span>Download</span>
 </button>{' '}
-      
+   
+<Dropdown as={ButtonGroup}>
+                                <Button variant="primary">{language }</Button>
 
-    
+                                <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("java")}>Java</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("c")}>c</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("cpp")}>cpp</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("javascript")}>JavaScript</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("python3")}>python3</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("python2")}>python2</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("php")}>PHP</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("typescript")}>TypeScript</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("bash")}>Bash</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("sh")}>Shell</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("kotlin")}>Kotlin</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("rust")}>Rust</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("scala")}>scala</Dropdown.Item>
+                                    
+                                    
+                                   
+                                </Dropdown.Menu>
+                            </Dropdown>
+                           
     {output && <OutputSec output={output}/>}
-    
+   
      
     </>
   );

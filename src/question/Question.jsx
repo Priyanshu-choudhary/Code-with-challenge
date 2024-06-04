@@ -25,6 +25,9 @@ And so on…</p>
 <hr />  
 <p className='output'> Output:</p>
     <p>0 ,1 ,1 2, 3</p>
+  <hr />
+    <p className='output'> change something:</p>
+ 
     </div>
 
     

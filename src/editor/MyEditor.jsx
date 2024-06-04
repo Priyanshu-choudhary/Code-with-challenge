@@ -6,7 +6,7 @@ import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
 
 function MyEditor({ myfun }) {
-  const [Language, setLanguage] = useState("java");
+  const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
   const editorRef = useRef(null);
@@ -38,7 +38,7 @@ function MyEditor({ myfun }) {
     if (editorRef.current) {
       const code = editorRef.current.getValue();
       setiSubmit(true);
-      const output = await JDoodleExample(code);
+      const output = await JDoodleExample(code,language);
       setiSubmit(false);
       setOutput(output);
     }
@@ -73,7 +73,7 @@ function MyEditor({ myfun }) {
         className='editor'
         height="430px"
         width="auto"
-        defaultLanguage={Language}
+        defaultLanguage={language}
         // theme='vs-dark'
         defaultValue={`//Example code
 import java.util.*;

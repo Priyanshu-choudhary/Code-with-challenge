@@ -45,7 +45,7 @@ const EditorComponent = () => {
                                 <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => handleLanguageChange("Java")}>Java</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => handleLanguageChange("java")}>Java</Dropdown.Item>
                                     <Dropdown.Item onClick={() => handleLanguageChange("c")}>c</Dropdown.Item>
                                     <Dropdown.Item onClick={() => handleLanguageChange("cpp")}>cpp</Dropdown.Item>
                                     <Dropdown.Item onClick={() => handleLanguageChange("javascript")}>JavaScript</Dropdown.Item>

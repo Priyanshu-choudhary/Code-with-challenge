@@ -44,6 +44,7 @@ const YourProfile = () => {
     const fetchUserData = async () => {
       try {
         const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
+        console.log(`user> ${user} pass> ${password}`);
         const response = await fetch("https://testcfc-1.onrender.com/users/getUser", {
           method: 'GET',
           headers: {

@@ -43,10 +43,10 @@ const YourProfile = () => {
 
     const fetchUserData = async () => {
       try {
-        console.log("user " + user);
-        console.log("per " + password);
+        // console.log("user " + user);
+        // console.log("per " + password);
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        console.log("bs" + basicAuth);
+        // console.log("bs" + basicAuth);
         const response = await fetch("https://testcfc-1.onrender.com/users/getUser", {
           method: 'GET',
           headers: {

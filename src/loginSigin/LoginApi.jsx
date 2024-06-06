@@ -3,7 +3,7 @@ async function login(username, password) {
     const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
     
     try {
-        const response = await fetch('http://localhost:9090/users/login', {
+        const response = await fetch('https://testcfc-1.onrender.com/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

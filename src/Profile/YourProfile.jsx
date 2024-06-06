@@ -26,7 +26,7 @@ const YourProfile = () => {
       console.log("per " + password);
       try {
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        const response = await fetch("http://localhost:9090/Posts", {
+        const response = await fetch("https://testcfc-1.onrender.com/Posts", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const YourProfile = () => {
         console.log("per " + password);
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
         console.log("bs" + basicAuth);
-        const response = await fetch("http://localhost:9090/users/getUser", {
+        const response = await fetch("https://testcfc-1.onrender.com/users/getUser", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const YourProfile = () => {
 
     fetchProblems();
     fetchUserData();
-  }, [user, password]); // Dependencies ensure it refetches if user or password changes
+  },[userData]); // Dependencies ensure it refetches if user or password changes
 
   const handleProblemClick = (problem) => {
     navigate(`/question/${problem.id}`, { state: problem });

@@ -49,7 +49,7 @@ const EditorPosts = () => {
         event.preventDefault();
         try {
             const response = await axios.post(
-                'http://localhost:9090/Posts',
+                'https://testcfc-1.onrender.com/Posts',
                 {
                     title: title, // Provide a title here
                     description: description,

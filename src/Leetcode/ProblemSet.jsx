@@ -6,7 +6,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 
 
-const API_URL = "http://localhost:9090/Posts";
+const API_URL = "https://testcfc-1.onrender.com/Posts";
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 

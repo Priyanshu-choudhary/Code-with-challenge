@@ -1,5 +1,5 @@
 async function createUser() {
-    const url = 'http://localhost:9090/users';
+    const url = 'https://testcfc-1.onrender.com/users';
     const name = 'x';  // Replace with your username
     const password = 'x';  // Replace with your password
 

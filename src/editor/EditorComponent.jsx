@@ -34,7 +34,8 @@ const EditorComponent = () => {
     };
 
     return (
-        <>
+        
+        <div className='super'>
             <Dashboard />
             <div className="editor-container">
                 <div className="editor-section">
@@ -89,7 +90,8 @@ const EditorComponent = () => {
                     <pre>{output}</pre>
                 </div>
             </div>
-        </>
+
+      </div>
     );
 };
 

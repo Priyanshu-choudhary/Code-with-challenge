@@ -1,22 +1,44 @@
 .title{
     text-align: left;
-    font-size: 20px;
+    font-size: 23px;
     font-weight: bold;
 
 }
-.question{
-    
+.subtitle{
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+.button.easy {
+    background-color: #00ff22;
+   padding-left: 20px;
+   color: #fff;
+   font-size: 15px;
+   font-weight: bold;
+   border-radius: 5px;
+}
+.button.medium {
+    background-color: #ff9800;
+   padding-left: 10px;
+   color: #fff;
+   font-size: 15px;
+   font-weight: bold;
+   border-radius: 5px;
+}
+.button.hard {
+    background-color: #ff0000;
+    padding-left: 20px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.solution{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-.output{
-    margin-top: 20px;
-    text-align: left;
-    font-size: 20px;
-    font-weight: bold;
-}
-.example{
-    margin-top: 20px;
-    text-align: left;
-    font-size: 20px;
-    font-weight: bold;
-}
+
+

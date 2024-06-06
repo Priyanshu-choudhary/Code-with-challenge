@@ -20,8 +20,8 @@ const myuser = {
 // Navigation items
 const navigation = [
    
-    { name: 'Code', href: '/', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
+    { name: 'Problems', href: '/QuestionApi', current: false },
     { name: 'Upload', href: '/Upload', current: false },
     { name: 'Your Profile', href: '/yourProfile', current: false },
   
@@ -135,7 +135,7 @@ function classNames(...classes) {
                                                         ))}
                                                     </Menu.Items>
                                                 </Transition>
-                                            </Menu> : <button class="button-85" role="button">
+                                            </Menu> : <button className="button-85" role="button">
                                            <a href="/login">LogIn</a>
                                                 </button>}
                                             

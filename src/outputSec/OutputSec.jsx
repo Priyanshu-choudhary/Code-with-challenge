@@ -8,7 +8,7 @@ function OutputSec(props) {
    <h1 className='Question'>Output:</h1>
    <br className='line' />
    <p>{props.output}</p>
-    </div>
+  </div>
   )
 }
 

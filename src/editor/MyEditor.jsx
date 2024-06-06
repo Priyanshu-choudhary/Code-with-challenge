@@ -1,10 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback,useContext } from 'react';
 import Editor from '@monaco-editor/react';
 import "./editor.css"
 import JDoodleExample from '../JDoodle/JDoodleExample';
 import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
-
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -15,6 +14,7 @@ function MyEditor({ myfun }) {
   const [output, setOutput] = useState('');
   const [theme, setTheme] = useState('light'); // Add state for theme
   const editorRef = useRef(null);
+  
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -79,6 +79,8 @@ function MyEditor({ myfun }) {
     cursorStyle: 'line',
     automaticLayout: true,
   };
+
+  
 
   return (
     <>

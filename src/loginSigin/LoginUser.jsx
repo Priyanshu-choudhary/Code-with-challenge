@@ -5,8 +5,9 @@ import defaultBannerImage from '@react-login-page/page2/banner-image';
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import Dashboard from '../dashBoard/Dashboard';
-import LoginApi from './LoginApi';
+import SignApi from './SignApi';
 import { UserContext } from '../Context/UserContext';
+import login from './LoginApi';
 
 function LoginUser() {
   console.log("login user rerender");
@@ -26,7 +27,7 @@ function LoginUser() {
       setUser(JSON.parse(storedUser));
       setContextPassword(storedPassword); // Set password directly without parsing
       setIsLoggedIn(true);
-      navigate('/'); // Navigate to the home page or dashboard
+     // navigate('/'); // Navigate to the home page or dashboard
     }
   }, [navigate, setUser, setContextPassword]);
 
@@ -43,16 +44,16 @@ function LoginUser() {
     setIsSubmitting(true);
     try {
       // Call login API
-      const user = await LoginApi(username, password);
+      const user = await login(username, password);
       // On successful login, update isLoggedIn state and save user data to localStorage
       setIsLoggedIn(true);
-      setUser(user);
+      setUser(username);
       setContextPassword(password);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('password', password); // Save the plain password
 
       // Navigate to the dashboard or home page
-      navigate('/');
+      navigate('/QuestionApi');
     } catch (error) {
       console.error('Error logging in:', error);
       setIsSubmitting(false);

@@ -1,36 +1,27 @@
-import React, { useEffect, useContext } from 'react';
-import { UserContext } from '../Context/UserContext';
 
-async function LoginApi(username, password) {
-  const url = 'http://localhost:9090/Public/Create-User';
-  const payload = {
-    name: username,
-    password: password
-  };
-
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+async function login(username, password) {
+    const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
+    
+    try {
+        const response = await fetch('http://localhost:9090/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': basicAuth
+            },
+            body: JSON.stringify({ name: username, password: password }),
+        });
+        
+        if (response.ok) {
+            const userId = await response.text();
+            console.log('User ID:', userId);
+        } else {
+            console.log('Login failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
-
-     const data = await response.json();
-    console.log('Success:', data);
-    return payload;
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
 }
 
 
-
-export default LoginApi;
+export default login;

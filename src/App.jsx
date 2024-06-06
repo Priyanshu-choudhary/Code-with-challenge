@@ -10,6 +10,9 @@ import LogOut from './loginSigin/LogOut';
 import YourProfile from './Profile/YourProfile';
 
 import EditorComponent from './editor/EditorComponent';
+import QuestionApi from './question/QuestionApi';
+import LeetCodeClone from './Leetcode/ProblemSet';
+
 
 function App() {
   console.log("app rerender");
@@ -19,12 +22,16 @@ function App() {
       <Router>
       
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LeetCodeClone />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/Upload" element={<EditorPosts />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
           <Route path="/EditorComponent" element={<EditorComponent />} />
+          <Route path="/QuestionApi" element={<LeetCodeClone />} />
+          <Route path="/question/:id" element={<QuestionApi />} />
+       
+      
           
    
         </Routes>

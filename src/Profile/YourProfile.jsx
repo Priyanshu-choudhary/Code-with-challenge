@@ -25,7 +25,7 @@ const YourProfile = () => {
       // console.log("user " + user);
       // console.log("per " + password);
       try {
-        const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
+        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
         const response = await fetch("https://testcfc-1.onrender.com/Posts", {
           method: 'GET',
           headers: {
@@ -43,8 +43,7 @@ const YourProfile = () => {
 
     const fetchUserData = async () => {
       try {
-        const basicAuth = 'Basic ' + btoa(`${user}:YadiChoudhary`);
-        console.log(`user> ${user} pass> ${password}`);
+        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
         const response = await fetch("https://testcfc-1.onrender.com/users/getUser", {
           method: 'GET',
           headers: {

@@ -7,13 +7,13 @@ import { UserContext } from '../Context/UserContext';
 import ValidationTextFields from './EditProfile';
 import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
-// import ValidationTextFields from './ValidationTextFields';
+
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 
 const YourProfile = () => {
   const [problems, setProblems] = useState([]);
-  const [showForm, setShowForm] = useState(false); // State to manage form visibility
+  const [showForm, setShowForm] = useState(false); 
   const navigate = useNavigate();
   const { user, password } = useContext(UserContext);
   const [userData, setuserData] = useState("no");
@@ -22,8 +22,8 @@ const YourProfile = () => {
 
   useEffect(() => {
     const fetchProblems = async () => {
-      console.log("user " + user);
-      console.log("per " + password);
+      // console.log("user " + user);
+      // console.log("per " + password);
       try {
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
         const response = await fetch("https://testcfc-1.onrender.com/Posts", {
@@ -35,7 +35,7 @@ const YourProfile = () => {
         });
         const data = await response.json();
         setProblems(data);
-        setnoOfQuestion(data.length); // Update total count here
+        setnoOfQuestion(data.length); 
       } catch (error) {
         console.error("Error fetching problems:", error);
       }
@@ -43,10 +43,7 @@ const YourProfile = () => {
 
     const fetchUserData = async () => {
       try {
-        // console.log("user " + user);
-        // console.log("per " + password);
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        // console.log("bs" + basicAuth);
         const response = await fetch("https://testcfc-1.onrender.com/users/getUser", {
           method: 'GET',
           headers: {
@@ -63,7 +60,7 @@ const YourProfile = () => {
 
     fetchProblems();
     fetchUserData();
-  },[userData]); // Dependencies ensure it refetches if user or password changes
+  },[userData]);
 
   const handleProblemClick = (problem) => {
     navigate(`/question/${problem.id}`, { state: problem });

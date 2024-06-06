@@ -83,8 +83,9 @@ const YourProfile = () => {
                     
                     {/* <img className="w-20 h-20 rounded-full" src="https://via.placeholder.com/150" alt="User avatar" /> */}
                     <Avatar style={{fontSize:"70px"}} sx={{ bgcolor: deepPurple[500] ,width: 120, height: 120}}>{AvtarName}</Avatar>
+                  
                   </div>
-                  <h2 className="mt-2 text-lg font-semibold text-gray-900"></h2>
+                  <h2 className="mt-2 text-lg font-semibold text-gray-900">{userData.name}</h2>
                   <p className="mt-1 text-sm text-gray-600">Rank ?</p>
                   <button className="mt-4 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-full" onClick={toggleForm}>Edit Profile</button>
                 </div>

@@ -18,7 +18,8 @@ async function login(username, password) {
         } else {
             console.log('Login failed');
             alert("Wrong Username/Password");
-            
+            throw new Error('Wrong Username/Password');
+
         }
     } catch (error) {
         console.error('Error:', error);

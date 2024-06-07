@@ -33,14 +33,11 @@ const EditorComponent = () => {
 
     const clearOutput = () => {
         setOutput('');
+        setInput('');
     };
 
     const handleInput = (e) => {
         setInput(e.target.value);
-        // const test=process.env.REACT_APP_API_UR
-        // const test = import.meta.env.REACT_APP_API_URL;
-        // console.log(test);
-        // console.log(e.target.value); // Logs the current value including newlines
     };
 
     return (

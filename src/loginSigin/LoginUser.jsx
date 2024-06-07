@@ -48,7 +48,7 @@ function LoginUser() {
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('password', password);
 
-      navigate('/QuestionApi');
+      navigate('/yourProfile');
     } catch (error) {
       console.error('Error logging in:', error);
       setIsSubmitting(false);

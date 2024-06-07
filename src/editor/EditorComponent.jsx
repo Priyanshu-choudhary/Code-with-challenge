@@ -20,7 +20,8 @@ const EditorComponent = () => {
 
     const runCode = async () => {
         setiSubmit(true);
-        const output = await JDoodleExample(code, language);
+        const userInput = `12\n`; // Input for age: 12
+        const output = await JDoodleExample(code, language,userInput);
         setiSubmit(false);
         setOutput(output);
     };

@@ -43,12 +43,15 @@ function MyEditor({ myfun }) {
     if (editorRef.current) {
       const code = editorRef.current.getValue();
       setiSubmit(true);
-      const output = await JDoodleExample(code, language);
+      // Modify userInput to include multiple inputs separated by newline characters
+      const userInput = `12\n`; // Input for age: 12
+      const output = await JDoodleExample(code, language, userInput);
       setiSubmit(false);
       setOutput(output);
     }
   };
-
+  
+  
   const handleLanguageChange = useCallback((lang) => {
     setLanguage(lang);
   }, []);

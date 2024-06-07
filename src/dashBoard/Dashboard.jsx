@@ -5,7 +5,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import imgUrl from "/public/myDroneMakingPhotoEDITED.jpg";
 import { UserContext } from '../Context/UserContext';
 import "./css.css"
-
+import Avatar from '@mui/material/Avatar';
+import { deepPurple } from '@mui/material/colors';
 
 
 
@@ -55,7 +56,7 @@ function classNames(...classes) {
                                             <img
                                                 className="h-8 w-8"
                                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                                alt="Your Company"
+                                                alt="Your name"
                                             />
                                             <p style={{ color: "white" }}>Code-For-Challenge </p>
                                         </div>
@@ -104,7 +105,9 @@ function classNames(...classes) {
                                                 <div>
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="sr-only">Open user menu</span>
-                                                        <img className="h-8 w-8 rounded-full" src={imgUrl} alt="" />
+                                                        
+                                                         <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+                                                        
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition

@@ -24,6 +24,7 @@ const EditorComponent = () => {
         const output = await JDoodleExample(code, language,userInput);
         setiSubmit(false);
         setOutput(output);
+        // console.log(output);
     };
 
     const handleLanguageChange = useCallback((lang) => {

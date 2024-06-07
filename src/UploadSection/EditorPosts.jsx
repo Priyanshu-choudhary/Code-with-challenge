@@ -45,8 +45,8 @@ const EditorPosts = () => {
 
 
     const handleSubmit = async (event) => {
-        console.log("username  " + user);
-        console.log("password  " + password);
+       
+        setiSubmit(true);
         event.preventDefault();
         try {
             const response = await axios.post(
@@ -66,7 +66,9 @@ const EditorPosts = () => {
                 }
             );
             console.log('Post created:', response.data);
+            setiSubmit(false);
             alert('Question Upload....');
+            
 
         } catch (error) {
             console.error('Error creating post:', error);

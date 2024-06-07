@@ -28,31 +28,24 @@ function LoginUser() {
       setIsLoggedIn(true);
     }
   }, [navigate, setUser, setContextPassword]);
-
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
+  
   const handleSubmit = useCallback(async (event) => {
-  event.preventDefault();
-  setIsSubmitting(true);
-  try {
-    await login(username, password); 
-    setIsLoggedIn(true);
-    setUser(username);
-    setContextPassword(password);
-    localStorage.setItem('user', JSON.stringify(username));
-    localStorage.setItem('password', password);
-    navigate('/QuestionApi'); 
-  } catch (error) {
-    console.error('Error logging in:', error);
-    setIsSubmitting(false);
-    setIsLoggedIn(false); 
-  }
+    event.preventDefault();
+    setIsSubmitting(true);
+    try {
+        await login(username, password); // Call the login function and wait for it to complete
+        setIsLoggedIn(true);
+        setUser(username);
+        setContextPassword(password);
+        localStorage.setItem('user', JSON.stringify(username));
+        localStorage.setItem('password', password);
+        navigate('/yourProfile'); // Navigate only if login is successful
+    } catch (error) {
+        console.error('Error logging in:', error);
+        setIsSubmitting(false);
+        setIsLoggedIn(false); // Reset isLoggedIn state on failed login
+        // No need to alert here, it's already handled in the login function
+    }
 }, [navigate, username, password, setUser, setContextPassword]);
   return (
     <>

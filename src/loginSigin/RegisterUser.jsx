@@ -27,11 +27,15 @@ function RegisterUser() {
       const response = await signUp(username, password);
       if (response.ok) {
         navigate('/login');
+      } else if (response.status === 409) {
+        alert('User already exists. Please choose a different username.');
       } else {
         console.error('Error registering:', response.statusText);
+        alert('An error occurred during registration. Please try again.');
       }
     } catch (error) {
       console.error('Error registering:', error);
+      alert('An error occurred during registration. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

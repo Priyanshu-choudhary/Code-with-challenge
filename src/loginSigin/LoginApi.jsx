@@ -1,7 +1,7 @@
-
+import { Navigate } from "react-router-dom";
 async function login(username, password) {
     const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
-    
+
     try {
         const response = await fetch('https://testcfc-1.onrender.com/users/login', {
             method: 'POST',
@@ -11,12 +11,15 @@ async function login(username, password) {
             },
             body: JSON.stringify({ name: username, password: password }),
         });
-        
+
         if (response.ok) {
             const userId = await response.text();
             console.log('User ID:', userId);
         } else {
             console.log('Login failed');
+            alert("Wrong Username/Password");
+            const navigate = Navigate();
+            navigate('/login');
         }
     } catch (error) {
         console.error('Error:', error);

@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 
 
 async function SignApi(username, password) {
@@ -19,6 +20,11 @@ async function SignApi(username, password) {
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    if (response.status===401) {
+      alert("User not found.....");
+      const navigate = Navigate();
+      navigate('/login');
     }
 
      const data = await response.json();

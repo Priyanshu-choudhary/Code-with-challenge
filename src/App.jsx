@@ -12,6 +12,8 @@ import YourProfile from './Profile/YourProfile';
 import EditorComponent from './editor/EditorComponent';
 import QuestionApi from './question/QuestionApi';
 import LeetCodeClone from './Leetcode/ProblemSet';
+import RegisterUser from './loginSigin/RegisterUser';
+
 
 
 function App() {
@@ -23,14 +25,15 @@ function App() {
       
         <Routes>
           <Route path="/" element={<LeetCodeClone />} />
-          <Route path="/login" element={<LoginUser />} />
           <Route path="/Upload" element={<EditorPosts />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
           <Route path="/EditorComponent" element={<EditorComponent />} />
           <Route path="/QuestionApi" element={<LeetCodeClone />} />
           <Route path="/question/:id" element={<QuestionApi />} />
-       
+          <Route path="/login" element={<LoginUser />} />
+          <Route path="/register" element={<RegisterUser />} />
+          
       
           
    

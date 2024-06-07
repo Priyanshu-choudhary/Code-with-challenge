@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
+import Stack from '@mui/joy/Stack';
+import LinearProgress from '@mui/joy/LinearProgress';
 
 
 const API_URL = "https://testcfc-1.onrender.com/Posts";
@@ -71,7 +73,11 @@ const LeetCodeClone = () => {
                   <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</span>
                 </div>
               </div>
-            )) : <p>Loading problems...</p>}
+            )) : <LinearProgress
+            color="primary"
+            size="md"
+            variant="plain"
+          />}
           </div>
         </div>
       </div>

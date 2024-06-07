@@ -24,6 +24,7 @@ const navigation = [
     { name: 'Problems', href: '/QuestionApi', current: false },
     { name: 'Upload', href: '/Upload', current: false },
     { name: 'Your Profile', href: '/yourProfile', current: false },
+ 
   
 ]
 
@@ -32,6 +33,8 @@ const userNavigation = [
     { name: 'Your Profile', href: '/yourProfile' },
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '/logout' },
+    
+
 ]
 
 // Utility function to combine class names

@@ -22,7 +22,7 @@ async function SignApi(username, password) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     if (response.status===401) {
-      alert("User not found.....");
+      alert("Wrong Username/Password");
       const navigate = Navigate();
       navigate('/login');
     }

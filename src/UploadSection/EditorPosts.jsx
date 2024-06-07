@@ -6,7 +6,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { Form,  } from 'react-bootstrap';
 import Alert from '@mui/material/Alert';
 import { UserContext } from '../Context/UserContext';
-
+import Spinner from 'react-bootstrap/Spinner';
 const EditorPosts = () => {
     const [solution, setSolution] = useState('');
     const [description, setDescription] = useState('');
@@ -15,6 +15,7 @@ const EditorPosts = () => {
     const [answer, setAnswer] = useState('');
     const [difficulty, setdifficulty] = useState('');
     const { user, password } = useContext(UserContext);
+    const [iSubmit, setiSubmit] = useState(false);
     /////////////////////form////////////////////////////
 
 
@@ -79,7 +80,7 @@ const EditorPosts = () => {
             <Dashboard />
             <div className="editor-container">
                 <div className="sidebar">
-                    <div className="sidebar-item" onClick={handleSubmit}>Upload </div>
+                    <div className="sidebar-item" onClick={handleSubmit}>Upload {iSubmit && <Spinner animation="border" size="sm" />}</div>
                     <hr />
                     <textarea
                         value={answer}

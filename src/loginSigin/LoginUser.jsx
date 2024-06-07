@@ -28,7 +28,15 @@ function LoginUser() {
       setIsLoggedIn(true);
     }
   }, [navigate, setUser, setContextPassword]);
-  
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -47,6 +55,7 @@ function LoginUser() {
         // No need to alert here, it's already handled in the login function
     }
 }, [navigate, username, password, setUser, setContextPassword]);
+
   return (
     <>
       <Dashboard />

@@ -38,23 +38,22 @@ function LoginUser() {
   };
 
   const handleSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const user = await login(username, password);
-      setIsLoggedIn(true);
-      setUser(username);
-      setContextPassword(password);
-      localStorage.setItem('user', JSON.stringify(username));
-      localStorage.setItem('password', password);
-
-      navigate('/yourProfile');
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setIsSubmitting(false);
-    }
-  }, [navigate, username, password, setUser, setContextPassword]);
-
+  event.preventDefault();
+  setIsSubmitting(true);
+  try {
+    await login(username, password); 
+    setIsLoggedIn(true);
+    setUser(username);
+    setContextPassword(password);
+    localStorage.setItem('user', JSON.stringify(username));
+    localStorage.setItem('password', password);
+    navigate('/yourProfile'); 
+  } catch (error) {
+    console.error('Error logging in:', error);
+    setIsSubmitting(false);
+    setIsLoggedIn(false); 
+  }
+}, [navigate, username, password, setUser, setContextPassword]);
   return (
     <>
       <Dashboard />

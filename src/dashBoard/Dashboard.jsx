@@ -23,9 +23,6 @@ const navigation = [
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/QuestionApi', current: false },
     { name: 'Upload', href: '/Upload', current: false },
-    { name: 'Your Profile', href: '/yourProfile', current: false },
- 
-  
 ]
 
 // User menu items
@@ -33,7 +30,6 @@ const userNavigation = [
     { name: 'Your Profile', href: '/yourProfile' },
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '/logout' },
-    
 
 ]
 

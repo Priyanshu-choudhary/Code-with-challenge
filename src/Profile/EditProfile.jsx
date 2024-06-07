@@ -148,7 +148,7 @@ const ValidationTextFields = () => {
                     <TextField
                         id="standard-required"
                         label="Collage"
-                        name="collage"
+                        name="college"
                         variant="standard"
                         value={formData.collage}
                         onChange={handleChange}
@@ -164,7 +164,7 @@ const ValidationTextFields = () => {
                         onChange={handleChange}
                     />
                     <Button style={{ marginTop: "18%" }} variant="contained" endIcon={<SendIcon />} type="submit">
-                        Send
+                        Save
                     </Button>
                 </div>
             </Box>

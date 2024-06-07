@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const JDoodleExample = async (code, language, userInput) => {
+const JDoodleExample = async (code, language, input) => {
     try {
         const response = await axios.post('https://testcfc-1.onrender.com/api/jdoodle/execute', {
             script: code,
             language: language,
-            stdin: userInput
+            stdin: input
         });
         // console.log(response.data.output);
         return response.data.output; // Return the output explicitly

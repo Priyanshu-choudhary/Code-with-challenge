@@ -7,12 +7,14 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import TextField from '@mui/material/TextField';
 
 const EditorComponent = () => {
     const [code, setCode] = useState('// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
     const [output, setOutput] = useState('');
     const [iSubmit, setiSubmit] = useState(false);
-    const [language, setfirst] = useState("java");
+    const [language, setLanguage] = useState("java");
+    const [input, setInput] = useState('');
 
     const handleEditorChange = (value) => {
         setCode(value);
@@ -20,23 +22,28 @@ const EditorComponent = () => {
 
     const runCode = async () => {
         setiSubmit(true);
-        const userInput = `12\n`; // Input for age: 12
-        const output = await JDoodleExample(code, language,userInput);
+        const output = await JDoodleExample(code, language, input);
         setiSubmit(false);
         setOutput(output);
-        // console.log(output);
     };
 
     const handleLanguageChange = useCallback((lang) => {
-        setfirst(lang)
+        setLanguage(lang);
     }, []);
 
     const clearOutput = () => {
         setOutput('');
     };
 
+    const handleInput = (e) => {
+        setInput(e.target.value);
+        // const test=process.env.REACT_APP_API_UR
+        // const test = import.meta.env.REACT_APP_API_URL;
+        // console.log(test);
+        // console.log(e.target.value); // Logs the current value including newlines
+    };
+
     return (
-        
         <div className='super'>
             <Dashboard />
             <div className="editor-container">
@@ -90,10 +97,18 @@ const EditorComponent = () => {
                         </Button>
                     </div>
                     <pre>{output}</pre>
+                    <TextField
+                        id="outlined-multiline-flexible"
+                        label="Input"
+                        multiline
+                        maxRows={4}
+                        value={input}
+                        onChange={handleInput}
+                    />
+                    <p style={{marginTop:"40px", color:"white"}}>.</p>
                 </div>
             </div>
-
-      </div>
+        </div>
     );
 };
 

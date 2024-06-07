@@ -26,7 +26,7 @@ function RegisterUser() {
     try {
       const response = await signUp(username, password);
       if (response.ok) {
-        navigate('/yourProfile');
+        navigate('/login');
       } else {
         console.error('Error registering:', response.statusText);
       }

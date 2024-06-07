@@ -47,7 +47,11 @@ function LoginUser() {
     setContextPassword(password);
     localStorage.setItem('user', JSON.stringify(username));
     localStorage.setItem('password', password);
+    if (error.message === 'Wrong Username/Password') {
+      alert("Wrong Username/Password");
+    }else{
     navigate('/yourProfile'); 
+    }
   } catch (error) {
     console.error('Error logging in:', error);
     setIsSubmitting(false);

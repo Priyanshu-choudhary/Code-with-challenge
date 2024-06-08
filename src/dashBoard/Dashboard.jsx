@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import React, { useContext } from 'react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import imgUrl from "/public/myDroneMakingPhotoEDITED.jpg";
+import logo from "/public/logo2.jpg";
 import { UserContext } from '../Context/UserContext';
 import "./css.css"
 import Avatar from '@mui/material/Avatar';
@@ -55,10 +56,10 @@ function classNames(...classes) {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-8 w-8"
-                                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                                                src={logo}
                                                 alt="Your name"
                                             />
-                                            <p style={{ color: "white" }}>Code-For-Challenge </p>
+                                            <p style={{ color: "white" }}>CFC </p>
                                         </div>
                                         <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">

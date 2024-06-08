@@ -2,6 +2,10 @@ import React from 'react';
 import './theme.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/public/myDroneMakingPhotoEDITED.jpg";
+import logo from "/public/homeImg.png";
+import logo3 from "/public/logo.jpg";
+import editorphoto from "/public/editorphoto.png";
+
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'font-awesome/css/font-awesome.min.css';
 
@@ -11,18 +15,9 @@ function Home() {
       <Dashboard />
       <div style={{ overflow: "scroll", height: "100vh" }}>
         <header className="header">
-          <div className="branding">
-            <div className="container-fluid position-relative py-3">
-              <div className="logo-wrapper">
-                <div className="site-logo">
-                  <a className="navbar-brand" href="index.html">
-                    <img className="logo-icon me-2" src="assets/images/site-logo.svg" alt="logo" />
-                    <span className="logo-text">CFC</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+        <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }}  src={logo} alt="image" />
+                          
+
         </header>
 
         <section className="hero-section">
@@ -31,7 +26,7 @@ function Home() {
               <div className="col-12 col-md-7 pt-5 mb-5 align-self-center">
                 <div className="promo pe-md-3 pe-lg-5">
                   <h1 className="headline mb-3">
-                    Welcome no: <br />Code-for-Challenge: Elevate Your Coding Skills
+                    Welcome to: <br />Code-for-Challenge: Elevate Your Coding Skills
                   </h1>
                   <div className="subheadline mb-4">
                     What sets us apart? Our commitment to excellence. With a vast library of challenges covering various programming languages, algorithms, and problem-solving techniques, Code for Challenge ensures that every coder finds their perfect match. Join us today and embark on a transformative journey towards coding mastery
@@ -46,51 +41,18 @@ function Home() {
                   </div>
                   <div className="hero-quotes mt-5">
                     <div id="quotes-carousel" className="quotes-carousel carousel slide carousel-fade mb-5" data-bs-ride="carousel" data-bs-interval="8000">
-                      <div className="carousel-indicators">
-                        <button type="button" data-bs-target="#quotes-carousel" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#quotes-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#quotes-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                      </div>
-                      <div className="carousel-inner">
+                     <div className="carousel-inner">
                         <div className="carousel-item active">
                           <blockquote className="quote p-4 theme-bg-light">
                             "Code for Challenge has exceeded my expectations in every aspect. It has not only equipped me with the skills needed to tackle real-world coding tasks but has also instilled in me a newfound confidence in my abilities as a coder. I highly recommend Code for Challenge to anyone looking to embark on a rewarding journey towards coding mastery."
                           </blockquote>
                           <div className="source row gx-md-3 gy-3 gy-md-0 align-items-center">
                             <div className="col-12 col-md-auto text-center text-md-start">
-                              <img className="source-profile" src="assets/images/profiles/profile-1.png" alt="image" />
+                              <img className="source-profile"style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "60px", width: "60px", borderRadius: "50%" }} src={imgUrl} alt="image" />
                             </div>
                             <div className="col source-info text-center text-md-start">
                               <div className="source-name">Yadi choudhary</div>
                               <div className="soure-title">Co-Founder, Startup</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="carousel-item">
-                          <blockquote className="quote p-4 theme-bg-light">
-                            "Highly recommended consectetur adipiscing elit. Proin et auctor dolor, sed venenatis massa. Vestibulum ullamcorper lobortis nisi non placerat praesent mauris neque"
-                          </blockquote>
-                          <div className="source row gx-md-3 gy-3 gy-md-0 align-items-center">
-                            <div className="col-12 col-md-auto text-center text-md-start">
-                              <img className="source-profile" src="assets/images/profiles/profile-2.png" alt="image" />
-                            </div>
-                            <div className="col source-info text-center text-md-start">
-                              <div className="source-name">Jean Doe</div>
-                              <div className="soure-title">Co-Founder, Startup Week</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="carousel-item">
-                          <blockquote className="quote p-4 theme-bg-light">
-                            "Awesome! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod nunc porta urna facilisis tempor. Praesent mauris neque, viverra quis erat vitae."
-                          </blockquote>
-                          <div className="source row gx-md-3 gy-3 gy-md-0 align-items-center">
-                            <div className="col-12 col-md-auto text-center text-md-start">
-                              <img className="source-profile" src="assets/images/profiles/profile-3.png" alt="image" />
-                            </div>
-                            <div className="col source-info text-center text-md-start">
-                              <div className="source-name">Andy Doe</div>
-                              <div className="soure-title">Frontend Developer, Company Lorem</div>
                             </div>
                           </div>
                         </div>
@@ -101,7 +63,7 @@ function Home() {
               </div>
               <div className="col-12 col-md-5 mb-5 align-self-center">
                 <div className="book-cover-holder">
-                  <img className="img-fluid book-cover" src="assets/images/devbook-cover.png" alt="book cover" />
+                  <img className="img-fluid book-cover" src={editorphoto} alt="book cover" />
                   <div className="book-badge d-inline-block shadow">
                     New<br />Release
                   </div>
@@ -192,7 +154,7 @@ function Home() {
               <div className="row">
                 <div className="col-12 col-md-6">
                   <div className="figure-holder mb-5">
-                    <img className="img-fluid" src="assets/images/devbook-devices.png" alt="image" />
+                    <img className="img-fluid" style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "400px", borderRadius: "5%" }} src={logo3} alt="image" />
                   </div>
                 </div>
                 <div className="col-12 col-md-6 mb-5">

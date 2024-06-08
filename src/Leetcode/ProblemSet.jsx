@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
-import Stack from '@mui/joy/Stack';
 import LinearProgress from '@mui/joy/LinearProgress';
 
 
@@ -40,6 +39,7 @@ const LeetCodeClone = () => {
 
 
   const handleProblemClick = (problem) => {
+    console.log(problem);
     navigate(`/question/${problem.id}`, { state: problem });
   };
 

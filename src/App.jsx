@@ -13,6 +13,7 @@ import EditorComponent from './editor/EditorComponent';
 import QuestionApi from './question/QuestionApi';
 import LeetCodeClone from './Leetcode/ProblemSet';
 import RegisterUser from './loginSigin/RegisterUser';
+import MyDataGrid from './Problems/DataGrid';
 
 
 
@@ -24,7 +25,8 @@ function App() {
       <Router>
       
         <Routes>
-         
+          
+          <Route path="/" element={<Home />} />
           <Route path="/Upload" element={<EditorPosts />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
@@ -33,7 +35,7 @@ function App() {
           <Route path="/question/:id" element={<QuestionApi />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/register" element={<RegisterUser />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/Data" element={<MyDataGrid />} />
           
       
           

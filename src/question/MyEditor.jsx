@@ -4,7 +4,6 @@ import "./editor.css"
 import JDoodleExample from '../JDoodle/JDoodleExample';
 import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
-import Confetti from 'react-confetti'; // Import Confetti component
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
 import Button from 'react-bootstrap/Button';
@@ -174,6 +173,7 @@ public class MyClass {
         <button onClick={toggleTheme} className="btn btn-secondary">
           Toggle Theme
         </button>
+       
       </div>
       {output && <OutputSec output={output} />}
       {/* Conditionally render the Confetti component */}

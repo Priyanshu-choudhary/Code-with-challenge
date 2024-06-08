@@ -2,8 +2,8 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import React, { useContext } from 'react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import imgUrl from "/public/myDroneMakingPhotoEDITED.jpg";
-import logo from "/public/logo2.jpg";
+import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
+import logo from "/Mlogo.jpg";
 import { UserContext } from '../Context/UserContext';
 import "./css.css"
 import Avatar from '@mui/material/Avatar';
@@ -23,8 +23,9 @@ const myuser = {
 const navigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
-    { name: 'Problems', href: '/QuestionApi', current: false },
+    { name: 'Problems', href: '/data', current: false },
     { name: 'Upload', href: '/Upload', current: false },
+   
 ]
 
 // User menu items

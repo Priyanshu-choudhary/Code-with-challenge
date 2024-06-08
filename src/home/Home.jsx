@@ -2,7 +2,7 @@ import React from 'react';
 import './theme.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/public/myDroneMakingPhotoEDITED.jpg";
-import logo from "/public/homeImg.png";
+import logo from "/public/banner.png";
 import logo3 from "/public/logo.jpg";
 import editorphoto from "/public/editorphoto.png";
 
@@ -69,7 +69,7 @@ function Home() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <a className="theme-link scrollto" href="#reviews-section">See all</a>
+                  <a className="theme-link scrollto" href="https://code-with-challenge.vercel.app/EditorComponent">Online Editor</a>
                 </div>
               </div>
             </div>

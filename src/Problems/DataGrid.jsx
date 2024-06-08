@@ -132,9 +132,9 @@ export default function StripedGrid() {
     return (
         <>
             <Dashboard />
-            <div style={{ height: "100vh", width: '100%' }}>
+            <div style={{ height: "80vh", width: '100%' }}>
                 <input
-                    style={{ width: "50%" }}
+                    style={{ width: "100%" }}
                     type="text"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}

@@ -24,7 +24,7 @@ function App() {
       <Router>
       
         <Routes>
-          <Route path="/" element={<LeetCodeClone />} />
+         
           <Route path="/Upload" element={<EditorPosts />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
@@ -33,7 +33,7 @@ function App() {
           <Route path="/question/:id" element={<QuestionApi />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/register" element={<RegisterUser />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           
       
           

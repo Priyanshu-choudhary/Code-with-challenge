@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { alpha, styled } from '@mui/material/styles';
-import { Avatar } from '@mui/material';
+import { Avatar, CircularProgress } from '@mui/material';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import { useNavigate } from 'react-router-dom';
@@ -59,6 +59,7 @@ const stringToColor = (string) => {
 };
 
 export default function StripedGrid() {
+    const [isLoading, setIsLoading] = useState(true); // Loading state
     const [problems, setProblems] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const navigate = useNavigate(); // Obtain the navigate function from React Router
@@ -77,6 +78,7 @@ export default function StripedGrid() {
             });
             const data = await response.json();
             setProblems(data);
+            setIsLoading(false); // Set loading to false after data is fetched
         } catch (error) {
             console.error("Error fetching problems:", error);
         }
@@ -138,15 +140,21 @@ export default function StripedGrid() {
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Search by name"
                 />
-
-                <StripedDataGrid
-                    rows={rows}
-                    columns={columns}
-                    getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-                    }
-                    onRowClick={handleRowClick}
-                />
+                {/* Conditional rendering of spinner */}
+                {isLoading ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <StripedDataGrid
+                        rows={rows}
+                        columns={columns}
+                        getRowClassName={(params) =>
+                            params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+                        }
+                        onRowClick={handleRowClick}
+                    />
+                )}
             </div>
         </>
     );

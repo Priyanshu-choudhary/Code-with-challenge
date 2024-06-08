@@ -21,7 +21,7 @@ const myuser = {
 
 // Navigation items
 const navigation = [
-    { name: 'Home', href: '/home', current: false },
+    { name: 'Home', href: '/', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/QuestionApi', current: false },
     { name: 'Upload', href: '/Upload', current: false },

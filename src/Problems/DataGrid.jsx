@@ -5,6 +5,7 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import { useNavigate } from 'react-router-dom';
 import Tags from '../UploadSection/Tags';
+import axios from 'axios';
 
 const ODD_OPACITY = 0.2;
 
@@ -60,16 +61,15 @@ const stringToColor = (string) => {
 };
 
 export default function StripedGrid() {
-    const [isLoading, setIsLoading] = useState(true); // Loading state
-    const [problems, setProblems] = useState([]); // Initialize as an empty array
+    const [isLoading, setIsLoading] = useState(true);
+    const [problems, setProblems] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [tagsVisible, setTagsVisible] = useState(true); // State to track if tags are visible
-    const navigate = useNavigate(); // Obtain the navigate function from React Router
+    const [tagsVisible, setTagsVisible] = useState(false);
+    const navigate = useNavigate();
     const [tags, setTags] = useState([]);
 
     const handleTagsChange = useCallback((selectedTags) => {
         setTags(selectedTags);
-        fetchProblems(selectedTags);
     }, []);
 
     const handleRowClick = (params) => {
@@ -80,16 +80,23 @@ export default function StripedGrid() {
     };
 
     const fetchProblems = async (selectedTags = []) => {
-        setIsLoading(true); // Set loading to true while fetching
+        setIsLoading(true);
+        setProblems([]);
+
         try {
             const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
-            let API_URL = "https://testcfc-1.onrender.com/Posts/filter";
+            let API_URL = '';
+            if (tags[0] != null) {
+                API_URL = "https://testcfc-1.onrender.com/Posts/filter";
+            } else {
+                API_URL = "https://testcfc-1.onrender.com/Posts";
+            }
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.join(',');
-                API_URL += `?tags=${tagsQuery}`;
+                API_URL += `?tags=${tagsQuery}&exactMatch=true`;
             }
             const response = await fetch(API_URL, {
-                method: 'GET', // or 'POST' depending on your API
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': basicAuth
@@ -102,17 +109,41 @@ export default function StripedGrid() {
                 console.error("Fetched data is not an array:", data);
                 setProblems([]);
             }
-            setIsLoading(false); // Set loading to false after data is fetched
+            setIsLoading(false);
         } catch (error) {
             console.error("Error fetching problems:", error);
             setProblems([]);
-            setIsLoading(false); // Set loading to false on error
+            setIsLoading(false);
         }
     };
 
     useEffect(() => {
+        fetchProblems(tags);
+    }, [tags]);
+
+    useEffect(() => {
         fetchProblems();
     }, []);
+
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm('Are you sure you want to delete this problem?');
+        if (confirmed) {
+            try {
+                const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
+                const response = await axios.delete(`https://testcfc-1.onrender.com/Posts/id/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': basicAuth
+                    }
+                });
+                console.log('Problem deleted:', response.data);
+                fetchProblems(); // Refresh the data after deletion
+            } catch (error) {
+                console.error('Error deleting problem:', error);
+                alert('Failed to delete problem.');
+            }
+        }
+    };
 
     const filteredRows = problems.filter(problem =>
         problem.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -121,16 +152,16 @@ export default function StripedGrid() {
     const rows = filteredRows.map((problem, index) => ({
         index: index + 1,
         name: problem.title,
-        id: problem.id, // Add the question ID to the row data
+        id: problem.id,
         col1: problem.title,
         col2: problem.category,
         col3: problem.difficulty,
-        ...problem, // Include all problem properties to pass them to the QuestionApi component
+        ...problem,
     }));
 
     const columns = [
         { field: 'index', headerName: 'Index', width: 90 },
-        { field: 'id', headerName: 'Question ID', width: 130 }, // New column for question ID
+        { field: 'id', headerName: 'Question ID', width: 130 },
         {
             field: 'avatar', headerName: 'User', width: 70, renderCell: (params) => {
                 const name = params.row.name;
@@ -146,6 +177,23 @@ export default function StripedGrid() {
         },
         { field: 'col1', headerName: 'Question', width: 350 },
         { field: 'col3', headerName: 'Difficulty', width: 150 },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            width: 150,
+            renderCell: (params) => (
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevents the row click event
+                        handleDelete(params.row.id);
+                    }}
+                >
+                    Delete
+                </Button>
+            ),
+        },
     ];
 
     return (
@@ -177,7 +225,6 @@ export default function StripedGrid() {
                         </Button>
                     </Grid>
                 </Grid>
-                {/* Conditional rendering of spinner */}
                 {isLoading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <CircularProgress />

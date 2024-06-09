@@ -91,7 +91,7 @@ function Home() {
                   </div>
                   <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
                     <div className="col-12 col-md-auto">
-                      <a className="btn btn-primary w-100" href="https://themes.3rdwavemedia.com/bootstrap-templates/startup/devbook-free-bootstrap-5-book-ebook-landing-page-template-for-developers/" style={buttonStyles}>Give a try</a>
+                      <a className="btn btn-primary w-100" href="https://code-with-challenge.vercel.app/data" style={buttonStyles}>Give a try</a>
                     </div>
                     <div className="col-12 col-md-auto">
                       <a className="btn btn-secondary scrollto w-100" href="#benefits-section" style={{
@@ -368,11 +368,10 @@ function Home() {
               </p>
               <div className="author-links text-center pt-4">
                 <h5 className="text-white mb-4">Follow Author</h5>
-                <ul className="social-list list-unstyled">
-                  <li className="list-inline-item"><a href="https://twitter.com/3rdwave_themes">Twitter</a></li>
-                  <li className="list-inline-item"><a href="https://github.com/xriley">GitHub</a></li>
-                  <li className="list-inline-item"><a href="https://medium.com/@3rdwave_themes">Medium</a></li>
-                  <li className="list-inline-item"><a href="https://themes.3rdwavemedia.com/">Website</a></li>
+                <ul className="social-list list-unstyled" style={{color:"black", fontWeight:"bolder"}}>
+                  <li className="list-inline-item"><a href="#">Twitter</a></li>
+                  <li className="list-inline-item"><a href="https://github.com/Priyanshu-choudhary">GitHub</a></li>
+                  <li className="list-inline-item"><a href="https://broyadi23.wixsite.com/my-site-1">Blog-Website</a></li>
                 </ul>
               </div>
             </div>

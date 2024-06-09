@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { alpha, styled } from '@mui/material/styles';
-import { Avatar, CircularProgress } from '@mui/material';
+import { Avatar, CircularProgress, Grid, Button } from '@mui/material';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import { useNavigate } from 'react-router-dom';
+import Tags from '../UploadSection/Tags';
 
 const ODD_OPACITY = 0.2;
 
@@ -60,15 +61,33 @@ const stringToColor = (string) => {
 
 export default function StripedGrid() {
     const [isLoading, setIsLoading] = useState(true); // Loading state
-    const [problems, setProblems] = useState([]);
+    const [problems, setProblems] = useState([]); // Initialize as an empty array
     const [searchValue, setSearchValue] = useState('');
+    const [tagsVisible, setTagsVisible] = useState(true); // State to track if tags are visible
     const navigate = useNavigate(); // Obtain the navigate function from React Router
+    const [tags, setTags] = useState([]);
 
-    const fetchProblems = async () => {
+    const handleTagsChange = useCallback((selectedTags) => {
+        setTags(selectedTags);
+        fetchProblems(selectedTags);
+    }, []);
+
+    const handleRowClick = (params) => {
+        const selectedProblem = problems.find(p => p.id === params.row.id);
+        if (selectedProblem) {
+            navigate(`/question/${selectedProblem.id}`, { state: selectedProblem });
+        }
+    };
+
+    const fetchProblems = async (selectedTags = []) => {
+        setIsLoading(true); // Set loading to true while fetching
         try {
             const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
-
-            const API_URL = "https://testcfc-1.onrender.com/Posts";
+            let API_URL = "https://testcfc-1.onrender.com/Posts/filter";
+            if (selectedTags.length > 0) {
+                const tagsQuery = selectedTags.join(',');
+                API_URL += `?tags=${tagsQuery}`;
+            }
             const response = await fetch(API_URL, {
                 method: 'GET', // or 'POST' depending on your API
                 headers: {
@@ -77,10 +96,17 @@ export default function StripedGrid() {
                 }
             });
             const data = await response.json();
-            setProblems(data);
+            if (Array.isArray(data)) {
+                setProblems(data);
+            } else {
+                console.error("Fetched data is not an array:", data);
+                setProblems([]);
+            }
             setIsLoading(false); // Set loading to false after data is fetched
         } catch (error) {
             console.error("Error fetching problems:", error);
+            setProblems([]);
+            setIsLoading(false); // Set loading to false on error
         }
     };
 
@@ -122,24 +148,35 @@ export default function StripedGrid() {
         { field: 'col3', headerName: 'Difficulty', width: 150 },
     ];
 
-    const handleRowClick = (params) => {
-        const selectedProblem = problems.find(p => p.id === params.row.id);
-        if (selectedProblem) {
-            navigate(`/question/${selectedProblem.id}`, { state: selectedProblem });
-        }
-    };
-
     return (
         <>
             <Dashboard />
             <div style={{ height: "80vh", width: '100%' }}>
-                <input
-                    style={{ width: "100%" }}
-                    type="text"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="Search by name"
-                />
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <input
+                            style={{ borderWidth: "2px", width: "100%", borderColor: "black", height: "48px" }}
+                            type="text"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            placeholder="Search by name"
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        {tagsVisible && (
+                            <Tags onTagsChange={handleTagsChange} />
+                        )}
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Button
+                            variant="outlined"
+                            onClick={() => setTagsVisible(!tagsVisible)}
+                            style={{ height: "48px" }}
+                        >
+                            {tagsVisible ? 'Hide Tags' : 'Search by Tags'}
+                        </Button>
+                    </Grid>
+                </Grid>
                 {/* Conditional rendering of spinner */}
                 {isLoading ? (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>

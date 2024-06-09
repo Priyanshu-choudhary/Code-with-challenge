@@ -175,7 +175,9 @@ public class MyClass {
         </button>
        
       </div>
+      <pre>
       {output && <OutputSec output={output} />}
+      </pre>
       {/* Conditionally render the Confetti component */}
       {showConfetti &&
 

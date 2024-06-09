@@ -32,26 +32,20 @@ function QuestionApi() {
             <Col className="editorsection" sm={2} style={{ height: "500px", width: "500px", overflow: "scroll" }}>
               <Grid container spacing={2}>
                 <Grid className='title' xs={9.5}>
-                  <div>1.{title}</div><hr />
+                  <pre>1.{title}</pre><hr />
                 </Grid>
                 <Grid xs={2.5}>
                   <p className={`button ${difficulty.toLowerCase()}`}>{difficulty}</p>
                 </Grid>
                 <Grid xs={14}>
-                  {description}
+                <pre>  {description} </pre>
                 </Grid>
                 <Grid xs={0}></Grid>
                 <Grid className='subtitle' xs={15}><hr />
-                  Example 1:
+                  Examples:
                 </Grid>
                 <Grid xs={16}>
-                  {example.split(/Input:|Output:/).map((part, index) => (
-                    <React.Fragment key={index}>
-                      {index > 0 && (example.includes('Input:') && index % 2 === 0) && <strong><br />Input:</strong>}
-                      {index > 0 && (example.includes('Output:') && index % 2 === 0) && <strong><br />Output:</strong>}
-                      {part}
-                    </React.Fragment>
-                  ))}
+                <pre>{example}</pre>
                 </Grid>
                 <Grid className='subtitle' xs={15}><hr />
                   Output:

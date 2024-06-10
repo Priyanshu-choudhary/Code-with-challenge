@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import styles from './themes.module.css';
+// import styles from './themes.module.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
 import logo from "/banner.png";
 import logo3 from "/logo.jpg";
+import styles from "/logo.jpg";
 import editorphoto from "/editorphoto.png";
 
 function Home() {
@@ -73,7 +74,7 @@ function Home() {
   return (
     <>
       <Dashboard />
-      <div style={{ overflow: "scroll", height: "100vh" }}>
+      <div style={{ overflow: "scroll", height: "100vh" ,backgroundColor:"white"}}  >
         <header className={styles.header}>
           <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" />
         </header>
@@ -84,7 +85,9 @@ function Home() {
               <div className="col-12 col-md-7 pt-5 mb-5 align-self-center">
                 <div className="promo pe-md-3 pe-lg-5">
                   <h1 className="headline mb-3" style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                  
                     Welcome to: <br />Code-for-Challenge: Elevate Your Coding Skills
+                   
                   </h1>
                   <div className="subheadline mb-4" style={{ fontSize: "20px" }}>
                     What sets us apart? Our commitment to excellence. With a vast library of challenges covering various programming languages, algorithms, and problem-solving techniques, Code for Challenge ensures that every coder finds their perfect match. Join us today and embark on a transformative journey towards coding mastery.
@@ -102,7 +105,7 @@ function Home() {
                         borderStyle: "solid",
                         borderWidth: "2px",
                         borderColor: "#ed6524",
-                        borderStyle: 'none',
+                        // borderStyle: 'none',
                         // boxShadow: 'rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0',
                         boxSizing: 'border-box',
                         color: '#ed6524',

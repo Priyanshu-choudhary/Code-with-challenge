@@ -1,18 +1,17 @@
 import { useLocation } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import "./Question.css";
+import "./ReceiveQuestion.css";
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React, { useRef } from 'react';
-import MyEditor from "./MyEditor";
+import MyEditor from "./SoleSecEditor";
 import Dashboard from '../dashBoard/Dashboard';
 
 function QuestionApi() {
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
-  const { title = '', description = '', example = '', difficulty = '', answer = '' } = problem;
+  const { title = '', description = '', example = '', difficulty = '', answer = '' ,testcase=''} = problem;
 
   console.log('problem:', problem);
 
@@ -55,11 +54,13 @@ function QuestionApi() {
                 </Grid>
               </Grid><hr />
               <Grid className='subtitle solution' xs={15}>
-                <Button variant='secondary'>Get Solution</Button>
+                {/* <Button variant='secondary'>Get Solution</Button> */}
+                Test Cases:
+                <pre>{JSON.stringify(testcase)}</pre>
               </Grid>
             </Col>
             <Col sm className="editorsection" style={{ height: "500px", overflow: "scroll" }} id="scrollContainer" ref={containerRef}>
-              <MyEditor myfun={scrollToBottom} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />
+              <MyEditor myfun={scrollToBottom} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} />
             </Col>
           </Row>
         </Container>

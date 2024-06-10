@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginUser from './loginSigin/LoginUser';
-import EditorPosts from './UploadSection/EditorPosts';
+import EditorPosts from './UploadSection/UploadQ';
 import Home from './home/Home';
 
 import { UserProvider } from './Context/UserContext';
@@ -9,11 +9,12 @@ import { UserProvider } from './Context/UserContext';
 import LogOut from './loginSigin/LogOut';
 import YourProfile from './Profile/YourProfile';
 
-import EditorComponent from './editor/EditorComponent';
-import QuestionApi from './question/QuestionApi';
+import EditorComponent from './onlineEditor/EditorComponent';
+import QuestionApi from './SolvingSection/ReceiveQuestion';
 import LeetCodeClone from './Leetcode/ProblemSet';
 import RegisterUser from './loginSigin/RegisterUser';
 import MyDataGrid from './Problems/DataGrid';
+import LeaderBoard from './LeaderBoard/LeaderBoard';
 
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<LoginUser />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/Data" element={<MyDataGrid />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
           
       
           

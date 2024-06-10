@@ -1,0 +1,33 @@
+.shine-effect {
+    position: relative;
+    /* background-color: #b0b0b0; */
+    /* color: white; */
+    overflow: hidden;
+  }
+  .golden-row {
+    background-color: gold !important;
+}
+
+  .shine-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-25deg);
+  }
+  
+  .shine-effect::before {
+    animation: shine 2s infinite;
+  }
+  
+  @keyframes shine {
+    0% {
+      left: -75%;
+    }
+    100% {
+      left: 125%;
+    }
+  }

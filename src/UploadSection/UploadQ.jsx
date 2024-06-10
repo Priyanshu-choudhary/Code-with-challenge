@@ -29,7 +29,7 @@ const EditorPosts = () => {
         public static void main(String[] args) {
             System.out.println("Made by Yadi!");
         }
-    }`))
+    }`));
 
     const handleTagsChange = useCallback((tags) => {
         setTags(tags);
@@ -92,6 +92,13 @@ const EditorPosts = () => {
             setTestCaseKey('');
             setTestCaseValue('');
         }
+    };
+
+    const handleRemoveTestCase = (keyToRemove) => {
+        setTestCases(prevTestCases => {
+            const { [keyToRemove]: _, ...remainingTestCases } = prevTestCases;
+            return remainingTestCases;
+        });
     };
 
     const handleSubmit = async (event) => {
@@ -239,10 +246,16 @@ const EditorPosts = () => {
                                 <button type="button" onClick={handleAddTestCase} style={{backgroundColor:"lightgray",borderWidth:"1px",borderColor:"black",color:"black"}}>
                                     Add Test Case
                                 </button>
+                                {/* <button type="button" onClick={() => handleRemoveTestCase(testcaseKey)} style={{backgroundColor:"lightgray",borderWidth:"1px",borderColor:"black",color:"black"}}>
+                                    Remove Test Case
+                                </button> */}
                                 <div>
                                     {Object.entries(testcases).map(([key, value]) => (
                                         <div key={key}>
                                             <strong>{key}:</strong> {value}
+                                            <button type="button" onClick={() => handleRemoveTestCase(key)} style={{backgroundColor:"lightgray",borderWidth:"1px",borderColor:"black",color:"black",marginLeft:"10px"}}>
+                                                Remove
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -267,6 +280,8 @@ const EditorPosts = () => {
                                     onChange={handleInputChangeTC}
                                     placeholder="......."
                                     className="editor-textarea"
+                               
+
                                 />
                             </div>
 

@@ -2,12 +2,13 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import React, { useContext } from 'react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
 import logo from "/Mlogo.jpg";
+import award from "/award.png";
 import { UserContext } from '../Context/UserContext';
 import "./css.css"
 import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -25,7 +26,7 @@ const navigation = [
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
     { name: 'Upload', href: '/Upload', current: false },
-   
+
 ]
 
 // User menu items
@@ -41,10 +42,17 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
- function Dashboard() {
+function Dashboard() {
+    const navigate = useNavigate();
     console.log("Dashboard rerender");
     const { user } = useContext(UserContext);
-    let toggle=user;
+    let toggle = user;
+    const handleClick = () => {
+  
+        navigate('/leaderboard');
+        console.log("clicked!");
+        
+    };
     return (
         <>
             <div className="min-h-full">
@@ -63,7 +71,7 @@ function classNames(...classes) {
                                             <p style={{ color: "white" }}>CFC </p>
                                         </div>
                                         <div className="hidden md:block">
-                                        <div className="ml-10 flex items-baseline space-x-4">
+                                            <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
                                                     <a
                                                         key={item.name}
@@ -75,25 +83,25 @@ function classNames(...classes) {
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
                                                         {item.name}
-                                        
+
                                                     </a>
-                                                
+
                                                 ))}
-                                               
+
                                             </div>
 
                                         </div>
-                                     
-                                   
+
+
                                     </div>
 
-                                 
+
                                     <div className="hidden md:block">
-                                    
+
                                         <div className="ml-4 flex items-center md:ml-6">
 
-                                 
-                                        
+                                            <img style={{height:"30px", marginRight:"10px"}}src={award} alt="leaderboard"onClick={() => handleClick()} />
+
                                             <button
                                                 type="button"
                                                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -107,9 +115,9 @@ function classNames(...classes) {
                                                 <div>
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="sr-only">Open user menu</span>
-                                                        
-                                                         <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
-                                                        
+
+                                                        <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -140,14 +148,18 @@ function classNames(...classes) {
                                                     </Menu.Items>
                                                 </Transition>
                                             </Menu> : <button className="button-85" role="button">
-                                           <a href="/login">LogIn</a>
-                                                </button>}
-                                            
-                                            
+                                                <a href="/login">LogIn</a>
+                                            </button>}
+
+
                                         </div>
                                     </div>
                                     <div className="-mr-2 flex md:hidden">
                                         {/* Mobile menu button */}
+                                       { user?<></>:<button style={{marginRight:"30px"}} className="button-85" role="button">
+                                                <a href="/login">LogIn</a>
+                                               
+                                            </button>}
                                         <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="sr-only">Open main menu</span>
                                             {open ? (
@@ -179,13 +191,14 @@ function classNames(...classes) {
                                 </div>
                                 <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center px-5">
-                                        <div className="flex-shrink-0">
-                                            <img className="h-10 w-10 rounded-full" src={imgUrl} alt="user" />
-                                        </div>
-                                        <div className="ml-3">
-                                            <div className="text-base font-medium leading-none text-white">{myuser.name}</div>
-                                            <div className="text-sm font-medium leading-none text-gray-400">{myuser.email}</div>
-                                        </div>
+                                        
+
+                                      {user?   <Avatar style={{ fontSize: "18px" }} sx={{ marginRight:"100px",bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+:<></>}
+                                        <img  style={{height:"30px", marginRight:"10px"}}src={award} alt="leaderboard"onClick={handleClick} />
+
+
+
                                         <button
                                             type="button"
                                             className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -214,12 +227,12 @@ function classNames(...classes) {
 
                 <main className="editorsection" >
 
-                
-                    
+
+
 
                 </main>
             </div>
         </>
     )
 }
-export default  React.memo(Dashboard)
+export default React.memo(Dashboard)

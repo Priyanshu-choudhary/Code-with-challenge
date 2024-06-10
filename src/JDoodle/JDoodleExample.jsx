@@ -1,14 +1,24 @@
 import axios from 'axios';
 
-const JDoodleExample = async (code, language, input) => {
+const JDoodleExample = async (code, language, input, testCases) => {
     try {
-        const response = await axios.post('https://testcfc-1.onrender.com/api/jdoodle/execute', {
+        console.log("Test Cases:", testCases);
+        let apiUrl = testCases && Object.keys(testCases).length > 0
+            ? "http://localhost:9090/code/executeWithTestcase"
+            : "https://testcfc-1.onrender.com/code/execute";
+
+        const response = await axios.post(apiUrl, {
             script: code,
             language: language,
-            stdin: input
+            stdin: input,
+            testCases: testCases,
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-        // console.log(response.data.output);
-        return response.data.output; // Return the output explicitly
+         console.log("output>>>>>>"+response.data);
+        return response.data;
     } catch (error) {
         console.error('Error executing code:', error);
         return 'Error executing code. Please try again.';

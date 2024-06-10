@@ -108,7 +108,7 @@ export default function LeaderBoard() {
     return (
         <div style={{ backgroundColor: 'white', color: '#546397' }}>
             <Dashboard />
-            <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>Leaderboard</p>
+            <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>404 server error!</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ height: "80vh", width: '50%', backgroundColor: 'white' }}>
                     {loading ? (

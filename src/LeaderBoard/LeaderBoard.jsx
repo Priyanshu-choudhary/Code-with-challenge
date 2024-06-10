@@ -57,7 +57,7 @@ export default function LeaderBoard() {
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:9090/Public/getUser')
+        fetch('https://testcfc-1.onrender.com/Public/getUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

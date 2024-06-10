@@ -73,7 +73,7 @@ function Card({ userId ,index}) {
     let isMounted = true; // Track whether the component is still mounted
 
     if (userId) {
-      fetch(`http://localhost:9090/Public/${userId}`)
+      fetch(`https://testcfc-1.onrender.com/Public/${userId}`)
         .then(response => response.json())
         .then(data => {
           if (isMounted) { // Update state only if the component is still mounted

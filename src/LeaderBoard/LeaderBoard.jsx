@@ -57,7 +57,7 @@ export default function LeaderBoard() {
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     useEffect(() => {
-        fetch('https://testcfc-1.onrender.com/Public/getUser')
+        fetch('https://testcfc.onrender.com/Public/getUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -108,7 +108,7 @@ export default function LeaderBoard() {
     return (
         <div style={{ backgroundColor: 'white', color: '#546397' }}>
             <Dashboard />
-            <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>404 server error!</p>
+            <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ height: "80vh", width: '50%', backgroundColor: 'white' }}>
                     {loading ? (

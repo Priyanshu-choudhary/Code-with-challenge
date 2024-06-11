@@ -1,6 +1,6 @@
 async function signUp(username, password) {
     try {
-      const response = await fetch('https://testcfc-1.onrender.com/Public/Create-User', {
+      const response = await fetch('https://testcfc.onrender.com/Public/Create-User', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

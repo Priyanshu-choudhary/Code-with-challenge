@@ -64,7 +64,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   const handleSubmit = async (event) => {
     try {
       const response = await axios.post(
-        'https://testcfc-1.onrender.com/Posts',
+        'https://testcfc.onrender.com/Posts',
         {
           title: title, // Provide a title here
           description: description,

@@ -27,7 +27,7 @@ const YourProfile = () => {
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
 
         // Fetch problems
-        const problemsResponse = await fetch("https://testcfc-1.onrender.com/Posts", {
+        const problemsResponse = await fetch("https://testcfc.onrender.com/Posts", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const YourProfile = () => {
         setNoOfQuestion(problemsData.length);
 
         // Fetch user data
-        const userResponse = await fetch("https://testcfc-1.onrender.com/users/getUser", {
+        const userResponse = await fetch("https://testcfc.onrender.com/users/getUser", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

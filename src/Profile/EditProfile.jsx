@@ -25,7 +25,7 @@ const ValidationTextFields = () => {
         const fetchUserData = async () => {
             const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
             try {
-                const response = await fetch('https://testcfc-1.onrender.com/users/getUser', {
+                const response = await fetch('https://testcfc.onrender.com/users/getUser', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const ValidationTextFields = () => {
         };
 
         try {
-            const url = 'https://testcfc-1.onrender.com/users';
+            const url = 'https://testcfc.onrender.com/users';
             updatedData.password = password;
 
             const headers = new Headers();

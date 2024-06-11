@@ -152,7 +152,7 @@ const EditorPosts = ({ step }) => {
         event.preventDefault();
         try {
             const response = await axios.post(
-                'https://testcfc-1.onrender.com/Posts',
+                'https://testcfc.onrender.com/Posts',
                 {
                     title,
                     description,

@@ -87,9 +87,10 @@ export default function StripedGrid() {
             const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
             let API_URL = '';
             if (tags[0] != null) {
-                API_URL = "https://testcfc-1.onrender.com/Posts/filter";
+                API_URL = "https://testcfc.onrender.com/Posts/filter";
             } else {
-                API_URL = "https://testcfc-1.onrender.com/Posts";
+                API_URL = "https://testcfc.onrender.com/Posts";
+                // API_URL = "http://localhost:9090/Posts";
             }
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.join(',');
@@ -130,7 +131,7 @@ export default function StripedGrid() {
         if (confirmed) {
             try {
                 const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
-                const response = await axios.delete(`https://testcfc-1.onrender.com/Posts/id/${id}`, {
+                const response = await axios.delete(`https://testcfc.onrender.com/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': basicAuth

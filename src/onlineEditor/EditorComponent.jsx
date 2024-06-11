@@ -93,7 +93,7 @@ const EditorComponent = () => {
                             Clear
                         </Button>
                     </div>
-                    <pre>{output}</pre>
+                     <pre>{output.output}</pre>
                     <TextField
                         id="outlined-multiline-flexible"
                         label="Input"

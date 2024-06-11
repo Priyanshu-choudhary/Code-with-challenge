@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function MyEditor({ myfun, answer, title, description, difficulty, Example, testcase }) {
+function MyEditor({ myfun, answer, title, description, difficulty, Example, testcase,boilerCode }) {
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
@@ -44,7 +44,8 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   const getCode = async () => {
     myfun();
     if (editorRef.current) {
-      const code = editorRef.current.getValue();
+      let code = editorRef.current.getValue();
+      code=boilerCode+code;
       setiSubmit(true);
 
       const output = await JDoodleExample(code, language, '', testcase); // Ensure testcase is passed here
@@ -128,14 +129,12 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         width="auto"
         defaultLanguage={language}
         theme={theme} // Use theme state
-        defaultValue={`//Example code
-import java.util.*;
-public class MyClass {
-    public static void main(String[] args) {
-        //Write your code here...
-        System.out.println("Hello World!");
-    }
-}`}
+        defaultValue={`Solution{
+          findLargestNumber(int[] arr){
+
+              return null;
+            }
+          }`}
         onMount={handleEditorDidMount}
         options={options}
       />

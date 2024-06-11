@@ -43,9 +43,11 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
 
   const getCode = async () => {
     myfun();
+    // console.log(boilerCode);
     if (editorRef.current) {
       let code = editorRef.current.getValue();
-      code=boilerCode+code;
+      code="import java.util.*;"+code+boilerCode;
+      console.log(code);
       setiSubmit(true);
 
       const output = await JDoodleExample(code, language, '', testcase); // Ensure testcase is passed here
@@ -125,16 +127,16 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
     <>
       <Editor
         className='editor'
-        height="430px"
+        height="400px"
         width="auto"
         defaultLanguage={language}
         theme={theme} // Use theme state
-        defaultValue={`Solution{
-          findLargestNumber(int[] arr){
+        defaultValue={`class Solution{
+    public int findLargestNumber(int[] arr){
 
-              return null;
-            }
-          }`}
+        return null;
+        }
+}`}
         onMount={handleEditorDidMount}
         options={options}
       />
@@ -172,7 +174,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         </button>
       </div>
       <pre>
-        {JSON.stringify(output)}
+        {output.output}
         {/* {output && <OutputSec output={output} />} */}
       </pre>
       {/* Conditionally render the Confetti component */}

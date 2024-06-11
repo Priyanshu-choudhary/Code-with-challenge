@@ -39,7 +39,7 @@ const EditorPosts = ({ step }) => {
     useEffect(() => {
         const testCasesEntries = Object.entries(testcases).map(([key, value]) => `map.put("${key}", "${value}");`).join('\n');
         const newCode = `
-        import java.util.*;
+     
         public class HelloWorld {
             public static void main(String[] args) {
                 Solution sc = new Solution();
@@ -48,7 +48,7 @@ const EditorPosts = ({ step }) => {
 
 
                 ${testCasesEntries}
-                 for (Map.Entry<String, String> entry : myMap.entrySet()) {
+                  for (Map.Entry<String, String> entry : map.entrySet()) {
                      String key = entry.getKey();
                     String value = entry.getValue();
 
@@ -60,8 +60,9 @@ const EditorPosts = ({ step }) => {
                     }
 
 
-                      output=sc.functionName(arr);
-                    if(output==value){
+                    String output=Integer.toString(sc.findLargestNumber(arr));
+                   
+                    if(output.equals(value)){
                     booleanList.add(true);
                     }else{
                     booleanList.add(false);

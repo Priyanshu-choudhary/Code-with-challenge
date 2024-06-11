@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -8,11 +9,16 @@ import Typography from '@mui/material/Typography';
 import Dashboard from '../dashBoard/Dashboard';
 import EditorPosts from './UploadQ';
 
+import { UserContext } from '../Context/UserContext';
+import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
+
 const steps = ['Add basic details', 'Test cases and boiler code', 'Select tags/Time complexicity'];
 
 export default function MyStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
+  
+  const { user, password,role } = useContext(UserContext);
 
   const totalSteps = () => {
     return steps.length;
@@ -63,7 +69,7 @@ export default function MyStepper() {
   return (
     <>
     <Dashboard/>
-    <Box sx={{marginTop:"10px" ,width: '100%' }}>
+   { role=="ADMIN"?    <Box sx={{marginTop:"10px" ,width: '100%' }}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label} completed={completed[index]}>
@@ -118,7 +124,7 @@ export default function MyStepper() {
           </React.Fragment>
         )}
       </div>
-    </Box>
+    </Box>:<UnauthorizedPage/>}
     </>
   );
 }

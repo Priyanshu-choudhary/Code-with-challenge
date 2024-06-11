@@ -190,7 +190,7 @@ const EditorPosts = ({ step }) => {
 
     return (
         <>
-            {role=="ADMIN"?<div className="editor-container" style={{ height: "69vh" }}>
+           <div className="editor-container" style={{ height: "69vh" }}>
                 {step === 3 ? (
                     <div className="sidebar">
                         <div className="sidebar-item" onClick={handleSubmit}>
@@ -361,7 +361,7 @@ const EditorPosts = ({ step }) => {
                         </>
                     )}
                 </div>
-            </div>:<UnauthorizedPage/>}
+            </div>
         </>
     );
 };

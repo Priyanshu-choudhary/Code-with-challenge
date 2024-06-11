@@ -16,11 +16,11 @@ const YourProfile = () => {
   const [showForm, setShowForm] = useState(false); 
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { user, password } = useContext(UserContext);
+  const { user, password,role } = useContext(UserContext);
   const [userData, setUserData] = useState({});
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
-
+console.log("profile rerender");
   useEffect(() => {
     const fetchData = async () => {
       try {

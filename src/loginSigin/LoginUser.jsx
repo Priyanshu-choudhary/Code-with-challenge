@@ -16,15 +16,18 @@ function LoginUser() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setUser, setPassword: setContextPassword } = useContext(UserContext);
+  const { setUser,setRole, setPassword: setContextPassword } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedPassword = localStorage.getItem('password');
+    const storedRole=localStorage.getItem('role');
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       setContextPassword(storedPassword);
+      setRole(storedRole);
       setIsLoggedIn(true);
     }
   }, [navigate, setUser, setContextPassword]);
@@ -41,12 +44,15 @@ function LoginUser() {
     event.preventDefault();
     setIsSubmitting(true);
     try {
-        await login(username, password); // Call the login function and wait for it to complete
+        const userRole = await login(username, password); 
         setIsLoggedIn(true);
         setUser(username);
         setContextPassword(password);
+        setRole(userRole);
         localStorage.setItem('user', JSON.stringify(username));
         localStorage.setItem('password', password);
+        localStorage.setItem('role', userRole);
+        
         navigate('/yourProfile'); // Navigate only if login is successful
     } catch (error) {
         console.error('Error logging in:', error);

@@ -7,6 +7,8 @@ import { UserContext } from '../Context/UserContext';
 import Spinner from 'react-bootstrap/Spinner';
 import Tags from './Tags';
 import { Editor } from '@monaco-editor/react';
+import PNF from '../PageNotFound/PNF';
+import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
 
 const EditorPosts = ({ step }) => {
     const [solution, setSolution] = useState('');
@@ -15,7 +17,7 @@ const EditorPosts = ({ step }) => {
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
     const [difficulty, setDifficulty] = useState('');
-    const { user, password } = useContext(UserContext);
+    const { user, password,role } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
     const [tags, setTags] = useState([]);
     const [time, setTime] = useState('');
@@ -188,7 +190,7 @@ const EditorPosts = ({ step }) => {
 
     return (
         <>
-            <div className="editor-container" style={{ height: "69vh" }}>
+            {role=="ADMIN"?<div className="editor-container" style={{ height: "69vh" }}>
                 {step === 3 ? (
                     <div className="sidebar">
                         <div className="sidebar-item" onClick={handleSubmit}>
@@ -359,7 +361,7 @@ const EditorPosts = ({ step }) => {
                         </>
                     )}
                 </div>
-            </div>
+            </div>:<UnauthorizedPage/>}
         </>
     );
 };

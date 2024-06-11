@@ -12,9 +12,10 @@ async function login(username, password) {
         });
 
         if (response.ok) {
-            const userId = await response.text();
-            console.log('User ID:', userId);
-            return userId; // Return userId if needed
+            const userData = await response.json();  // Parse the response as JSON
+            const roles = userData.roles; 
+            console.log('Roles:', roles);
+            return roles; 
         } else {
             console.log('Login failed');
             alert("Wrong Username/Password");
@@ -22,7 +23,7 @@ async function login(username, password) {
         }
     } catch (error) {
         console.error('Error:', error);
-        throw error; // Rethrow the error to be caught in handleSubmit
+        throw error;
     }
 }
 

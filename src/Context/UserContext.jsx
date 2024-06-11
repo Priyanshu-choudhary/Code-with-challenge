@@ -5,10 +5,17 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
+  const [role, setRole] = useState(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedPassword = localStorage.getItem('password');
+    const storedRole=localStorage.getItem('role');
+
+    if(storedRole){
+      setRole(storedRole);
+    }
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -25,7 +32,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, password, setUser, setPassword, logout }}>
+    <UserContext.Provider value={{ user, password, role, setRole, setUser, setPassword, logout }}>
       {children}
     </UserContext.Provider>
   );

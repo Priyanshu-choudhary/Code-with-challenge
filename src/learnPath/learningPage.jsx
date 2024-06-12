@@ -5,13 +5,13 @@ import ImgMediaCard from './cards';
 function LearningPage() {
   // Create an array to represent the cards
   const basicCards = [
-    { title: 'DSA', image: '/public/DSA.jpeg', description: 'This is a data structures and algorithms (DSA) course with a strong focus on passing coding interviews for software engineering jobs.', progress: 0 },
+    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms (DSA) course with a strong focus on passing coding interviews for software engineering jobs.', progress: 0 },
     { title: 'Web Development', image: '/R.jpeg', description: 'Learn the basics of web development, including HTML, CSS, and JavaScript.', progress: 50 },
   ];
 
   const intermediateCards = [
-    { title: 'Advanced DSA', image: '/public/AdvanceDSA.png', description: 'Deep dive into advanced data structures and algorithms.', progress: 30 },
-    { title: 'React', image: '/public/react.jpg', description: 'Learn how to build interactive user interfaces with React.', progress: 70 },
+    { title: 'Advanced DSA', image: '/AdvanceDSA.png', description: 'Deep dive into advanced data structures and algorithms.', progress: 30 },
+    { title: 'React', image: '/react.jpg', description: 'Learn how to build interactive user interfaces with React.', progress: 70 },
   ];
 
   return (

@@ -9,6 +9,7 @@ import signUp from './SignUpApi';
 function RegisterUser() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -20,11 +21,42 @@ function RegisterUser() {
     setPassword(event.target.value);
   };
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const validateInputs = () => {
+    if (!username) {
+      alert('Username is required');
+      return false;
+    }
+    if (/\s/.test(username)) {
+      alert('Username must not contain spaces');
+      return false;
+    }
+    if (!password) {
+      alert('Password is required');
+      return false;
+    }
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long');
+      return false;
+    }
+    if (!email) {
+      alert('Email is required');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
+    if (!validateInputs()) {
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const response = await signUp(username, password);
+      const response = await signUp(username, password, email);
       if (response.ok) {
         navigate('/login');
       } else if (response.status === 409) {
@@ -39,15 +71,16 @@ function RegisterUser() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [navigate, username, password]);
+  }, [navigate, username, password, email]);
 
   return (
     <SignUpPage style={{ height: 580 }}>
       <Logo>
         <LoginLogo />
       </Logo>
-      <Email index={0} type="text" placeholder="Set Username" onChange={handleUsernameChange} />
-      <Password index={1} onChange={handlePasswordChange} />
+      <Email index={1} type="text" placeholder="Set Email" onChange={handleEmailChange} />
+      <Input name="username" index={0} placeholder="Set Username" onChange={handleUsernameChange} />
+      <Password index={2} onChange={handlePasswordChange} />
       <Submit onClick={handleSubmit}>
         Register {isSubmitting && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
       </Submit>

@@ -21,6 +21,7 @@ const YourProfile = () => {
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
 console.log("profile rerender");
+console.log(role);
   useEffect(() => {
     const fetchData = async () => {
       try {

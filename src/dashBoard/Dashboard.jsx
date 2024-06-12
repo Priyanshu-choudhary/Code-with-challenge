@@ -23,6 +23,7 @@ const myuser = {
 // Navigation items
 const navigation = [
     { name: 'Home', href: '/', current: false },
+    { name: 'Learn', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
     { name: 'Upload', href: '/Upload', current: false },

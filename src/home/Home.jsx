@@ -6,6 +6,11 @@ import logo from "/banner.png";
 import logo3 from "/logo.jpg";
 import styles from "/logo.jpg";
 import editorphoto from "/editorphoto.png";
+import HeadingSection from './headingSection';
+import FeatureExample from './featureSection'
+import Footer from './footer'
+import Newsletter from './newsLetter'
+import UserCount from './UserCount'
 
 function Home() {
   const buttonStyles = {
@@ -75,6 +80,7 @@ function Home() {
     <>
       <Dashboard />
       <div style={{ overflow: "scroll", height: "100vh" ,backgroundColor:"white"}}  >
+       
         <header className={styles.header}>
           <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" />
         </header>
@@ -198,7 +204,7 @@ function Home() {
             </div>
           </div>
         </section>
-
+<FeatureExample/>
         <section id="benefits-section" className={`${styles.benefitsSection} theme-bg-light-gradient py-5`}>
           <div className="container py-5">
             <h2 className="section-heading text-center mb-3" style={{ fontSize: "40px" }}>What Will You Get From This Website?</h2>
@@ -274,6 +280,8 @@ function Home() {
             </div>
           </div>
         </section>
+
+        <HeadingSection/>
         <section id="content-section" className={styles.contentSection}>
           <div className="container">
             <div className="single-col-max mx-auto">
@@ -313,6 +321,11 @@ function Home() {
           </div>
         </section>
 
+
+        <h2 className="section-heading text-center" style={{ fontSize: "40px" }}>User Count</h2>
+    <UserCount/>
+
+
         <section id="audience-section" className={`${styles.audienceSection} py-5`}>
           <div className="container">
             <h2 className="section-heading text-center mb-4" style={{ fontSize: "40px", margin: "20px" }}>Who This Website Is For</h2>
@@ -337,28 +350,12 @@ function Home() {
             </div>
           </div>
         </section>
+<div style={{marginBottom:"3px"}}>
+       <Newsletter/>
+       </div>
+        <Footer/>
 
-        <section id="form-section" className={styles.formSection} >
-          <div className="container" style={{ backgroundColor: "#f6f8fc" }}>
-            <div className="lead-form-wrapper single-col-max mx-auto theme-bg-light rounded p-5">
-              <h2 className="form-heading text-center">Get A Free Preview</h2>
-              <div className="form-intro text-center mb-3">Sign up to get a free preview of CFC. <br />We are offer visitors free trail previews to CFC.</div>
-              <div className="form-wrapper mx-auto">
-                <form className="signup-form row g-2 align-items-center">
-                  <div className="col-12 col-lg-9">
-                    <label className="sr-only" htmlFor="semail">Email</label>
-                    <input type="email" id="semail" name="semail1" className="form-control me-md-1 semail" placeholder="Your email" />
-                  </div>
-                  <div className="col-12 col-lg-3">
-                    <button type="submit" className="btn  btn-submit w-100" style={{ backgroundColor: color, color: "white", padding: "15px", fontWeight: "bold" }}>Send</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="author-section" className={`py-5`} style={{ backgroundColor: color }} >
+        {/* <section id="author-section" className={`py-5`} style={{ backgroundColor: color }} >
           <div className="container py-3" style={{ borderColor: color }}>
             <div className="author-profile text-center mb-5" style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "250px", width: "250px", borderRadius: "50%" }}>
               <img className="author-pic" src={imgUrl} alt="image" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -379,7 +376,7 @@ function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
     </>
   );

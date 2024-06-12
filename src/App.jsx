@@ -16,6 +16,9 @@ import RegisterUser from './loginSigin/RegisterUser';
 import MyDataGrid from './Problems/DataGrid';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import MyStepper from './UploadSection/Stepper';
+import ImgMediaCard from './learnPath/cards';
+import LearningPage from './learnPath/learningPage';
+
 
 
 
@@ -35,10 +38,15 @@ function App() {
           <Route path="/EditorComponent" element={<EditorComponent />} />
           <Route path="/QuestionApi" element={<LeetCodeClone />} />
           <Route path="/question/:id" element={<QuestionApi />} />
+          
+          
           <Route path="/login" element={<LoginUser />} />
+          
+          
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/Data" element={<MyDataGrid />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
+          <Route path="/learn" element={<LearningPage/>} />
           
       
           

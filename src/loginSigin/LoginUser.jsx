@@ -70,7 +70,8 @@ function LoginUser() {
           <LoginLogo />
         </Logo>
         <Email index={0} type="text" placeholder="Username" onChange={handleUsernameChange} />
-        <Password index={1} onChange={handlePasswordChange} />
+        
+        <Password index={2} onChange={handlePasswordChange} />
         <Submit onClick={handleSubmit}>
           Login {isSubmitting && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
         </Submit>

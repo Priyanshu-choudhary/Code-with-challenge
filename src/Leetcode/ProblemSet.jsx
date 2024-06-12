@@ -1,27 +1,25 @@
-// LeetCodeClone.js
-import React, { useState, useEffect,useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import LinearProgress from '@mui/joy/LinearProgress';
+import Tags from '../UploadSection/Tags';
 
-
-const API_URL = "https://testcfc-1.onrender.com/Posts";
-
-const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
+const API_URL = "https://testcfc.onrender.com/Posts";
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const navigate = useNavigate();
   const { user, password } = useContext(UserContext);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProblems = async () => {
       try {
         const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
         const response = await fetch(API_URL, {
-          method: 'GET', // or 'POST' depending on your API
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': basicAuth
@@ -35,32 +33,24 @@ const LeetCodeClone = () => {
     };
 
     fetchProblems();
-  }, [user, password]); // Dependencies ensure it refetches if user or password changes
-
+  }, [user, password]);
 
   const handleProblemClick = (problem) => {
-    console.log(problem);
     navigate(`/question/${problem.id}`, { state: problem });
   };
+
+  const { title, description, progress } = location.state || {};
 
   return (
     <>
       <Dashboard />
-      <div className="leetcode-clone">
-        <div className="header">
-          <div className="tags">
-            {tags.map(tag => <span className="tag" key={tag}>{tag}</span>)}
-          </div>
-        </div>
+      <div className="leetcode-clone-container">
         <div className="content">
-          <div className="filter">
-            <button>Lists</button>
-            <button>Difficulty</button>
-            <button>Status</button>
-            <button>Tags</button>
-            <input type="text" placeholder="Search questions" />
-            <button>Pick One</button>
+          <div className='Profileheading'>
+            {title || 'Java Questions'}
           </div>
+          {description && <p >{description}</p>}
+          <p style={{fontSize:"18px",fontWeight:"bolder"}}>Progress: {progress}%</p>
           <div className="problem-list">
             {problems.length > 0 ? problems.map((problem, index) => (
               <div
@@ -74,11 +64,14 @@ const LeetCodeClone = () => {
                 </div>
               </div>
             )) : <LinearProgress
-            color="primary"
-            size="md"
-            variant="plain"
-          />}
+              color="primary"
+              size="md"
+              variant="plain"
+            />}
           </div>
+        </div>
+        <div className="tags-container">
+          <Tags />
         </div>
       </div>
     </>

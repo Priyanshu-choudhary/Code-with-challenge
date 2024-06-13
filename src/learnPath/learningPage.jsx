@@ -7,7 +7,7 @@ function LearningPage() {
   const navigate = useNavigate();
 
   const basicCards = [
-    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms (DSA) course with a strong focus on passing coding interviews ', progress: 0 },
+    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms course with a strong focus on passing coding interviews ', progress: 0 },
     { title: 'Web Development', image: '/R.jpeg', description: 'Learn the basics of web development, including HTML, CSS, and JavaScript.', progress: 50 },
   ];
 

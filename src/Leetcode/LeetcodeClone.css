@@ -27,7 +27,7 @@ body {
   }
   
   .problem-list {
-    max-height: calc(65vh); /* Adjusted calculation for max height */
+    max-height: fit-content; /* Adjusted calculation for max height */
     overflow-y: auto; /* Enable vertical scrolling */
     background-color: #f7f4f4;
     color: #000;
@@ -93,5 +93,11 @@ body {
     .content, .tags-container {
       width: 100%;
     }
+  }
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Full height to center spinner vertically */
   }
   

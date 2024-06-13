@@ -106,11 +106,11 @@ export default function LeaderBoard() {
     };
 
     return (
-        <div style={{ backgroundColor: 'white', color: '#546397' }}>
+        <div >
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ height: "80vh", width: '50%', backgroundColor: 'white' }}>
+                <div style={{  width: '50%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (

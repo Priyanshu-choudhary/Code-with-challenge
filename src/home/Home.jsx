@@ -79,7 +79,7 @@ function Home() {
   return (
     <>
       <Dashboard />
-      <div style={{ overflow: "scroll", height: "100vh" ,backgroundColor:"white"}}  >
+      <div   >
        
         <header className={styles.header}>
           <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" />

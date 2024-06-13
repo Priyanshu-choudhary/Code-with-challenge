@@ -200,7 +200,7 @@ export default function StripedGrid() {
     return (
         <>
             <Dashboard />
-            <div style={{ height: "80vh", width: '100%' }}>
+            <div >
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <input

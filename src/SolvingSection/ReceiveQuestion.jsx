@@ -1,3 +1,4 @@
+// src/components/QuestionApi.js
 import { useLocation } from 'react-router-dom';
 import "./ReceiveQuestion.css";
 import Grid from '@mui/material/Unstable_Grid2';
@@ -11,9 +12,7 @@ import Dashboard from '../dashBoard/Dashboard';
 function QuestionApi() {
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
-  const { title = '', description = '', example = '', difficulty = '', answer = '' ,testcase='',boilerCode=''} = problem;
-
-  console.log('problem:', problem);
+  const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '' } = problem;
 
   const containerRef = useRef(null);
 
@@ -25,6 +24,10 @@ function QuestionApi() {
   return (
     <>
       <Dashboard />
+      {navHistory &&  <p style={{ color: "grey", fontSize: '15px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+        {navHistory} {'>'}{title}
+        <hr />
+      </p>}
       <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container">
         <Container fluid>
           <Row>
@@ -37,14 +40,14 @@ function QuestionApi() {
                   <p className={`button ${difficulty.toLowerCase()}`}>{difficulty}</p>
                 </Grid>
                 <Grid xs={14}>
-                <pre>  {description} </pre>
+                  <pre>  {description} </pre>
                 </Grid>
                 <Grid xs={0}></Grid>
                 <Grid className='subtitle' xs={15}><hr />
                   Examples:
                 </Grid>
                 <Grid xs={16}>
-                <pre>{example}</pre>
+                  <pre>{example}</pre>
                 </Grid>
                 <Grid className='subtitle' xs={15}><hr />
                   Output:
@@ -54,7 +57,6 @@ function QuestionApi() {
                 </Grid>
               </Grid><hr />
               <Grid className='subtitle solution' xs={15}>
-                {/* <Button variant='secondary'>Get Solution</Button> */}
                 Test Cases:
                 <pre>{JSON.stringify(testcase)}</pre>
               </Grid>

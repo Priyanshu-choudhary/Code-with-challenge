@@ -1,3 +1,4 @@
+// src/components/LearningPage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
@@ -7,7 +8,7 @@ function LearningPage() {
   const navigate = useNavigate();
 
   const basicCards = [
-    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms course with a strong focus on passing coding interviews ', progress: 0 },
+    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms course with a strong focus on passing coding interviews', progress: 0 },
     { title: 'Web Development', image: '/R.jpeg', description: 'Learn the basics of web development, including HTML, CSS, and JavaScript.', progress: 50 },
   ];
 
@@ -31,7 +32,7 @@ function LearningPage() {
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Basic
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '100px' }}>
           {basicCards.map((card, index) => (
             <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
               <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />
@@ -44,7 +45,7 @@ function LearningPage() {
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Intermediate
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '100px' }}>
           {intermediateCards.map((card, index) => (
             <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
               <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />

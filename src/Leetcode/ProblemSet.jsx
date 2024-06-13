@@ -1,11 +1,11 @@
+// src/components/LeetCodeClone.js
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
-import CircularProgress from '@mui/material/CircularProgress'; // Importing Material-UI CircularProgress
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -13,10 +13,12 @@ const LeetCodeClone = () => {
   const [responseOk, setResponseOk] = useState(false);
   const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-
+  const [navHistory, setNavHistory] = useState('');
+  
   const navigate = useNavigate();
   const { user, password } = useContext(UserContext);
   const location = useLocation();
+  const { title, description, progress } = location.state || {};
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,20 +71,24 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
-  }, []);
+    if (title) {
+      setNavHistory(`Learn Skill > ${title}`);
+    }
+  }, [title]);
 
   const handleProblemClick = (problem) => {
-    navigate(`/question/${problem.id}`, { state: problem });
+    navigate(`/question/${problem.id}`, { state: { ...problem, navHistory } });
   };
-
-  const { title, description, progress } = location.state || {};
 
   return (
     <>
       <Dashboard />
+      <p style={{ color: "grey", fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+       {navHistory}
+        <hr />
+      </p>
       <div className="leetcode-clone-container">
         <div className="content">
-        {/* style={{ maxHeight: screenSize.height - 100,overflowY:"scroll" }} */}
           <div className='Profileheading'>
             {title || 'Java Questions'}
           </div>

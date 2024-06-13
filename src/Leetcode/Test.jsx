@@ -4,8 +4,8 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
-import GrainIcon from '@mui/icons-material/Grain';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import TerminalOutlinedIcon from '@mui/icons-material/TerminalOutlined';
 
 export default function IconBreadcrumbs({ title = '', question = '' }) {
   const navigate = useNavigate();
@@ -35,16 +35,16 @@ export default function IconBreadcrumbs({ title = '', question = '' }) {
           href="/material-ui/getting-started/installation/"
           onClick={(e) => handleClick(e, '/learn')}
         >
-          <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          <MenuBookOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           {title}
         </Link>
-        <Typography
+        {question && <Typography
           sx={{ display: 'flex', alignItems: 'center' }}
           color="text.primary"
         >
-          <GrainIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          <TerminalOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           {question}
-        </Typography>
+        </Typography>}
       </Breadcrumbs>
     </div>
   );

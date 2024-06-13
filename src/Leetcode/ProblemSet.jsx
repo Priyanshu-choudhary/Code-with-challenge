@@ -42,7 +42,7 @@ const LeetCodeClone = () => {
         const tagsQuery = selectedTags.join(',');
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
       const response = await fetch(url, {
         method: 'GET',
         headers: {

@@ -29,7 +29,7 @@ function QuestionApi() {
         {navHistory} {'>'}{title}
         <hr />
       </p>} */}
-       <IconBreadcrumbs title={title} question={title}/>
+       <IconBreadcrumbs title={navHistory} question={title}/>
       <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container">
         <Container fluid>
           <Row>

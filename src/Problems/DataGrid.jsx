@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import { Avatar, CircularProgress, Grid, Button } from '@mui/material';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
@@ -6,6 +6,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { useNavigate } from 'react-router-dom';
 import Tags from '../UploadSection/Tags';
 import axios from 'axios';
+import { UserContext } from '../Context/UserContext';
 
 const ODD_OPACITY = 0.2;
 
@@ -67,6 +68,7 @@ export default function StripedGrid() {
     const [tagsVisible, setTagsVisible] = useState(false);
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
+    const { user, password, role } = useContext(UserContext);
 
     const handleTagsChange = useCallback((selectedTags) => {
         setTags(selectedTags);
@@ -160,7 +162,7 @@ export default function StripedGrid() {
         ...problem,
     }));
 
-    const columns = [
+    let columns = [
         { field: 'index', headerName: 'Index', width: 90 },
         { field: 'id', headerName: 'Question ID', width: 130 },
         {
@@ -178,7 +180,10 @@ export default function StripedGrid() {
         },
         { field: 'col1', headerName: 'Question', width: 350 },
         { field: 'col3', headerName: 'Difficulty', width: 150 },
-        {
+    ];
+
+    if (role === 'ADMIN') {
+        columns.push({
             field: 'actions',
             headerName: 'Actions',
             width: 150,
@@ -194,8 +199,8 @@ export default function StripedGrid() {
                     Delete
                 </Button>
             ),
-        },
-    ];
+        });
+    }
 
     return (
         <>

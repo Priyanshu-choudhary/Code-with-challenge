@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import React, { useRef } from 'react';
 import MyEditor from "./SoleSecEditor";
 import Dashboard from '../dashBoard/Dashboard';
+import IconBreadcrumbs from '../Leetcode/Test';
 
 function QuestionApi() {
   const location = useLocation();
@@ -24,10 +25,11 @@ function QuestionApi() {
   return (
     <>
       <Dashboard />
-      {navHistory &&  <p style={{ color: "grey", fontSize: '15px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+      {/* {navHistory &&  <p style={{ color: "grey", fontSize: '15px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
         {navHistory} {'>'}{title}
         <hr />
-      </p>}
+      </p>} */}
+       <IconBreadcrumbs title={title} question={title}/>
       <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container">
         <Container fluid>
           <Row>

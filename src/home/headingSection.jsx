@@ -23,8 +23,8 @@ export default function HeadingSection() {
                 Start using CFC today.
               </h2>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla.
-              </p>
+               XXXXXXXXXXXXXX
+                  </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                 <a
                   href="#"

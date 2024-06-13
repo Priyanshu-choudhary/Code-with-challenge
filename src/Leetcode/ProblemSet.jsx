@@ -1,12 +1,15 @@
-// src/components/LeetCodeClone.js
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
-import CircularProgress from '@mui/material/CircularProgress';
-
+import { CircularProgress, Button } from '@mui/material';
+import PropTypes from 'prop-types';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import IconBreadcrumbs from './Test';
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
@@ -14,7 +17,8 @@ const LeetCodeClone = () => {
   const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [navHistory, setNavHistory] = useState('');
-  
+  const [view, setView] = useState('stats'); // New state variable to track the current view
+
   const navigate = useNavigate();
   const { user, password } = useContext(UserContext);
   const location = useLocation();
@@ -72,7 +76,7 @@ const LeetCodeClone = () => {
   useEffect(() => {
     fetchProblems();
     if (title) {
-      setNavHistory(`Learn Skill > ${title}`);
+      setNavHistory(`${title}`);
     }
   }, [title]);
 
@@ -80,20 +84,25 @@ const LeetCodeClone = () => {
     navigate(`/question/${problem.id}`, { state: { ...problem, navHistory } });
   };
 
+  const handleToggleView = (view) => {
+    setView(view);
+  };
+
   return (
     <>
       <Dashboard />
-      <p style={{ color: "grey", fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
-       {navHistory}
+      {/* <p style={{ color: "grey", fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+        {navHistory}
         <hr />
-      </p>
+      </p> */}
+      <IconBreadcrumbs title={title} />
       <div className="leetcode-clone-container">
         <div className="content">
           <div className='Profileheading'>
             {title || 'Java Questions'}
           </div>
-          {description && <p>{description}</p>}
-          <p style={{ fontSize: "18px", fontWeight: "bolder" }}>Progress: {progress}%</p>
+          {/* {description && <p>{description}</p>} */}
+          {/* <p style={{ fontSize: "18px", fontWeight: "bolder" }}>Progress: {progress}%</p> */}
           {loading ? (
             <div className="spinner-container">
               <CircularProgress />
@@ -117,8 +126,36 @@ const LeetCodeClone = () => {
             <p>Failed to fetch problems. Please try again later.</p>
           )}
         </div>
-        <div className="tags-container">
-          <Tags onTagsChange={handleTagsChange} />
+        <div className="toggle-container">
+          <div style={{ display: 'flex', gap: '50px' }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => handleToggleView('stats')}
+            >
+              Show Specs
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => handleToggleView('tags')}
+            >
+              Search by Tags
+            </Button>
+          </div>
+          {view === 'stats' ? (
+            <div className="stats-container">
+              {/* Render your stats content here */}
+              <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
+              <LinearProgress thickness={4} variant="determinate" value={progress} />
+              </p>
+              {description && <p>{description}</p>}
+            </div>
+          ) : (
+            <div className="tags-container">
+              <Tags onTagsChange={handleTagsChange} />
+            </div>
+          )}
         </div>
       </div>
     </>

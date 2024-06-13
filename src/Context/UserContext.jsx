@@ -27,6 +27,8 @@ export const UserProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('password');
+    localStorage.removeItem('role');
+    setRole(null);
     setUser(null);
     setPassword(null);
   };

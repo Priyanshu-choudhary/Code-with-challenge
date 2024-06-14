@@ -16,9 +16,8 @@ import RegisterUser from './loginSigin/RegisterUser';
 import MyDataGrid from './Problems/DataGrid';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import MyStepper from './UploadSection/Stepper';
-// import ImgMediaCard from './learnPath/cards';
 import LearningPage from './learnPath/learningPage';
-// import Breadcrumb from './Breadcrumb/Breadcrumb';
+
 
 
 

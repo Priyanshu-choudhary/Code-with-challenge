@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import IconBreadcrumbs from './Test';
+import IconBreadcrumbs from '../dashBoard/BreadCrumb';
+
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
@@ -17,7 +18,8 @@ const LeetCodeClone = () => {
   const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [navHistory, setNavHistory] = useState('');
-  const [view, setView] = useState('stats'); // New state variable to track the current view
+  const [view, setView] = useState('stats');
+  const [currentPage, SetCurrentPage] = useState('Learn Skills')
 
   const navigate = useNavigate();
   const { user, password } = useContext(UserContext);
@@ -42,20 +44,39 @@ const LeetCodeClone = () => {
         const tagsQuery = selectedTags.join(',');
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
+      
+      const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
+      const lastModified = cachedData.lastModified || null;
+
       const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': basicAuth
+          'Authorization': basicAuth,
+          ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-      if (response.ok) {
+        console.log(response.status);
+      if (response.status === 304) {
+        // Use cached data if not modified
+        console.log(" data isnot modified Useing cached ");
+        setProblems(cachedData.problems);
+        setResponseOk(true);
+      } else if (response.ok) {
         const data = await response.json();
         setProblems(data);
         setResponseOk(true);
+
+        // Store fetched data and Last-Modified header in localStorage
+        const newLastModified = response.headers.get('Last-Modified');
+        localStorage.setItem('problemsData', JSON.stringify({
+          problems: data,
+          lastModified: newLastModified
+        }));
       } else {
         setResponseOk(false);
+
       }
     } catch (error) {
       console.error("Error fetching problems:", error);
@@ -81,7 +102,7 @@ const LeetCodeClone = () => {
   }, [title]);
 
   const handleProblemClick = (problem) => {
-    navigate(`/question/${problem.id}`, { state: { ...problem, navHistory } });
+    navigate(`/question/${problem.id}`, { state: { ...problem, navHistory, currentPage } });
   };
 
   const handleToggleView = (view) => {
@@ -91,18 +112,12 @@ const LeetCodeClone = () => {
   return (
     <>
       <Dashboard />
-      {/* <p style={{ color: "grey", fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
-        {navHistory}
-        <hr />
-      </p> */}
-      <IconBreadcrumbs title={title} />
+      <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
       <div className="leetcode-clone-container">
         <div className="content">
           <div className='Profileheading'>
             {title || 'Java Questions'}
           </div>
-          {/* {description && <p>{description}</p>} */}
-          {/* <p style={{ fontSize: "18px", fontWeight: "bolder" }}>Progress: {progress}%</p> */}
           {loading ? (
             <div className="spinner-container">
               <CircularProgress />
@@ -145,7 +160,6 @@ const LeetCodeClone = () => {
           </div>
           {view === 'stats' ? (
             <div className="stats-container">
-              {/* Render your stats content here */}
               <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
               <LinearProgress thickness={4} variant="determinate" value={progress} />
               </p>

@@ -1,11 +1,41 @@
 // src/components/LearningPage.js
-import React from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import ImgMediaCard from './cards';
+import YourProgressCard from './YourProgressCard';
+import { UserContext } from '../Context/UserContext';
 
 function LearningPage() {
   const navigate = useNavigate();
+  const { user, password } = useContext(UserContext); // Access the user and password from context
+  const [courses, setCourses] = useState([]);
+  const coursesRef = useRef(null); // Use useRef to store the courses
+
+  useEffect(() => {
+    if (!coursesRef.current) { // Check if courses are already fetched
+      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+
+      fetch('https://testcfc.onrender.com/Course', {
+        headers: {
+          'Authorization': basicAuth
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            coursesRef.current = data; // Store the fetched data in useRef
+            setCourses(data);
+          } else {
+            console.error('Fetched data is not an array:', data);
+            setCourses([]);
+          }
+        })
+        .catch(error => console.error('Error fetching courses:', error));
+    } else {
+      setCourses(coursesRef.current); // Use the stored data if available
+    }
+  }, [user, password]);
 
   const basicCards = [
     { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms course with a strong focus on passing coding interviews', progress: 0 },
@@ -30,9 +60,20 @@ function LearningPage() {
       </p>
       <div style={{ borderWidth: '2px', margin: '20px', padding: "10px", backgroundColor: "#E8E8E8" }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+          Resume Preparation.
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          {courses.map((course, index) => (
+            <YourProgressCard key={index} title={course.title} progress={course.progress} />
+          ))}
+        </div>
+      </div>
+
+      <div style={{ borderWidth: '2px', margin: '20px', padding: "10px", backgroundColor: "#E8E8E8" }}>
+        <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Basic
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '100px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
           {basicCards.map((card, index) => (
             <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
               <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />
@@ -45,7 +86,7 @@ function LearningPage() {
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Intermediate
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '100px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
           {intermediateCards.map((card, index) => (
             <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
               <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />

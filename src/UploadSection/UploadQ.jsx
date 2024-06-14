@@ -225,6 +225,7 @@ const EditorPosts = ({ step }) => {
                             />
                             <hr />
                         </Form>
+                        {/* here add some health check api   */}
                     </div>
                 ) : null}
                 <div className="editor-content">

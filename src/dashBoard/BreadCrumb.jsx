@@ -7,12 +7,20 @@ import HomeIcon from '@mui/icons-material/Home';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import TerminalOutlinedIcon from '@mui/icons-material/TerminalOutlined';
 
-export default function IconBreadcrumbs({ title = '', question = '' }) {
+export default function IconBreadcrumbs({currentPage='', title = '', question = '', history = [] }) {
   const navigate = useNavigate();
 
-  const handleClick = (event, path) => {
+  const handleClick = (event, path, state) => {
     event.preventDefault();
-    navigate(path);
+    console.log("c>>>>"+currentPage);
+    if(currentPage=="Problem Set"){
+        path='/data';
+        console.log("path> "+ path);
+    }else if(currentPage=="Learn Skills"){
+      path='/learn';
+      console.log("path> "+ path);
+  }
+    navigate(path, { state });
   };
 
   return (
@@ -23,28 +31,30 @@ export default function IconBreadcrumbs({ title = '', question = '' }) {
           sx={{ display: 'flex', alignItems: 'center' }}
           color="inherit"
           href="/"
-          onClick={(e) => handleClick(e, '/learn')}
+          onClick={(e) => handleClick(e, {currentPage}, { history })}
         >
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Learn Skills
+         {currentPage}
         </Link>
-        <Link
+      { title && <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
           color="inherit"
           href="/material-ui/getting-started/installation/"
-          onClick={(e) => handleClick(e, '/learn')}
+          onClick={(e) => handleClick(e, '/learn', { history })}
         >
           <MenuBookOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           {title}
-        </Link>
-        {question && <Typography
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="text.primary"
-        >
-          <TerminalOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          {question}
-        </Typography>}
+        </Link>}
+        {question && (
+          <Typography
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="text.primary"
+          >
+            <TerminalOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            {question}
+          </Typography>
+        )}
       </Breadcrumbs>
     </div>
   );

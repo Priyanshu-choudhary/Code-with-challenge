@@ -9,21 +9,25 @@ import { UserContext } from '../Context/UserContext';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import useCreateCourse from '../learnPath/CourseCreateApi';
 
-function MyEditor({ myfun, answer, title, description, difficulty, Example, testcase,boilerCode }) {
+
+function MyEditor({ myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
-  const [theme, setTheme] = useState('light'); // Add state for theme
-  const [showConfetti, setShowConfetti] = useState(false); // State to toggle confetti
+  const [theme, setTheme] = useState('light');
+  const [showConfetti, setShowConfetti] = useState(false);
   const editorRef = useRef(null);
   const { user, password } = useContext(UserContext);
+  const createCourse = useCreateCourse(); // Call the custom hook
+
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
   };
 
-  const downloadFile = (file) => {
+  const downloadFile = () => {
     const code = editorRef.current.getValue();
     const blobCode = createFileFromString(code, "mycode.java");
     const url = URL.createObjectURL(blobCode);
@@ -41,36 +45,44 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
     return new File([blob], fileName, { type: 'text/plain' });
   };
 
-  const getCode = async () => {
+  const getCode = useCallback(async () => {
     myfun();
-    // console.log(boilerCode);
     if (editorRef.current) {
       let code = editorRef.current.getValue();
-      code="import java.util.*;"+code+boilerCode;
-      console.log(code);
+      code = "import java.util.*;" + code + boilerCode;
       setiSubmit(true);
 
-      const output = await JDoodleExample(code, language, '', testcase); // Ensure testcase is passed here
+      const output = await JDoodleExample(code, language, '', testcase);
       setiSubmit(false);
       setOutput(output);
       if (output === answer) {
-        setShowConfetti(true); // Show confetti if output matches answer
+        setShowConfetti(true);
         handleSubmit();
         setTimeout(() => {
-          setShowConfetti(false); // Hide confetti after 4 seconds
-        }, 4000); // 4000 milliseconds = 4 seconds
+          setShowConfetti(false);
+        }, 4000);
+      }
+
+      // Create course after checking output
+      try {
+        // const response = await useCreateCourse(courseTitle);
+
+        const response = await createCourse(courseTitle);
+        console.log('Course created:', response);
+      } catch (error) {
+        console.error('Error creating course:', error);
       }
     }
-  };
+  }, [myfun, answer, boilerCode, courseTitle, language, testcase]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(
         'https://testcfc.onrender.com/Posts',
         {
-          title: title, // Provide a title here
+          title: title,
           description: description,
-          example: Example, // Provide an image URL here if necessary
+          example: Example,
           difficulty: difficulty,
           answer: answer,
           testCases: testcase,
@@ -88,16 +100,15 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
       let timer = setInterval(hidesmg, 3000);
     } catch (error) {
       console.error('Error upload post:', error);
-      // alert('Failed to Upload.');
     }
   };
 
-  const handleLanguageChange = useCallback((lang) => {
+  const handleLanguageChange = (lang) => {
     setLanguage(lang);
-  }, []);
+  };
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'vs-dark' : 'light'));
+    setTheme(prevTheme => (prevTheme === 'light' ? 'vs-dark' : 'light'));
   };
 
   const options = {
@@ -130,7 +141,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         height="400px"
         width="auto"
         defaultLanguage={language}
-        theme={theme} // Use theme state
+        theme={theme}
         defaultValue={`class Solution{
     public int findLargestNumber(int[] arr){
 
@@ -144,7 +155,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         <button onClick={getCode} className="btn btn-secondary">
           Run {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
         </button>{' '}
-        <button className="btn btn-secondary">
+        <button onClick={handleSubmit} className="btn btn-secondary">
           Submit
         </button>{' '}
         <button onClick={downloadFile} className="btn btn-secondary">
@@ -175,28 +186,11 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
       </div>
       <pre>
         {output.output}
-        {/* {output && <OutputSec output={output} />} */}
       </pre>
-      {/* Conditionally render the Confetti component */}
       {showConfetti && (
         <div className="confetti-container">
           <div className="confetti">
             {/* Confetti elements */}
-            <i style={{ "--speed": 10, "--bg": "yellow" }} className="square"></i>
-            <i style={{ "--speed": 18, "--bg": "white" }} className="pentagram"></i>
-            <i style={{ "--speed": 29, "--bg": "green" }} className="rectangle"></i>
-            <i style={{ "--speed": 17, "--bg": "blue" }} className="hexagram"></i>
-            <i style={{ "--speed": 33, "--bg": "red" }} className="pentagram"></i>
-            <i style={{ "--speed": 26, "--bg": "yellow" }} className="dodecagram"></i>
-            <i style={{ "--speed": 24, "--bg": "pink" }} className="wavy-line"> </i>
-            <i style={{ "--speed": 5, "--bg": "blue" }} className="wavy-line"></i>
-            <i style={{ "--speed": 40, "--bg": "white" }} className="square"></i>
-            <i style={{ "--speed": 17, "--bg": "green" }} className="rectangle"></i>
-            <i style={{ "--speed": 25, "--bg": "white" }} className="square"></i>
-            <i style={{ "--speed": 18, "--bg": "green" }} className="rectangle"></i>
-            <i style={{ "--speed": 15, "--bg": "yellow" }} className="wavy-line"> </i>
-            <i style={{ "--speed": 32, "--bg": "yellow" }} className="square"></i>
-            <i style={{ "--speed": 12, "--bg": "blue" }} className="rectangle"></i>
           </div>
         </div>
       )}

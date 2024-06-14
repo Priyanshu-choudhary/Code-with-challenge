@@ -8,12 +8,12 @@ import Col from 'react-bootstrap/Col';
 import React, { useRef } from 'react';
 import MyEditor from "./SoleSecEditor";
 import Dashboard from '../dashBoard/Dashboard';
-import IconBreadcrumbs from '../Leetcode/Test';
 
+import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 function QuestionApi() {
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
-  const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '' } = problem;
+  const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '',currentPage='' } = problem;
 
   const containerRef = useRef(null);
 
@@ -24,12 +24,13 @@ function QuestionApi() {
 
   return (
     <>
-      <Dashboard />
+    <br />
+      {/* <Dashboard /> */}
       {/* {navHistory &&  <p style={{ color: "grey", fontSize: '15px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
         {navHistory} {'>'}{title}
         <hr />
       </p>} */}
-       <IconBreadcrumbs title={navHistory} question={title}/>
+       <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title}/>
       <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container">
         <Container fluid>
           <Row>
@@ -64,7 +65,7 @@ function QuestionApi() {
               </Grid>
             </Col>
             <Col sm className="editorsection" style={{ height: "500px", overflow: "scroll" }} id="scrollContainer" ref={containerRef}>
-              <MyEditor myfun={scrollToBottom} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+              <MyEditor myfun={scrollToBottom} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
             </Col>
           </Row>
         </Container>

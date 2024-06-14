@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Tags from '../UploadSection/Tags';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
+import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 
 const ODD_OPACITY = 0.2;
 
@@ -69,6 +70,8 @@ export default function StripedGrid() {
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
     const { user, password, role } = useContext(UserContext);
+    const [titleBreadCumb, settitleBreadCumb] = useState('')
+    const [currentPage, setcurrentPage] = useState("Problem Set")
 
     const handleTagsChange = useCallback((selectedTags) => {
         setTags(selectedTags);
@@ -76,49 +79,72 @@ export default function StripedGrid() {
 
     const handleRowClick = (params) => {
         const selectedProblem = problems.find(p => p.id === params.row.id);
+        settitleBreadCumb(selectedProblem);
         if (selectedProblem) {
-            navigate(`/question/${selectedProblem.id}`, { state: selectedProblem });
+            navigate(`/question/${selectedProblem.id}`, { state: { ...selectedProblem,   currentPage} });
         }
     };
 
     const fetchProblems = async (selectedTags = []) => {
         setIsLoading(true);
-        setProblems([]);
-
+    
         try {
-            const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
+            const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
             let API_URL = '';
             if (tags[0] != null) {
                 API_URL = "https://testcfc.onrender.com/Posts/filter";
             } else {
                 API_URL = "https://testcfc.onrender.com/Posts";
-                // API_URL = "http://localhost:9090/Posts";
             }
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.join(',');
                 API_URL += `?tags=${tagsQuery}&exactMatch=true`;
             }
+    
+            // Check if there is cached data in local storage
+            const cachedData = localStorage.getItem('cachedProblems');
+            const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
+            const headers = {};
+    
+            if (cachedData && cachedLastModified) {
+                headers['If-Modified-Since'] = cachedLastModified;
+            }
+    
             const response = await fetch(API_URL, {
                 method: 'GET',
                 headers: {
+                    ...headers,
                     'Content-Type': 'application/json',
                     'Authorization': basicAuth
                 }
             });
-            const data = await response.json();
-            if (Array.isArray(data)) {
-                setProblems(data);
+    
+            if (response.status === 304) {
+                // Server indicates data has not been modified
+                const parsedCachedData = JSON.parse(cachedData);
+                setProblems(parsedCachedData);
             } else {
-                console.error("Fetched data is not an array:", data);
-                setProblems([]);
+                // Data has been modified or first fetch
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    setProblems(data);
+                    // Cache the fetched data and last modified date
+                    localStorage.setItem('cachedProblems', JSON.stringify(data));
+                    localStorage.setItem('cachedProblemsLastModified', response.headers.get('Last-Modified'));
+                } else {
+                    console.error("Fetched data is not an array:", data);
+                    setProblems([]);
+                }
             }
+    
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching problems:", error);
-            setProblems([]);
             setIsLoading(false);
         }
     };
+    
+    
 
     useEffect(() => {
         fetchProblems(tags);
@@ -128,6 +154,21 @@ export default function StripedGrid() {
         fetchProblems();
     }, []);
 
+    useEffect(() => {
+        // Attempt to fetch problems
+        fetchProblems(tags)
+            .catch(error => {
+                console.error("Error fetching problems:", error);
+            });
+    
+        // Use cached data immediately if available
+        const cachedData = localStorage.getItem('cachedProblems');
+        if (cachedData) {
+            setProblems(JSON.parse(cachedData));
+            setIsLoading(false);
+        }
+    }, [tags]);
+    
     const handleDelete = async (id) => {
         const confirmed = window.confirm('Are you sure you want to delete this problem?');
         if (confirmed) {
@@ -205,6 +246,8 @@ export default function StripedGrid() {
     return (
         <>
             <Dashboard />
+            <IconBreadcrumbs currentPage={currentPage} title={titleBreadCumb.title}  />
+        
             <div >
                 <Grid container spacing={2}>
                     <Grid item xs={6}>

@@ -24,8 +24,8 @@ useEffect(() => {
    
   } else if(currentthemes== false){
     setbg("#f8f9fa");
-    setdark("#ced4da");
-    setlight("#dee2e6");
+    setdark("#e9ecef");
+    setlight("#ced4da");
     setbc("#6c757d");
     setibc("black");
 

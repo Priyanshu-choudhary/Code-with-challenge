@@ -61,7 +61,7 @@ function Dashboard() {
 
     const handleClick = () => {
         navigate('/leaderboard');
-        console.log("clicked!");
+       
     };
 
     const handleSwitchChange = (event) => {

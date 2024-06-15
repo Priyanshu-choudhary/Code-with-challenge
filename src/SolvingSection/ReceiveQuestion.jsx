@@ -5,14 +5,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import React, { useRef,useContext } from 'react';
+import React, { useRef,useContext,useEffect } from 'react';
 import MyEditor from "./SoleSecEditor";
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 function QuestionApi() {
-  const {ibg, bg, light,dark } = useContext(UserContext);
+  const {ibg, bg, light,dark,currentthemes,setcurrentthemes } = useContext(UserContext);
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
   const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '',currentPage='' } = problem;
@@ -23,6 +23,12 @@ function QuestionApi() {
     const container = containerRef.current;
     container.scrollTop = container.scrollHeight;
   };
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('currentthemes');
+    if (savedTheme !== null) {
+        setcurrentthemes(JSON.parse(savedTheme));
+    }
+}, [setcurrentthemes]);
 
   return (
     <div style={{backgroundColor:bg, color:bg}}>

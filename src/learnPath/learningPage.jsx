@@ -8,7 +8,7 @@ import { UserContext } from '../Context/UserContext';
 
 function LearningPage() {
   const navigate = useNavigate();
-  const { user, password } = useContext(UserContext); // Access the user and password from context
+  const { user, password,bg,dark,light } = useContext(UserContext); // Access the user and password from context
   const [courses, setCourses] = useState([]);
   const coursesRef = useRef(null); // Use useRef to store the courses
 
@@ -52,13 +52,13 @@ function LearningPage() {
   };
 
   return (
-    <div style={{ maxHeight: "100vh", overflow: "scroll" }}>
+    <div style={{ maxHeight: "100vh", overflow: "scroll" ,backgroundColor: bg ,color:"white"}}>
       <Dashboard />
-      <p style={{ color: "grey", fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+      <p style={{ color: "white", fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
         Learn Skills
         <hr />
       </p>
-      <div style={{ borderWidth: '2px', margin: '20px', padding: "10px", backgroundColor: "#E8E8E8" }}>
+      <div style={{ borderRadius:"15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Resume Preparation.
         </p>
@@ -69,7 +69,7 @@ function LearningPage() {
         </div>
       </div>
 
-      <div style={{ borderWidth: '2px', margin: '20px', padding: "10px", backgroundColor: "#E8E8E8" }}>
+      <div style={{borderRadius:"15px"  ,margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Basic
         </p>
@@ -82,7 +82,7 @@ function LearningPage() {
         </div>
       </div>
 
-      <div style={{ borderWidth: '2px', margin: '20px', padding: "10px", backgroundColor: "#E8E8E8" }}>
+      <div style={{ borderRadius:"15px",margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Intermediate
         </p>

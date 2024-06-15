@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import "./style.css";
+import { BorderColor } from '@mui/icons-material';
 
 const cardStyles = {
   container: {
     backgroundColor: '#E2EAF4',
     borderRadius: '5px',
+    BorderColor:"black",
     boxShadow: '0px 10px 20px -10px #4603E9',
     color: '#B3B8CD',
     paddingTop: '30px',
@@ -18,6 +20,7 @@ const cardStyles = {
   pro: {
     color: '#231E39',
     backgroundColor: '#FEBB0B',
+    BorderColor:"black",
     borderRadius: '3px',
     fontSize: '14px',
     fontWeight: 'bold',
@@ -30,6 +33,7 @@ const cardStyles = {
   avatarContainer: {
     display: 'flex',
     justifyContent: 'center',
+    BorderColor:"black",
     alignItems: 'center',
     marginBottom: '15px',
   },

@@ -6,6 +6,34 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
   const [role, setRole] = useState(null)
+  const [bg, setbg] = useState("#121418")
+  const [dark, setdark] = useState("#1f202a");
+  const [light, setlight] = useState("#27293a");
+  const [bc, setbc] = useState("#95ff00")
+  const [ibg, setibc] = useState("white")
+  const [currentthemes, setcurrentthemes] = useState("true")
+
+useEffect(() => {
+
+  if(currentthemes== true){
+    setbg("#95ff00");
+    setdark("#1f202a");
+    setlight("#27293a");
+    setbc("#95ff00");
+    setibc("white");
+   
+  } else if(currentthemes== false){
+    setbg("white");
+    setdark("white");
+    setlight("white");
+    setbc("white");
+    setibc("black");
+
+  }
+
+ 
+}, [currentthemes])
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -34,7 +62,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, password, role, setRole, setUser, setPassword, logout }}>
+    <UserContext.Provider value={{ibg,bc,bg,dark,light, user, password, role,currentthemes, setRole, setUser, setPassword, logout,setcurrentthemes }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, CircularProgress, Grid, Button } from '@mui/material';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
@@ -11,37 +11,13 @@ import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 
 const ODD_OPACITY = 0.2;
 
-const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-    [`& .${gridClasses.row}.even`]: {
-        backgroundColor: theme.palette.grey[200],
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-        '&.Mui-selected': {
-            backgroundColor: alpha(
-                theme.palette.primary.main,
-                ODD_OPACITY + theme.palette.action.selectedOpacity,
-            ),
-            '&:hover': {
-                backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    ODD_OPACITY +
-                    theme.palette.action.selectedOpacity +
-                    theme.palette.action.hoverOpacity,
-                ),
-                // Reset on touch devices, it doesn't add specificity
-                '@media (hover: none)': {
-                    backgroundColor: alpha(
-                        theme.palette.primary.main,
-                        ODD_OPACITY + theme.palette.action.selectedOpacity,
-                    ),
-                },
-            },
-        },
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
     },
+});
+   
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 }));
 
 const stringToColor = (string) => {
@@ -69,7 +45,7 @@ export default function StripedGrid() {
     const [tagsVisible, setTagsVisible] = useState(false);
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
-    const { user, password, role } = useContext(UserContext);
+    const { bg,bc,ibg,dark,light,user, password, role } = useContext(UserContext);
     const [titleBreadCumb, settitleBreadCumb] = useState('')
     const [currentPage, setcurrentPage] = useState("Problem Set")
 
@@ -81,13 +57,13 @@ export default function StripedGrid() {
         const selectedProblem = problems.find(p => p.id === params.row.id);
         settitleBreadCumb(selectedProblem);
         if (selectedProblem) {
-            navigate(`/question/${selectedProblem.id}`, { state: { ...selectedProblem,   currentPage} });
+            navigate(`/question/${selectedProblem.id}`, { state: { ...selectedProblem, currentPage } });
         }
     };
 
     const fetchProblems = async (selectedTags = []) => {
         setIsLoading(true);
-    
+
         try {
             const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
             let API_URL = '';
@@ -100,16 +76,16 @@ export default function StripedGrid() {
                 const tagsQuery = selectedTags.join(',');
                 API_URL += `?tags=${tagsQuery}&exactMatch=true`;
             }
-    
+
             // Check if there is cached data in local storage
             const cachedData = localStorage.getItem('cachedProblems');
             const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
             const headers = {};
-    
+
             if (cachedData && cachedLastModified) {
                 headers['If-Modified-Since'] = cachedLastModified;
             }
-    
+
             const response = await fetch(API_URL, {
                 method: 'GET',
                 headers: {
@@ -118,7 +94,7 @@ export default function StripedGrid() {
                     'Authorization': basicAuth
                 }
             });
-    
+
             if (response.status === 304) {
                 // Server indicates data has not been modified
                 const parsedCachedData = JSON.parse(cachedData);
@@ -136,15 +112,13 @@ export default function StripedGrid() {
                     setProblems([]);
                 }
             }
-    
+
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching problems:", error);
             setIsLoading(false);
         }
     };
-    
-    
 
     useEffect(() => {
         fetchProblems(tags);
@@ -160,7 +134,7 @@ export default function StripedGrid() {
             .catch(error => {
                 console.error("Error fetching problems:", error);
             });
-    
+
         // Use cached data immediately if available
         const cachedData = localStorage.getItem('cachedProblems');
         if (cachedData) {
@@ -168,7 +142,7 @@ export default function StripedGrid() {
             setIsLoading(false);
         }
     }, [tags]);
-    
+
     const handleDelete = async (id) => {
         const confirmed = window.confirm('Are you sure you want to delete this problem?');
         if (confirmed) {
@@ -244,19 +218,19 @@ export default function StripedGrid() {
     }
 
     return (
-        <>
+        <div style={{backgroundColor:dark}}>
             <Dashboard />
-            <IconBreadcrumbs currentPage={currentPage} title={titleBreadCumb.title}  />
-        
+            <IconBreadcrumbs currentPage={currentPage} title={titleBreadCumb.title} />
+
             <div >
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <input
-                            style={{ borderWidth: "2px", width: "100%", borderColor: "black", height: "48px" }}
+                            style={{ backgroundColor:light,marginLeft:"100px",borderWidth: "2px", width: "100%", borderColor: "black", height: "48px" }}
                             type="text"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
-                            placeholder="Search by name"
+                            placeholder="  Search by name"
                         />
                     </Grid>
                     <Grid item xs={4}>
@@ -279,16 +253,19 @@ export default function StripedGrid() {
                         <CircularProgress />
                     </div>
                 ) : (
-                    <StripedDataGrid
-                        rows={rows}
-                        columns={columns}
-                        getRowClassName={(params) =>
-                            params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-                        }
-                        onRowClick={handleRowClick}
-                    />
+                    <ThemeProvider theme={darkTheme}>
+                        <StripedDataGrid
+                        style={{backgroundColor:light}}
+                            rows={rows}
+                            columns={columns}
+                            getRowClassName={(params) =>
+                                params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+                            }
+                            onRowClick={handleRowClick}
+                        />
+                    </ThemeProvider>
                 )}
             </div>
-        </>
+        </div>
     );
 }

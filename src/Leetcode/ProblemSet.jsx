@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 
+
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
@@ -20,12 +21,23 @@ const LeetCodeClone = () => {
   const [navHistory, setNavHistory] = useState('');
   const [view, setView] = useState('stats');
   const [currentPage, SetCurrentPage] = useState('Learn Skills')
-
+  
   const navigate = useNavigate();
-  const { user, password } = useContext(UserContext);
+  const {  bg, light,dark,user, password } = useContext(UserContext);
   const location = useLocation();
   const { title, description, progress } = location.state || {};
 
+  const handleHover = () => {
+    problemStyle.backgroundColor = '#95ff00';
+    problemStyle.cursor = 'pointer';
+    problemStyle.borderRadius = '10px';
+  };
+
+  const handleMouseLeave = () => {
+    problemStyle.backgroundColor = ''; // Reset to initial or another color if needed
+    problemStyle.cursor = '';
+    problemStyle.borderRadius = '';
+  };
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -110,12 +122,12 @@ const LeetCodeClone = () => {
   };
 
   return (
-    <>
+    <div style={{backgroundColor:bg,color:"white"}}>
       <Dashboard />
       <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
       <div className="leetcode-clone-container">
-        <div className="content">
-          <div className='Profileheading'>
+        <div className="content" style={{background:dark}}>
+          <div className='Profileheading' style={{color:"white"}}>
             {title || 'Java Questions'}
           </div>
           {loading ? (
@@ -129,6 +141,7 @@ const LeetCodeClone = () => {
                   key={problem.id}
                   className="problem"
                   onClick={() => handleProblemClick(problem)}
+                  
                 >
                   <div className="problem-title">{index + 1}. {problem.title}</div>
                   <div className="problem-details">
@@ -141,8 +154,8 @@ const LeetCodeClone = () => {
             <p>Failed to fetch problems. Please try again later.</p>
           )}
         </div>
-        <div className="toggle-container">
-          <div style={{ display: 'flex', gap: '50px' }}>
+        <div className="toggle-container"  >
+          <div style={{ display: 'flex', gap: '50px'}}>
             <Button
               variant="outlined"
               color="primary"
@@ -159,7 +172,7 @@ const LeetCodeClone = () => {
             </Button>
           </div>
           {view === 'stats' ? (
-            <div className="stats-container">
+            <div className="stats-container"style={{background:dark}} >
               <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
               <LinearProgress thickness={4} variant="determinate" value={progress} />
               </p>
@@ -172,7 +185,7 @@ const LeetCodeClone = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

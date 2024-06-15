@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect,useContext} from 'react';
 // import styles from './themes.module.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
@@ -11,17 +11,41 @@ import FeatureExample from './featureSection'
 import Footer from './footer'
 import Newsletter from './newsLetter'
 import UserCount from './UserCount'
+import { UserContext } from '../Context/UserContext';
+import Typed from 'typed.js';
+
 
 function Home() {
+  const [typedInstance, setTypedInstance] = useState(null);
+ 
+  const { bc,bg, light,dark } = useContext(UserContext);
+  const [theme, settheme] = useState(bc);
+  useEffect(() => {
+    const options = {
+      strings: ["Welcome to: Code-for-Challenge: Elevate Your Coding Skills"],
+      typeSpeed: 30,
+      // backSpeed: 50,
+      // loop: true
+    };
+
+    const typed = new Typed('.typing-element', options);
+    setTypedInstance(typed);
+
+    // No cleanup function, Typed instance won't be destroyed
+
+    // Return empty function to avoid eslint warning about missing dependencies
+    return () => {};
+  }, []);
+
   const buttonStyles = {
     alignItems: 'center',
     appearance: 'none',
-    backgroundColor: '#ed6524',
+    backgroundColor: theme,
     borderRadius: '24px',
     borderStyle: 'none',
     // boxShadow: 'rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0',
     boxSizing: 'border-box',
-    color: 'white',
+    color: 'black',
     cursor: 'pointer',
     display: 'inline-flex',
     fill: 'currentcolor',
@@ -77,12 +101,12 @@ function Home() {
 
   const [color, setcolor] = useState("#ed6524")
   return (
-    <>
+    <div style={{backgroundColor:bg}}>
       <Dashboard />
-      <div   >
+      <div style={{color:"white"}}  >
        
         <header className={styles.header}>
-          <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" />
+          {/* <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" /> */}
         </header>
 
         <section className={styles.heroSection}>
@@ -90,11 +114,15 @@ function Home() {
             <div className="row">
               <div className="col-12 col-md-7 pt-5 mb-5 align-self-center">
                 <div className="promo pe-md-3 pe-lg-5">
-                  <h1 className="headline mb-3" style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                  {/* <h1 className="headline mb-3" style={{ fontSize: "40px", fontWeight: "bolder" }}>
                   
                     Welcome to: <br />Code-for-Challenge: Elevate Your Coding Skills
                    
-                  </h1>
+                  </h1> */}
+                  <div className="headline mb-3 typing-element" style={{ fontSize: "40px", fontWeight: "bolder" }}>
+  {/* Text will be rendered here by Typed.js */}
+</div>
+
                   <div className="subheadline mb-4" style={{ fontSize: "20px" }}>
                     What sets us apart? Our commitment to excellence. With a vast library of challenges covering various programming languages, algorithms, and problem-solving techniques, Code for Challenge ensures that every coder finds their perfect match. Join us today and embark on a transformative journey towards coding mastery.
                   </div>
@@ -110,11 +138,11 @@ function Home() {
                         borderRadius: '24px',
                         borderStyle: "solid",
                         borderWidth: "2px",
-                        borderColor: "#ed6524",
+                        borderColor: theme,
                         // borderStyle: 'none',
                         // boxShadow: 'rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0',
                         boxSizing: 'border-box',
-                        color: '#ed6524',
+                        color: 'black',
                         cursor: 'pointer',
                         display: 'inline-flex',
                         fill: 'currentcolor',
@@ -172,7 +200,7 @@ function Home() {
                     <div id="quotes-carousel" className="quotes-carousel carousel slide carousel-fade mb-5" data-bs-ride="carousel" data-bs-interval="8000">
                       <div className="carousel-inner">
                         <div className="carousel-item active">
-                          <blockquote className="quote p-4 theme-bg-light" style={{ backgroundColor: "#f6f8fc", borderLeft: "5px solid #f5a782",height: "100%" }}>
+                          <blockquote className="quote p-4 theme-bg-light" style={{ backgroundColor: "#f6f8fc", borderLeft: `5px solid ${theme}`,height: "100%",color:"black" }}>
                             "Code for Challenge has exceeded my expectations in every aspect. It has not only equipped me with the skills needed to tackle real-world coding tasks but has also instilled in me a newfound confidence in my abilities as a coder. I highly recommend Code for Challenge to anyone looking to embark on a rewarding journey towards coding mastery."
                           </blockquote>
                           <div className="source row gx-md-3 gy-3 gy-md-0 align-items-center">
@@ -378,7 +406,7 @@ function Home() {
           </div>
         </section> */}
       </div>
-    </>
+    </div>
   );
 }
 

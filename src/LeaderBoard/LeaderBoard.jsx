@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import Avatar from '@mui/material/Avatar';
+import { alpha, styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
+import { UserContext } from '../Context/UserContext';
 
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 // Function to generate avatar properties from a string
 function stringAvatar(name) {
     const nameParts = name.split(' ');
@@ -55,6 +62,7 @@ export default function LeaderBoard() {
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const {ibg, bg, light,dark } = useContext(UserContext);
 
     useEffect(() => {
         fetch('https://testcfc.onrender.com/Public/getUser')
@@ -106,7 +114,7 @@ export default function LeaderBoard() {
     };
 
     return (
-        <div >
+        <div style={{backgroundColor:bg,color:ibg}}>
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -114,11 +122,14 @@ export default function LeaderBoard() {
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
+                        <ThemeProvider theme={darkTheme}>
                         <DataGrid 
+                        style={{backgroundColor:light,color:ibg}}
                             rows={rows} 
                             columns={columns} 
                             onRowClick={handleRowClick} // Add this line
                         />
+                        </ThemeProvider>
                     )}
                 </div>
                 <div style={{ padding: '20px' }}>

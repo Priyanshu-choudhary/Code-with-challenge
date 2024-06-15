@@ -7,15 +7,18 @@ body {
     display: flex;
     gap: 20px;
     padding: 20px;
+    color: white;
   }
   
   .content {
-    background-color: #d4d4d7;
+    /* background-color: #1f202a; */
+
+    color: #ffffff;
     padding: 20px;
-    color: #000;
+   
     width: 150%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 2%;
+    border-radius: 15px;
   }
   .toggle-container {
     width: 80%; /* Ensure the buttons take the same width as content */
@@ -40,17 +43,17 @@ body {
     margin-top: 20px;
     height: 100%;
     padding: 20px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 8px;
-    background-color: #f9f9f9;
+    /* background-color: #1f202a; */
   }
   
   
   .problem-list {
     max-height: fit-content; /* Adjusted calculation for max height */
     overflow-y: auto; /* Enable vertical scrolling */
-    background-color: #f7f4f4;
-    color: #000;
+    /* background-color: #1f202a; */
+     color: white;
     padding: 10px;
     border-radius: 3%;
   }
@@ -60,7 +63,7 @@ body {
     margin-bottom: 5px; /* Decreased margin to show more questions */
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     white-space: nowrap; /* Ensure text does not wrap */
     overflow: hidden; /* Hide overflowing content */
     text-overflow: ellipsis; /* Add ellipsis to overflowing content */
@@ -68,8 +71,10 @@ body {
   }
   
   .problem:hover {
-    background-color: #e0e0e0; /* Change background color on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    background-color:   #95ff00;
+
+    cursor: pointer; 
+    border-radius: 10px;
   }
   
   .problem .problem-details {
@@ -84,7 +89,7 @@ body {
   }
   
   .problem .problem-difficulty.easy {
-    color: #000000;
+    color: #ffffff;
     padding-left: 20px;
     padding-right: 25px;
     border-width: 1px;
@@ -92,7 +97,7 @@ body {
   }
   
   .problem .problem-difficulty.medium {
-    color: #000000;
+    color: #ffffff;
     border-width: 1px;
     border-color: #ff9800;
   }
@@ -100,7 +105,7 @@ body {
   .problem .problem-difficulty.hard {
     padding-left: 22px;
     padding-right: 23px;
-    color: #000000;
+    color: #ffffff;
     border-width: 1.5px;
     border-color: #f44336;
   }

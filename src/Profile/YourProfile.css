@@ -33,12 +33,12 @@ body {
     
   }
   .skillinside {
-    max-height: 200px; 
+    height: 150px; 
     background-color: #ffffff; /* Light gray background */
     border-radius: 5px; /* Add rounded corners */
     padding: 20px; /* Add padding for content */
     /* margin: 10px; Add margin for spacing */
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     
   } 
   
@@ -48,7 +48,7 @@ body {
     align-items: center;
     margin-bottom: 10px;
     white-space: nowrap; 
-    overflow: hidden;
+    /* overflow: hidden; */
     text-overflow: ellipsis;
 }
 
@@ -106,8 +106,8 @@ body {
 }
 
 .Profileproblem-list {
-    max-height: calc(100vh - 25vh - 60px); /* Adjusted calculation for max height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    /* max-height: calc(100vh - 25vh - 60px); Adjusted calculation for max height */
+    /* overflow-y: auto; Enable vertical scrolling */
     background-color: #ffffff;
     color: #000;
     padding: 10px;
@@ -128,7 +128,7 @@ body {
 }
 
 .Profileproblem-list .Profileproblem:hover {
-    background-color: #e0e0e0; /* Change background color on hover */
+    background-color: #51ff00; /* Change background color on hover */
     cursor: pointer; /* Change cursor to pointer on hover */
 }
 

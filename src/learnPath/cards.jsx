@@ -10,7 +10,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export default function ImgMediaCard({ title, image, description, progress }) {
   return (
-    <Card sx={{ maxWidth: 345, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)', transform: 'scale(1.05)' } }}>
+    <Card sx={{ borderRadius:"15px",maxWidth: 345, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': {opacity: "0.9", transform: 'scale(1.05)' } }}>
       <Box sx={{ height: 180, overflow: 'hidden' }}>
         <CardMedia
           component="img"

@@ -2,11 +2,14 @@
 import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Button } from '@mui/material';
+import  {  useContext } from 'react';
+import { UserContext } from '../Context/UserContext';
 
 function YourProgressCard({ title, progress }) {
+  const { bg, light,dark } = useContext(UserContext);
   return (
-    <div style={{ margin: "20px",borderWidth:"0.5px" ,borderColor:"#060270",borderRadius:"15px"}}>
-      <div style={{ backgroundColor: "#E2EAF4", paddingLeft: "20px", paddingBottom: "10px",paddingRight: "230px", Width: "80%", borderRadius: "15px" }}>
+    <div style={{ margin: "20px",borderWidth:"0.5px" ,borderColor:light,borderRadius:"15px"}}>
+      <div style={{ backgroundColor: " #27293A", paddingLeft: "20px", paddingBottom: "10px",paddingRight: "230px", Width: "80%", borderRadius: "15px" }}>
         <p style={{ fontSize: "15px",paddingTop:"10px" }}>Topic:</p>
         <p style={{ fontSize: "30px", fontWeight: "bold" }}>{title}</p>
         <LinearProgress variant="determinate" value={progress} />

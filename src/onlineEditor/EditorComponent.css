@@ -1,6 +1,6 @@
 .editor-container {
     display: flex;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 4px;
     height: 100vh; /* Full viewport height */
     margin: 0; /* Remove any margin to ensure it uses full height */
@@ -19,7 +19,7 @@
 }
 
 .editor-section {
-    border-right: 1px solid #ccc;
+    /* border-right: 1px solid #ccc; */
 }
 
 .left-button {
@@ -32,7 +32,7 @@
     align-items: center; /* Align items to the center */
     padding: 8px;
     background-color: #f5f5f5;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     font-size: 16px;
     font-weight: bold;
 }
@@ -43,7 +43,7 @@
     align-items: center; /* Align items to the center */
     padding: 8px;
     background-color: #f5f5f5;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     font-size: 16px;
     font-weight: bold;
 }
@@ -79,7 +79,7 @@
 
 pre {
     padding: 8px;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     white-space: pre-wrap;
     word-wrap: break-word;
     flex: 1;

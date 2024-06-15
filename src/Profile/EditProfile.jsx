@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { UserContext } from '../Context/UserContext';
 
 const ValidationTextFields = () => {
-    const { user, password } = useContext(UserContext);
+    const { bg,bc,ibg,dark,light,user, password } = useContext(UserContext);
     const [existingData, setExistingData] = useState({});
     const [formData, setFormData] = useState({
         email: '',

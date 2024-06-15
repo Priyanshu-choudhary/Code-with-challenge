@@ -24,12 +24,12 @@ export default function IconBreadcrumbs({currentPage='', title = '', question = 
   };
 
   return (
-    <div role="presentation">
+    <div role="presentation" >
       <Breadcrumbs aria-label="breadcrumb">
         <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
+          color="grey"
           href="/"
           onClick={(e) => handleClick(e, {currentPage}, { history })}
         >
@@ -39,7 +39,7 @@ export default function IconBreadcrumbs({currentPage='', title = '', question = 
       { title && <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
+          color="grey"
           href="/material-ui/getting-started/installation/"
           onClick={(e) => handleClick(e, '/learn', { history })}
         >
@@ -49,7 +49,7 @@ export default function IconBreadcrumbs({currentPage='', title = '', question = 
         {question && (
           <Typography
             sx={{ display: 'flex', alignItems: 'center' }}
-            color="text.primary"
+            color="grey"
           >
             <TerminalOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
             {question}

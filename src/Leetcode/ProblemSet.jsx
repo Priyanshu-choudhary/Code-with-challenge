@@ -58,10 +58,10 @@ const LeetCodeClone = () => {
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-      
-      if (response.status === 304) {
+      if(response.status==204){
+        setProblems([]);
+    }else if (response.status === 304) {
         // Use cached data if not modified
-      
         setProblems(cachedData.problems);
         setResponseOk(true);
       } else if (response.ok) {

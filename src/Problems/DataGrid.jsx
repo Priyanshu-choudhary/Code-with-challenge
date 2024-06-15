@@ -63,43 +63,46 @@ export default function StripedGrid() {
 
     const fetchProblems = async (selectedTags = []) => {
         setIsLoading(true);
-
+    
         try {
-            const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
-            let API_URL = '';
-            if (tags[0] != null) {
-                API_URL = "https://testcfc.onrender.com/Posts/filter";
-            } else {
-                API_URL = "https://testcfc.onrender.com/Posts";
-            }
+            const basicAuth = 'Basic ' + btoa('YadiChoudhary:YadiChoudhary');
+            let API_URL = 'https://testcfc.onrender.com/Posts';
+    
             if (selectedTags.length > 0) {
-                const tagsQuery = selectedTags.join(',');
-                API_URL += `?tags=${tagsQuery}&exactMatch=true`;
+                const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
+                API_URL = `https://testcfc.onrender.com/Posts/filter?${tagsQuery}&exactMatch=true`;
             }
-
+    
             // Check if there is cached data in local storage
             const cachedData = localStorage.getItem('cachedProblems');
             const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
-            const headers = {};
-
-            if (cachedData && cachedLastModified) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': basicAuth
+            };
+    
+            // Add If-Modified-Since header conditionally
+            if (cachedLastModified && cachedLastModified !== 'null') {
                 headers['If-Modified-Since'] = cachedLastModified;
             }
-
+    
+            console.log('API_URL:', API_URL); // Log the URL
+            console.log('Headers:', headers); // Log the headers
+    
             const response = await fetch(API_URL, {
                 method: 'GET',
-                headers: {
-                    ...headers,
-                    'Content-Type': 'application/json',
-                    'Authorization': basicAuth
-                }
+                headers: headers
             });
-
-            if (response.status === 304) {
+    
+            console.log('Response status:', response.status);
+    
+            if(response.status==204){
+                setProblems([]);
+            }else if (response.status === 304 && cachedData) {
                 // Server indicates data has not been modified
                 const parsedCachedData = JSON.parse(cachedData);
                 setProblems(parsedCachedData);
-            } else {
+            } else if (response.ok) {
                 // Data has been modified or first fetch
                 const data = await response.json();
                 if (Array.isArray(data)) {
@@ -111,15 +114,20 @@ export default function StripedGrid() {
                     console.error("Fetched data is not an array:", data);
                     setProblems([]);
                 }
+            } else {
+                console.error('Error fetching problems:', response.statusText);
+                setProblems([]);
             }
-
+    
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching problems:", error);
             setIsLoading(false);
         }
     };
-
+    
+    
+    
     useEffect(() => {
         fetchProblems(tags);
     }, [tags]);

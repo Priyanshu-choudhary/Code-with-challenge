@@ -59,6 +59,7 @@ useEffect(() => {
     setRole(null);
     setUser(null);
     setPassword(null);
+    localStorage.clear();
   };
 
   return (

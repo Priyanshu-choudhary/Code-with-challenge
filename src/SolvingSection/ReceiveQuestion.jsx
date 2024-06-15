@@ -5,7 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import React, { useRef,useContext,useEffect } from 'react';
+import React, { useRef,useContext,useEffect,useState } from 'react';
 import MyEditor from "./SoleSecEditor";
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
@@ -16,6 +16,7 @@ function QuestionApi() {
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
   const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '',currentPage='' } = problem;
+  const [themes, setthemes] = useState("vs-dark");
 
   const containerRef = useRef(null);
 
@@ -28,6 +29,7 @@ function QuestionApi() {
     if (savedTheme !== null) {
         setcurrentthemes(JSON.parse(savedTheme));
     }
+   
 }, [setcurrentthemes]);
 
   return (
@@ -69,7 +71,7 @@ function QuestionApi() {
               </Grid>
             </Col>
             <Col sm className="editorsection" style={{ height: "500px", overflow: "scroll" }} id="scrollContainer" ref={containerRef}>
-              <MyEditor myfun={scrollToBottom} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+              <MyEditor myfun={scrollToBottom} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
             </Col>
           </Row>
         </Container>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useContext } from 'react';
+import React, {useEffect, useState, useRef, useCallback, useContext } from 'react';
 import Editor from '@monaco-editor/react';
 import "./editor.css";
 import JDoodleExample from '../JDoodle/JDoodleExample';
@@ -16,16 +16,25 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
-  const [theme, setTheme] = useState('vs-dark');
+  const [themes, setThemes] = useState('vs-dark');
   const [showConfetti, setShowConfetti] = useState(false);
   const editorRef = useRef(null);
-  const {ibg, bg,bc,dark,light,user, password } = useContext(UserContext);
+  const {ibg, bg,bc,dark,light,user, password ,currentthemes} = useContext(UserContext);
   const createCourse = useCreateCourse(); // Call the custom hook
 
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
   };
+
+  useEffect(() => {
+   console.log(">>>>>>>",currentthemes);
+    if (currentthemes==true) {
+      setThemes("vs-dark");
+    }else{
+      setThemes("light");
+    }
+}, []);
 
   const downloadFile = () => {
     const code = editorRef.current.getValue();
@@ -107,9 +116,9 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
     setLanguage(lang);
   };
 
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'vs-dark' : 'light'));
-  };
+  // const toggleTheme = () => {
+  //   setTheme(prevTheme => (prevTheme === 'light' ? 'vs-dark' : 'light'));
+  // };
 
   const options = {
     autoIndent: 'full',
@@ -141,7 +150,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         height="400px"
         width="auto"
         defaultLanguage={language}
-        theme={theme}
+        theme={themes}
         defaultValue={`class Solution{
     public int findLargestNumber(int[] arr){
 

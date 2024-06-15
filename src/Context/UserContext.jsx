@@ -26,7 +26,7 @@ useEffect(() => {
     setbg("#f8f9fa");
     setdark("#e9ecef");
     setlight("#ced4da");
-    setbc("#6c757d");
+    setbc("#adb5bd");
     setibc("black");
 
   }

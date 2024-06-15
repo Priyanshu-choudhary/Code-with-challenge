@@ -146,11 +146,11 @@ const LeetCodeClone = () => {
                     <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
                   </div>
                 </div>
-              )) : <p>Question not found.....</p>}
+              )) : <p>loading.....</p>}
             </div>
           ) : (
             problems.length === 0 ? (
-              <p>Loading.....</p>
+              <p>Question not found.....</p>
             ) : (
               <div className="problem-list" style={{ color: ibg }}>
                 {problems.map((problem, index) => (

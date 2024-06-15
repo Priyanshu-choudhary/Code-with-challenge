@@ -67,7 +67,7 @@ function LearningPage() {
         Learn Skills
         <hr />
       </p>
-      {courses[0] && <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+       && <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Resume Preparation.
         </p>
@@ -76,7 +76,7 @@ function LearningPage() {
             <YourProgressCard key={index} title={course.title} progress={course.progress} />
           ))}
         </div>
-      </div>}
+      </div>
 
       <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>

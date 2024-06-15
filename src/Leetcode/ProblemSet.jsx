@@ -150,7 +150,7 @@ const LeetCodeClone = () => {
             </div>
           ) : (
             problems.length === 0 ? (
-              <p>Question not found.....</p>
+              <p>Loading.....</p>
             ) : (
               <div className="problem-list" style={{ color: ibg }}>
                 {problems.map((problem, index) => (

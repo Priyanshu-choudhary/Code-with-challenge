@@ -23,10 +23,10 @@ useEffect(() => {
     setibc("white");
    
   } else if(currentthemes== false){
-    setbg("#FEFFD2");
-    setdark("#FFEEA9");
-    setlight("#FFBF78");
-    setbc("#FF7D29");
+    setbg("#d6e6ff");
+    setdark("#d7f9f8");
+    setlight("#e5d4ef");
+    setbc("#fff0d4");
     setibc("black");
 
   }

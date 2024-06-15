@@ -8,33 +8,42 @@ import { UserContext } from '../Context/UserContext';
 
 function LearningPage() {
   const navigate = useNavigate();
-  const { user, password,bg,dark,light } = useContext(UserContext); // Access the user and password from context
+  const { ibg,user, password, bg, dark, light } = useContext(UserContext); // Access the user and password from context
   const [courses, setCourses] = useState([]);
   const coursesRef = useRef(null); // Use useRef to store the courses
 
   useEffect(() => {
-    if (!coursesRef.current) { // Check if courses are already fetched
+    // Load courses from localStorage if available
+    const storedCourses = JSON.parse(localStorage.getItem('courses'));
+    if (storedCourses) {
+      setCourses(storedCourses);
+      coursesRef.current = storedCourses;
+    }
+
+    const fetchCourses = async () => {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
 
-      fetch('https://testcfc.onrender.com/Course', {
-        headers: {
-          'Authorization': basicAuth
+      try {
+        const response = await fetch('https://testcfc.onrender.com/Course', {
+          headers: {
+            'Authorization': basicAuth,
+          },
+        });
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          localStorage.setItem('courses', JSON.stringify(data)); // Store fetched data in localStorage
+          coursesRef.current = data; // Store the fetched data in useRef
+          setCourses(data);
+        } else {
+          console.error('Fetched data is not an array:', data);
+          setCourses([]);
         }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (Array.isArray(data)) {
-            coursesRef.current = data; // Store the fetched data in useRef
-            setCourses(data);
-          } else {
-            console.error('Fetched data is not an array:', data);
-            setCourses([]);
-          }
-        })
-        .catch(error => console.error('Error fetching courses:', error));
-    } else {
-      setCourses(coursesRef.current); // Use the stored data if available
-    }
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
   }, [user, password]);
 
   const basicCards = [
@@ -52,13 +61,13 @@ function LearningPage() {
   };
 
   return (
-    <div style={{ maxHeight: "100vh", overflow: "scroll" ,backgroundColor: bg ,color:"white"}}>
+    <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
       <Dashboard />
-      <p style={{ color: "white", fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+      <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
         Learn Skills
         <hr />
       </p>
-      <div style={{ borderRadius:"15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Resume Preparation.
         </p>
@@ -69,7 +78,7 @@ function LearningPage() {
         </div>
       </div>
 
-      <div style={{borderRadius:"15px"  ,margin: '20px', padding: "10px", backgroundColor: dark }}>
+      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Basic
         </p>
@@ -82,7 +91,7 @@ function LearningPage() {
         </div>
       </div>
 
-      <div style={{ borderRadius:"15px",margin: '20px', padding: "10px", backgroundColor: dark }}>
+      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Intermediate
         </p>

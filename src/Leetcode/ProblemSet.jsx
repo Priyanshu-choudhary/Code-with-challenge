@@ -21,9 +21,10 @@ const LeetCodeClone = () => {
   const [navHistory, setNavHistory] = useState('');
   const [view, setView] = useState('stats');
   const [currentPage, SetCurrentPage] = useState('Learn Skills')
+  const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
   
   const navigate = useNavigate();
-  const {  bg, light,dark,user, password } = useContext(UserContext);
+  const { bc,ibg, bg, light,dark,user, password } = useContext(UserContext);
   const location = useLocation();
   const { title, description, progress } = location.state || {};
 
@@ -122,12 +123,12 @@ const LeetCodeClone = () => {
   };
 
   return (
-    <div style={{backgroundColor:bg,color:"white"}}>
+    <div style={{backgroundColor:bg,color:ibg}}>
       <Dashboard />
       <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
       <div className="leetcode-clone-container">
         <div className="content" style={{background:dark}}>
-          <div className='Profileheading' style={{color:"white"}}>
+          <div className='Profileheading' style={{color:ibg}}>
             {title || 'Java Questions'}
           </div>
           {loading ? (
@@ -135,17 +136,23 @@ const LeetCodeClone = () => {
               <CircularProgress />
             </div>
           ) : responseOk ? (
-            <div className="problem-list">
+            <div className="problem-list"style={{color:ibg}}>
               {problems.length > 0 ? problems.map((problem, index) => (
                 <div
                   key={problem.id}
                   className="problem"
                   onClick={() => handleProblemClick(problem)}
-                  
+                  style={{ 
+                    backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
+                    transition: 'background-color 0.3s', // Smooth transition for background color change
+                    cursor: 'pointer',
+                    color: ibg}}
+                    onMouseEnter={() => setHoverIndex(index)}
+                    onMouseLeave={() => setHoverIndex(null)}
                 >
                   <div className="problem-title">{index + 1}. {problem.title}</div>
                   <div className="problem-details">
-                    <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</span>
+                    <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`}style={{color:ibg}}>{problem.difficulty}</span>
                   </div>
                 </div>
               )) : <p>Question not found.....</p>}
@@ -155,7 +162,7 @@ const LeetCodeClone = () => {
           )}
         </div>
         <div className="toggle-container"  >
-          <div style={{ display: 'flex', gap: '50px'}}>
+          <div style={{ display: 'flex', gap: '50px',color:ibg}}>
             <Button
               variant="outlined"
               color="primary"
@@ -172,7 +179,7 @@ const LeetCodeClone = () => {
             </Button>
           </div>
           {view === 'stats' ? (
-            <div className="stats-container"style={{background:dark}} >
+            <div className="stats-container"style={{background:dark,color:ibg}} >
               <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
               <LinearProgress thickness={4} variant="determinate" value={progress} />
               </p>

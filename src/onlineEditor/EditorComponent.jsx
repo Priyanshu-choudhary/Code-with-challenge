@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useContext } from 'react';
+import React, { useEffect,useState, useCallback,useContext } from 'react';
 import Editor from '@monaco-editor/react';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
@@ -18,7 +18,19 @@ const EditorComponent = () => {
     const [language, setLanguage] = useState("java");
     const [input, setInput] = useState('');
     const {ibg,bc, bg, light,dark } = useContext(UserContext);
+    const [themes, setthemes] = useState("vs-dark");
 
+    useEffect(() => {
+        console.log(bg);
+      if (bg==="#121418") {
+        setthemes("vs-dark");
+        
+    }else{
+        setthemes("light");
+    }
+    }, [bg])
+    
+   
     const handleEditorChange = (value) => {
         setCode(value);
     };
@@ -80,7 +92,7 @@ const EditorComponent = () => {
                         language={language}
                         value={code}
                         onChange={handleEditorChange}
-                        theme='vs-dark'
+                        theme={themes}
                         options={{
                             minimap: { enabled: false },  // Disable minimap
                             scrollbar: {

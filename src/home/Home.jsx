@@ -18,7 +18,7 @@ import Typed from 'typed.js';
 function Home() {
   const [typedInstance, setTypedInstance] = useState(null);
  
-  const { bc,bg, light,dark } = useContext(UserContext);
+  const {ibg, bc,bg, light,dark } = useContext(UserContext);
   const [theme, settheme] = useState(bc);
   useEffect(() => {
     const options = {
@@ -40,12 +40,12 @@ function Home() {
   const buttonStyles = {
     alignItems: 'center',
     appearance: 'none',
-    backgroundColor: theme,
+    backgroundColor: bc,
     borderRadius: '24px',
     borderStyle: 'none',
     // boxShadow: 'rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0',
     boxSizing: 'border-box',
-    color: 'black',
+    color: ibg,
     cursor: 'pointer',
     display: 'inline-flex',
     fill: 'currentcolor',
@@ -101,9 +101,9 @@ function Home() {
 
   const [color, setcolor] = useState("#ed6524")
   return (
-    <div style={{backgroundColor:bg}}>
+    <div style={{backgroundColor:bg,color:ibg}}>
       <Dashboard />
-      <div style={{color:"white"}}  >
+      <div >
        
         <header className={styles.header}>
           {/* <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" /> */}

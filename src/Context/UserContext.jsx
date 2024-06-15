@@ -9,24 +9,24 @@ export const UserProvider = ({ children }) => {
   const [bg, setbg] = useState("#121418")
   const [dark, setdark] = useState("#1f202a");
   const [light, setlight] = useState("#27293a");
-  const [bc, setbc] = useState("#95ff00")
+  const [bc, setbc] = useState("#240750")
   const [ibg, setibc] = useState("white")
   const [currentthemes, setcurrentthemes] = useState("true")
 
 useEffect(() => {
 
   if(currentthemes== true){
-    setbg("#95ff00");
+    setbg("#121418");
     setdark("#1f202a");
     setlight("#27293a");
-    setbc("#95ff00");
+    setbc("#240750");
     setibc("white");
    
   } else if(currentthemes== false){
-    setbg("white");
-    setdark("white");
-    setlight("white");
-    setbc("white");
+    setbg("#FEFFD2");
+    setdark("#FFEEA9");
+    setlight("#FFBF78");
+    setbc("#FF7D29");
     setibc("black");
 
   }

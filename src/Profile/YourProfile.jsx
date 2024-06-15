@@ -15,18 +15,19 @@ const YourProfile = () => {
   const [problems, setProblems] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
   const navigate = useNavigate();
   const { bg, bc, dark, light, ibg, user, password, role } = useContext(UserContext);
   const [userData, setUserData] = useState({});
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
+  const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
   console.log("profile rerender");
   console.log(role);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-
         // Fetch problems
         const problemsResponse = await fetch("https://testcfc.onrender.com/Posts", {
           method: 'GET',
@@ -71,7 +72,7 @@ const YourProfile = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#121418" }}>
+    <div style={{ backgroundColor: bg }}>
       <Dashboard />
       {isLoading ? (
         <div className="loading-screen">
@@ -80,16 +81,16 @@ const YourProfile = () => {
       ) : (
         <Grid container spacing={3} style={{ marginRight: "3px" }}>
           <Grid xs>
-            <div style={{ margin:"10px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
+            <div style={{ margin: "10px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
               <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="p-4" style={{ backgroundColor: light, color: ibg }}>
                   <div className="text-center">
                     <div className="inline-block relative">
-                      <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: deepPurple[500], width: 120, height: 120 }}>{avatarName}</Avatar>
+                      <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
                     </div>
                     <h2 className="mt-2 text-lg font-semibold text-gray-900" style={{ backgroundColor: light, color: ibg }}>{userData.name}</h2>
                     <p className="mt-1 text-sm text-gray-600" style={{ backgroundColor: light, color: ibg }}>Rank ?</p>
-                    <button className="mt-4 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-full" onClick={toggleForm}>Edit Profile</button>
+                    <button className="mt-4 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-full" style={{ backgroundColor: bc, color: ibg }} onClick={toggleForm}>Edit Profile</button>
                   </div>
                 </div>
                 <div style={{ backgroundColor: light, color: ibg }} >
@@ -141,10 +142,17 @@ const YourProfile = () => {
                     <Grid>{noOfQuestion}</Grid>
                   </Grid>
                 </div>
-                <div className="Profileproblem-list" style={{ backgroundColor: light, color: ibg }}>
+                <div className="Profileproblem-list" style={{ backgroundColor: light, color: ibg }}  >
                   {problems.length > 0 ? problems.map((problem, index) => (
-                    <div key={problem.id} className="Profileproblem" onClick={() => handleProblemClick(problem)}>
-                      <div className="Profileproblem-title">{index + 1}. {problem.title}</div>
+                    <div key={problem.id} className="Profileproblem" style={{ 
+                      backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
+                      transition: 'background-color 0.3s', // Smooth transition for background color change
+                      cursor: 'pointer',
+                      color: ibg
+                    }}
+                    onMouseEnter={() => setHoverIndex(index)}
+                    onMouseLeave={() => setHoverIndex(null)}>
+                      <div className="Profileproblem-title" onClick={() => handleProblemClick(problem)}>{index + 1}. {problem.title}</div>
                     </div>
                   )) : <p>Solve Your First Problems...</p>}
                 </div>

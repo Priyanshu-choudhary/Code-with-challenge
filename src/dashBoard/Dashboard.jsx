@@ -9,7 +9,7 @@ import "./css.css"
 import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
-
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -63,7 +63,7 @@ function Dashboard() {
 
     const handleSwitchChange = (event) => {
         setcurrentthemes(event.target.checked);
-        
+        console.log("event");
     };
 
     const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -160,8 +160,8 @@ function Dashboard() {
                                         <div className="ml-4 flex items-center md:ml-6">
                                         <FormControlLabel
                                                 control={<MaterialUISwitch defaultChecked />}
-                                                onChange={handleSwitchChange}
-                                                label="MUI switch"
+                                                onClick={handleSwitchChange}
+                                               
                                             />
                                             <img style={{ height: "30px", marginRight: "10px" }} src={award} alt="leaderboard" onClick={() => handleClick()} />
 

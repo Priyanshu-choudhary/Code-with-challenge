@@ -204,8 +204,7 @@ export default function StripedGrid() {
             width: 150,
             renderCell: (params) => (
                 <Button
-                    variant="outlined"
-                    color="secondary"
+                style={{backgroundColor:bc,color:ibg}}
                     onClick={(e) => {
                         e.stopPropagation(); // Prevents the row click event
                         handleDelete(params.row.id);
@@ -218,7 +217,7 @@ export default function StripedGrid() {
     }
 
     return (
-        <div style={{backgroundColor:dark}}>
+        <div style={{backgroundColor:dark,color:ibg}}>
             <Dashboard />
             <IconBreadcrumbs currentPage={currentPage} title={titleBreadCumb.title} />
 
@@ -226,7 +225,7 @@ export default function StripedGrid() {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <input
-                            style={{ backgroundColor:light,marginLeft:"100px",borderWidth: "2px", width: "100%", borderColor: "black", height: "48px" }}
+                            style={{color:ibg, backgroundColor:light,marginLeft:"100px",borderWidth: "2px", width: "100%", borderColor: bc, height: "48px" }}
                             type="text"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -255,7 +254,7 @@ export default function StripedGrid() {
                 ) : (
                     <ThemeProvider theme={darkTheme}>
                         <StripedDataGrid
-                        style={{backgroundColor:light}}
+                        style={{backgroundColor:light,color:ibg}}
                             rows={rows}
                             columns={columns}
                             getRowClassName={(params) =>

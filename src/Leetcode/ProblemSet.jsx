@@ -11,34 +11,22 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 
-
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
-  const [responseOk, setResponseOk] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [responseOk, setResponseOk] = useState(true); // Assume response is OK initially
+  const [loading, setLoading] = useState(false); // Do not show loading indicator
   const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [navHistory, setNavHistory] = useState('');
   const [view, setView] = useState('stats');
-  const [currentPage, SetCurrentPage] = useState('Learn Skills')
+  const [currentPage, SetCurrentPage] = useState('Learn Skills');
   const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
-  
+
   const navigate = useNavigate();
-  const { bc,ibg, bg, light,dark,user, password } = useContext(UserContext);
+  const { bc, ibg, bg, light, dark, user, password } = useContext(UserContext);
   const location = useLocation();
   const { title, description, progress } = location.state || {};
 
-  const handleHover = () => {
-    problemStyle.backgroundColor = '#95ff00';
-    problemStyle.cursor = 'pointer';
-    problemStyle.borderRadius = '10px';
-  };
-
-  const handleMouseLeave = () => {
-    problemStyle.backgroundColor = ''; // Reset to initial or another color if needed
-    problemStyle.cursor = '';
-    problemStyle.borderRadius = '';
-  };
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -49,7 +37,6 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    setLoading(true);
     let API_URL = tags[0] != null ? "https://testcfc.onrender.com/Posts/filter" : "https://testcfc.onrender.com/Posts";
     try {
       let url = API_URL;
@@ -57,7 +44,7 @@ const LeetCodeClone = () => {
         const tagsQuery = selectedTags.join(',');
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
-      
+
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
 
@@ -70,10 +57,10 @@ const LeetCodeClone = () => {
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-        console.log(response.status);
+      console.log(response.status);
       if (response.status === 304) {
         // Use cached data if not modified
-        console.log(" data isnot modified Useing cached ");
+        console.log("Data is not modified. Using cached data.");
         setProblems(cachedData.problems);
         setResponseOk(true);
       } else if (response.ok) {
@@ -89,7 +76,6 @@ const LeetCodeClone = () => {
         }));
       } else {
         setResponseOk(false);
-
       }
     } catch (error) {
       console.error("Error fetching problems:", error);
@@ -104,6 +90,13 @@ const LeetCodeClone = () => {
   }, []);
 
   useEffect(() => {
+    // Display cached data immediately
+    const cachedData = JSON.parse(localStorage.getItem('problemsData'));
+    if (cachedData && cachedData.problems) {
+      setProblems(cachedData.problems);
+      setLoading(false);
+    }
+
     fetchProblems(tags);
   }, [tags]);
 
@@ -123,46 +116,69 @@ const LeetCodeClone = () => {
   };
 
   return (
-    <div style={{backgroundColor:bg,color:ibg}}>
+    <div style={{ backgroundColor: bg, color: ibg }}>
       <Dashboard />
       <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
       <div className="leetcode-clone-container">
-        <div className="content" style={{background:dark}}>
-          <div className='Profileheading' style={{color:ibg}}>
+        <div className="content" style={{ background: dark }}>
+          <div className='Profileheading' style={{ color: ibg }}>
             {title || 'Java Questions'}
           </div>
-          {loading ? (
-            <div className="spinner-container">
-              <CircularProgress />
-            </div>
-          ) : responseOk ? (
-            <div className="problem-list"style={{color:ibg}}>
+          {responseOk ? (
+            <div className="problem-list" style={{ color: ibg }}>
               {problems.length > 0 ? problems.map((problem, index) => (
                 <div
                   key={problem.id}
                   className="problem"
                   onClick={() => handleProblemClick(problem)}
-                  style={{ 
+                  style={{
                     backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
                     transition: 'background-color 0.3s', // Smooth transition for background color change
                     cursor: 'pointer',
-                    color: ibg}}
-                    onMouseEnter={() => setHoverIndex(index)}
-                    onMouseLeave={() => setHoverIndex(null)}
+                    color: ibg,
+                    borderRadius:"5px"
+                  }}
+                  onMouseEnter={() => setHoverIndex(index)}
+                  onMouseLeave={() => setHoverIndex(null)}
                 >
-                  <div className="problem-title">{index + 1}. {problem.title}</div>
+                  <div className="problem-title" >{index + 1}. {problem.title}</div>
                   <div className="problem-details">
-                    <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`}style={{color:ibg}}>{problem.difficulty}</span>
+                    <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
                   </div>
                 </div>
               )) : <p>Question not found.....</p>}
             </div>
           ) : (
-            <p>Failed to fetch problems. Please try again later.</p>
+            problems.length === 0 ? (
+              <p>Question not found.....</p>
+            ) : (
+              <div className="problem-list" style={{ color: ibg }}>
+                {problems.map((problem, index) => (
+                  <div
+                    key={problem.id}
+                    className="problem"
+                    onClick={() => handleProblemClick(problem)}
+                    style={{
+                      backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
+                      transition: 'background-color 0.3s', // Smooth transition for background color change
+                      cursor: 'pointer',
+                      color: ibg
+                    }}
+                    onMouseEnter={() => setHoverIndex(index)}
+                    onMouseLeave={() => setHoverIndex(null)}
+                  >
+                    <div className="problem                    -title">{index + 1}. {problem.title}</div>
+                    <div className="problem-details">
+                      <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
           )}
         </div>
-        <div className="toggle-container"  >
-          <div style={{ display: 'flex', gap: '50px',color:ibg}}>
+        <div className="toggle-container">
+          <div style={{ display: 'flex', gap: '50px', color: ibg }}>
             <Button
               variant="outlined"
               color="primary"
@@ -179,9 +195,9 @@ const LeetCodeClone = () => {
             </Button>
           </div>
           {view === 'stats' ? (
-            <div className="stats-container"style={{background:dark,color:ibg}} >
+            <div className="stats-container" style={{ background: dark, color: ibg }}>
               <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
-              <LinearProgress thickness={4} variant="determinate" value={progress} />
+                <LinearProgress thickness={4} variant="determinate" value={progress} />
               </p>
               {description && <p>{description}</p>}
             </div>
@@ -197,3 +213,4 @@ const LeetCodeClone = () => {
 };
 
 export default LeetCodeClone;
+

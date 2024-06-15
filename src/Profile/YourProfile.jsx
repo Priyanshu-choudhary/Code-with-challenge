@@ -16,6 +16,7 @@ const YourProfile = () => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
+  const [lastModified, setLastModified] = useState(null); // State to store the last modified time
   const navigate = useNavigate();
   const { bg, bc, dark, light, ibg, user, password, role } = useContext(UserContext);
   const [userData, setUserData] = useState({});
@@ -28,17 +29,39 @@ const YourProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const localProblems = JSON.parse(localStorage.getItem('problems'));
+        const localLastModified = localStorage.getItem('lastModified');
+        const localUserData = JSON.parse(localStorage.getItem('userData'));
+
+        if (localProblems && localUserData) {
+          setProblems(localProblems);
+          setNoOfQuestion(localProblems.length);
+          setUserData(localUserData);
+          setAvatarName(localUserData.name ? localUserData.name[0] : '');
+          setIsLoading(false);
+        }
+
         // Fetch problems
         const problemsResponse = await fetch("https://testcfc.onrender.com/Posts", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': basicAuth
+            'Authorization': basicAuth,
+            ...(localLastModified && { 'If-Modified-Since': localLastModified }) // Include the If-Modified-Since header if available
           }
         });
-        const problemsData = await problemsResponse.json();
-        setProblems(problemsData);
-        setNoOfQuestion(problemsData.length);
+
+        if (problemsResponse.status === 200) {
+          const problemsData = await problemsResponse.json();
+          setProblems(problemsData);
+          setNoOfQuestion(problemsData.length);
+          const lastModifiedHeader = problemsResponse.headers.get('Last-Modified');
+          if (lastModifiedHeader) {
+            setLastModified(lastModifiedHeader);
+            localStorage.setItem('lastModified', lastModifiedHeader);
+          }
+          localStorage.setItem('problems', JSON.stringify(problemsData));
+        }
 
         // Fetch user data
         const userResponse = await fetch("https://testcfc.onrender.com/users/getUser", {
@@ -48,11 +71,15 @@ const YourProfile = () => {
             'Authorization': basicAuth
           }
         });
-        const userData = await userResponse.json();
-        setUserData(userData);
 
-        // Set avatar name (e.g., first letter of the user's name)
-        setAvatarName(userData.name ? userData.name[0] : '');
+        if (userResponse.status === 200) {
+          const userData = await userResponse.json();
+          setUserData(userData);
+
+          // Set avatar name (e.g., first letter of the user's name)
+          setAvatarName(userData.name ? userData.name[0] : '');
+          localStorage.setItem('userData', JSON.stringify(userData));
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -148,7 +175,8 @@ const YourProfile = () => {
                       backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
                       transition: 'background-color 0.3s', // Smooth transition for background color change
                       cursor: 'pointer',
-                      color: ibg
+                      color: ibg,
+                      borderRadius:"5px"
                     }}
                     onMouseEnter={() => setHoverIndex(index)}
                     onMouseLeave={() => setHoverIndex(null)}>

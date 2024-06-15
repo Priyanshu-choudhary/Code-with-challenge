@@ -123,12 +123,12 @@ function Home() {
   {/* Text will be rendered here by Typed.js */}
 </div>
 
-                  <div className="subheadline mb-4" style={{ fontSize: "20px" }}>
+                  <div className="subheadline mb-3" style={{ fontSize: "20px" }}>
                     What sets us apart? Our commitment to excellence. With a vast library of challenges covering various programming languages, algorithms, and problem-solving techniques, Code for Challenge ensures that every coder finds their perfect match. Join us today and embark on a transformative journey towards coding mastery.
                   </div>
                   <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
                     <div className="col-12 col-md-auto">
-                      <a className="btn btn-primary w-100" href="https://code-with-challenge.vercel.app/data" style={buttonStyles}>Give a try</a>
+                      <a className="btn btn-primary w-100" href="https://code-with-challenge.vercel.app/data" style={buttonStyles}>Sign Up</a>
                     </div>
                     <div className="col-12 col-md-auto">
                       <a className="btn btn-secondary scrollto w-100" href="#benefits-section" style={{
@@ -193,7 +193,7 @@ function Home() {
                         '&:disabled': {
                           boxShadow: 'rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px',
                         },
-                      }}>Learn More</a>
+                      }}>Login In</a>
                     </div>
                   </div>
                   <div className="hero-quotes mt-5">

@@ -47,23 +47,21 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-
 function Dashboard() {
     const navigate = useNavigate();
     console.log("Dashboard rerender");
-    const { user ,setcurrentthemes,currentthemes} = useContext(UserContext);
+    const { user, setcurrentthemes, currentthemes } = useContext(UserContext);
 
     let toggle = user;
     const handleClick = () => {
-
         navigate('/leaderboard');
         console.log("clicked!");
-
     };
 
     const handleSwitchChange = (event) => {
-        setcurrentthemes(event.target.checked);
-        console.log("event");
+        const isChecked = event.target.checked;
+        console.log("Switch value:", isChecked);
+        setcurrentthemes(isChecked);
     };
 
     const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -158,10 +156,9 @@ function Dashboard() {
                                     <div className="hidden md:block">
 
                                         <div className="ml-4 flex items-center md:ml-6">
-                                        <FormControlLabel
-                                                control={<MaterialUISwitch defaultChecked />}
-                                                onClick={handleSwitchChange}
-                                               
+                                            <FormControlLabel
+                                                control={<MaterialUISwitch checked={currentthemes} />}
+                                                onChange={handleSwitchChange}
                                             />
                                             <img style={{ height: "30px", marginRight: "10px" }} src={award} alt="leaderboard" onClick={() => handleClick()} />
 
@@ -174,7 +171,7 @@ function Dashboard() {
 
                                                 <BellIcon className="h-6 w-6" aria-hidden="true" />
                                             </button>
-                                            
+
                                             {user ? <Menu as="div" className="relative ml-3">
                                                 <div>
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -215,7 +212,7 @@ function Dashboard() {
                                                 <a href="/login">LogIn</a>
                                             </button>}
 
-                                            
+
                                         </div>
                                     </div>
                                     <div className="-mr-2 flex md:hidden">
@@ -299,4 +296,5 @@ function Dashboard() {
         </>
     )
 }
+
 export default React.memo(Dashboard)

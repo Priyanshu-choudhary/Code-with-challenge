@@ -15,13 +15,14 @@ const useCreateCourse = () => {
     const newCourse = {
       title: courseTitle,
       description: `${courseTitle} description`,
-      progress: 0
+      progress: "0"
     };
 
     try {
       // Make API call to create the course
       console.log(user+" "+password);
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      console.log("course detail "+JSON.stringify(newCourse));
       const response = await fetch('https://testcfc.onrender.com/Course', {
         method: 'POST',
         headers: {

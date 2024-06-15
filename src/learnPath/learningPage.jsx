@@ -25,6 +25,7 @@ function LearningPage() {
 
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
+          method: 'GET',
           headers: {
             'Authorization': basicAuth,
           },

@@ -26,7 +26,8 @@ const LeetCodeClone = () => {
   const { bc, ibg, bg, light, dark, user, password } = useContext(UserContext);
   const location = useLocation();
   const { title, description, progress } = location.state || {};
-
+  
+  console.log("course problem page");
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -57,10 +58,10 @@ const LeetCodeClone = () => {
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-      console.log(response.status);
+      
       if (response.status === 304) {
         // Use cached data if not modified
-        console.log("Data is not modified. Using cached data.");
+      
         setProblems(cachedData.problems);
         setResponseOk(true);
       } else if (response.ok) {

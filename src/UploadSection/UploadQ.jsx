@@ -171,8 +171,8 @@ const EditorPosts = ({ step }) => {
                 },
                 {
                     auth: {
-                        username: user,
-                        password: password
+                        username: "YadiChoudhary",
+                        password: "YadiChoudhary"
                     }
                 }
             );

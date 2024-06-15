@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import React, { useContext } from 'react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -52,7 +52,13 @@ function Dashboard() {
     console.log("Dashboard rerender");
     const { user, setcurrentthemes, currentthemes } = useContext(UserContext);
 
-    let toggle = user;
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('currentthemes');
+        if (savedTheme !== null) {
+            setcurrentthemes(JSON.parse(savedTheme));
+        }
+    }, [setcurrentthemes]);
+
     const handleClick = () => {
         navigate('/leaderboard');
         console.log("clicked!");
@@ -62,6 +68,7 @@ function Dashboard() {
         const isChecked = event.target.checked;
         console.log("Switch value:", isChecked);
         setcurrentthemes(isChecked);
+        localStorage.setItem('currentthemes', JSON.stringify(isChecked));
     };
 
     const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -166,7 +173,6 @@ function Dashboard() {
                                                 type="button"
                                                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                             >
-
                                                 <span className="sr-only">View notifications</span>
 
                                                 <BellIcon className="h-6 w-6" aria-hidden="true" />

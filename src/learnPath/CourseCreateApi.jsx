@@ -11,7 +11,7 @@ const useCreateCourse = () => {
       throw new Error('Course with the same title already exists');
     }
 
-    const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+   
     const newCourse = {
       title: courseTitle,
       description: `${courseTitle} description`,
@@ -20,7 +20,9 @@ const useCreateCourse = () => {
 
     try {
       // Make API call to create the course
-      const response = await fetch('c/Course', {
+      console.log(user+" "+password);
+      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const response = await fetch('https://testcfc.onrender.com/Course', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

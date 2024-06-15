@@ -12,7 +12,7 @@ import { UserContext } from '../Context/UserContext';
 
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 function QuestionApi() {
-  const { bg, light,dark } = useContext(UserContext);
+  const {ibg, bg, light,dark } = useContext(UserContext);
   const location = useLocation();
   const problem = location.state || {}; // Ensure problem is an object
   const { title = '', description = '', example = '', difficulty = '', answer = '', testcase = '', boilerCode = '', navHistory = '',currentPage='' } = problem;
@@ -29,7 +29,7 @@ function QuestionApi() {
     <br />
      
        <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title}/>
-      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container" style={{background:dark,color:"white"}}>
+      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container" style={{background:dark,color:ibg}}>
         <Container fluid>
           <Row>
             <Col className="editorsection" sm={2} style={{ height: "500px", width: "500px", overflow: "scroll" }}>
@@ -38,7 +38,7 @@ function QuestionApi() {
                   <pre style={{background:dark}}>1.{title}</pre><hr />
                 </Grid>
                 <Grid xs={2.5}>
-                  <p className={`button ${difficulty.toLowerCase()}`}>{difficulty}</p>
+                  <p className={`button ${difficulty.toLowerCase()}`} style={{color:ibg}}>{difficulty}</p>
                 </Grid>
                 <Grid xs={14}>
                   <pre style={{background:dark}}>  {description} </pre>

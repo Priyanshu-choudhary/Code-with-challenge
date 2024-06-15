@@ -19,7 +19,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   const [theme, setTheme] = useState('vs-dark');
   const [showConfetti, setShowConfetti] = useState(false);
   const editorRef = useRef(null);
-  const { bg,bc,dark,light,user, password } = useContext(UserContext);
+  const {ibg, bg,bc,dark,light,user, password } = useContext(UserContext);
   const createCourse = useCreateCourse(); // Call the custom hook
 
 
@@ -152,18 +152,18 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         options={options}
       />
       <div className="button-container">
-        <button onClick={getCode} className="btn btn-secondary" style={{backgroundColor:bc, color:bg}}>
+        <button onClick={getCode} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
           Run {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
         </button>{' '}
-        <button onClick={handleSubmit} className="btn btn-secondary" style={{backgroundColor:bc, color:bg}}>
+        <button onClick={handleSubmit} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
           Submit
         </button>{' '}
-        <button onClick={downloadFile} className="btn btn-secondary" style={{backgroundColor:bc, color:bg}}>
+        <button onClick={downloadFile} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
           Download
         </button>{' '}
         <Dropdown as={ButtonGroup}>
-          <Button variant="secondary" style={{backgroundColor:bc, color:bg}}>{language}</Button>
-          <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"style={{backgroundColor:bc, color:bg}} />
+          <Button variant="secondary" style={{backgroundColor:bc, color:ibg}}>{language}</Button>
+          <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"style={{backgroundColor:bc, color:ibg}} />
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => handleLanguageChange("java")}>Java</Dropdown.Item>
             <Dropdown.Item onClick={() => handleLanguageChange("c")}>C</Dropdown.Item>
@@ -180,9 +180,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
             <Dropdown.Item onClick={() => handleLanguageChange("scala")}>Scala</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>{' '}
-        <button onClick={toggleTheme} className="btn btn-secondary" style={{backgroundColor:bc, color:bg}}>
-          Toggle Theme
-        </button>
+       
       </div>
       <pre>
         {output.output}

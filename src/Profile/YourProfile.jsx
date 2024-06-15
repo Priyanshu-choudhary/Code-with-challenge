@@ -22,17 +22,19 @@ const YourProfile = () => {
   const [userData, setUserData] = useState({});
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
-  const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+
   console.log("profile rerender");
   console.log(role);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const localProblems = JSON.parse(localStorage.getItem('problems'));
         const localLastModified = localStorage.getItem('lastModified');
         const localUserData = JSON.parse(localStorage.getItem('userData'));
-
+        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+        console.log(user+" "+password);
         if (localProblems && localUserData) {
           setProblems(localProblems);
           setNoOfQuestion(localProblems.length);

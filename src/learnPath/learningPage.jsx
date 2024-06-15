@@ -1,4 +1,3 @@
-// src/components/LearningPage.js
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
@@ -8,7 +7,7 @@ import { UserContext } from '../Context/UserContext';
 
 function LearningPage() {
   const navigate = useNavigate();
-  const { ibg,user, password, bg, dark, light } = useContext(UserContext); // Access the user and password from context
+  const { ibg, user, password, bg, dark, light } = useContext(UserContext); // Access the user and password from context
   const [courses, setCourses] = useState([]);
   const coursesRef = useRef(null); // Use useRef to store the courses
 
@@ -22,6 +21,7 @@ function LearningPage() {
 
     const fetchCourses = async () => {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      console.log('Fetching courses with auth:', basicAuth);
 
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
@@ -29,14 +29,18 @@ function LearningPage() {
             'Authorization': basicAuth,
           },
         });
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          localStorage.setItem('courses', JSON.stringify(data)); // Store fetched data in localStorage
-          coursesRef.current = data; // Store the fetched data in useRef
-          setCourses(data);
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            localStorage.setItem('courses', JSON.stringify(data)); // Store fetched data in localStorage
+            coursesRef.current = data; // Store the fetched data in useRef
+            setCourses(data);
+          } else {
+            console.error('Fetched data is not an array:', data);
+            setCourses([]);
+          }
         } else {
-          console.error('Fetched data is not an array:', data);
-          setCourses([]);
+          console.error('Failed to fetch courses:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -67,7 +71,7 @@ function LearningPage() {
         Learn Skills
         <hr />
       </p>
-       && <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
           Resume Preparation.
         </p>

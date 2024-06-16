@@ -9,12 +9,13 @@ import Typography from '@mui/material/Typography';
 import Dashboard from '../dashBoard/Dashboard';
 import EditorPosts from './UploadQ';
 
+
 import { UserContext } from '../Context/UserContext';
 import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
 
 const steps = ['Add basic details', 'Test cases and boiler code', 'Select tags/Time complexicity'];
 
-export default function MyStepper() {
+export default function MyStepper({ uploadUrl }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   
@@ -93,7 +94,7 @@ export default function MyStepper() {
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-             <EditorPosts step={activeStep + 1}/>
+             <EditorPosts uploadUrl={uploadUrl} step={activeStep+1 }/>
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Button

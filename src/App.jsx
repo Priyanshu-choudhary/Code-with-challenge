@@ -17,6 +17,7 @@ import MyDataGrid from './Problems/DataGrid';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import MyStepper from './UploadSection/Stepper';
 import LearningPage from './learnPath/learningPage';
+import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
 
 
 
@@ -31,7 +32,7 @@ function App() {
         <Routes>
           
           <Route path="/" element={<Home />} />
-          <Route path="/Upload" element={<MyStepper />} />
+          <Route path="/Upload" element={<QuestionTypeSelector />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/yourProfile" element={<YourProfile />} />
           <Route path="/EditorComponent" element={<EditorComponent />} />

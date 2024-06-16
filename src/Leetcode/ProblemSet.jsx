@@ -14,20 +14,19 @@ import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
-  const [responseOk, setResponseOk] = useState(true); // Assume response is OK initially
-  const [loading, setLoading] = useState(false); // Do not show loading indicator
+  const [responseOk, setResponseOk] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [navHistory, setNavHistory] = useState('');
   const [view, setView] = useState('stats');
-  const [currentPage, SetCurrentPage] = useState('Learn Skills');
-  const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
+  const [currentPage, setCurrentPage] = useState('Learn Skills');
+  const [hoverIndex, setHoverIndex] = useState(null);
 
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password } = useContext(UserContext);
   const location = useLocation();
   const { title, description, progress } = location.state || {};
   
-  console.log("course problem page");
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -38,7 +37,9 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags[0] != null ? "https://testcfc.onrender.com/Posts/filter" : "https://testcfc.onrender.com/Posts";
+    let API_URL = tags.length > 0 ? "https://testcfc.onrender.com/Posts/filter" : "https://testcfc.onrender.com/Posts";
+    setLoading(true); // Start loading indicator
+
     try {
       let url = API_URL;
       if (selectedTags.length > 0) {
@@ -49,7 +50,7 @@ const LeetCodeClone = () => {
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
 
-      const basicAuth = 'Basic ' + btoa(`YadiChoudhary:YadiChoudhary`);
+      const basicAuth = 'Basic ' + btoa('course:course');
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -58,10 +59,10 @@ const LeetCodeClone = () => {
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-      if(response.status==204){
+
+      if (response.status === 204) {
         setProblems([]);
-    }else if (response.status === 304) {
-        // Use cached data if not modified
+      } else if (response.status === 304) {
         setProblems(cachedData.problems);
         setResponseOk(true);
       } else if (response.ok) {
@@ -69,7 +70,6 @@ const LeetCodeClone = () => {
         setProblems(data);
         setResponseOk(true);
 
-        // Store fetched data and Last-Modified header in localStorage
         const newLastModified = response.headers.get('Last-Modified');
         localStorage.setItem('problemsData', JSON.stringify({
           problems: data,
@@ -91,7 +91,6 @@ const LeetCodeClone = () => {
   }, []);
 
   useEffect(() => {
-    // Display cached data immediately
     const cachedData = JSON.parse(localStorage.getItem('problemsData'));
     if (cachedData && cachedData.problems) {
       setProblems(cachedData.problems);
@@ -125,7 +124,9 @@ const LeetCodeClone = () => {
           <div className='Profileheading' style={{ color: ibg }}>
             {title || 'Java Questions'}
           </div>
-          {responseOk ? (
+          {loading ? (
+            <CircularProgress />
+          ) : responseOk ? (
             <div className="problem-list" style={{ color: ibg }}>
               {problems.length > 0 ? problems.map((problem, index) => (
                 <div
@@ -133,49 +134,28 @@ const LeetCodeClone = () => {
                   className="problem"
                   onClick={() => handleProblemClick(problem)}
                   style={{
-                    backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
-                    transition: 'background-color 0.3s', // Smooth transition for background color change
+                    backgroundColor: hoverIndex === index ? bc : light,
+                    transition: 'background-color 0.3s',
                     cursor: 'pointer',
                     color: ibg,
-                    borderRadius:"5px"
+                    borderRadius: "5px"
                   }}
                   onMouseEnter={() => setHoverIndex(index)}
                   onMouseLeave={() => setHoverIndex(null)}
                 >
-                  <div className="problem-title" >{index + 1}. {problem.title}</div>
+                  <div className="problem-title">{index + 1}. {problem.title}</div>
                   <div className="problem-details">
-                    <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                    {problem.type === "MCQ" ? (
+                      <p style={{ borderWidth: "1.5px",borderRadius:"5px", padding:"2px 5px 0px", borderColor:"blueviolet" }}>MCQ</p>
+                    ) : (
+                      <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                    )}
                   </div>
                 </div>
-              )) : <p>loading.....</p>}
+              )) : <p>No problems found.</p>}
             </div>
           ) : (
-            problems.length === 0 ? (
-              <p>Question not found.....</p>
-            ) : (
-              <div className="problem-list" style={{ color: ibg }}>
-                {problems.map((problem, index) => (
-                  <div
-                    key={problem.id}
-                    className="problem"
-                    onClick={() => handleProblemClick(problem)}
-                    style={{
-                      backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
-                      transition: 'background-color 0.3s', // Smooth transition for background color change
-                      cursor: 'pointer',
-                      color: ibg
-                    }}
-                    onMouseEnter={() => setHoverIndex(index)}
-                    onMouseLeave={() => setHoverIndex(null)}
-                  >
-                    <div className="problem                    -title">{index + 1}. {problem.title}</div>
-                    <div className="problem-details">
-                      <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )
+            <p>Failed to load problems. Please try again later.</p>
           )}
         </div>
         <div className="toggle-container">
@@ -203,7 +183,7 @@ const LeetCodeClone = () => {
               {description && <p>{description}</p>}
             </div>
           ) : (
-            <div className="tags-container">
+            <div className="tags-container" style={{ background: dark, color: ibg }}>
               <Tags onTagsChange={handleTagsChange} />
             </div>
           )}
@@ -214,4 +194,3 @@ const LeetCodeClone = () => {
 };
 
 export default LeetCodeClone;
-

@@ -9,8 +9,9 @@ import Tags from './Tags';
 import { Editor } from '@monaco-editor/react';
 import PNF from '../PageNotFound/PNF';
 import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
+import McqForm from './McqForm';
 
-const EditorPosts = ({ step }) => {
+const EditorPosts = ({ step,uploadUrl }) => {
     const [solution, setSolution] = useState('');
     const [description, setDescription] = useState('');
     const [example, setExample] = useState('');
@@ -171,18 +172,18 @@ const EditorPosts = ({ step }) => {
                 },
                 {
                     auth: {
-                        username: "YadiChoudhary",
-                        password: "YadiChoudhary"
+                        username: uploadUrl,
+                        password: uploadUrl
                     }
                 }
             );
             console.log('Post created:', response.data);
             setISubmit(false);
-            alert('Question Uploaded');
+            alert('Question Uploaded To '+uploadUrl);
         } catch (error) {
             console.error('Error creating post:', error);
             setISubmit(false);
-            alert('Failed to Upload.');
+            alert('Failed to Upload To '+uploadUrl);
         } finally {
             setISubmit(false);
         }
@@ -190,7 +191,8 @@ const EditorPosts = ({ step }) => {
 
     return (
         <>
-           <div className="editor-container" style={{ height: "69vh" }}>
+           <div className="editor-container">
+          
                 {step === 3 ? (
                     <div className="sidebar">
                         <div className="sidebar-item" onClick={handleSubmit}>
@@ -267,6 +269,7 @@ const EditorPosts = ({ step }) => {
                             </div>
                         </>
                     )}
+
 
                     {step === 2 && (
                         <>

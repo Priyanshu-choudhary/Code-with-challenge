@@ -28,13 +28,14 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   };
 
   useEffect(() => {
-   console.log(">>>>>>>",currentthemes);
-    if (currentthemes==true) {
+   console.log(">>>>>>>",bg);
+    if (bg=="#121418") {
       setThemes("vs-dark");
     }else{
       setThemes("light");
     }
-}, []);
+    console.log(themes);
+}, [bg]);
 
   const downloadFile = () => {
     const code = editorRef.current.getValue();
@@ -164,9 +165,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         <button onClick={getCode} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
           Run {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
         </button>{' '}
-        <button onClick={handleSubmit} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
-          Submit
-        </button>{' '}
+       
         <button onClick={downloadFile} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>
           Download
         </button>{' '}

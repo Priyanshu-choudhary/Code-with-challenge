@@ -91,7 +91,7 @@ function QuestionApi() {
                   <pre style={{ background: dark }}>1.{title}</pre><hr />
                 </Grid>
                 <Grid xs={2.5}>
-                  <p className={`button ${getDifficultyLabel()}`}  >{getDifficultyLabel()}</p>
+                  <p className={`button ${getDifficultyLabel()}`} style={{color:ibg}} >{getDifficultyLabel()}</p>
                 </Grid>
                 <Grid xs={14}>
                   <pre style={{ background: dark }}>  {description} </pre>
@@ -103,21 +103,19 @@ function QuestionApi() {
                 <Grid xs={16}>
                   <pre style={{ background: dark }}>{example}</pre>
                 </Grid>
-                <Grid className='subtitle' xs={15}><hr />
+                {optionA && <Grid className='subtitle' xs={15}><hr />
                   Output:
-                </Grid>
-                <Grid xs={16} style={{ background: dark }}>
-                  {answer}
-                </Grid>
-              </Grid><hr />
-              <Grid className='subtitle solution' xs={15}>
-                Test Cases:
-                <pre style={{ background: dark }}>{JSON.stringify(testcase)}</pre>
+                </Grid>}
+                
               </Grid>
+              
             </Col>
             <Col sm className="editorsection" style={{ height: "460px", overflowY: "scroll" }} id="scrollContainer" ref={containerRef}>
-              {/* <MyEditor myfun={scrollToBottom} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} /> */}
-              <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
+              {optionA ?
+                <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
+                :
+                <MyEditor myfun={scrollToBottom} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+              }
             </Col>
           </Row>
         </Container>
@@ -126,9 +124,13 @@ function QuestionApi() {
         <Button startIcon={<SkipPreviousIcon />} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
           Previous
         </Button>
-        <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+       {optionA ? <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
           Submit
         </Button>
+        :
+        <Button style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+          Submit
+        </Button>}
         <Button endIcon={<SkipNextIcon />} style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: bc, color: ibg }}>
           Next
         </Button>

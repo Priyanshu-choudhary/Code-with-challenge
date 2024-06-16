@@ -5,7 +5,7 @@ async function signUp(username, password, email) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: username, password: password, email: email }), // Include email in the request body
+      body: JSON.stringify({ name: username, password: password, email: email,roles:"USER" }), // Include email in the request body
     });
 
     return response;

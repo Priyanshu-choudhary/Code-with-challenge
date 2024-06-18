@@ -10,7 +10,7 @@ import { useContext } from 'react';
 import { UserContext } from '../Context/UserContext';
 
 export default function ImgMediaCard({ title, image, description, totalQuestions, handleDelete, courseId, courseName }) {
-  const { ibg, bc, light,role } = useContext(UserContext);
+  const { bg,ibg, bc, light,role } = useContext(UserContext);
 
   return (
     <Card style={{ backgroundColor: light, color: ibg }} sx={{ borderRadius: "15px", maxWidth: 345, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { opacity: "0.9", transform: 'scale(1.05)' } }}>
@@ -39,7 +39,8 @@ export default function ImgMediaCard({ title, image, description, totalQuestions
           sx={{
             backgroundColor: bc, // Custom red color
             '&:hover': {
-              backgroundColor: bc, 
+              backgroundColor: ibg,
+              color: bg, 
               // Darker shade on hover
             },
           }}>Star</Button>

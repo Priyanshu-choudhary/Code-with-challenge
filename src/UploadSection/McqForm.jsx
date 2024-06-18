@@ -52,8 +52,8 @@ export default function McqForm({ uploadUrl }) {
         postData,
         {
           auth: {
-            username: uploadUrl,
-            password: uploadUrl,
+            username: "OfficialCources",
+            password: "OfficialCources",
           },
         }
       );
@@ -190,7 +190,7 @@ export default function McqForm({ uploadUrl }) {
         >
           Submit
         </Button>
-      </Box>}
+      </Box>
     </>
   );
 }

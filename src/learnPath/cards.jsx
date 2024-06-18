@@ -34,10 +34,18 @@ export default function ImgMediaCard({ title, image, description, totalQuestions
         <p>Questions: {totalQuestions}</p>
       </CardContent>
       <CardActions>
-        <Button size="small">Star</Button>
+        <Button size="small" variant="contained"
+          color="error" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
+          sx={{
+            backgroundColor: bc, // Custom red color
+            '&:hover': {
+              backgroundColor: bc, 
+              // Darker shade on hover
+            },
+          }}>Star</Button>
        { role=="ADMIN"?<Button
           variant="contained"
-          color="error" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
+          color="primary" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
           sx={{
             backgroundColor: '#f44336', // Custom red color
             '&:hover': {

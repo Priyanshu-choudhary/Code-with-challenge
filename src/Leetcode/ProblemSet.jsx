@@ -50,7 +50,7 @@ const LeetCodeClone = () => {
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
 
-      const basicAuth = 'Basic ' + btoa(`${title}:${title}`);
+      const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
       console.log(title);
       const response = await fetch(url, {
         method: 'GET',

@@ -4,7 +4,7 @@ const JDoodleExample = async (code, language, input, testCases) => {
     try {
         console.log("Test Cases:", testCases);
         let apiUrl = testCases && Object.keys(testCases).length > 0
-            ? "http://localhost:9090/code/execute"
+            ? "https://testcfc.onrender.com/code/execute"
             : "https://testcfc.onrender.com/code/execute";
 
         const response = await axios.post(apiUrl, {

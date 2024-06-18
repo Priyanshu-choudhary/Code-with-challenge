@@ -7,6 +7,7 @@ import Tags from '../UploadSection/Tags';
 import { CircularProgress, Button } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
+import PleaseLogin from '../PageNotFound/PleaseLogin';
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -127,7 +128,7 @@ const LeetCodeClone = () => {
     <div style={{ backgroundColor: bg, color: ibg }}>
       <Dashboard />
       <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
-      <div className="leetcode-clone-container">
+      {user ?<div className="leetcode-clone-container">
         <div className="content" style={{ background: dark }}>
           <div className='Profileheading' style={{ color: ibg }}>
             {title || 'Java Questions'}
@@ -197,7 +198,7 @@ const LeetCodeClone = () => {
             </div>
           )}
         </div>
-      </div>
+      </div>:<PleaseLogin/>}
     </div>
   );
 };

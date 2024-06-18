@@ -81,6 +81,28 @@ function LearningPage() {
     navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions } });
   };
 
+  const handleDelete = async (courseId, courseName) => {
+    if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
+      const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
+      try {
+        const response = await fetch(`https://testcfc.onrender.com/Course/id/${courseId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': basicAuth,
+          },
+        });
+        if (response.ok) {
+          // Remove the course from state
+          setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
+        } else {
+          console.error('Failed to delete course:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting course:', error);
+      }
+    }
+  };
+
   return (
     <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
       <Dashboard />
@@ -114,12 +136,15 @@ function LearningPage() {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
           {officialCourses.map((course, index) => (
-            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }}onClick={() => handleCardClick(course)}>
               <ImgMediaCard
                 title={course.title}
-                image={"./DSA.jpeg"}
+                image={"./Designer.png"}
                 description={course.description}
                 totalQuestions={course.totalQuestions}
+                handleDelete={handleDelete} // Pass handleDelete function
+                courseId={course.id} // Pass course ID
+                courseName={course.title} // Pass course name
               />
             </div>
           ))}

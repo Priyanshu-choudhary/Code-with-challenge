@@ -5,11 +5,12 @@ import MyStepper from './Stepper'; // Import the MyStepper component
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import CourseForm from './newCourse';
+import UnauthorizedPage from '../PageNotFound/PleaseLogin';
 
 export default function QuestionTypeSelector() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [uploadUrl, setUploadUrl] = useState('');
-  const { bc, ibg, bg, light, dark } = useContext(UserContext);
+  const { bc, ibg, bg, light, dark ,role} = useContext(UserContext);
 
   const handleOptionSelect = (option) => {
     if (uploadUrl.trim() === '') {
@@ -30,8 +31,10 @@ export default function QuestionTypeSelector() {
   return (
     <>
       <Dashboard />
+      { role=="ADMIN"? 
       <div style={{ backgroundColor: bg, color: ibg, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card style={{ padding: '20px', textAlign: 'center', backgroundColor: light, color: ibg }}>
+      
+          <Card style={{ padding: '20px', textAlign: 'center', backgroundColor: light, color: ibg }}>
           <CardContent>
             <Typography variant="h5" component="div" gutterBottom>
               Choose
@@ -55,7 +58,7 @@ export default function QuestionTypeSelector() {
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </div>:<UnauthorizedPage/>}
     </>
   );
 }

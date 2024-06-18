@@ -130,6 +130,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
     hideCursorInOverviewRuler: true,
     matchBrackets: 'always',
     suggestOnTriggerCharacters: true,
+    defaultLanguage:{language},
     minimap: {
       enabled: false,
     },
@@ -150,7 +151,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         className='editor'
         height="400px"
         width="auto"
-        defaultLanguage={language}
+       
         theme={themes}
         defaultValue={`class Solution{
     public int findLargestNumber(int[] arr){

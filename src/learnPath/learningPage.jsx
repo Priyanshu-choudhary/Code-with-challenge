@@ -117,7 +117,7 @@ function LearningPage() {
             <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
               <ImgMediaCard
                 title={course.title}
-                image={"./public/DSA.jpeg"}
+                image={"./DSA.jpeg"}
                 description={course.description}
                 totalQuestions={course.totalQuestions}
               />

@@ -12,6 +12,7 @@ import axios from 'axios';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
 import Grid from '@mui/material/Grid';
+import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
 
 export default function McqForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
@@ -66,7 +67,8 @@ export default function McqForm({ uploadUrl }) {
   return (
     <>
       <Dashboard />
-      <Box className="mcq-form-container">
+      { role=="ADMIN"? 
+        <Box className="mcq-form-container">
         {alert.show && <Alert severity={alert.severity}>{alert.message}</Alert>}
         <TextField
           id="title"
@@ -190,6 +192,7 @@ export default function McqForm({ uploadUrl }) {
           Submit
         </Button>
       </Box>
+      :<UnauthorizedPage/>}
     </>
   );
 }

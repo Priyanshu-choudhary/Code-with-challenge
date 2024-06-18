@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "./ReceiveQuestion.css";
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from 'react-bootstrap/Container';
@@ -6,22 +6,30 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React, { useRef, useContext, useEffect, useState } from 'react';
 import MyEditor from "./SoleSecEditor";
-import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import Mcq from './Mcq';
 
+import useCreateCourse from '../learnPath/CourseCreateApi';
+import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
+
 function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes } = useContext(UserContext);
   const location = useLocation();
-  const problem = location.state || {}; // Ensure problem is an object
-  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', navHistory = '', currentPage = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
+  const navigate = useNavigate();
+  const { totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
+  const [problem, setProblem] = useState(problems[currentIndex] || {});
+  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
   const [themes, setthemes] = useState("vs-dark");
   const [selectedOption, setSelectedOption] = useState('');
+  const [flag, setflag] = useState("true");
+
+  const createCourse = useCreateCourse();
+  const updateCourse = useUpdateCourse();
 
   const containerRef = useRef(null);
 
@@ -31,14 +39,11 @@ function QuestionApi() {
   };
 
   useEffect(() => {
-    // Add 'no-scroll' class to body
     document.body.classList.add('no-scroll');
-
-    // Clean up function to remove 'no-scroll' class when component unmounts
     return () => {
       document.body.classList.remove('no-scroll');
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('currentthemes');
@@ -47,22 +52,81 @@ function QuestionApi() {
     }
   }, [setcurrentthemes]);
 
+  useEffect(() => {
+    setProblem(problems[currentProblemIndex] || {});
+    setSelectedOption('');
+  }, [currentProblemIndex, problems]);
+
   const questionOptions = [
     { value: 'optionA', label: optionA },
     { value: 'optionB', label: optionB },
     { value: 'optionC', label: optionC },
     { value: 'optionD', label: optionD },
   ];
+  const update = async () => {
+    // Update course if already created
+    const progress = 1; // Example progress value, replace with actual logic
+    const completeQuestions = [problem.id]; // Initialize with the current problem ID
 
-  const checkAnswer = () => {
+    // Rating calculation based on difficulty
+    let rating = 10; // Default rating
+    if (difficulty) {
+      const lowerDifficulty = difficulty.toLowerCase();
+      if (lowerDifficulty === 'easy') {
+        rating = 30;
+      } else if (lowerDifficulty === 'medium') {
+        rating = 60;
+      } else if (lowerDifficulty === 'hard') {
+        rating = 80;
+      }
+    }
+
+    try {
+      // Find the course ID matching navHistory
+      const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
+      const courseToUpdate = existingCourses.find(course => course.title === navHistory);
+      if (courseToUpdate) {
+        const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
+        if (result.success) {
+          alert('Course updated successfully!');
+        } else {
+          alert(`Error updating course: ${result.error}`);
+        }
+      } else {
+        alert(`Course with title '${navHistory}' not found.`);
+      }
+    } catch (updateError) {
+      console.error('Error updating course:', updateError);
+    }
+
+  };
+
+  const checkAnswer = async () => {
     if (selectedOption === answer) {
-      alert('You got it!');
+      try {
+        const progress = 0; // Example progress value, replace with actual logic
+        const completeQuestions = [problem.id]; // Initialize with the current problem ID
+
+        const response = await createCourse(navHistory);
+        console.log('Course created:', response);
+        // alert('You got it!');
+        if (flag) {
+          update();
+          setflag("false");
+        }
+
+      } catch (error) {
+        console.error('Error creating course:', error);
+update();
+        // alert('You got it!');
+      }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');
     } else {
       alert('Please select an option.');
     }
   };
+
 
   const handleOptionSelect = (value) => {
     setSelectedOption(value);
@@ -75,6 +139,18 @@ function QuestionApi() {
       return type;
     } else {
       return 'Unknown';
+    }
+  };
+
+  const handleNext = () => {
+    if (currentProblemIndex < problems.length - 1) {
+      setCurrentProblemIndex(currentProblemIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentProblemIndex > 0) {
+      setCurrentProblemIndex(currentProblemIndex - 1);
     }
   };
 
@@ -91,24 +167,27 @@ function QuestionApi() {
                   <pre style={{ background: dark }}>1.{title}</pre><hr />
                 </Grid>
                 <Grid xs={2.5}>
-                  <p className={`button ${getDifficultyLabel()}`} style={{color:ibg}} >{getDifficultyLabel()}</p>
+                  <p className={`button ${getDifficultyLabel()}`} style={{ color: ibg }} >{getDifficultyLabel()}</p>
                 </Grid>
                 <Grid xs={14}>
                   <pre style={{ background: dark }}>  {description} </pre>
                 </Grid>
                 <Grid xs={0}></Grid>
-                <Grid className='subtitle' xs={15}><hr />
-                  Examples:
-                </Grid>
-                <Grid xs={16}>
-                  <pre style={{ background: dark }}>{example}</pre>
-                </Grid>
-                {optionA && <Grid className='subtitle' xs={15}><hr />
+
+                {example && <>
+                  <Grid className='subtitle' xs={15}><hr />
+                    Examples:
+                  </Grid>
+                  <Grid xs={16}>
+                    <pre style={{ background: dark }}>{example}</pre>
+                  </Grid>
+                </>}
+                {optionA ? <></> : <Grid className='subtitle' xs={15}><hr />
                   Output:
                 </Grid>}
-                
+
               </Grid>
-              
+
             </Col>
             <Col sm className="editorsection" style={{ height: "460px", overflowY: "scroll" }} id="scrollContainer" ref={containerRef}>
               {optionA ?
@@ -121,17 +200,29 @@ function QuestionApi() {
         </Container>
       </div>
       <div style={{ justifyContent: "center", alignItems: "center", display: "flex", paddingBottom: "100px", gap: "50px", background: bg }}>
-        <Button startIcon={<SkipPreviousIcon />} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+        <Button
+          startIcon={<SkipPreviousIcon />}
+          style={{ margin: "4px", backgroundColor: bc, color: ibg }}
+          onClick={handlePrevious}
+          disabled={currentProblemIndex === 0}
+        >
           Previous
         </Button>
-       {optionA ? <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-          Submit
-        </Button>
-        :
-        <Button style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-          Submit
-        </Button>}
-        <Button endIcon={<SkipNextIcon />} style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: bc, color: ibg }}>
+        {optionA ?
+          <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+            Submit
+          </Button>
+          :
+          <Button style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+            Submit
+          </Button>
+        }
+        <Button
+          endIcon={<SkipNextIcon />}
+          style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: bc, color: ibg }}
+          onClick={handleNext}
+          disabled={currentProblemIndex === problems.length - 1}
+        >
           Next
         </Button>
       </div>

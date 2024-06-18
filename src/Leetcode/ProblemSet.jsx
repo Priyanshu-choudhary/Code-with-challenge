@@ -5,10 +5,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
 import { CircularProgress, Button } from '@mui/material';
-import PropTypes from 'prop-types';
 import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 
 const LeetCodeClone = () => {
@@ -25,8 +22,10 @@ const LeetCodeClone = () => {
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password } = useContext(UserContext);
   const location = useLocation();
-  const { title, description, progress } = location.state || {};
-  
+  const {totalQuestions, title, description, progress } = location.state || {};
+  // const { totalQuestions, ...otherData } = location.state || {};
+
+
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -50,7 +49,8 @@ const LeetCodeClone = () => {
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
 
-      const basicAuth = 'Basic ' + btoa('course:course');
+      const basicAuth = 'Basic ' + btoa(`${title}:${title}`);
+      console.log(title);
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -107,8 +107,16 @@ const LeetCodeClone = () => {
     }
   }, [title]);
 
-  const handleProblemClick = (problem) => {
-    navigate(`/question/${problem.id}`, { state: { ...problem, navHistory, currentPage } });
+  const handleProblemClick = (problem, index) => {
+    navigate(`/question/${problem.id}`, { 
+      state: { 
+        problems, 
+        currentIndex: index, 
+        navHistory, 
+        currentPage, 
+        totalProblems: problems.length // Pass the total number of problems
+      } 
+    });
   };
 
   const handleToggleView = (view) => {
@@ -132,7 +140,7 @@ const LeetCodeClone = () => {
                 <div
                   key={problem.id}
                   className="problem"
-                  onClick={() => handleProblemClick(problem)}
+                  onClick={() => handleProblemClick(problem, index)}
                   style={{
                     backgroundColor: hoverIndex === index ? bc : light,
                     transition: 'background-color 0.3s',
@@ -146,7 +154,7 @@ const LeetCodeClone = () => {
                   <div className="problem-title">{index + 1}. {problem.title}</div>
                   <div className="problem-details">
                     {problem.type === "MCQ" ? (
-                      <p style={{ borderWidth: "1.5px",borderRadius:"5px", padding:"2px 5px 0px", borderColor:"blueviolet" }}>MCQ</p>
+                      <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>
                     ) : (
                       <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
                     )}
@@ -154,6 +162,7 @@ const LeetCodeClone = () => {
                 </div>
               )) : <p>No problems found.</p>}
             </div>
+
           ) : (
             <p>Failed to load problems. Please try again later.</p>
           )}
@@ -177,8 +186,8 @@ const LeetCodeClone = () => {
           </div>
           {view === 'stats' ? (
             <div className="stats-container" style={{ background: dark, color: ibg }}>
-              <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {progress}%
-                <LinearProgress thickness={4} variant="determinate" value={progress} />
+              <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress/totalQuestions)*100).toFixed(2)}%
+                <LinearProgress thickness={4} variant="determinate" value={(progress/totalQuestions)*100} />
               </p>
               {description && <p>{description}</p>}
             </div>

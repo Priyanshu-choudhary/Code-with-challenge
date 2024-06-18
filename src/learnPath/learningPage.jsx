@@ -7,21 +7,17 @@ import { UserContext } from '../Context/UserContext';
 
 function LearningPage() {
   const navigate = useNavigate();
-  const { ibg, user, password, bg, dark, light } = useContext(UserContext); // Access the user and password from context
-  const [courses, setCourses] = useState([]);
-  const coursesRef = useRef(null); // Use useRef to store the courses
+  const { ibg, user, password, bg, dark } = useContext(UserContext);
+  const [userCourses, setUserCourses] = useState([]);
+  const [officialCourses, setOfficialCourses] = useState([]);
+
+  const userCoursesRef = useRef(null);
+  const officialCoursesRef = useRef(null);
 
   useEffect(() => {
-    // Load courses from localStorage if available
-    const storedCourses = JSON.parse(localStorage.getItem('courses'));
-    if (storedCourses) {
-      setCourses(storedCourses);
-      coursesRef.current = storedCourses;
-    }
-
-    const fetchCourses = async () => {
+    const fetchUserCourses = async () => {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      console.log('Fetching courses with auth:', basicAuth);
+      console.log('Fetching user courses with auth:', basicAuth);
 
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
@@ -33,36 +29,56 @@ function LearningPage() {
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data)) {
-            localStorage.setItem('courses', JSON.stringify(data)); // Store fetched data in localStorage
-            coursesRef.current = data; // Store the fetched data in useRef
-            setCourses(data);
+            localStorage.setItem('userCourses', JSON.stringify(data));
+            userCoursesRef.current = data;
+            setUserCourses(data);
           } else {
-            console.error('Fetched data is not an array:', data);
-            setCourses([]);
+            console.error('Fetched user data is not an array:', data);
+            setUserCourses([]);
           }
         } else {
-          console.error('Failed to fetch courses:', response.status, response.statusText);
+          console.error('Failed to fetch user courses:', response.status, response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching courses:', error);
+        console.error('Error fetching user courses:', error);
       }
     };
 
-    fetchCourses();
+    const fetchOfficialCourses = async () => {
+      const officialAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
+      console.log('Fetching official courses with auth:', officialAuth);
+
+      try {
+        const response = await fetch('https://testcfc.onrender.com/Course', {
+          method: 'GET',
+          headers: {
+            'Authorization': officialAuth,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            localStorage.setItem('officialCourses', JSON.stringify(data));
+            officialCoursesRef.current = data;
+            setOfficialCourses(data);
+          } else {
+            console.error('Fetched official data is not an array:', data);
+            setOfficialCourses([]);
+          }
+        } else {
+          console.error('Failed to fetch official courses:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching official courses:', error);
+      }
+    };
+
+    fetchUserCourses();
+    fetchOfficialCourses();
   }, [user, password]);
 
-  const basicCards = [
-    { title: 'DSA', image: '/DSA.jpeg', description: 'This is a data structures and algorithms course with a strong focus on passing coding interviews', progress: 0 },
-    { title: 'Web Development', image: '/R.jpeg', description: 'Learn the basics of web development, including HTML, CSS, and JavaScript.', progress: 50 },
-  ];
-
-  const intermediateCards = [
-    { title: 'Advanced DSA', image: '/AdvanceDSA.png', description: 'Deep dive into advanced data structures and algorithms.', progress: 30 },
-    { title: 'React', image: '/react.jpg', description: 'Learn how to build interactive user interfaces with React.', progress: 70 },
-  ];
-
-  const handleCardClick = (card) => {
-    navigate('/QuestionApi', { state: card });
+  const handleCardClick = (course) => {
+    navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions } });
   };
 
   return (
@@ -74,12 +90,21 @@ function LearningPage() {
       </p>
       <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
         <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-          Resume Preparation.
+          Resume Preparation
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-          {courses.map((course, index) => (
-            <YourProgressCard key={index} title={course.title} progress={course.progress} />
+          {userCourses.map((course, index) => (
+            <YourProgressCard  
+              key={index}
+              title={course.title}
+              progress={course.progress}
+              totalQuestions={course.totalQuestions}
+              rating={course.rating}
+              completeQuestions={course.completeQuestions}
+              course={course}
+            />
           ))}
+          {!userCourses[0] && <p style={{color:ibg,fontSize:"13px"}}>Please enroll in any course.</p>}
         </div>
       </div>
 
@@ -88,22 +113,14 @@ function LearningPage() {
           Basic
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-          {basicCards.map((card, index) => (
-            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
-              <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-        <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-          Intermediate
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-          {intermediateCards.map((card, index) => (
-            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(card)}>
-              <ImgMediaCard title={card.title} image={card.image} description={card.description} progress={card.progress} />
+          {officialCourses.map((course, index) => (
+            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+              <ImgMediaCard
+                title={course.title}
+                image={"./public/DSA.jpeg"}
+                description={course.description}
+                totalQuestions={course.totalQuestions}
+              />
             </div>
           ))}
         </div>

@@ -9,9 +9,10 @@ import { useState, useContext } from 'react';
 import { UserContext } from '../Context/UserContext';
 
 export default function Mcq({ title, options, onOptionSelect }) {
+  
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
-  const [helperText, setHelperText] = useState('Choose wisely');
+  const [helperText, setHelperText] = useState('');
   const { ibg, light } = useContext(UserContext);
 
   const handleRadioChange = (event) => {
@@ -27,7 +28,7 @@ export default function Mcq({ title, options, onOptionSelect }) {
     <div style={{ display: "flex" }}>
       <div style={{ backgroundColor: ibg, width: "1px" }}></div>
       <FormControl sx={{ m: 2, color: ibg, width: '100%', overflowY: 'hidden' }} error={error}>
-        <FormLabel id="demo-error-radios" sx={{ color: ibg, fontWeight: 'bolder' }}>{title}</FormLabel>
+        <FormLabel id="demo-error-radios" sx={{ color: ibg, fontWeight: 'bolder' }}></FormLabel>
         <RadioGroup
           aria-labelledby="demo-error-radios"
           name="quiz"

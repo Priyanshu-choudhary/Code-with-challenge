@@ -4,6 +4,7 @@ import McqForm from './McqForm'; // Import the McqForm component
 import MyStepper from './Stepper'; // Import the MyStepper component
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
+import CourseForm from './newCourse';
 
 export default function QuestionTypeSelector() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,6 +23,8 @@ export default function QuestionTypeSelector() {
     return <McqForm uploadUrl={uploadUrl} />;
   } else if (selectedOption === 'coding') {
     return <MyStepper uploadUrl={uploadUrl} />;
+  } else if (selectedOption === 'course') {
+    return <CourseForm uploadUrl={uploadUrl} />;
   }
 
   return (
@@ -31,7 +34,7 @@ export default function QuestionTypeSelector() {
         <Card style={{ padding: '20px', textAlign: 'center', backgroundColor: light, color: ibg }}>
           <CardContent>
             <Typography variant="h5" component="div" gutterBottom>
-              Choose Question Type
+              Choose
             </Typography>
             <TextField
             style={{backgroundColor:"white",color:ibg,marginBottom: '20px',padding:"5px",borderRadius:"5px"}}
@@ -46,6 +49,9 @@ export default function QuestionTypeSelector() {
             </Button>
             <Button variant="contained" color="secondary" onClick={() => handleOptionSelect('coding')} style={{ margin: '10px' }}>
               Coding Question
+            </Button>
+            <Button variant="contained" color="success" onClick={() => handleOptionSelect('course')} style={{ margin: '10px' }}>
+              new course
             </Button>
           </CardContent>
         </Card>

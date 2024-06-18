@@ -7,11 +7,10 @@ const useCreateCourse = () => {
   const createCourse = async (courseTitle) => {
     // Check if the course title already exists in local storage
     const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
-    if (existingCourses.includes(courseTitle)) {
+    if (existingCourses.some(course => course.title === courseTitle)) {
       throw new Error('Course with the same title already exists');
     }
 
-   
     const newCourse = {
       title: courseTitle,
       description: `${courseTitle} description`,
@@ -20,9 +19,10 @@ const useCreateCourse = () => {
 
     try {
       // Make API call to create the course
-      console.log(user+" "+password);
+      console.log(user + " " + password);
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      console.log("course detail "+JSON.stringify(newCourse));
+      console.log("course detail " + JSON.stringify(newCourse));
+
       const response = await fetch('https://testcfc.onrender.com/Course', {
         method: 'POST',
         headers: {
@@ -32,15 +32,25 @@ const useCreateCourse = () => {
         body: JSON.stringify(newCourse)
       });
 
+      const contentType = response.headers.get('content-type');
+      let data;
+
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.error('Unexpected response format:', text);
+        throw new Error('Failed to create course: Unexpected response format');
+      }
+
       if (!response.ok) {
         throw new Error('Failed to create course');
       }
 
-      // Update local storage with the new course title
-      const updatedCourses = [...existingCourses, courseTitle];
+      // Update local storage with the new course title and ID
+      const updatedCourses = [...existingCourses, { title: courseTitle, id: data.courseId }];
       localStorage.setItem("courses", JSON.stringify(updatedCourses));
 
-      const data = await response.json();
       console.log('Course created:', data);
       return data; // Return the created course data
     } catch (error) {

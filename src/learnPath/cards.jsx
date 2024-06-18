@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useContext } from 'react';
 import { UserContext } from '../Context/UserContext';
-export default function ImgMediaCard({ title, image, description, progress }) {
+export default function ImgMediaCard({ title, image, description, totalQuestions}) {
   const {ibg,bc, bg, light,dark } = useContext(UserContext);
 
   return (
@@ -31,7 +31,7 @@ export default function ImgMediaCard({ title, image, description, progress }) {
         </Typography>
         <hr />
         <br />
-        <p>Questions: 30</p>
+        <p>Questions: {totalQuestions}</p>
 
       </CardContent>
       <CardActions>

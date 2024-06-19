@@ -12,6 +12,9 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import Mcq from './Mcq';
+import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 import useCreateCourse from '../learnPath/CourseCreateApi';
 import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
@@ -27,6 +30,8 @@ function QuestionApi() {
   const [themes, setthemes] = useState("vs-dark");
   const [selectedOption, setSelectedOption] = useState('');
   const [flag, setflag] = useState("true");
+  const [loading, setLoading] = useState(false); // State for button loading
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar visibility
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
@@ -63,7 +68,10 @@ function QuestionApi() {
     { value: 'optionC', label: optionC },
     { value: 'optionD', label: optionD },
   ];
+
   const update = async () => {
+    setLoading(true); // Start loading spinner
+
     // Update course if already created
     const progress = 1; // Example progress value, replace with actual logic
     const completeQuestions = [problem.id]; // Initialize with the current problem ID
@@ -88,7 +96,7 @@ function QuestionApi() {
       if (courseToUpdate) {
         const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
         if (result.success) {
-          alert('Course updated successfully!');
+          setSnackbarOpen(true); // Show snackbar on successful update
         } else {
           alert(`Error updating course: ${result.error}`);
         }
@@ -97,8 +105,9 @@ function QuestionApi() {
       }
     } catch (updateError) {
       console.error('Error updating course:', updateError);
+    } finally {
+      setLoading(false); // Stop loading spinner
     }
-
   };
 
   const checkAnswer = async () => {
@@ -117,7 +126,7 @@ function QuestionApi() {
 
       } catch (error) {
         console.error('Error creating course:', error);
-update();
+        update();
         // alert('You got it!');
       }
     } else if (selectedOption) {
@@ -126,7 +135,6 @@ update();
       alert('Please select an option.');
     }
   };
-
 
   const handleOptionSelect = (value) => {
     setSelectedOption(value);
@@ -152,6 +160,10 @@ update();
     if (currentProblemIndex > 0) {
       setCurrentProblemIndex(currentProblemIndex - 1);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -211,6 +223,7 @@ update();
         {optionA ?
           <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
             Submit
+            {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
           </Button>
           :
           <Button style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
@@ -226,6 +239,16 @@ update();
           Next
         </Button>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          Correct answer!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

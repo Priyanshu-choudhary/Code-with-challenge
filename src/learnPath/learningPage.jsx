@@ -1,18 +1,41 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import ImgMediaCard from './cards';
 import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
+import styled from 'styled-components';
+
+const PageContainer = styled.div`
+  background-color: ${({ bg }) => bg};
+  height: 100vh;
+`;
 
 function LearningPage() {
   const navigate = useNavigate();
   const { ibg, user, password, bg, dark } = useContext(UserContext);
-  const [userCourses, setUserCourses] = useState([]);
-  const [officialCourses, setOfficialCourses] = useState([]);
+  const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
+  const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
+  const [maxCardWidth, setMaxCardWidth] = useState(0);
 
   const userCoursesRef = useRef(null);
   const officialCoursesRef = useRef(null);
+
+  const updateMaxCardWidth = useCallback((courses) => {
+    let maxWidth = 0;
+    courses.forEach((course) => {
+      const textWidth = Math.max(
+        course.title.length,
+        `${((course.progress / course.totalQuestions) * 100).toFixed(2)}%`.length,
+        `[${course.progress}/${course.totalQuestions}]`.length,
+        `Rating: ${course.rating}`.length
+      );
+      if (textWidth > maxWidth) {
+        maxWidth = textWidth;
+      }
+    });
+    setMaxCardWidth(maxWidth * 10); // Adjust the multiplier to account for font size and padding
+  }, []);
 
   useEffect(() => {
     const fetchUserCourses = async () => {
@@ -32,6 +55,7 @@ function LearningPage() {
             localStorage.setItem('userCourses', JSON.stringify(data));
             userCoursesRef.current = data;
             setUserCourses(data);
+            updateMaxCardWidth(data);
           } else {
             console.error('Fetched user data is not an array:', data);
             setUserCourses([]);
@@ -75,7 +99,7 @@ function LearningPage() {
 
     fetchUserCourses();
     fetchOfficialCourses();
-  }, [user, password]);
+  }, [user, password, updateMaxCardWidth]);
 
   const handleCardClick = (course) => {
     navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions } });
@@ -94,6 +118,7 @@ function LearningPage() {
         if (response.ok) {
           // Remove the course from state
           setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
+          localStorage.setItem('officialCourses', JSON.stringify(officialCoursesRef.current.filter((course) => course.id !== courseId)));
         } else {
           console.error('Failed to delete course:', response.status, response.statusText);
         }
@@ -104,53 +129,56 @@ function LearningPage() {
   };
 
   return (
-    <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
-      <Dashboard />
-      <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
-        Learn Skills
-        <hr />
-      </p>
-      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-        <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-          Resume Preparation
+    <PageContainer bg={bg}>
+      <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
+        <Dashboard />
+        <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+          Learn Skills
+          <hr />
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-          {userCourses.map((course, index) => (
-            <YourProgressCard  
-              key={index}
-              title={course.title}
-              progress={course.progress}
-              totalQuestions={course.totalQuestions}
-              rating={course.rating}
-              completeQuestions={course.completeQuestions}
-              course={course}
-            />
-          ))}
-          {!userCourses[0] && <p style={{color:ibg,fontSize:"13px"}}>Please enroll in any course.</p>}
-        </div>
-      </div>
-
-      <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-        <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-          Basic
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-          {officialCourses.map((course, index) => (
-            <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }}onClick={() => handleCardClick(course)}>
-              <ImgMediaCard
+        <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+            Resume Preparation
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+            {userCourses.map((course, index) => (
+              <YourProgressCard
+                key={index}
                 title={course.title}
-                image={"./Designer.png"}
-                description={course.description}
+                progress={course.progress}
                 totalQuestions={course.totalQuestions}
-                handleDelete={handleDelete} // Pass handleDelete function
-                courseId={course.id} // Pass course ID
-                courseName={course.title} // Pass course name
+                rating={course.rating}
+                completeQuestions={course.completeQuestions}
+                course={course}
+                style={{ width: `${maxCardWidth}px` }}
               />
-            </div>
-          ))}
+            ))}
+            {!userCourses[0] && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
+          </div>
+        </div>
+
+        <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+            Basic
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+            {officialCourses.map((course, index) => (
+              <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+                <ImgMediaCard
+                  title={course.title}
+                  image={"./Designer.png"}
+                  description={course.description}
+                  totalQuestions={course.totalQuestions}
+                  handleDelete={handleDelete} // Pass handleDelete function
+                  courseId={course.id} // Pass course ID
+                  courseName={course.title} // Pass course name
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

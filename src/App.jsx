@@ -18,6 +18,7 @@ import LeaderBoard from './LeaderBoard/LeaderBoard';
 import MyStepper from './UploadSection/Stepper';
 import LearningPage from './learnPath/learningPage';
 import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
+import ProblemEditForm from './Leetcode/ProblemEditForm';
 
 
 
@@ -42,7 +43,7 @@ function App() {
           
           <Route path="/login" element={<LoginUser />} />
           
-          
+          <Route path="/edit/:problemId" element={<ProblemEditForm />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/Data" element={<MyDataGrid />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />

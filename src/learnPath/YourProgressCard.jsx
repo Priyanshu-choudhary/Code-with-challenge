@@ -16,7 +16,7 @@ function YourProgressCard({ title, progress ,rating,completeQuestions,totalQuest
 
   return (
     <div style={{ margin: "20px",borderWidth:"0.5px" ,borderColor:light,borderRadius:"15px"}}>
-      <div style={{ backgroundColor: light, paddingLeft: "20px", paddingBottom: "10px",paddingRight: "160px", Width: "80%", borderRadius: "15px" }}>
+      <div style={{ backgroundColor: light, paddingLeft: "20px", paddingBottom: "10px",paddingRight: "20px", Width: "80%", borderRadius: "15px" }}>
       
         <p style={{ fontSize: "15px",paddingTop:"10px" }}>Topic:</p>
         <div style={{display:"flex"}}> 

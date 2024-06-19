@@ -9,6 +9,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
+import MarkdownDisplay from './MarkdownFormate';
 
 
 const LeetCodeClone = () => {
@@ -118,6 +119,7 @@ const LeetCodeClone = () => {
         currentIndex: index, 
         navHistory, 
         currentPage, 
+        CourseDescription:description,
         totalProblems: problems.length // Pass the total number of problems
       } 
     });
@@ -251,7 +253,8 @@ const LeetCodeClone = () => {
                 <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
                   <LinearProgress thickness={4} variant="determinate" value={(progress / totalQuestions) * 100} />
                 </p>
-                {description && <p>{description}</p>}
+                {/* {description && <pre>{description}</pre>} */}
+                <MarkdownDisplay markdownText={description}/>
               </div>
             ) : (
               <div className="tags-container" style={{ background: dark, color: ibg }}>

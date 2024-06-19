@@ -4,7 +4,7 @@ import { UserContext } from '../Context/UserContext';
 const useCreateCourse = () => {
   const { user, password } = useContext(UserContext);
 
-  const createCourse = async (courseTitle) => {
+  const createCourse = async (courseTitle,description) => {
     // Check if the course title already exists in local storage
     const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
     if (existingCourses.some(course => course.title === courseTitle)) {
@@ -13,7 +13,7 @@ const useCreateCourse = () => {
 
     const newCourse = {
       title: courseTitle,
-      description: `${courseTitle} description`,
+      description: description,
       progress: "0"
     };
 

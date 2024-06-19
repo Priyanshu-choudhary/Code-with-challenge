@@ -6,11 +6,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../Context/UserContext';
 
 export default function ImgMediaCard({ title, image, description, totalQuestions, handleDelete, courseId, courseName }) {
-  const { bg,ibg, bc, light,role } = useContext(UserContext);
+  const { bg, ibg, bc, light, role } = useContext(UserContext);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
 
   return (
     <Card style={{ backgroundColor: light, color: ibg }} sx={{ borderRadius: "15px", maxWidth: 345, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { opacity: "0.9", transform: 'scale(1.05)' } }}>
@@ -26,8 +31,18 @@ export default function ImgMediaCard({ title, image, description, totalQuestions
         <Typography gutterBottom variant="h5" component="div">
           <p style={{ fontWeight: 'bolder' }}>{title}</p>
         </Typography>
-        <Typography variant="body2">
-          {description}
+        <Typography variant="body2" component="div">
+          <pre style={{ 
+            height: showFullDescription ? 'auto' : '6em', 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis', 
+            display: '-webkit-box', 
+            WebkitLineClamp: showFullDescription ? 'none' : '4', 
+            WebkitBoxOrient: 'vertical' 
+          }}>{description}</pre>
+          <Button size="small" onClick={toggleDescription}>
+            {showFullDescription ? 'Show less' : 'Read more'}
+          </Button>
         </Typography>
         <hr />
         <br />

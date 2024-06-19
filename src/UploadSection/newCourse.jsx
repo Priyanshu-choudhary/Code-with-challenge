@@ -83,7 +83,7 @@ export default function CourseForm({ uploadUrl }) {
           id="description"
           label="Description"
           multiline
-          rows={4}
+          rows={15}
           fullWidth
           value={formData.description}
           onChange={handleChange}

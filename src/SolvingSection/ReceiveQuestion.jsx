@@ -23,7 +23,7 @@ function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const {CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
   const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
@@ -70,7 +70,7 @@ function QuestionApi() {
   ];
 
   const update = async () => {
-    setLoading(true); // Start loading spinner
+    // Start loading spinner
 
     // Update course if already created
     const progress = 1; // Example progress value, replace with actual logic
@@ -91,6 +91,7 @@ function QuestionApi() {
 
     try {
       // Find the course ID matching navHistory
+
       const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
       const courseToUpdate = existingCourses.find(course => course.title === navHistory);
       if (courseToUpdate) {
@@ -111,12 +112,13 @@ function QuestionApi() {
   };
 
   const checkAnswer = async () => {
+    setLoading(true);
     if (selectedOption === answer) {
       try {
         const progress = 0; // Example progress value, replace with actual logic
         const completeQuestions = [problem.id]; // Initialize with the current problem ID
 
-        const response = await createCourse(navHistory);
+        const response = await createCourse(navHistory,description);
         console.log('Course created:', response);
         // alert('You got it!');
         if (flag) {
@@ -128,11 +130,16 @@ function QuestionApi() {
         console.error('Error creating course:', error);
         update();
         // alert('You got it!');
+        console.log(CourseDescription);
+     
+       
       }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');
+      setLoading(false);
     } else {
       alert('Please select an option.');
+      setLoading(false);
     }
   };
 

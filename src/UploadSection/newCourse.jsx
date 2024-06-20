@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
@@ -17,6 +18,8 @@ export default function CourseForm({ uploadUrl }) {
   });
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
+  const [permission, setPermission] = useState(''); // State to manage radio button value
+  const [loading, setLoading] = useState(false); // State to manage loading status
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -25,19 +28,25 @@ export default function CourseForm({ uploadUrl }) {
       [id]: value,
     }));
   };
+  const handlePermissionChange = (e) => {
+    setPermission(e.target.value);
+  };
 
   const handleSubmit = async () => {
+    setLoading(true); // Set loading to true when the form is submitted
+
     const postData = {
       title: formData.title,
       description: formData.description,
       totalQuestions: formData.totalQuestions,
+      permission: permission,
     };
 
     console.log('Form data to be sent:', JSON.stringify(postData));
 
     try {
       const response = await axios.post(
-        'https://testcfc.onrender.com/Course',
+        'http://localhost:9090/Course',
         postData,
         {
           headers: {
@@ -64,6 +73,8 @@ export default function CourseForm({ uploadUrl }) {
       }
 
       setAlert({ show: true, message: `Failed to upload course to ${uploadUrl}`, severity: 'error' });
+    } finally {
+      setLoading(false); // Set loading to false after the API call is complete
     }
   };
 
@@ -98,13 +109,35 @@ export default function CourseForm({ uploadUrl }) {
           onChange={handleChange}
           margin="normal"
         />
+        <div style={{display:"flex",justifyContent:"center"}}>
+          <label>
+            <input
+              type="radio"
+              value="public"
+              checked={permission === 'public'}
+              onChange={handlePermissionChange}
+            />
+            Public
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="private"
+              checked={permission === 'private'}
+              onChange={handlePermissionChange}
+            />
+            Private
+          </label>
+        </div>
         <Button
+          style={{width:"100%"}}
           variant="contained"
           color="primary"
           onClick={handleSubmit}
           className="submit-button"
+          disabled={loading} // Disable the button when loading
         >
-          Submit
+          {loading ? <CircularProgress size={24} /> : 'Submit'} {/* Show spinner when loading */}
         </Button>
       </Box>
     </>

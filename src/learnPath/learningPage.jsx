@@ -6,6 +6,7 @@ import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
 import styled from 'styled-components';
 
+
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -13,7 +14,7 @@ const PageContainer = styled.div`
 
 function LearningPage() {
   const navigate = useNavigate();
-  const { ibg, user, password, bg, dark } = useContext(UserContext);
+  const { ibg, user, password, bg, dark, role } = useContext(UserContext);
   const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
   const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
@@ -73,7 +74,7 @@ function LearningPage() {
       console.log('Fetching official courses with auth:', officialAuth);
 
       try {
-        const response = await fetch('https://testcfc.onrender.com/Course', {
+        const response = await fetch('http://localhost:9090/Course', {
           method: 'GET',
           headers: {
             'Authorization': officialAuth,
@@ -162,19 +163,30 @@ function LearningPage() {
             Basic
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-            {officialCourses.map((course, index) => (
-              <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
-                <ImgMediaCard
-                  title={course.title}
-                  image={"./Designer.png"}
-                  description={course.description}
-                  totalQuestions={course.totalQuestions}
-                  handleDelete={handleDelete} // Pass handleDelete function
-                  courseId={course.id} // Pass course ID
-                  courseName={course.title} // Pass course name
-                />
-              </div>
-            ))}
+            {officialCourses.map((course, index) => {
+              if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
+                console.log(course.permission);
+                return (
+                  <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+                    
+                    <ImgMediaCard
+                    id={course.id}
+                      title={course.title}
+                      image={"./Designer.png"}
+                      description={course.description}
+                      totalQuestions={course.totalQuestions}
+                      handleDelete={handleDelete} // Pass handleDelete function
+                      courseId={course.id} // Pass course ID
+                      courseName={course.title} // Pass course name
+                      permission={course.permission}
+                    />
+                  </div>
+                );
+              } else  {
+               
+                return null;
+              }
+            })}
           </div>
         </div>
       </div>

@@ -74,7 +74,7 @@ function LearningPage() {
       console.log('Fetching official courses with auth:', officialAuth);
 
       try {
-        const response = await fetch('http://localhost:9090/Course', {
+        const response = await fetch('https://testcfc.onrender.com/Course', {
           method: 'GET',
           headers: {
             'Authorization': officialAuth,

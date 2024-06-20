@@ -46,7 +46,7 @@ export default function CourseForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        'http://localhost:9090/Course',
+        'https://testcfc.onrender.com/Course',
         postData,
         {
           headers: {

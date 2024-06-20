@@ -78,8 +78,8 @@ console.log(id);
         <br />
         <div style={{display:"flex",justifyContent:"space-between"}}>
           <p>Questions: {totalQuestions}</p>
-          <button style={{backgroundColor:bc,padding:"5px",borderRadius:"10px"}}onClick={() => handlePermissionChange()}>{permission}</button>
-        </div>
+         {role=="ADMIN" && <button style={{backgroundColor:bc,padding:"5px",borderRadius:"10px"}}onClick={() => handlePermissionChange()}>{permission}</button>
+  }</div>
       </CardContent>
       <CardActions>
         <Button size="small" variant="contained"

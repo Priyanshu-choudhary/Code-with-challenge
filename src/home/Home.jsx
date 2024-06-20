@@ -22,18 +22,14 @@ function Home() {
   const [theme, settheme] = useState(bc);
   useEffect(() => {
     const options = {
-      strings: ["Welcome to: Code-for-Challenge: Elevate Your Coding Skills"],
-      typeSpeed: 30,
+      strings: ["Welcome to: \n Code-for-Challenge: Elevate Your Coding Skills"],
+      typeSpeed: 50,
       // backSpeed: 50,
       // loop: true
     };
 
     const typed = new Typed('.typing-element', options);
     setTypedInstance(typed);
-
-    // No cleanup function, Typed instance won't be destroyed
-
-    // Return empty function to avoid eslint warning about missing dependencies
     return () => {};
   }, []);
 

@@ -41,7 +41,7 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://testcfc.onrender.com/Posts/filter" : "https://testcfc.onrender.com/Posts";
+    let API_URL = tags.length > 0 ? "https://testcfc.onrender.com/Posts/filter" : `https://testcfc.onrender.com/Posts/Course/${title}`;
     setLoading(true); // Start loading indicator
 
     try {

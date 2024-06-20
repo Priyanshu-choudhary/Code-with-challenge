@@ -13,6 +13,7 @@ export default function CourseForm({ uploadUrl }) {
     title: '',
     description: '',
     totalQuestions: '',
+    posts:'',
   });
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });

@@ -48,7 +48,7 @@ export default function McqForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        'https://testcfc.onrender.com/Posts',
+        `https://testcfc.onrender.com/Posts/Course/${uploadUrl}`,
         postData,
         {
           auth: {

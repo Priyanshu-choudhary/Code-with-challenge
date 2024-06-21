@@ -12,7 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 
 
-function MyEditor({ myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
+function MyEditor({ problem ,myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
@@ -22,7 +22,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
   const {ibg, bg,bc,dark,light,user, password ,currentthemes} = useContext(UserContext);
   const createCourse = useCreateCourse(); // Call the custom hook
 
-
+console.log(problem.templateCode);
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
   };
@@ -59,7 +59,7 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
     myfun();
     if (editorRef.current) {
       let code = editorRef.current.getValue();
-      code = "import java.util.*;" + code + boilerCode;
+      code = code + boilerCode;
       setiSubmit(true);
 
       const output = await JDoodleExample(code, language, '', testcase);
@@ -153,14 +153,10 @@ function MyEditor({ myfun, answer, title, description, difficulty, Example, test
         width="auto"
        
         theme={themes}
-        defaultValue={`class Solution{
-    public int findLargestNumber(int[] arr){
-
-        return null;
-        }
-}`}
+        defaultValue={problem.templateCode}
         onMount={handleEditorDidMount}
         options={options}
+        language='java'
       />
       <div className="button-container">
         <button onClick={getCode} className="btn btn-secondary" style={{backgroundColor:bc, color:ibg}}>

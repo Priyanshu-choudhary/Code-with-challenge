@@ -7,11 +7,12 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Dashboard from '../dashBoard/Dashboard';
-import EditorPosts from './UploadQ';
+
 
 
 import { UserContext } from '../Context/UserContext';
 import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
+import EditorPosts from './UploadQ/UploadQ';
 
 const steps = ['Add basic details', 'Test cases and boiler code', 'Select tags/Time complexicity'];
 

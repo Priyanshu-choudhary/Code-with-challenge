@@ -35,7 +35,7 @@ function QuestionApi() {
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
-
+console.log(JSON.stringify(problem));
   const containerRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -212,7 +212,7 @@ function QuestionApi() {
               {optionA ?
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
-                <MyEditor myfun={scrollToBottom} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                <MyEditor myfun={scrollToBottom} problem={problem}  themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
               }
             </Col>
           </Row>

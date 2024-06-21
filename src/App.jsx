@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginUser from './loginSigin/LoginUser';
-import EditorPosts from './UploadSection/UploadQ';
+// import EditorPosts from './UploadSection/UploadQ';
 import Home from './home/Home';
-
 import { UserProvider } from './Context/UserContext';
 
+import { FormProvider } from './Context/FormContext';
 import LogOut from './loginSigin/LogOut';
 import YourProfile from './Profile/YourProfile';
 
@@ -28,33 +28,36 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-      <Router>
- 
-        <Routes>
-          
-          <Route path="/" element={<Home />} />
-          <Route path="/Upload" element={<QuestionTypeSelector />} />
-          <Route path="/logout" element={<LogOut />} />
-          <Route path="/yourProfile" element={<YourProfile />} />
-          <Route path="/EditorComponent" element={<EditorComponent />} />
-          <Route path="/QuestionApi" element={<LeetCodeClone />} />
-          <Route path="/question/:id" element={<QuestionApi />} />
-          
-          
-          <Route path="/login" element={<LoginUser />} />
-          
-          <Route path="/edit/:problemId" element={<ProblemEditForm />} />
-          <Route path="/register" element={<RegisterUser />} />
-          <Route path="/Data" element={<MyDataGrid />} />
-          <Route path="/leaderboard" element={<LeaderBoard />} />
-          <Route path="/learn" element={<LearningPage/>} />
-          
-      
-          
-   
-        </Routes>
-      </Router>
+        <FormProvider>
+          <Router>
+
+            <Routes>
+
+              <Route path="/" element={<Home />} />
+              <Route path="/Upload" element={<QuestionTypeSelector />} />
+              <Route path="/logout" element={<LogOut />} />
+              <Route path="/yourProfile" element={<YourProfile />} />
+              <Route path="/EditorComponent" element={<EditorComponent />} />
+              <Route path="/QuestionApi" element={<LeetCodeClone />} />
+              <Route path="/question/:id" element={<QuestionApi />} />
+
+
+              <Route path="/login" element={<LoginUser />} />
+
+              <Route path="/edit/:problemId" element={<ProblemEditForm />} />
+              <Route path="/register" element={<RegisterUser />} />
+              <Route path="/Data" element={<MyDataGrid />} />
+              <Route path="/leaderboard" element={<LeaderBoard />} />
+              <Route path="/learn" element={<LearningPage />} />
+
+
+
+
+            </Routes>
+          </Router>
+        </FormProvider>
       </UserProvider>
+
     </div>
   );
 }

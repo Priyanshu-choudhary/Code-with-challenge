@@ -46,10 +46,12 @@ export default function StripedGrid() {
     const [tagsVisible, setTagsVisible] = useState(false);
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
-    const { bg,bc,ibg,dark,light,user, password, role } = useContext(UserContext);
-    const [titleBreadCumb, settitleBreadCumb] = useState('')
-    const [currentPage, setcurrentPage] = useState("Problem Set")
-    
+    const { bg, bc, ibg, dark, light, user, password, role } = useContext(UserContext);
+    const [titleBreadCumb, settitleBreadCumb] = useState('');
+    const [currentPage, setcurrentPage] = useState("Problem Set");
+    const [navHistory, setNavHistory] = useState([]); // Assuming you have this state to track navigation history
+    const [description, setDescription] = useState(''); // Assuming you have this state for course description
+
     const handleTagsChange = useCallback((selectedTags) => {
         setTags(selectedTags);
     }, []);
@@ -58,22 +60,31 @@ export default function StripedGrid() {
         const selectedProblem = problems.find(p => p.id === params.row.id);
         settitleBreadCumb(selectedProblem);
         if (selectedProblem) {
-            navigate(`/question/${selectedProblem.id}`, { state: { ...selectedProblem, currentPage } });
+            navigate(`/question/${selectedProblem.id}`, {
+                state: {
+                    problems,
+                    currentIndex: params.row.index - 1, // Adjusted for 0-based index
+                    navHistory,
+                    currentPage,
+                    CourseDescription: description,
+                    totalProblems: problems.length // Pass the total number of problems
+                }
+            });
         }
     };
 
     const fetchProblems = async (selectedTags = []) => {
         setIsLoading(true);
-    
+
         try {
             const basicAuth = 'Basic ' + btoa('YadiChoudhary:YadiChoudhary');
-            let API_URL = 'https://testcfc.onrender.com/Posts';
-    
+            let API_URL = 'http://localhost:9090/Posts';
+
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
                 API_URL = `https://testcfc.onrender.com/Posts/filter?${tagsQuery}&exactMatch=true`;
             }
-    
+
             // Check if there is cached data in local storage
             const cachedData = localStorage.getItem('cachedProblems');
             const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
@@ -81,25 +92,25 @@ export default function StripedGrid() {
                 'Content-Type': 'application/json',
                 'Authorization': basicAuth
             };
-    
+
             // Add If-Modified-Since header conditionally
             if (cachedLastModified && cachedLastModified !== 'null') {
                 headers['If-Modified-Since'] = cachedLastModified;
             }
-    
+
             console.log('API_URL:', API_URL); // Log the URL
             console.log('Headers:', headers); // Log the headers
-    
+
             const response = await fetch(API_URL, {
                 method: 'GET',
                 headers: headers
             });
-    
+
             console.log('Response status:', response.status);
-    
-            if(response.status==204){
+
+            if (response.status == 204) {
                 setProblems([]);
-            }else if (response.status === 304 && cachedData) {
+            } else if (response.status === 304 && cachedData) {
                 // Server indicates data has not been modified
                 const parsedCachedData = JSON.parse(cachedData);
                 setProblems(parsedCachedData);
@@ -119,16 +130,16 @@ export default function StripedGrid() {
                 console.error('Error fetching problems:', response.statusText);
                 setProblems([]);
             }
-    
+
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching problems:", error);
             setIsLoading(false);
         }
     };
-    
-    
-    
+
+
+
     useEffect(() => {
         fetchProblems(tags);
     }, [tags]);
@@ -213,7 +224,7 @@ export default function StripedGrid() {
             width: 150,
             renderCell: (params) => (
                 <Button
-                style={{backgroundColor:bc,color:ibg}}
+                    style={{ backgroundColor: bc, color: ibg }}
                     onClick={(e) => {
                         e.stopPropagation(); // Prevents the row click event
                         handleDelete(params.row.id);
@@ -226,16 +237,15 @@ export default function StripedGrid() {
     }
 
     return (
-      
-        <div style={{backgroundColor:dark,color:ibg}}>
+        <div style={{ backgroundColor: dark, color: ibg }}>
             <Dashboard />
             <IconBreadcrumbs currentPage={currentPage} title={titleBreadCumb.title} />
 
-            <div >
+            <div>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <input
-                            style={{color:ibg, backgroundColor:light,marginLeft:"100px",borderWidth: "2px", width: "100%", borderColor: bc, height: "48px" }}
+                            style={{ color: ibg, backgroundColor: light, marginLeft: "100px", borderWidth: "2px", width: "100%", borderColor: bc, height: "48px" }}
                             type="text"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -264,7 +274,7 @@ export default function StripedGrid() {
                 ) : (
                     <ThemeProvider theme={darkTheme}>
                         <StripedDataGrid
-                        style={{backgroundColor:light,color:ibg}}
+                            style={{ backgroundColor: light, color: ibg }}
                             rows={rows}
                             columns={columns}
                             getRowClassName={(params) =>
@@ -276,6 +286,6 @@ export default function StripedGrid() {
                 )}
             </div>
         </div>
-        
+
     );
 }

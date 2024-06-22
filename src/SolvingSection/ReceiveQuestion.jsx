@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import "./ReceiveQuestion.css";
+import axios from 'axios';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,12 +19,13 @@ import Alert from '@mui/material/Alert';
 
 import useCreateCourse from '../learnPath/CourseCreateApi';
 import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
+import { Upload } from '@mui/icons-material';
 
 function QuestionApi() {
-  const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes } = useContext(UserContext);
+  const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const {CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const { CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
   const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
@@ -32,10 +34,11 @@ function QuestionApi() {
   const [flag, setflag] = useState("true");
   const [loading, setLoading] = useState(false); // State for button loading
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar visibility
+  const [currentans, setcurrentans] = useState('');
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
-console.log(JSON.stringify(problem));
+  // console.log(JSON.stringify(problem));
   const containerRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -118,7 +121,7 @@ console.log(JSON.stringify(problem));
         const progress = 0; // Example progress value, replace with actual logic
         const completeQuestions = [problem.id]; // Initialize with the current problem ID
 
-        const response = await createCourse(navHistory,description);
+        const response = await createCourse(navHistory, description);
         console.log('Course created:', response);
         // alert('You got it!');
         if (flag) {
@@ -131,8 +134,8 @@ console.log(JSON.stringify(problem));
         update();
         // alert('You got it!');
         console.log(CourseDescription);
-     
-       
+
+
       }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');
@@ -172,6 +175,47 @@ console.log(JSON.stringify(problem));
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+  const UploadAnswer = (ans) => {
+    console.log("run automic", ans);
+    if (ans.id) {
+      setcurrentans(ans)
+    }
+
+    console.log(currentans);
+  };
+
+
+  const handleSubmit = async () => {
+    if (!currentans.id) {
+      alert('Run the code First.');
+    } else {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          'https://testcfc.onrender.com/Posts',
+          currentans,
+          {
+            auth: {
+              username: user,
+              password: password,
+            },
+          }
+        );
+        console.log('Post created:', response.data);
+        setLoading(false);
+        alert('Correct Answer.');
+      } catch (error) {
+        console.error('Error upload post:', error);
+        setLoading(false);
+      }
+
+    }
+  };
+
+
+
+
+
 
   return (
     <div style={{ backgroundColor: bg, color: bg }}>
@@ -183,7 +227,7 @@ console.log(JSON.stringify(problem));
             <Col className="editorsection" sm={2} style={{ height: "460px", width: "500px", overflowY: "scroll" }}>
               <Grid container spacing={2}>
                 <Grid className='title' xs={9.5} >
-                  <pre style={{ background: dark }}>1.{title}</pre><hr />
+                  <pre style={{ background: dark }}>{currentProblemIndex + 1}.{title}</pre><hr />
                 </Grid>
                 <Grid xs={2.5}>
                   <p className={`button ${getDifficultyLabel()}`} style={{ color: ibg }} >{getDifficultyLabel()}</p>
@@ -203,9 +247,9 @@ console.log(JSON.stringify(problem));
                 </>}
                 {optionA ? <></> : <Grid className='subtitle' xs={15}><hr />
                   Constrain:
-                
+
                   <br />
-                 <pre> {problem.constrain}</pre>
+                  <pre> {problem.constrain}</pre>
                 </Grid>}
 
               </Grid>
@@ -215,7 +259,7 @@ console.log(JSON.stringify(problem));
               {optionA ?
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
-                <MyEditor myfun={scrollToBottom} problem={problem}  themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                <MyEditor saveToDatabase={UploadAnswer} myfun={scrollToBottom} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
               }
             </Col>
           </Row>
@@ -236,8 +280,9 @@ console.log(JSON.stringify(problem));
             {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
           </Button>
           :
-          <Button style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+          <Button onClick={handleSubmit} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
             Submit
+            {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
           </Button>
         }
         <Button

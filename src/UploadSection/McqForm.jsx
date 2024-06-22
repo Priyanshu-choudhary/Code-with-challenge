@@ -8,6 +8,7 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
@@ -26,6 +27,7 @@ export default function McqForm({ uploadUrl }) {
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
   const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [loading, setLoading] = useState(false); // State to manage loading status
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -40,6 +42,8 @@ export default function McqForm({ uploadUrl }) {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // Set loading to true when the form is submitted
+
     const postData = {
       ...formData,
       answer: selectedAnswer,
@@ -60,14 +64,15 @@ export default function McqForm({ uploadUrl }) {
       setAlert({ show: true, message: `Question uploaded successfully! to ${uploadUrl}`, severity: 'success' });
     } catch (error) {
       setAlert({ show: true, message: `Failed to upload question to ${uploadUrl}`, severity: 'error' });
+    } finally {
+      setLoading(false); // Set loading to false after the API call is complete
     }
   };
 
   return (
     <>
       <Dashboard />
-      
-        <Box className="mcq-form-container">
+      <Box className="mcq-form-container">
         {alert.show && <Alert severity={alert.severity}>{alert.message}</Alert>}
         <TextField
           id="title"
@@ -187,8 +192,9 @@ export default function McqForm({ uploadUrl }) {
           color="primary"
           onClick={handleSubmit}
           className="submit-button"
+          disabled={loading} // Disable the button when loading
         >
-          Submit
+          {loading ? <CircularProgress size={24} /> : 'Submit'} {/* Show spinner when loading */}
         </Button>
       </Box>
     </>

@@ -11,12 +11,13 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 
-function MyEditor({ problem, myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
+function MyEditor({saveToDatabase, problem, myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
   const [themes, setThemes] = useState('vs-dark');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isCorrect, setisCorrect] = useState(false)
   const editorRef = useRef(null);
   const { ibg, bg, bc, dark, light, user, password, currentthemes } = useContext(UserContext);
   const createCourse = useCreateCourse(); // Call the custom hook
@@ -30,7 +31,7 @@ function MyEditor({ problem, myfun, answer, title, description, difficulty, Exam
     } else {
       setThemes("light");
     }
-   
+    
   }, [bg]);
 
   const downloadFile = () => {
@@ -105,6 +106,7 @@ function MyEditor({ problem, myfun, answer, title, description, difficulty, Exam
     setLanguage(lang);
   };
 
+  
   const options = {
     autoIndent: 'full',
     contextmenu: true,
@@ -174,7 +176,29 @@ function MyEditor({ problem, myfun, answer, title, description, difficulty, Exam
   
 const testCaseGroups = parseOutput(output.output);
 
+const checkAnswer = () => {
+  for (let i = 0; i < testCaseGroups.length; i++) {
+    if (testCaseGroups[i].status !== "Pass") {
+      setisCorrect(false);
+      return;
+    }
+  }
+  setisCorrect(true);
+};
+
+useEffect(() => {
+  checkAnswer();
+  console.log("iscorrect",isCorrect);
+  if (isCorrect) {
+    saveToDatabase(problem);
+  } 
+}, [output]);
+
+
+
+
   return (
+    <>
     <div>
       <Editor
         className='editor'
@@ -234,6 +258,8 @@ const testCaseGroups = parseOutput(output.output);
         </div>
       )}
     </div>
+  
+    </>
   );
 }
 

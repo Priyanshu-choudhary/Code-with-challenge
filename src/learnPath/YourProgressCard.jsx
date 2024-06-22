@@ -15,7 +15,7 @@ function YourProgressCard({ title, progress ,rating,completeQuestions,totalQuest
   };
 
   return (
-    <div style={{ margin: "20px",borderWidth:"0.5px" ,borderColor:light,borderRadius:"15px"}}>
+    <div style={{width:"45%", margin: "20px",borderWidth:"0.5px" ,borderColor:light,borderRadius:"15px"}}>
       <div style={{ backgroundColor: light, paddingLeft: "20px", paddingBottom: "10px",paddingRight: "20px", Width: "80%", borderRadius: "15px" }}>
       
         <p style={{ fontSize: "15px",paddingTop:"10px" }}>Topic:</p>
@@ -29,14 +29,7 @@ function YourProgressCard({ title, progress ,rating,completeQuestions,totalQuest
         <p style={{ fontSize: "22px", fontWeight: "bold" }}>{((progress/totalQuestions)*100).toFixed(2)}%</p>
         <p style={{ fontSize: "20px",  marginLeft:"70px"}}>[{progress}/{totalQuestions}]</p>
         </div>
-        {/* <Button style={{marginTop:"20px"}}
-          variant="contained"
-          color="green"
-          size='large'
-          // onClick={() => handleToggleView('stats')}
-        >
-          Continue Learning
-        </Button> */}
+        
         <button onClick={() => handleCardClick(course)} style={{backgroundColor:bc,padding:"7px 20px", borderRadius:"10px",color:ibg,fontWeight:"bold"}}>Continue Learning</button>
       </div>
     </div>

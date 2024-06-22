@@ -13,6 +13,7 @@ export default function IconBreadcrumbs({currentPage='', title = '', question = 
   const handleClick = (event, path, state) => {
     event.preventDefault();
     console.log("c>>>>"+currentPage);
+    // console.log("title>>>",title);
     if(currentPage=="Problem Set"){
         path='/data';
         console.log("path> "+ path);
@@ -36,7 +37,7 @@ export default function IconBreadcrumbs({currentPage='', title = '', question = 
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
          {currentPage}
         </Link>
-      { title && <Link
+      { title[0] && <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
           color="grey"

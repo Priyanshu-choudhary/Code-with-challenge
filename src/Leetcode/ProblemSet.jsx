@@ -10,7 +10,7 @@ import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
 import MarkdownDisplay from './MarkdownFormate';
-
+import DoneIcon from '@mui/icons-material/Done'; // Import done icon
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -22,6 +22,7 @@ const LeetCodeClone = () => {
   const [view, setView] = useState('stats');
   const [currentPage, setCurrentPage] = useState('Learn Skills');
   const [hoverIndex, setHoverIndex] = useState(null);
+  const [completeQuestions, setCompleteQuestions] = useState([]);
 
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
@@ -91,6 +92,33 @@ const LeetCodeClone = () => {
     }
   };
 
+  const fetchUserData = async () => {
+
+    try {
+      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const response = await fetch(`http://localhost:9090/Course`, {
+        headers: {
+          'Authorization': basicAuth
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const matchedCourse = data.find(course => course.title === title);
+        if (matchedCourse) {
+          setCompleteQuestions(matchedCourse.completeQuestions || []);
+          console.log(matchedCourse.completeQuestions);
+        } else {
+          setCompleteQuestions([]);
+        }console.log(">>>>>>>>>>>>>>",completeQuestions);
+      } else {
+        console.error('Failed to fetch user data.');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   const handleTagsChange = useCallback((selectedTags) => {
     setTags(selectedTags);
   }, []);
@@ -107,6 +135,7 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
+    fetchUserData();
     if (title) {
       setNavHistory(`${title}`);
     }
@@ -188,7 +217,11 @@ const LeetCodeClone = () => {
                     onMouseEnter={() => setHoverIndex(index)}
                     onMouseLeave={() => setHoverIndex(null)}
                   >
-                    <div className="problem-title">{index + 1}. {problem.title}</div>
+                    <div className="problem-title">
+                     
+                      {index + 1}. {problem.title}
+                      {completeQuestions.includes(problem.id) && <DoneIcon style={{backgroundColor:"#C0F5AB",borderRadius:"10px",marginLeft:"10px" ,color: 'green' }} />} {/* Show done icon for completed questions */}
+                    </div>
                     <div className="problem-details">
                       {problem.type === "MCQ" ? (
                         <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>

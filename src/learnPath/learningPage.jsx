@@ -128,8 +128,7 @@ function LearningPage() {
       }
     }
   };
-
-  return (
+ return (
     <PageContainer bg={bg}>
       <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
         <Dashboard />
@@ -172,7 +171,7 @@ function LearningPage() {
                     <ImgMediaCard
                     id={course.id}
                       title={course.title}
-                      image={"./Designer.png"}
+                      image={course.image}
                       description={course.description}
                       totalQuestions={course.totalQuestions}
                       handleDelete={handleDelete} // Pass handleDelete function
@@ -181,6 +180,7 @@ function LearningPage() {
                       permission={course.permission}
                     />
                   </div>
+                  
                 );
               } else  {
                
@@ -188,6 +188,9 @@ function LearningPage() {
               }
             })}
           </div>
+          
+         
+          {/* <img src='https://i.postimg.cc/qgWM21rk/IMG-20240214-104108.jpg' border='0' alt='IMG-20240214-104108'/> */}
         </div>
       </div>
     </PageContainer>

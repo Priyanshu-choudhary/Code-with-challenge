@@ -74,33 +74,7 @@ function MyEditor({saveToDatabase, problem, myfun, answer, title, description, d
     }
   }, [myfun, answer, boilerCode, courseTitle, language, testcase]);
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post(
-        'https://testcfc.onrender.com/Posts',
-        {
-          title: title,
-          description: description,
-          example: Example,
-          difficulty: difficulty,
-          answer: answer,
-          testCases: testcase,
-        },
-        {
-          auth: {
-            username: user,
-            password: password,
-          },
-        }
-      );
-      console.log('Post created:', response.data);
-      alert('Correct Answer.');
-      showmsg();
-      let timer = setInterval(hidesmg, 3000);
-    } catch (error) {
-      console.error('Error upload post:', error);
-    }
-  };
+  
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
@@ -176,26 +150,26 @@ function MyEditor({saveToDatabase, problem, myfun, answer, title, description, d
   
 const testCaseGroups = parseOutput(output.output);
 
-const checkAnswer = () => {
+const checkAnswer = useCallback(() => {
+  let allPass = true;
   for (let i = 0; i < testCaseGroups.length; i++) {
-    if (testCaseGroups[i].status !== "Pass") {
-      setisCorrect(false);
-      return;
+    if (testCaseGroups[i].status !== "Pass" || testCaseGroups[i].status == null) {
+      console.log("testcase no ", i, " status ", testCaseGroups[i].status);
+      allPass = false;
+      break;
     }
   }
-  setisCorrect(true);
-};
+  setisCorrect(allPass);
+}, [testCaseGroups]);
 
 useEffect(() => {
   checkAnswer();
-  console.log("iscorrect",isCorrect);
+  console.log("iscorrect", isCorrect);
   if (isCorrect) {
+    console.log("send problem");
     saveToDatabase(problem);
-  } 
-}, [output]);
-
-
-
+  }
+}, [output, isCorrect, checkAnswer, problem, saveToDatabase]);
 
   return (
     <>

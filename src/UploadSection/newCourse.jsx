@@ -14,12 +14,12 @@ export default function CourseForm({ uploadUrl }) {
     title: '',
     description: '',
     totalQuestions: '',
-    posts:'',
   });
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
   const [permission, setPermission] = useState(''); // State to manage radio button value
   const [loading, setLoading] = useState(false); // State to manage loading status
+  const [imageUrl, setImageUrl] = useState(''); // State to manage image URL
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -40,6 +40,10 @@ export default function CourseForm({ uploadUrl }) {
     setPermission(e.target.value);
   };
 
+  const handleImageUrlChange = (e) => {
+    setImageUrl(e.target.value);
+  };
+
   const handleSubmit = async () => {
     setLoading(true); // Set loading to true when the form is submitted
 
@@ -48,6 +52,7 @@ export default function CourseForm({ uploadUrl }) {
       description: formData.description,
       totalQuestions: formData.totalQuestions,
       permission: permission,
+      image: imageUrl, // Include imageUrl in postData
     };
 
     console.log('Form data to be sent:', JSON.stringify(postData));
@@ -117,7 +122,15 @@ export default function CourseForm({ uploadUrl }) {
           onChange={handleChange}
           margin="normal"
         />
-        <div style={{display:"flex",justifyContent:"center"}}>
+        <TextField
+          id="imageUrl"
+          label="Image URL"
+          fullWidth
+          value={imageUrl}
+          onChange={handleImageUrlChange}
+          margin="normal"
+        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <label>
             <input
               type="radio"
@@ -138,7 +151,7 @@ export default function CourseForm({ uploadUrl }) {
           </label>
         </div>
         <Button
-          style={{width:"100%"}}
+          style={{ width: "100%" }}
           variant="contained"
           color="primary"
           onClick={handleSubmit}

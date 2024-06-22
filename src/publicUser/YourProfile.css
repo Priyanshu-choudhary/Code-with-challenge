@@ -1,0 +1,189 @@
+/* LeetCodeClone.css */
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.Profileheading{
+    font-size: large;
+    font-weight: bold;
+    color: #000;
+}
+.links {
+   
+    background-color: #e0dfdf; /* Light gray background */
+    border-radius: 5px; /* Add rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 5px;
+    margin-top: 10px;
+    
+  }
+.skill {
+   
+    background-color: #e0dfdf; /* Light gray background */
+    border-radius: 5px; /* Add rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 5px;
+    margin: 10px;
+    
+  }
+  .skillinside {
+    height: 150px; 
+    background-color: #ffffff; /* Light gray background */
+    border-radius: 5px; /* Add rounded corners */
+    padding: 20px; /* Add padding for content */
+    /* margin: 10px; Add margin for spacing */
+    /* overflow-y: scroll; */
+    
+  } 
+  
+.Profileheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    white-space: nowrap; 
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+}
+
+.Profiletags {
+    display: flex;
+    gap: 10px;
+}
+
+.Profiletag {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.Profilebuttons button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.Profilecontent {
+    background-color: #d4d4d7;
+    padding: 7px;
+    color: #f7f4f4;
+    width: 100%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+}
+
+.Profilefilter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.Profilefilter input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.Profilefilter button {
+    background-color: #54d21a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.Profileproblem-list {
+    /* max-height: calc(100vh - 25vh - 60px); Adjusted calculation for max height */
+    /* overflow-y: auto; Enable vertical scrolling */
+    background-color: #ffffff;
+    color: #000;
+    padding: 10px;
+    border-radius: 10px;
+    
+}
+
+.Profileproblem-list .Profileproblem {
+    padding: 5px; /* Decreased padding to show more questions */
+    margin-bottom: 5px; /* Decreased margin to show more questions */
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap; /* Ensure text does not wrap */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Add ellipsis to overflowing content */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.Profileproblem-list .Profileproblem:hover {
+    background-color: #51ff00; /* Change background color on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.Profileproblem .Profileproblem-details {
+    display: flex;
+    gap: 10px; /* Decreased gap to save space */
+}
+
+.Profileproblem .Profileproblem-difficulty {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.Profileproblem .Profileproblem-difficulty.easy {
+    background-color: #54d21a;
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 25px;
+}
+
+.Profileproblem .Profileproblem-difficulty.medium {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+.Profileproblem .Profileproblem-difficulty.hard {
+    background-color: #f44336;
+    color: #fff;
+    padding-left: 22px;
+    padding-right: 23px;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    width: 50%;
+    height: 70%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .overflow-hidden {
+    overflow: hidden;
+  }

@@ -78,7 +78,7 @@ export default function StripedGrid() {
 
         try {
             const basicAuth = 'Basic ' + btoa('YadiChoudhary:YadiChoudhary');
-            let API_URL = 'http://localhost:9090/Posts';
+            let API_URL = 'https://testcfc.onrender.com/Posts';
 
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');

@@ -189,8 +189,10 @@ function QuestionApi() {
     if (!currentans.id) {
       alert('Run the code First.');
     } else {
+      console.log(currentans.id);
       try {
         setLoading(true);
+        setSnackbarOpen(true); 
         const response = await axios.post(
           'https://testcfc.onrender.com/Posts',
           currentans,
@@ -204,9 +206,11 @@ function QuestionApi() {
         console.log('Post created:', response.data);
         setLoading(false);
         alert('Correct Answer.');
+        setcurrentans('');
       } catch (error) {
         console.error('Error upload post:', error);
         setLoading(false);
+        setcurrentans('');
       }
 
     }

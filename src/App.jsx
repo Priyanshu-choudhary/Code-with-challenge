@@ -19,6 +19,7 @@ import MyStepper from './UploadSection/Stepper';
 import LearningPage from './learnPath/learningPage';
 import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
 import ProblemEditForm from './Leetcode/ProblemEditForm';
+import PublicProfile from './publicUser/PublicProfile';
 
 
 
@@ -49,6 +50,7 @@ function App() {
               <Route path="/Data" element={<MyDataGrid />} />
               <Route path="/leaderboard" element={<LeaderBoard />} />
               <Route path="/learn" element={<LearningPage />} />
+              <Route path="/publicProfile" element={<PublicProfile />} />
 
 
 

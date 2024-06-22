@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
+import { Avatar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import "./style.css";
-import { BorderColor } from '@mui/icons-material';
 
 const cardStyles = {
   container: {
     backgroundColor: '#E2EAF4',
     borderRadius: '5px',
-    BorderColor:"black",
+    borderColor: 'black',
     boxShadow: '0px 10px 20px -10px #4603E9',
     color: '#B3B8CD',
     paddingTop: '30px',
@@ -16,11 +16,12 @@ const cardStyles = {
     maxWidth: '100%',
     textAlign: 'center',
     overflow: 'hidden',
+    cursor: 'pointer'
   },
   pro: {
     color: '#231E39',
     backgroundColor: '#FEBB0B',
-    BorderColor:"black",
+    borderColor: 'black',
     borderRadius: '3px',
     fontSize: '14px',
     fontWeight: 'bold',
@@ -33,7 +34,7 @@ const cardStyles = {
   avatarContainer: {
     display: 'flex',
     justifyContent: 'center',
-    BorderColor:"black",
+    borderColor: 'black',
     alignItems: 'center',
     marginBottom: '15px',
   },
@@ -68,10 +69,11 @@ const appStyles = {
   // minHeight: '100vh',
 };
 
-function Card({ userId ,index}) {
+function UserCard({ userId, index }) { // Renamed Card to UserCard to avoid naming conflict
   console.log(index);
 
   const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     let isMounted = true; // Track whether the component is still mounted
@@ -96,8 +98,12 @@ function Card({ userId ,index}) {
     return <p>Loading...</p>;
   }
 
+  const handleCardClick = () => {
+    navigate('/publicProfile', { state: { userId } }); // Navigate to /publicProfile with userId in state
+  };
+
   return (
-    <div style={cardStyles.container} className="shine-effect">
+    <div style={cardStyles.container} className="shine-effect" onClick={handleCardClick}>
       <span style={cardStyles.pro}>#{index}</span>
       <div style={cardStyles.avatarContainer}>
         <Avatar
@@ -118,11 +124,10 @@ function Card({ userId ,index}) {
   );
 }
 
-function MyCard({ userId,index }) {
+function MyCard({ userId, index }) {
   return (
     <div style={appStyles}>
-      <Card userId={userId} index={index} />
-  
+      <UserCard userId={userId} index={index} /> {/* Updated component name */}
     </div>
   );
 }

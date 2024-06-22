@@ -96,7 +96,7 @@ const LeetCodeClone = () => {
 
     try {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      const response = await fetch(`http://localhost:9090/Course`, {
+      const response = await fetch(`https://testcfc.onrender.com/Course`, {
         headers: {
           'Authorization': basicAuth
         }

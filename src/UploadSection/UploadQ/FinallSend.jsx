@@ -28,7 +28,7 @@ const FinalSend = ({ step, uploadUrl }) => {
         event.preventDefault();
         try {
             const response = await axios.post(
-                'http://localhost:9090/Posts',
+                'https://testcfc.onrender.com/Posts',
                 {
                     ...formData,
                     boilerCode: formData.code,

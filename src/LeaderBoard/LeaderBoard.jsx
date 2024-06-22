@@ -1,16 +1,18 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import Avatar from '@mui/material/Avatar';
-import { alpha, styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
 import { UserContext } from '../Context/UserContext';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
     },
 });
+
 // Function to generate avatar properties from a string
 function stringAvatar(name) {
     const nameParts = name.split(' ');
@@ -55,14 +57,16 @@ const columns = [
         ),
     },
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'postCount', headerName: 'Question ', width: 150 },
+    { field: 'postCount', headerName: 'Question', width: 150 },
 ];
+
 export default function LeaderBoard() {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
-    const {ibg, bg, light,dark } = useContext(UserContext);
+    const { ibg, bg, light } = useContext(UserContext);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         fetch('https://testcfc.onrender.com/Public/getUser')
@@ -74,7 +78,7 @@ export default function LeaderBoard() {
             })
             .then(data => {
                 console.log('Fetched data:', data);
-               
+
                 if (Array.isArray(data)) {
                     // Sort users by postCount in descending order
                     data.sort((a, b) => b.postCount - a.postCount);
@@ -114,27 +118,27 @@ export default function LeaderBoard() {
     };
 
     return (
-        <div style={{backgroundColor:bg,color:ibg}}>
+        <div style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{  width: '50%', backgroundColor: 'white' }}>
+                <div style={{ width: '50%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
                         <ThemeProvider theme={darkTheme}>
-                        <DataGrid 
-                        style={{backgroundColor:light,color:ibg}}
-                            rows={rows} 
-                            columns={columns} 
-                            onRowClick={handleRowClick} // Add this line
-                        />
+                            <DataGrid
+                                style={{ backgroundColor: light, color: ibg }}
+                                rows={rows}
+                                columns={columns}
+                                onRowClick={handleRowClick} // Add this line
+                            />
                         </ThemeProvider>
                     )}
                 </div>
                 <div style={{ padding: '20px' }}>
                     <div className='card'>
-                        <MyCard userId={selectedUserId} index={selectedIndex}/> {/* Pass selectedUserId and selectedIndex as props */}
+                        <MyCard userId={selectedUserId} index={selectedIndex} navigate={navigate} /> {/* Pass selectedUserId, selectedIndex, and navigate as props */}
                     </div>
                 </div>
             </div>

@@ -202,7 +202,10 @@ console.log(JSON.stringify(problem));
                   </Grid>
                 </>}
                 {optionA ? <></> : <Grid className='subtitle' xs={15}><hr />
-                  Output:
+                  Constrain:
+                
+                  <br />
+                 <pre> {problem.constrain}</pre>
                 </Grid>}
 
               </Grid>

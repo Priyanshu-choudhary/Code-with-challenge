@@ -23,11 +23,19 @@ export default function CourseForm({ uploadUrl }) {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+
+    // Validate title to ensure it does not contain '/'
+    if (id === 'title' && value.includes('/')) {
+      setAlert({ show: true, message: 'Title cannot contain / character', severity: 'error' });
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [id]: value,
     }));
   };
+
   const handlePermissionChange = (e) => {
     setPermission(e.target.value);
   };

@@ -60,28 +60,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
             />
           </div>
 
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <label>
-              <input
-                type="radio"
-                name="permission"
-                value="SolutionClass"
-                checked={formData.permission === 'SolutionClass'}
-                onChange={handleChange}
-              />
-              SolutionClass
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="permission"
-                value="FullCode"
-                checked={formData.permission === 'FullCode'}
-                onChange={handleChange}
-              />
-              FullCode
-            </label>
-          </div>
+          
         </div>
       </div>
     </>

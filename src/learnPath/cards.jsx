@@ -8,6 +8,7 @@ import { Button, IconButton } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useContext, useState } from 'react';
 import { UserContext } from '../Context/UserContext';
+import ReactMarkdown from 'react-markdown';
 
 import { Delete } from '@mui/icons-material';
 
@@ -69,7 +70,7 @@ console.log(id);
             display: '-webkit-box',
             WebkitLineClamp: showFullDescription ? 'none' : '4',
             WebkitBoxOrient: 'vertical'
-          }}>{description}</pre>
+          }}> <ReactMarkdown>{description}</ReactMarkdown></pre>
           <Button size="small" onClick={toggleDescription}>
             {showFullDescription ? 'Show less' : 'Read more'}
           </Button>

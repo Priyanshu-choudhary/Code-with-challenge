@@ -41,7 +41,7 @@ function LearningPage() {
   useEffect(() => {
     const fetchUserCourses = async () => {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      console.log('Fetching user courses with auth:', basicAuth);
+   
 
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
@@ -71,7 +71,7 @@ function LearningPage() {
 
     const fetchOfficialCourses = async () => {
       const officialAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-      console.log('Fetching official courses with auth:', officialAuth);
+  
 
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
@@ -86,15 +86,19 @@ function LearningPage() {
             localStorage.setItem('officialCourses', JSON.stringify(data));
             officialCoursesRef.current = data;
             setOfficialCourses(data);
+       
           } else {
             console.error('Fetched official data is not an array:', data);
             setOfficialCourses([]);
+       
           }
         } else {
           console.error('Failed to fetch official courses:', response.status, response.statusText);
+
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
+      
       }
     };
 
@@ -120,11 +124,14 @@ function LearningPage() {
           // Remove the course from state
           setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
           localStorage.setItem('officialCourses', JSON.stringify(officialCoursesRef.current.filter((course) => course.id !== courseId)));
+       
         } else {
           console.error('Failed to delete course:', response.status, response.statusText);
+         x
         }
       } catch (error) {
         console.error('Error deleting course:', error);
+       
       }
     }
   };
@@ -163,8 +170,9 @@ function LearningPage() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {officialCourses.map((course, index) => {
+             
               if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
-                console.log(course.permission);
+             
                 return (
                   <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
                     

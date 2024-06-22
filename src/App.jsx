@@ -20,6 +20,7 @@ import LearningPage from './learnPath/learningPage';
 import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
 import ProblemEditForm from './Leetcode/ProblemEditForm';
 import PublicProfile from './publicUser/PublicProfile';
+import Test from './Leetcode/test';
 
 
 
@@ -51,6 +52,7 @@ function App() {
               <Route path="/leaderboard" element={<LeaderBoard />} />
               <Route path="/learn" element={<LearningPage />} />
               <Route path="/publicProfile" element={<PublicProfile />} />
+              <Route path="/test" element={<Test />} />
 
 
 

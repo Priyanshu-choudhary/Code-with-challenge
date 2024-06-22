@@ -55,7 +55,7 @@ export default function CourseForm({ uploadUrl }) {
       image: imageUrl, // Include imageUrl in postData
     };
 
-    console.log('Form data to be sent:', JSON.stringify(postData));
+    // console.log('Form data to be sent:', JSON.stringify(postData));
 
     try {
       const response = await axios.post(

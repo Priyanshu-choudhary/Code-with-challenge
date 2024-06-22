@@ -119,6 +119,9 @@
   "react-window": "^1.8.10",
   
     
+  "remark-gfm": "^4.0.0",
+  
+    
   "styled-components": "^6.1.11",
   
     

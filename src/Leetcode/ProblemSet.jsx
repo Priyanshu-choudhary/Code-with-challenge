@@ -11,7 +11,10 @@ import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
 import MarkdownDisplay from './MarkdownFormate';
 import DoneIcon from '@mui/icons-material/Done'; // Import done icon
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import './markdownCSS.css';
+import Test from './test';
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
@@ -32,6 +35,49 @@ const LeetCodeClone = () => {
   background-color: ${bg};
   height: 100vh;
 `;
+const [markdownText, setMarkdownText] = useState(`
+  ---
+  
+  # Java Programming Course
+  
+  Welcome to the **Java Programming Course**! This course is designed to provide you with a comprehensive understanding of Java programming, covering both theoretical concepts and practical coding skills. Whether you are a beginner looking to start your journey in programming or an experienced developer aiming to enhance your Java knowledge, this course is perfect for you.
+  
+  ## Course Structure
+  
+  ### 1. Multiple Choice Questions (MCQs)
+  Test your understanding of Java concepts with a series of multiple-choice questions. These questions are designed to reinforce the material covered in the lectures and provide you with a solid foundation in Java programming.
+  
+  ### 2. Coding Questions
+  Apply what you've learned through hands-on coding exercises. These questions will challenge you to solve real-world problems using Java, helping you to develop your problem-solving skills and coding proficiency.
+  
+  ## Topics Covered
+  
+  - **Introduction to Java**: Learn about the history and features of Java, and set up your development environment.
+  - **Basic Syntax**: Understand the basic structure of a Java program, data types, variables, and operators.
+  - **Control Flow**: Master conditional statements, loops, and control flow mechanisms.
+  - **Object-Oriented Programming (OOP)**: Dive into the principles of OOP, including classes, objects, inheritance, polymorphism, encapsulation, and abstraction.
+  - **Exception Handling**: Learn how to handle exceptions and errors gracefully in your programs.
+  - **Collections Framework**: Explore Java’s powerful Collections Framework, including lists, sets, and maps.
+  - **Streams and Lambda Expressions**: Get introduced to functional programming concepts with streams and lambda expressions.
+  - **File I/O**: Understand how to read from and write to files in Java.
+  - **Advanced Topics**: Explore multithreading, networking, and other advanced topics to round out your Java knowledge.
+  
+  ## Learning Outcomes
+  
+  By the end of this course, you will be able to:
+  
+  - Write, compile, and run Java programs with confidence.
+  - Understand and apply object-oriented programming principles.
+  - Solve problems using Java's rich standard library and advanced features.
+  - Develop robust and maintainable Java applications.
+  
+  ## Join Us!
+  
+  Embark on this journey to become a proficient Java programmer. Enroll now and start coding!
+  
+  ---
+  `);
+
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
@@ -286,8 +332,9 @@ const LeetCodeClone = () => {
                 <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
                   <LinearProgress thickness={4} variant="determinate" value={(progress / totalQuestions) * 100} />
                 </p>
-                {/* {description && <pre>{description}</pre>} */}
-                <MarkdownDisplay markdownText={description}/>
+              
+                {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown> */}
+                <Test description={description}/>
               </div>
             ) : (
               <div className="tags-container" style={{ background: dark, color: ibg }}>

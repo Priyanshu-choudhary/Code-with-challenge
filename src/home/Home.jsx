@@ -5,7 +5,6 @@ import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
 import logo from "/banner.png";
 import logo3 from "/logo.jpg";
 import styles from "/logo.jpg";
-import editorphoto from "/editorphoto.png";
 import HeadingSection from './headingSection';
 import FeatureExample from './featureSection'
 import Footer from './footer'
@@ -17,6 +16,8 @@ import mySvg from '/public/5570863.jpg'; // Ensure you have the SVG file in your
 import ScrollableCardList from './ScrollableCardList';
 import Footer2 from './Footer2';
 
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 
 function Home() {
@@ -24,6 +25,8 @@ function Home() {
 
   const { ibg, bc, bg, light, dark } = useContext(UserContext);
   const [theme, settheme] = useState(bc);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const options = {
       strings: ["Elevate Your Coding Skills"],
@@ -108,8 +111,8 @@ function Home() {
 
   const [color, setcolor] = useState("#ed6524")
   const [isHovered, setIsHovered] = useState(false);
-  const Card = ({ background, hoverBackground, width, height, title, subtitle, imageUrl, imageWidth, imageHeight }) => {
-
+  const Card = ({ onClick,background, hoverBackground, width, height, title, subtitle, imageUrl, imageWidth, imageHeight }) => {
+  
     const [isHovered, setIsHovered] = useState(false);
 
     const handleHover = () => {
@@ -136,6 +139,7 @@ function Home() {
         }}
         onMouseEnter={handleHover}
         onMouseLeave={handleUnhover}
+        onClick={onClick}
       >
         <p style={{ padding: "10px", fontSize: 20, fontWeight: "bolder" }}>{title}</p>
         <p style={{ paddingLeft: "10px", fontSize: 14 }}>{subtitle}</p>
@@ -147,7 +151,7 @@ function Home() {
             alt="Small Image"
             style={{
               position: 'absolute',
-              bottom: '5px',
+              bottom: '0px',
               right: '5px',
               width: imageWidth ? `${imageWidth}px` : 'auto',
               height: imageHeight ? `${imageHeight}px` : 'auto',
@@ -165,8 +169,6 @@ function Home() {
     <div >
       <Dashboard />
       <div >
-
-
         <section style={divStyle}>
           <div className="container" style={{ position: "relative", height: "100vh" }}>
             <div className="row align-items-center">
@@ -191,10 +193,14 @@ function Home() {
                     width="250px"
                     height="115px"
                     title="Learn"
-                    subtitle="Skill Development Space"
-                    imageUrl="./code.png"
-                    imageWidth={70}
-                    imageHeight={70}
+                    subtitle="Skill Development"
+                    imageUrl="./learn.png"
+                    imageWidth={120}
+                    imageHeight={100}
+                    onClick={() => navigate('/learn')}
+                   
+                    
+
                   />
                   <Card
                     background="#DFB1EC"
@@ -206,6 +212,7 @@ function Home() {
                     imageUrl="./practice.png"
                     imageWidth={100}
                     imageHeight={100}
+                    onClick={() => navigate('/data')}
                   />
                   <Card
                     background="#F7BF69"
@@ -217,6 +224,7 @@ function Home() {
                     imageUrl="./cources.png"
                     imageWidth={100}
                     imageHeight={100}
+                    onClick={() => navigate('/learn')}
                   />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "400px", marginLeft: "20px" }}>
@@ -225,11 +233,12 @@ function Home() {
                     hoverBackground="lightgreen"
                     width="250px"
                     height="200px"
-                    title="Discover"
-                    subtitle="Creative Exploration"
-                    imageUrl="./descover.png"
-                    imageWidth={220}
-                    imageHeight={180}
+                    title="Compiler"
+                    subtitle="A online Editor"
+                    imageUrl="./girl.png"
+                    imageWidth={110}
+                    imageHeight={170}
+                    onClick={() => navigate('/EditorComponent')}
                   />
                   <Card
                     background="#EFC3CA"
@@ -241,6 +250,7 @@ function Home() {
                     imageUrl="./complete.webp"
                     imageWidth={180}
                     imageHeight={120}
+                    onClick={() => navigate('/leaderboard')}
                   />
                 </div>
               </div>
@@ -258,12 +268,11 @@ function Home() {
         <h2 className="section-heading text-center" style={{ fontSize: "40px", fontWeight: "bold" }}>User Count</h2>
         <UserCount />
 
+        <Newsletter />
 
-       
-          <Newsletter />
-     
         <Footer />
-<Footer2/>
+
+        <Footer2 />
       </div>
     </div>
   );

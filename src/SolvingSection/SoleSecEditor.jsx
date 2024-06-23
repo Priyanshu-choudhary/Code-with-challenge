@@ -11,7 +11,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 
-function MyEditor({saveToDatabase, problem, myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
+function MyEditor({input,saveToDatabase, problem, myfun, answer, title, description, difficulty, Example, testcase, boilerCode, courseTitle = '' }) {
   const [language, setLanguage] = useState("java");
   const [iSubmit, setiSubmit] = useState(false);
   const [output, setOutput] = useState('');
@@ -59,7 +59,7 @@ function MyEditor({saveToDatabase, problem, myfun, answer, title, description, d
       code = boilerCode + code;
       setiSubmit(true);
 
-      const output = await JDoodleExample(code, language, '', testcase);
+      const output = await JDoodleExample(code, language, input, testcase);
       setiSubmit(false);
       setOutput(output);
       if (output === answer) {

@@ -236,6 +236,8 @@ function Home() {
                     title="Compiler"
                     subtitle="A online Editor"
                     imageUrl="./girl.png"
+                    
+                    // imageUrl="./myDroneMakingPhotoEDITED-removebg-preview.png"
                     imageWidth={110}
                     imageHeight={170}
                     onClick={() => navigate('/EditorComponent')}

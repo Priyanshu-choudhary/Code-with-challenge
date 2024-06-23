@@ -41,7 +41,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           <div className="editor">
             <h2>Solution</h2>
             <textarea
-              name="solution"
+              name="Add Input"
               value={formData.solution}
               onChange={handleChange}
               placeholder="Start writing your Solution here......."

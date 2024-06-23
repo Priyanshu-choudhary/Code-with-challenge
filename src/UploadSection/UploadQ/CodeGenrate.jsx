@@ -17,9 +17,9 @@ const CodeGenrate = ({ step, uploadUrl }) => {
 
   return (
     <>
-      {formData.permission === 'FullCode' && <p>Its form FullCode</p>}
+      
       <div className="editor" style={{ marginTop: '20px' }}>
-        <h2>Write your code:</h2>
+        <h2>Write your checker code:</h2>
         <div style={{ height: '250px', marginBottom: '20px' }}>
           <Editor
             value={formData.code}
@@ -35,7 +35,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
             }}
           />
         </div>
-        <h2>Write your template code:</h2>
+        <h2>Write your Boiler code:</h2>
         <div style={{ height: '250px' }}>
           <Editor
             value={formData.templateCode}

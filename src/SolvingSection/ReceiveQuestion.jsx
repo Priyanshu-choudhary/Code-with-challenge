@@ -134,8 +134,6 @@ function QuestionApi() {
         update();
         // alert('You got it!');
         console.log(CourseDescription);
-
-
       }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');
@@ -249,6 +247,15 @@ function QuestionApi() {
                     <pre style={{ background: dark }}>{example}</pre>
                   </Grid>
                 </>}
+
+                {problem.solution && <>
+                  <Grid className='subtitle' xs={15}><hr />
+                    Input Format:
+                  </Grid>
+                  <Grid xs={16}>
+                    <pre style={{ background: dark }}>{problem.solution}</pre>
+                  </Grid>
+                </>}
                 {optionA ? <></> : <Grid className='subtitle' xs={15}><hr />
                   Constrain:
 
@@ -263,7 +270,7 @@ function QuestionApi() {
               {optionA ?
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
-                <MyEditor saveToDatabase={UploadAnswer} myfun={scrollToBottom} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                <MyEditor input={problem.solution} saveToDatabase={UploadAnswer} myfun={scrollToBottom} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
               }
             </Col>
           </Row>

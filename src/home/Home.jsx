@@ -182,7 +182,7 @@ function Home() {
                     height="115px"
                     title="Learn"
                     subtitle="Skill Development Space"
-                    imageUrl="./public/code.png"
+                    imageUrl="./code.png"
                     imageWidth={70}
                     imageHeight={70}
                   />
@@ -193,7 +193,7 @@ function Home() {
                     height="115px"
                     title="Practice"
                     subtitle="Skill Development"
-                    imageUrl="./public/practice.png"
+                    imageUrl="./practice.png"
                     imageWidth={100}
                     imageHeight={100}
                   />
@@ -204,7 +204,7 @@ function Home() {
                     height="115px"
                     title="Courses"
                     subtitle="Skill Development"
-                    imageUrl="./public/cources.png"
+                    imageUrl="./cources.png"
                     imageWidth={100}
                     imageHeight={100}
                   />
@@ -217,7 +217,7 @@ function Home() {
                     height="200px"
                     title="Discover"
                     subtitle="Creative Exploration"
-                    imageUrl="./public/descover.png"
+                    imageUrl="./descover.png"
                     imageWidth={220}
                     imageHeight={180}
                   />
@@ -228,7 +228,7 @@ function Home() {
                     height="200px"
                     title="Compete"
                     subtitle="Creative Exploration"
-                    imageUrl="./public/complete.webp"
+                    imageUrl="./complete.webp"
                     imageWidth={180}
                     imageHeight={120}
                   />

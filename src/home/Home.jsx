@@ -171,13 +171,14 @@ function Home() {
               <div className="col-12 col-md-5">
                 <div className="headline typing-element" style={{ marginTop: "200px", color: "black", fontSize: "50px", fontWeight: "bolder" }}>
                   {/* Placeholder for headline content */}
-                   <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
+                   
+
+                </div>
+                <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
                     <div className="col-12 col-md-auto">
                       <a className="btn btn-primary w-100" href="https://code-with-challenge.vercel.app/data" style={buttonStyles}>Sign Up</a>
                     </div>
                   </div>
-
-                </div>
               </div>
               <div className="col-12 col-md-6" style={{ position: "absolute", bottom: "100px", right: "0px", display: "flex" }}>
                 <div style={{ display: "flex", flexDirection: "column" }}>

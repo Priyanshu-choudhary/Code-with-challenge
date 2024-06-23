@@ -11,9 +11,11 @@ import { FormContext } from '../../Context/FormContext';
 
 const FinalSend = ({ step, uploadUrl }) => {
     const { formData, updateFormData } = useContext(FormContext);
-    const { user, password, role,URL } = useContext(UserContext);
+    const { user, password, role,URL,setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
-
+    const [newUrl, setnewUrl] = useState('https://testcfc.onrender.com/Posts')
+    const [auth, setauth] = useState(URL)
+    
     const handleTagsChange = useCallback((tags) => {
         updateFormData({ tags });
     }, [updateFormData]);
@@ -21,21 +23,35 @@ const FinalSend = ({ step, uploadUrl }) => {
     const handleInputChange = (e) => {
         updateFormData({ [e.target.name]: e.target.value });
     };
+    const checkUrl=()=>{
+       
+    }
 
-  
+    useEffect(() => {
+        if (URL != 'YadiChoudhary') {
+            setnewUrl(`https://testcfc.onrender.com/Posts/Course/${URL}`);
+            setauth("OfficialCources");
+           
+        } else {
+            setnewUrl('https://testcfc.onrender.com/Posts');
+        }
+    }, [    URL]); // Add URL to the dependency array to run this effect whenever URL changes
+    
     const handleSubmit = async (event) => {
         setISubmit(true);
         event.preventDefault();
         try {
+            console.log("-----------"+URL);
+            console.log("-----------"+newUrl);
             const response = await axios.post(
-                'https://testcfc.onrender.com/Posts',
+                newUrl,
                 {
                     ...formData,
                     boilerCode: formData.code,
                 },
                 {
                     headers: {
-                        Authorization: `Basic ${btoa(`${URL}:${URL}`)}`, // Encode credentials
+                        Authorization: `Basic ${btoa(`${auth}:${auth}`)}`, // Encode credentials
                         'Content-Type': 'application/json',
                     },
                 }

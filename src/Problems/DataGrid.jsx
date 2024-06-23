@@ -77,7 +77,7 @@ export default function StripedGrid() {
         setIsLoading(true);
 
         try {
-            const basicAuth = 'Basic ' + btoa('YadiChoudhary:YadiChoudhary');
+            const basicAuth = 'Basic ' + btoa('ProblemSet:ProblemSet');
             let API_URL = 'https://testcfc.onrender.com/Posts';
 
             if (selectedTags.length > 0) {
@@ -167,7 +167,7 @@ export default function StripedGrid() {
         const confirmed = window.confirm('Are you sure you want to delete this problem?');
         if (confirmed) {
             try {
-                const basicAuth = 'Basic ' + btoa(`${"YadiChoudhary"}:${"YadiChoudhary"}`);
+                const basicAuth = 'Basic ' + btoa(`${"ProblemSet"}:${"ProblemSet"}`);
                 const response = await axios.delete(`https://testcfc.onrender.com/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',

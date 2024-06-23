@@ -11,12 +11,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 export default function QuestionTypeSelector() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [uploadUrl, setUploadUrl] = useState('');
-  const { bc, ibg, bg, light, dark, role } = useContext(UserContext);
+  const { bc, ibg, bg, light, dark, role,setURL } = useContext(UserContext);
 
   // Predefined options for autocomplete
   const predefinedOptions = [
     'OfficialCources',
-    'YadiChoudhary',
     'ProblemSet',
     'Java Basics',
   ];
@@ -69,6 +68,7 @@ export default function QuestionTypeSelector() {
                 value={uploadUrl}
                 onChange={(event, newValue) => {
                   setUploadUrl(newValue);
+                  setURL(newValue);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -76,7 +76,10 @@ export default function QuestionTypeSelector() {
                     label="Upload URL"
                     fullWidth
                     value={uploadUrl}
-                    onChange={(e) => setUploadUrl(e.target.value)}
+                    onChange={(e) => {
+                      setUploadUrl(e.target.value);
+                      setURL(e.target.value);
+                    }}
                     style={{
                       backgroundColor: 'white',
                       color: ibg,

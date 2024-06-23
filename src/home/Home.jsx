@@ -1,4 +1,4 @@
-import React, { useState ,useEffect,useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import styles from './themes.module.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
@@ -13,16 +13,18 @@ import Newsletter from './newsLetter'
 import UserCount from './UserCount'
 import { UserContext } from '../Context/UserContext';
 import Typed from 'typed.js';
+import mySvg from '/public/5570863.jpg'; // Ensure you have the SVG file in your project
+
 
 
 function Home() {
   const [typedInstance, setTypedInstance] = useState(null);
- 
-  const {ibg, bc,bg, light,dark } = useContext(UserContext);
+
+  const { ibg, bc, bg, light, dark } = useContext(UserContext);
   const [theme, settheme] = useState(bc);
   useEffect(() => {
     const options = {
-      strings: ["Welcome to: \n Code-for-Challenge: Elevate Your Coding Skills"],
+      strings: ["Elevate Your Coding Skills"],
       typeSpeed: 50,
       // backSpeed: 50,
       // loop: true
@@ -30,7 +32,7 @@ function Home() {
 
     const typed = new Typed('.typing-element', options);
     setTypedInstance(typed);
-    return () => {};
+    return () => { };
   }, []);
 
   const buttonStyles = {
@@ -93,142 +95,151 @@ function Home() {
       boxShadow: 'rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px',
     },
   };
-
+  const divStyle = {
+    width: '100%',
+    height: '100vh',
+    backgroundImage: `url(${mySvg})`,
+    backgroundSize: 'cover', // Adjust as needed
+    backgroundPosition: 'center', // Adjust as needed
+    backgroundRepeat: 'no-repeat', // Adjust as needed
+  };
 
   const [color, setcolor] = useState("#ed6524")
+  const [isHovered, setIsHovered] = useState(false);
+  const Card = ({ background, hoverBackground, width, height, title, subtitle, imageUrl, imageWidth, imageHeight }) => {
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleHover = () => {
+      setIsHovered(true);
+    };
+
+    const handleUnhover = () => {
+      setIsHovered(false);
+    };
+
+    return (
+      <div
+        style={{
+          position: 'relative', // Ensure position relative for absolute positioning of image
+          background: background,
+          marginTop: "20px",
+          borderRadius: "10px",
+          height: height,
+          width: width,
+          boxShadow: isHovered ? '8px 5px 8px rgba(0, 0, 0, 0.3)' : '8px 5px 8px rgba(0, 0, 0, 0.1)',
+          transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          marginLeft: "10px",
+        }}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleUnhover}
+      >
+        <p style={{ padding: "10px", fontSize: 20, fontWeight: "bolder" }}>{title}</p>
+        <p style={{ paddingLeft: "10px", fontSize: 14 }}>{subtitle}</p>
+
+        {/* Image positioned in the bottom-right corner */}
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt="Small Image"
+            style={{
+              position: 'absolute',
+              bottom: '5px',
+              right: '5px',
+              width: imageWidth ? `${imageWidth}px` : 'auto',
+              height: imageHeight ? `${imageHeight}px` : 'auto',
+              // borderRadius: '50%',
+              // border: '2px solid white', // Example border styling
+            }}
+          />
+        )}
+      </div>
+    );
+  };
+
+
   return (
-    <div style={{backgroundColor:bg,color:ibg}}>
+    <div style={{ backgroundColor: bg, color: ibg }}>
       <Dashboard />
       <div >
-       
-        <header className={styles.header}>
-          {/* <img style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "300px", width: "100%" }} src={logo} alt="image" /> */}
-        </header>
 
-        <section className={styles.heroSection}>
-          <div className="container">
-            <div className="row">
-              <div className="col-12 col-md-7 pt-5 mb-5 align-self-center">
-                <div className="promo pe-md-3 pe-lg-5">
-                  {/* <h1 className="headline mb-3" style={{ fontSize: "40px", fontWeight: "bolder" }}>
-                  
-                    Welcome to: <br />Code-for-Challenge: Elevate Your Coding Skills
-                   
-                  </h1> */}
-                  <div className="headline mb-3 typing-element" style={{ fontSize: "40px", fontWeight: "bolder" }}>
-  {/* Text will be rendered here by Typed.js */}
-</div>
 
-                  <div className="subheadline mb-3" style={{ fontSize: "20px" }}>
-                    What sets us apart? Our commitment to excellence. With a vast library of challenges covering various programming languages, algorithms, and problem-solving techniques, Code for Challenge ensures that every coder finds their perfect match. Join us today and embark on a transformative journey towards coding mastery.
-                  </div>
-                  <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
-                    <div className="col-12 col-md-auto">
-                      <a className="btn btn-primary w-100" href="https://code-with-challenge.vercel.app/data" style={buttonStyles}>Sign Up</a>
-                    </div>
-                    <div className="col-12 col-md-auto">
-                      <a className="btn btn-secondary scrollto w-100" href="#benefits-section" style={{
-                        alignItems: 'center',
-                        appearance: 'none',
-                        backgroundColor: 'white',
-                        borderRadius: '24px',
-                        borderStyle: "solid",
-                        borderWidth: "2px",
-                        borderColor: theme,
-                        // borderStyle: 'none',
-                        // boxShadow: 'rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0',
-                        boxSizing: 'border-box',
-                        color: 'black',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        fill: 'currentcolor',
-                        fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
-                        fontSize: '14px',
-                        fontWeight: "bold",
-                        height: '48px',
-                        justifyContent: 'center',
-                        letterSpacing: '.25px',
-                        lineHeight: 'normal',
-                        maxWidth: '100%',
-                        overflow: 'visible',
-                        padding: '2px 44px',
-                        position: 'relative',
-                        textAlign: 'center',
-                        textTransform: 'none',
-                        transition: 'box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms',
-                        userSelect: 'none',
-                        WebkitUserSelect: 'none',
-                        touchAction: 'manipulation',
-                        width: 'auto',
-                        willChange: 'transform, opacity',
-                        zIndex: 0,
-                        '&:hover': {
-                          background: '#ed6524',
-                          color: 'white',
-                        },
-                        '&:active': {
-                          boxShadow: '0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%)',
-                          outline: 'none',
-                        },
-                        '&:focus': {
-                          outline: 'none',
-                          border: '2px solid #4285f4',
-                        },
-                        '&:not(:disabled)': {
-                          boxShadow: 'rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px',
-                        },
-                        '&:not(:disabled):hover': {
-                          boxShadow: 'rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px',
-                        },
-                        '&:not(:disabled):focus': {
-                          boxShadow: 'rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px',
-                        },
-                        '&:not(:disabled):active': {
-                          boxShadow: 'rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px',
-                        },
-                        '&:disabled': {
-                          boxShadow: 'rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px',
-                        },
-                      }}>Login In</a>
-                    </div>
-                  </div>
-                  <div className="hero-quotes mt-5">
-                    <div id="quotes-carousel" className="quotes-carousel carousel slide carousel-fade mb-5" data-bs-ride="carousel" data-bs-interval="8000">
-                      <div className="carousel-inner">
-                        <div className="carousel-item active">
-                          <blockquote className="quote p-4 theme-bg-light" style={{ backgroundColor: "#f6f8fc", borderLeft: `5px solid ${theme}`,height: "100%",color:"black" }}>
-                            "Code for Challenge has exceeded my expectations in every aspect. It has not only equipped me with the skills needed to tackle real-world coding tasks but has also instilled in me a newfound confidence in my abilities as a coder. I highly recommend Code for Challenge to anyone looking to embark on a rewarding journey towards coding mastery."
-                          </blockquote>
-                          <div className="source row gx-md-3 gy-3 gy-md-0 align-items-center">
-                            <div className="col-12 col-md-auto text-center text-md-start">
-                              <img className={styles.sourceProfile} style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", height: "50px", width: "50px", borderRadius: "50%" }} src={imgUrl} alt="image" />
-                            </div>
-                            <div className="col source-info text-center text-md-start">
-                              <div className={styles.sourceName}>Yadi Choudhary</div>
-                              <div className={styles.sourceTitle}>Co-Founder, Startup</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+        <section style={divStyle}>
+          <div className="container" style={{ position: "relative", height: "100vh" }}>
+            <div className="row align-items-center">
+              <div className="col-12 col-md-5">
+                <div className="headline typing-element" style={{ marginTop: "200px", color: "black", fontSize: "50px", fontWeight: "bolder" }}>
+                  {/* Placeholder for headline content */}
                 </div>
               </div>
-              <div className="col-12 col-md-5 mb-5 align-self-center">
-                <div className={styles.bookCoverHolder}>
-                  <img className="img-fluid book-cover" src={editorphoto} alt="book cover" />
-                  <div className="book-badge d-inline-block shadow"style={{ backgroundColor: "#5cb377",textAlign:"center",overflow: "hidden", height: "100px",  width: "100px", borderRadius: "50%",padding:"15px", display: "flex", fontSize:"20px",fontWeight:"bolder",color:"white"}}>
-                    New <br /> Release
-                  </div>
+              <div className="col-12 col-md-6" style={{ position: "absolute", bottom: "100px", right: "0px", display: "flex" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Card
+                    background="lightgreen"
+                    hoverBackground="lightblue"
+                    width="250px"
+                    height="115px"
+                    title="Learn"
+                    subtitle="Skill Development Space"
+                    imageUrl="./public/code.png"
+                    imageWidth={70}
+                    imageHeight={70}
+                  />
+                  <Card
+                    background="#DFB1EC"
+                    hoverBackground="lightblue"
+                    width="250px"
+                    height="115px"
+                    title="Practice"
+                    subtitle="Skill Development"
+                    imageUrl="./public/practice.png"
+                    imageWidth={100}
+                    imageHeight={100}
+                  />
+                  <Card
+                    background="#F7BF69"
+                    hoverBackground="lightblue"
+                    width="250px"
+                    height="115px"
+                    title="Courses"
+                    subtitle="Skill Development"
+                    imageUrl="./public/cources.png"
+                    imageWidth={100}
+                    imageHeight={100}
+                  />
                 </div>
-                <div className="text-center">
-                  <a className="theme-link scrollto" href="https://code-with-challenge.vercel.app/EditorComponent">Online Editor</a>
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "400px", marginLeft: "20px" }}>
+                  <Card
+                    background="#98C2F6"
+                    hoverBackground="lightgreen"
+                    width="250px"
+                    height="200px"
+                    title="Discover"
+                    subtitle="Creative Exploration"
+                    imageUrl="./public/descover.png"
+                    imageWidth={220}
+                    imageHeight={180}
+                  />
+                  <Card
+                    background="#EFC3CA"
+                    hoverBackground="lightgreen"
+                    width="250px"
+                    height="200px"
+                    title="Compete"
+                    subtitle="Creative Exploration"
+                    imageUrl="./public/complete.webp"
+                    imageWidth={180}
+                    imageHeight={120}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </section>
-<FeatureExample/>
+
+
+        <FeatureExample />
         <section id="benefits-section" className={`${styles.benefitsSection} theme-bg-light-gradient py-5`}>
           <div className="container py-5">
             <h2 className="section-heading text-center mb-3" style={{ fontSize: "40px" }}>What Will You Get From This Website?</h2>
@@ -305,7 +316,7 @@ function Home() {
           </div>
         </section>
 
-        <HeadingSection/>
+        <HeadingSection />
         <section id="content-section" className={styles.contentSection}>
           <div className="container">
             <div className="single-col-max mx-auto">
@@ -347,7 +358,7 @@ function Home() {
 
 
         <h2 className="section-heading text-center" style={{ fontSize: "40px" }}>User Count</h2>
-    <UserCount/>
+        <UserCount />
 
 
         <section id="audience-section" className={`${styles.audienceSection} py-5`}>
@@ -374,10 +385,10 @@ function Home() {
             </div>
           </div>
         </section>
-<div style={{marginBottom:"3px"}}>
-       <Newsletter/>
-       </div>
-        <Footer/>
+        <div style={{ marginBottom: "3px" }}>
+          <Newsletter />
+        </div>
+        <Footer />
 
         {/* <section id="author-section" className={`py-5`} style={{ backgroundColor: color }} >
           <div className="container py-3" style={{ borderColor: color }}>

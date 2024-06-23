@@ -11,7 +11,7 @@ import { FormContext } from '../../Context/FormContext';
 
 const FinalSend = ({ step, uploadUrl }) => {
     const { formData, updateFormData } = useContext(FormContext);
-    const { user, password, role } = useContext(UserContext);
+    const { user, password, role,URL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
 
     const handleTagsChange = useCallback((tags) => {
@@ -35,7 +35,7 @@ const FinalSend = ({ step, uploadUrl }) => {
                 },
                 {
                     headers: {
-                        Authorization: `Basic ${btoa(`${user}:${password}`)}`, // Encode credentials
+                        Authorization: `Basic ${btoa(`${URL}:${URL}`)}`, // Encode credentials
                         'Content-Type': 'application/json',
                     },
                 }

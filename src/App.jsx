@@ -21,6 +21,8 @@ import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
 import ProblemEditForm from './Leetcode/ProblemEditForm';
 import PublicProfile from './publicUser/PublicProfile';
 import Test from './Leetcode/test';
+import Testing from './loginSigin/NewForm/testing';
+import QueryParamsExample from './loginSigin/NewForm/QuearyParamsExample';
 
 
 
@@ -47,12 +49,14 @@ function App() {
               <Route path="/login" element={<LoginUser />} />
 
               <Route path="/edit/:problemId" element={<ProblemEditForm />} />
-              <Route path="/register" element={<RegisterUser />} />
+              {/* <Route path="/register" element={<RegisterUser />} /> */}
               <Route path="/Data" element={<MyDataGrid />} />
               <Route path="/leaderboard" element={<LeaderBoard />} />
               <Route path="/learn" element={<LearningPage />} />
               <Route path="/publicProfile" element={<PublicProfile />} />
-              <Route path="/test" element={<Test />} />
+              
+              <Route path="/register" element={<Testing />} />
+              <Route path="/verify-email" element={<QueryParamsExample />} />
 
 
 

@@ -74,6 +74,7 @@ function LearningPage() {
   
 
       try {
+       
         const response = await fetch('https://testcfc.onrender.com/Course', {
           method: 'GET',
           headers: {
@@ -82,10 +83,12 @@ function LearningPage() {
         });
         if (response.ok) {
           const data = await response.json();
+          
           if (Array.isArray(data)) {
             localStorage.setItem('officialCourses', JSON.stringify(data));
             officialCoursesRef.current = data;
             setOfficialCourses(data);
+          
        
           } else {
             console.error('Fetched official data is not an array:', data);
@@ -137,7 +140,7 @@ function LearningPage() {
   };
  return (
     <PageContainer bg={bg}>
-      <div style={{ maxHeight: "100vh", overflow: "scroll", backgroundColor: bg, color: ibg }}>
+      <div style={{  backgroundColor: bg, color: ibg }}>
         <Dashboard />
         <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills

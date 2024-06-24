@@ -288,7 +288,7 @@ const LeetCodeClone = () => {
                       </div>
                       <div className="problem-details">
                         {problem.type === "MCQ" ? (
-                          <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>
+                          <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "10px 1px,10px,15px", borderColor: "blueviolet" }}>MCQ</p>
                         ) : (
                           <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
                         )}
@@ -345,9 +345,9 @@ const LeetCodeClone = () => {
               </div>
               {view === 'stats' ? (
                 <div className="stats-container" style={{ background: dark, color: ibg }}>
-                  <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
+                  {progress && <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
                     <LinearProgress thickness={4} variant="determinate" value={(progress / totalQuestions) * 100} />
-                  </p>
+                  </p>}
                   <Test description={description} />
                 </div>
               ) : (

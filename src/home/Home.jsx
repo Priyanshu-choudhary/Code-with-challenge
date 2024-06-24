@@ -239,7 +239,7 @@ function Home() {
                     
                     // imageUrl="./myDroneMakingPhotoEDITED-removebg-preview.png"
                     imageWidth={110}
-                    imageHeight={170}
+                    imageHeight={180}
                     onClick={() => navigate('/EditorComponent')}
                   />
                   <Card

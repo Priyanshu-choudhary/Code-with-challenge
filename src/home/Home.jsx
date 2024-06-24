@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 // import styles from './themes.module.css';
 import Dashboard from '../dashBoard/Dashboard';
 import imgUrl from "/myDroneMakingPhotoEDITED.jpg";
-import logo from "/banner.png";
-import logo3 from "/logo.jpg";
-import styles from "/logo.jpg";
 import HeadingSection from './headingSection';
 import FeatureExample from './featureSection'
 import Footer from './footer'

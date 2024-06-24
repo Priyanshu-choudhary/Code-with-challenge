@@ -71,7 +71,8 @@ const RegisterForm = () => {
       }}
     >
       <Typography variant="h5" component="div" sx={{ mb: 2, textAlign: 'center' }}>
-        Register
+        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form </p>
+        
       </Typography>
       <TextField
         fullWidth

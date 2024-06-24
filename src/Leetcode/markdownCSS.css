@@ -4,6 +4,15 @@
     line-height: 1.6;
     padding: 20px;
   }
+  .responsive-image {
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .responsive-image {
+      display: none;
+    }
+  }
   
   .markdown-body h1 {
     font-size: 3em;

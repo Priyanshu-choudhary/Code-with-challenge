@@ -28,7 +28,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:9090/register/temp', {
+      const response = await fetch('https://testcfc.onrender.com/register/temp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const RegisterForm = () => {
       if (response.ok) {
         console.log('Registration successful');
         setAlertSeverity('success');
-        setAlertMessage(`We send a confirmation email to your provided email ${data.email} successful`);
+        setAlertMessage(`We send a confirmation email to your provided email ${data.email} successful , check spam section as well`);
         reset(); // Optionally reset the form
       } else {
         console.error('Registration failed');

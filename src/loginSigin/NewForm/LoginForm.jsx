@@ -16,7 +16,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     try {
       // Send data to backend to save temporarily and send verification email
-      const response = await fetch('http://localhost:9090/register/temp', {
+      const response = await fetch('https://testcfc.onrender.com/register/temp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

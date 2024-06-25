@@ -1,0 +1,49 @@
+/* General Styles */
+.container {
+    position: relative;
+    height: auto; /* Change from 100vh to auto to allow for dynamic content height */
+}
+
+
+
+@media (max-width: 500px) {
+    .MyCards {
+        display: block !important;
+        position: static !important;
+        margin-top: 20px;
+    }
+    .content-sections {
+        margin-top: 800px; /* Adjust the margin to ensure there is enough space */
+    }
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-row, .card-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+@media (min-width: 501px) {
+    .card-container {
+        display: flex;
+    }
+
+    .card-row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 400px;
+        margin-left: 20px;
+    }
+}

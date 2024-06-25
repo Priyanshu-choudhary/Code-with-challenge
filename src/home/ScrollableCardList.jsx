@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './home.css'; // Ensure the CSS file is imported
 
 const ImgMediaCard = styled(({ title, description, image, onHover, onLeave, onClick, ...otherProps }) => (
   <Card
@@ -20,7 +21,7 @@ const ImgMediaCard = styled(({ title, description, image, onHover, onLeave, onCl
       maxWidth: 300,
       m: 2,
       transition: 'transform 0.3s ease-in-out',
-      cursor: 'pointer'
+      cursor: 'pointer',
     }}
   >
     <CardMedia
@@ -41,7 +42,7 @@ const ImgMediaCard = styled(({ title, description, image, onHover, onLeave, onCl
     <CardActions>
       <Button size="small">Enroll</Button>
       <Button size="small">Learn More</Button>
-      <p style={{ marginLeft: 'auto', backgroundColor: "gold", padding: '5px 15px', borderRadius: "10px", paddingLeft: '5px', fontWeight: 'bolder' }}>*Free</p>
+      <p style={{ marginLeft: 'auto', backgroundColor: 'gold', padding: '5px 15px', borderRadius: '10px', paddingLeft: '5px', width:"55px" ,fontSize:"18px"}}>*Free</p>
     </CardActions>
   </Card>
 ))(({ theme }) => ({
@@ -53,7 +54,6 @@ const ImgMediaCard = styled(({ title, description, image, onHover, onLeave, onCl
 const ScrollableCardList = () => {
   const scrollRef = React.useRef(null);
   const intervalRef = React.useRef(null);
-  // const history = useHistory();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -95,8 +95,6 @@ const ScrollableCardList = () => {
   };
 
   const handleCardClick = (title) => {
-   
-    // history.push(`/learn?course=${encodeURIComponent(title)}`);
     navigate(`/learn/`);
   };
 
@@ -125,19 +123,22 @@ const ScrollableCardList = () => {
   ];
 
   return (
-    <Box ref={scrollRef} sx={{ display: 'hidden', overflowX: 'scroll', padding: 2 }}>
-      {cardsData.map((card, index) => (
-        <ImgMediaCard
-          key={index}
-          title={card.title}
-          description={card.description}
-          image={card.image}
-          onHover={handleMouseEnter}
-          onLeave={handleMouseLeave}
-          onClick={() => handleCardClick(card.title)}
-        />
-      ))}
-    </Box>
+    <div className='MyImgMediaCard'>
+      <p style={{ marginLeft: '30px', fontSize: '30px', fontWeight: 'bold', color: 'black' }}>Our Courses</p>
+      <Box ref={scrollRef} sx={{ display: 'hidden', overflowX: 'scroll', padding: 2 }}>
+        {cardsData.map((card, index) => (
+          <ImgMediaCard
+            key={index}
+            title={card.title}
+            description={card.description}
+            image={card.image}
+            onHover={handleMouseEnter}
+            onLeave={handleMouseLeave}
+            onClick={() => handleCardClick(card.title)}
+          />
+        ))}
+      </Box>
+    </div>
   );
 };
 

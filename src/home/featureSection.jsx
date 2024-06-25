@@ -1,20 +1,20 @@
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid'
+import "./home.css"
 
 const features = [
   {
     name: 'Code Faster.',
-    description:
-      'XXXXTODOXXXXX.',
+    description: 'Accelerate your development with our efficient coding tools.',
     icon: CloudArrowUpIcon,
   },
   {
     name: 'SSL certificates.',
-    description: 'XXXXTODOXXXXX.',
+    description: 'Secure your connections with reliable SSL certificates.',
     icon: LockClosedIcon,
   },
   {
-    name: 'XXXXTODOXXXXX.',
-    description: 'XXXXTODOXXXXX.',
+    name: 'Reliable Hosting.',
+    description: 'Dependable hosting solutions to keep your services up and running.',
     icon: ServerIcon,
   },
 ]
@@ -29,10 +29,10 @@ export default function FeatureExample() {
               <h2 className="text-base font-semibold leading-7 text-indigo-600">Code smarter</h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">A better way to Learn</p>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-              Discover our platform's comprehensive learning resources, designed to elevate your coding skills from beginner to advanced levels. Whether you're honing your skills through interactive challenges, preparing for hackathons, or seeking career advancement, our tailored approach ensures you stay ahead in the fast-paced world of coding. Join our community today and unlock your potential with accessible, anytime learning.
+                Discover our platform's comprehensive learning resources, designed to elevate your coding skills from beginner to advanced levels. Whether you're honing your skills through interactive challenges, preparing for hackathons, or seeking career advancement, our tailored approach ensures you stay ahead in the fast-paced world of coding. Join our community today and unlock your potential with accessible, anytime learning.
               </p>
               <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
-                {/* {features.map((feature) => (
+                {features.map((feature) => (
                   <div key={feature.name} className="relative pl-9">
                     <dt className="inline font-semibold text-gray-900">
                       <feature.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-600" aria-hidden="true" />
@@ -40,17 +40,17 @@ export default function FeatureExample() {
                     </dt>{' '}
                     <dd className="inline">{feature.description}</dd>
                   </div>
-                ))} */}
+                ))}
               </dl>
             </div>
           </div>
-          <img
-            src="./featureImeage.png"
-            alt="Product screenshot"
-            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[40rem] md:-ml-4 lg:-ml-0"
-            width={32}
-            height={2}
-          />
+          <div className='imageInMobile'>
+            <img
+              src="./featureImeage.png"
+              alt="Product screenshot"
+              className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[40rem] md:-ml-4 lg:-ml-0"
+            />
+          </div>
         </div>
       </div>
     </div>

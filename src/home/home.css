@@ -15,6 +15,7 @@
     .content-sections {
         margin-top: 800px; /* Adjust the margin to ensure there is enough space */
     }
+  
     .card-container {
         display: flex;
         flex-direction: column;
@@ -47,3 +48,49 @@
         margin-left: 20px;
     }
 }
+/* home.css */
+.imageInMobile img {
+    width: 48rem;
+    max-width: none;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    ring: 1px solid rgba(156, 163, 175, 0.1);
+  }
+  
+  @media (max-width: 500px) {
+    .imageInMobile img {
+      width: 400px;
+      height: 400px;
+    }
+  }
+/* home.css */
+.MyImgMediaCard {
+    margin-left: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+  }
+  
+  @media (max-width: 500px) {
+    .MyImgMediaCard {
+      font-size: 20px;
+      margin-left: 10px;
+    }
+  
+    .MyImgMediaCard .MuiCard-root {
+      max-width: 200px;
+    }
+  
+    .MyImgMediaCard .MuiCardMedia-root {
+      height: 100px;
+    }
+  
+    .MyImgMediaCard .MuiCardContent-root {
+      padding: 8px;
+    }
+  
+    .MyImgMediaCard .MuiCardActions-root {
+      padding: 8px;
+    }
+  }
+    

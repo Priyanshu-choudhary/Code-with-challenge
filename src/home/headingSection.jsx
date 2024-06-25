@@ -26,7 +26,7 @@ export default function HeadingSection() {
               </a>
             </div>
           </div>
-          <div style={{width:600,height:400}}>
+          <div className='imageInMobile'style={{width:600,height:400}}>
             <img src="boostImage.jpeg" alt="img" />
           </div>
         </div>

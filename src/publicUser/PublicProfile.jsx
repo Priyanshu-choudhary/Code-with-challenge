@@ -27,7 +27,7 @@ const PublicProfile = () => {
     const fetchData = async () => {
       try {
         // Fetch user data
-        const userResponse = await fetch(`https://testcfc.onrender.com/Public/${userId}`, {
+        const userResponse = await fetch(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Public/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

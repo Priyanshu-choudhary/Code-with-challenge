@@ -1,5 +1,5 @@
 async function createUser() {
-    const url = 'https://testcfc.onrender.com/users';
+    const url = 'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/users';
     const name = 'x';  // Replace with your username
     const password = 'x';  // Replace with your password
 

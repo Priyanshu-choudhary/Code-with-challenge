@@ -78,11 +78,11 @@ export default function StripedGrid() {
 
         try {
             const basicAuth = 'Basic ' + btoa('ProblemSet:ProblemSet');
-            let API_URL = 'https://testcfc.onrender.com/Posts';
+            let API_URL = 'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts';
 
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
-                API_URL = `https://testcfc.onrender.com/Posts/filter?${tagsQuery}&exactMatch=true`;
+                API_URL = `http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/filter?${tagsQuery}&exactMatch=true`;
             }
 
             // Check if there is cached data in local storage
@@ -168,7 +168,7 @@ export default function StripedGrid() {
         if (confirmed) {
             try {
                 const basicAuth = 'Basic ' + btoa(`${"ProblemSet"}:${"ProblemSet"}`);
-                const response = await axios.delete(`https://testcfc.onrender.com/Posts/id/${id}`, {
+                const response = await axios.delete(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': basicAuth

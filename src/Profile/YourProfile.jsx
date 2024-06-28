@@ -44,7 +44,7 @@ const YourProfile = () => {
         }
 
         // Fetch problems
-        const problemsResponse = await fetch("https://testcfc.onrender.com/Posts", {
+        const problemsResponse = await fetch("http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const YourProfile = () => {
         }
 
         // Fetch user data
-        const userResponse = await fetch("https://testcfc.onrender.com/users/getUser", {
+        const userResponse = await fetch("http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/users/getUser", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

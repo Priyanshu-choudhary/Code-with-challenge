@@ -192,7 +192,7 @@ function QuestionApi() {
         setLoading(true);
         setSnackbarOpen(true); 
         const response = await axios.post(
-          'https://testcfc.onrender.com/Posts',
+          'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts',
           currentans,
           {
             auth: {

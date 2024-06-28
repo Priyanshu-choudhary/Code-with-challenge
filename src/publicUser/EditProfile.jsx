@@ -25,7 +25,7 @@ const ValidationTextFields = () => {
         const fetchUserData = async () => {
             const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
             try {
-                const response = await fetch('https://testcfc.onrender.com/users/getUser', {
+                const response = await fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/users/getUser', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const ValidationTextFields = () => {
         };
 
         try {
-            const url = 'https://testcfc.onrender.com/users';
+            const url = 'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/users';
             updatedData.password = password;
 
             const headers = new Headers();

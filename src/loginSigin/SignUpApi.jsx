@@ -2,7 +2,7 @@ async function signUp(username, password, email) {
   try {
     const roles = ["USER"]; // Assuming you want every user to have the role "USER"
 
-    const response = await fetch('https://testcfc.onrender.com/Public/Create-User', {
+    const response = await fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Public/Create-User', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

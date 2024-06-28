@@ -44,7 +44,7 @@ function LearningPage() {
    
 
       try {
-        const response = await fetch('https://testcfc.onrender.com/Course', {
+        const response = await fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course', {
           method: 'GET',
           headers: {
             'Authorization': basicAuth,
@@ -75,7 +75,7 @@ function LearningPage() {
 
       try {
        
-        const response = await fetch('https://testcfc.onrender.com/Course', {
+        const response = await fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course', {
           method: 'GET',
           headers: {
             'Authorization': officialAuth,
@@ -117,7 +117,7 @@ function LearningPage() {
     if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
       const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
       try {
-        const response = await fetch(`https://testcfc.onrender.com/Course/id/${courseId}`, {
+        const response = await fetch(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course/id/${courseId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': basicAuth,

@@ -52,7 +52,7 @@ export default function McqForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        `https://testcfc.onrender.com/Posts/Course/${uploadUrl}`,
+        `http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/Course/${uploadUrl}`,
         postData,
         {
           auth: {

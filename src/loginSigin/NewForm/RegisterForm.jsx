@@ -28,7 +28,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await fetch('https://testcfc.onrender.com/register/temp', {
+      const response = await fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/register/temp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

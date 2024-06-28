@@ -37,7 +37,7 @@ const ProblemEditForm = () => {
   useEffect(() => {
     const fetchProblemDetails = async () => {
       try {
-        const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
+        const response = await fetch(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/id/${problemId}`, {
           headers: {
             'Authorization': 'Basic ' + btoa('OfficialCources:OfficialCources')
           }

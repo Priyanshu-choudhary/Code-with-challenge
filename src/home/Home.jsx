@@ -62,10 +62,11 @@ function Home() {
           borderRadius: "10px",
           height: height,
           width: width,
-          boxShadow: isHovered ? '8px 5px 8px rgba(0, 0, 0, 0.3)' : '8px 5px 8px rgba(0, 0, 0, 0.1)',
+          boxShadow: isHovered ? '8px 5px 8px #00B7FF' : '8px 5px 8px rgba(0, 0, 0, 0.1)',
           transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-          marginLeft: "10px",
+          marginLeft: "50px",
+          
         }}
         onMouseEnter={handleHover}
         onMouseLeave={handleUnhover}
@@ -98,7 +99,7 @@ function Home() {
           <section style={divStyle}>
           <div className="container" >
             <div className="row align-items-center">
-              <div className="MyHeading col-12 col-md-5" style={{ marginTop: "200px" }}>
+              <div className="MyHeading col-12 col-md-5" style={{ marginTop: "150px" }}>
                 <div className="headline typing-element" style={{ color: "black", fontSize: "50px", fontWeight: "bolder" }}>
                 </div>
                 <p style={{ color: "black", fontWeight: "bold" }}>Explore, code, compete: Courses, challenges, hackathons - your ultimate coding destination</p>
@@ -109,7 +110,7 @@ function Home() {
                 </div>
               </div>
               <div className="MyCards col-12 col-md-6">
-                <div className="card-container">
+                <div className="card-container " >
                   <div className="card-row">
                     <Card
                       background="lightgreen"

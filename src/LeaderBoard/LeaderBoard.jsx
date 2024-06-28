@@ -69,7 +69,7 @@ export default function LeaderBoard() {
     const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
-        fetch('https://testcfc.onrender.com/Public/getUser')
+        fetch('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Public/getUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

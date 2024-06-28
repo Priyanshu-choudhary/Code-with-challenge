@@ -10,7 +10,7 @@ export const useUpdateCourse = () => {
         console.log("tp "+totalProblems);
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
         console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
-      const response = await axios.put(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course/id/${courseId}`, {
+      const response = await axios.put(`https://testcfc.onrender.com/Course/id/${courseId}`, {
         progress,
         completeQuestions,
         rating,

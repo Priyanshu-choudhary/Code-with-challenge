@@ -185,14 +185,15 @@ function QuestionApi() {
 
   const handleSubmit = async () => {
     if (!currentans.id) {
-      alert('Run the code First.');
+      alert('Correctly Run the code First.');
     } else {
       console.log(currentans.id);
       try {
         setLoading(true);
-        setSnackbarOpen(true); 
+        
+        update();
         const response = await axios.post(
-          'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts',
+          'https://testcfc.onrender.com/Posts',
           currentans,
           {
             auth: {
@@ -203,7 +204,7 @@ function QuestionApi() {
         );
         console.log('Post created:', response.data);
         setLoading(false);
-        alert('Correct Answer.');
+        setSnackbarOpen(true); 
         setcurrentans('');
       } catch (error) {
         console.error('Error upload post:', error);
@@ -256,11 +257,17 @@ function QuestionApi() {
                     <pre style={{ background: dark }}>{problem.solution}</pre>
                   </Grid>
                 </>}
-                {optionA ? <></> : <Grid className='subtitle' xs={15}><hr />
+                {problem.constrain &&  <Grid className='subtitle' xs={15}><hr />
                   Constrain:
 
                   <br />
                   <pre> {problem.constrain}</pre>
+                </Grid>}
+                {problem.answer &&  <Grid className='subtitle' xs={15}><hr />
+                  Answer:
+
+                  <br />
+                  <pre> {problem.answer}</pre>
                 </Grid>}
 
               </Grid>

@@ -13,7 +13,7 @@ const FinalSend = ({ step, uploadUrl }) => {
     const { formData, updateFormData } = useContext(FormContext);
     const { user, password, role,URL,setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
-    const [newUrl, setnewUrl] = useState('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts')
+    const [newUrl, setnewUrl] = useState('https://testcfc.onrender.com/Posts')
     const [auth, setauth] = useState(URL)
     
     const handleTagsChange = useCallback((tags) => {
@@ -29,11 +29,11 @@ const FinalSend = ({ step, uploadUrl }) => {
 
     useEffect(() => {
         if (URL != 'YadiChoudhary') {
-            setnewUrl(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/Course/${URL}`);
+            setnewUrl(`https://testcfc.onrender.com/Posts/Course/${URL}`);
             setauth("OfficialCources");
            
         } else {
-            setnewUrl('http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts');
+            setnewUrl('https://testcfc.onrender.com/Posts');
         }
     }, [    URL]); // Add URL to the dependency array to run this effect whenever URL changes
     

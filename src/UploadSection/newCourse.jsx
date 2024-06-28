@@ -59,7 +59,7 @@ export default function CourseForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course',
+        'https://testcfc.onrender.com/Course',
         postData,
         {
           headers: {

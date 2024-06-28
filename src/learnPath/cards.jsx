@@ -24,7 +24,7 @@ export default function ImgMediaCard({ id,permission, title, image, description,
   };
   const handlePermissionChange = async () => {
     const newPermission = currentPermission === 'public' ? 'private' : 'public';
-    const url = `http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Course/id/${id}`;
+    const url = `https://testcfc.onrender.com/Course/id/${id}`;
     const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
 
     try {

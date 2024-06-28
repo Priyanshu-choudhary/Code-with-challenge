@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 
 
 async function SignApi(username, password) {
-  const url = 'http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Public/Create-User';
+  const url = 'https://testcfc.onrender.com/Public/Create-User';
   const payload = {
     name: username,
     password: password

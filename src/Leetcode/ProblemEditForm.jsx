@@ -33,11 +33,12 @@ const ProblemEditForm = () => {
 
   const [newTag, setNewTag] = useState('');
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false); // State to track form submission
 
   useEffect(() => {
     const fetchProblemDetails = async () => {
       try {
-        const response = await fetch(`http://ec2-52-62-60-176.ap-southeast-2.compute.amazonaws.com:9090/Posts/id/${problemId}`, {
+        const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
           headers: {
             'Authorization': 'Basic ' + btoa('OfficialCources:OfficialCources')
           }
@@ -89,9 +90,10 @@ const ProblemEditForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true); // Start showing spinner on submit
     try {
       console.log(JSON.stringify(problemDetails));
-      const response = await fetch(`/Posts/id/${problemId}`, {
+      const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -109,6 +111,8 @@ const ProblemEditForm = () => {
     } catch (error) {
       console.error("Error updating problem:", error);
       alert('An error occurred while updating the problem.');
+    } finally {
+      setSubmitting(false); // Stop showing spinner after API response
     }
   };
 
@@ -133,6 +137,18 @@ const ProblemEditForm = () => {
 
       {Object.keys(problemDetails).map((key) => (
         key !== 'tags' && (
+          key === 'solution' ?
+          <TextField
+            key={key}
+            id={key}
+            label={key.charAt(0).toUpperCase() + key.slice(1)}
+            variant="outlined"
+            multiline
+            rows={4} // Adjust the number of rows as needed
+            value={problemDetails[key]}
+            onChange={handleInputChange}
+          />
+          :
           <TextField
             key={key}
             id={key}
@@ -169,8 +185,8 @@ const ProblemEditForm = () => {
         ))}
       </Box>
 
-      <Button variant="contained" color="primary" type="submit">
-        Save
+      <Button variant="contained" color="primary" type="submit" disabled={submitting}>
+        {submitting ? <CircularProgress size={24} color="inherit" /> : 'Save'}
       </Button>
     </Box>
     </>

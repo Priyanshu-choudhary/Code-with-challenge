@@ -4,7 +4,7 @@ import "./editor.css";
 import JDoodleExample from '../JDoodle/JDoodleExample';
 import OutputSec from '../outputSec/OutputSec';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { UserContext } from '../Context/UserContext';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -19,7 +19,9 @@ function MyEditor({input,saveToDatabase, problem, myfun, answer, title, descript
   const [showConfetti, setShowConfetti] = useState(false);
   const [isCorrect, setisCorrect] = useState(false)
   const editorRef = useRef(null);
+  
   const { ibg, bg, bc, dark, light, user, password, currentthemes } = useContext(UserContext);
+  const [bgColor, setbgColor] = useState(light)
   const createCourse = useCreateCourse(); // Call the custom hook
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -150,7 +152,7 @@ function MyEditor({input,saveToDatabase, problem, myfun, answer, title, descript
   
 const testCaseGroups = parseOutput(output.output);
 
-const checkAnswer = useCallback(() => {
+const checkTestcaseAnswer = useCallback(() => {
   let allPass = true;
   for (let i = 0; i < testCaseGroups.length; i++) {
     if (testCaseGroups[i].status !== "Pass" || testCaseGroups[i].status == null) {
@@ -162,14 +164,30 @@ const checkAnswer = useCallback(() => {
   setisCorrect(allPass);
 }, [testCaseGroups]);
 
+const checkAnswer = useCallback(() => {
+  let allPass = false;
+ if (output.output==answer) {
+  allPass=true;
+  setbgColor("lightgreen");
+ }else{
+  setbgColor("lightcoral");
+ }
+  setisCorrect(allPass);
+}, [testCaseGroups]);
 useEffect(() => {
-  checkAnswer();
+  if (answer) {
+    checkAnswer();
+   
+  }else{
+    checkTestcaseAnswer();
+  }
+  
   console.log("iscorrect", isCorrect);
   if (isCorrect) {
     console.log("send problem");
     saveToDatabase(problem);
   }
-}, [output, isCorrect, checkAnswer, problem, saveToDatabase]);
+}, [output, isCorrect, checkTestcaseAnswer,checkAnswer, problem, saveToDatabase]);
 
   return (
     <>
@@ -222,8 +240,9 @@ useEffect(() => {
             <p><strong style={{fontSize:"18px",color:"#413F3F"}}>Status:</strong> {testCase.status}</p>
           </div>
         ))}
+
       </div>
-    {!testCaseGroups[0] && <pre style={{backgroundColor:light,margin: '10px', padding: '10px', borderRadius: '5px'}}>{output.output}</pre>}
+    {!testCaseGroups[0] && <pre style={{backgroundColor:bgColor,color:ibg,margin: '10px', padding: '10px', borderRadius: '5px'}}>{output.output}</pre>}
       {showConfetti && (
         <div className="confetti-container">
           <div className="confetti">

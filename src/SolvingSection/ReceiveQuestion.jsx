@@ -39,14 +39,14 @@ function QuestionApi() {
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
-  // console.log(JSON.stringify(problem));
+
   const containerRef = useRef(null);
 
   const scrollToBottom = () => {
     const container = containerRef.current;
     container.scrollTop = container.scrollHeight;
   };
-console.log(JSON.stringify(problem));
+
   useEffect(() => {
     document.body.classList.add('no-scroll');
     return () => {
@@ -134,7 +134,7 @@ console.log(JSON.stringify(problem));
         console.error('Error creating course:', error);
         update();
         // alert('You got it!');
-        console.log(CourseDescription);
+
       }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');

@@ -7,9 +7,9 @@ export const useUpdateCourse = () => {
 
   const updateCourse = async (courseId, progress, completeQuestions, rating,totalProblems) => {
     try {
-        console.log("tp "+totalProblems);
+        // console.log("tp "+totalProblems);
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
+        // console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
       const response = await axios.put(`https://testcfc.onrender.com/Course/id/${courseId}`, {
         progress,
         completeQuestions,

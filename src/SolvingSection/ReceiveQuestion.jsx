@@ -98,6 +98,7 @@ function QuestionApi() {
 
       const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
       const courseToUpdate = existingCourses.find(course => course.title === navHistory);
+      console.log("courseToUpdate>>>>"+courseToUpdate.id);
       if (courseToUpdate) {
         const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
         if (result.success) {
@@ -191,8 +192,8 @@ function QuestionApi() {
       console.log(currentans.id);
       try {
         setLoading(true);
-        
-        update();
+        const response1 = await createCourse(navHistory, description);
+       const response2= await update();
         const response = await axios.post(
           'https://testcfc.onrender.com/Posts',
           currentans,

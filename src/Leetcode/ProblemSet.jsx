@@ -262,7 +262,7 @@ const LeetCodeClone = () => {
                         </div>
                       ))}
                     </div>
-                  ) : <CircularProgress />}
+                  ) : <div style={{position:"fixed",top:"50%",left:"30%",transform: "translate(-50%, -50%)", textAlign: "center"  }}><CircularProgress /></div>}
                 </>
               ) : responseOk ? (
                 <div className="problem-list" style={{ color: ibg }}>

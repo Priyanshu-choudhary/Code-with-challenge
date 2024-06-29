@@ -28,6 +28,7 @@ const ProblemEditForm = () => {
     optionB: '',
     optionC: '',
     optionD: '',
+    videoUrl: '', // New field for Solution Video URL
     tags: []  // Initialize tags as an empty array
   });
 
@@ -126,69 +127,76 @@ const ProblemEditForm = () => {
 
   return (
     <>
-    <Dashboard/>
-    <Box
-      component="form"
-      sx={{ '& > :not(style)': { m: 1 }, display: 'flex', flexDirection: 'column' }}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-
-      {Object.keys(problemDetails).map((key) => (
-        key !== 'tags' && (
-          key === 'solution' ?
-          <TextField
-            key={key}
-            id={key}
-            label={key.charAt(0).toUpperCase() + key.slice(1)}
-            variant="outlined"
-            multiline
-            rows={4} // Adjust the number of rows as needed
-            value={problemDetails[key]}
-            onChange={handleInputChange}
-          />
-          :
-          <TextField
-            key={key}
-            id={key}
-            label={key.charAt(0).toUpperCase() + key.slice(1)}
-            variant="outlined"
-            value={problemDetails[key]}
-            onChange={handleInputChange}
-          />
-        )
-      ))}
-
-      <div>
-        <TextField
-          id="newTag"
-          label="Add Tag"
-          variant="outlined"
-          value={newTag}
-          onChange={handleTagChange}
-          sx={{ marginRight: 1 }}
-        />
-        <Button variant="contained" color="primary" onClick={handleAddTag}>
-          Add Tag
-        </Button>
-      </div>
-      
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 2 }}>
-        {problemDetails.tags.map((tag, index) => (
-          <Chip
-            key={index}
-            label={tag}
-            onDelete={() => handleDeleteTag(tag)}
-            sx={{ margin: 0.5 }}
-          />
+      <Dashboard />
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1 }, display: 'flex', flexDirection: 'column' }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        {Object.keys(problemDetails).map((key) => (
+          key !== 'tags' && (
+            key === 'solution' ?
+            <TextField
+              key={key}
+              id={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              variant="outlined"
+              multiline
+              rows={4} // Adjust the number of rows as needed
+              value={problemDetails[key]}
+              onChange={handleInputChange}
+            />
+            :
+            <TextField
+              key={key}
+              id={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              variant="outlined"
+              value={problemDetails[key]}
+              onChange={handleInputChange}
+            />
+          )
         ))}
-      </Box>
 
-      <Button variant="contained" color="primary" type="submit" disabled={submitting}>
-        {submitting ? <CircularProgress size={24} color="inherit" /> : 'Save'}
-      </Button>
-    </Box>
+        <TextField
+          id="videoUrl"
+          label="Solution Video URL"
+          variant="outlined"
+          value={problemDetails.videoUrl}
+          onChange={handleInputChange}
+        />
+
+        <div>
+          <TextField
+            id="newTag"
+            label="Add Tag"
+            variant="outlined"
+            value={newTag}
+            onChange={handleTagChange}
+            sx={{ marginRight: 1 }}
+          />
+          <Button variant="contained" color="primary" onClick={handleAddTag}>
+            Add Tag
+          </Button>
+        </div>
+        
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 2 }}>
+          {problemDetails.tags.map((tag, index) => (
+            <Chip
+              key={index}
+              label={tag}
+              onDelete={() => handleDeleteTag(tag)}
+              sx={{ margin: 0.5 }}
+            />
+          ))}
+        </Box>
+
+        <Button variant="contained" color="primary" type="submit" disabled={submitting}>
+          {submitting ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+        </Button>
+      </Box>
     </>
   );
 };

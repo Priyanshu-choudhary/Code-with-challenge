@@ -5,7 +5,7 @@ import ImgMediaCard from './cards';
 import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
 import styled from 'styled-components';
-
+import { CircularProgress, Button } from '@mui/material';
 
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
@@ -18,6 +18,7 @@ function LearningPage() {
   const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
   const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
+  const [loading, setloading] = useState(false);
 
   const userCoursesRef = useRef(null);
   const officialCoursesRef = useRef(null);
@@ -74,7 +75,7 @@ function LearningPage() {
   
 
       try {
-       
+       setloading(true);
         const response = await fetch('https://testcfc.onrender.com/Course', {
           method: 'GET',
           headers: {
@@ -101,7 +102,9 @@ function LearningPage() {
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
-      
+     
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -190,14 +193,17 @@ function LearningPage() {
                       courseName={course.title} // Pass course name
                       permission={course.permission}
                     />
+                   
                   </div>
-                  
+                 
                 );
               } else  {
                
                 return null;
               }
             })}
+            {!officialCourses[0] &&  <div style={{position:"fixed",top:"50%",left:"50%",transform: "translate(-50%, -50%)", textAlign: "center"  }}><CircularProgress /></div>
+          }
           </div>
           
          

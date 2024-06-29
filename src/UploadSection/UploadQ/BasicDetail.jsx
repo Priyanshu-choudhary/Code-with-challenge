@@ -1,4 +1,3 @@
-// BasicDetail.js
 import React, { useContext } from 'react';
 import './EditorComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -60,7 +59,17 @@ const BasicDetail = ({ step, uploadUrl }) => {
             />
           </div>
 
-          
+          <div className="editor">
+            <h2>Solution Video URL</h2>
+            <input
+              type="text"
+              name="videoUrl"
+              value={formData.videoUrl}
+              placeholder="Add YouTube URL"
+              className="editor-input"
+              onChange={handleChange}
+            />
+          </div>
         </div>
       </div>
     </>

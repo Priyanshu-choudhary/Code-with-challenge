@@ -20,6 +20,7 @@ import Alert from '@mui/material/Alert';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
 import { Upload } from '@mui/icons-material';
+import YouTubePlayer from './youtubeVideo';
 
 function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
@@ -45,7 +46,7 @@ function QuestionApi() {
     const container = containerRef.current;
     container.scrollTop = container.scrollHeight;
   };
-
+console.log(JSON.stringify(problem));
   useEffect(() => {
     document.body.classList.add('no-scroll');
     return () => {
@@ -268,6 +269,12 @@ function QuestionApi() {
 
                   <br />
                   <pre> {problem.answer}</pre>
+                </Grid>}
+                {problem.videoUrl &&  <Grid className='subtitle' xs={15}><hr />
+                  Solution Video:
+
+                  <br />
+                  <YouTubePlayer url={problem.videoUrl} />
                 </Grid>}
 
               </Grid>

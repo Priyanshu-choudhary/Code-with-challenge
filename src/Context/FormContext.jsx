@@ -17,6 +17,7 @@ export const FormProvider = ({ children }) => {
     permission: '',
     code: '',
     templateCode: '', // New field for template code
+    videoUrl: '', // New field for video URL
   });
 
   const updateFormData = (newData) => {

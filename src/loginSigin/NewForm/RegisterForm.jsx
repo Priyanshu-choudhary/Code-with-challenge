@@ -39,7 +39,7 @@ const RegisterForm = () => {
       if (response.ok) {
         console.log('Registration successful');
         setAlertSeverity('success');
-        setAlertMessage(`We send a confirmation email to your provided email ${data.email} successful , check spam section as well`);
+        setAlertMessage(`We sent a confirmation email to your provided email ${data.email} successfully. Check the spam section as well.`);
         reset(); // Optionally reset the form
       } else {
         console.error('Registration failed');
@@ -71,8 +71,7 @@ const RegisterForm = () => {
       }}
     >
       <Typography variant="h5" component="div" sx={{ mb: 2, textAlign: 'center' }}>
-        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form </p>
-        
+        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form</p>
       </Typography>
       <TextField
         fullWidth
@@ -111,6 +110,10 @@ const RegisterForm = () => {
           minLength: {
             value: 6,
             message: 'Password must be at least 6 characters',
+          },
+          pattern: {
+            value: /^\S*$/,
+            message: 'Password cannot contain spaces',
           },
         })}
         error={Boolean(errors.password)}

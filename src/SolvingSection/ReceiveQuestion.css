@@ -1,6 +1,6 @@
 .title{
     text-align: left;
-    font-size: 23px;
+    font-size: 20px;
     font-weight: bold;
 
 }
@@ -81,6 +81,31 @@ body::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     margin-top: 10px;
 }
-
-
-
+.resizable-container {
+    display: flex;
+    position: relative;
+    height: 300px; /* Adjust height as needed */
+  }
+  
+  .component-left,
+  .component-right {
+    overflow: auto; /* Ensure scrollbars appear if content overflows */
+    transition: width 0.3s ease; /* Smooth transition when resizing */
+  }
+  
+  
+  .sticky-bottom-center {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    /* background-color: #f1f1f1; */
+    text-align: center;
+    /* padding: 10px; */
+    /* width: "100%"; */
+    
+  }
+.tollBar{
+  width: 100%;
+  
+}

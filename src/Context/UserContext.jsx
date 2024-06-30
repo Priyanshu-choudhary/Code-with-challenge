@@ -11,8 +11,10 @@ export const UserProvider = ({ children }) => {
   const [light, setlight] = useState("#27293a");
   const [bc, setbc] = useState("#5D12A8")
   const [ibg, setibc] = useState("white")
-  const [currentthemes, setcurrentthemes] = useState("true")
+  const [currentthemes, setcurrentthemes] = useState(false)
   const [URL, setURL] = useState("")
+  const [fontSize, setFontSize] = useState('14px'); 
+
 useEffect(() => {
 
   if(currentthemes== true){
@@ -63,7 +65,7 @@ useEffect(() => {
   };
 
   return (
-    <UserContext.Provider value={{URL,setURL,ibg,bc,bg,dark,light, user, password, role,currentthemes, setRole, setUser, setPassword, logout,setcurrentthemes }}>
+    <UserContext.Provider value={{fontSize,setFontSize,URL,setURL,ibg,bc,bg,dark,light, user, password, role,currentthemes, setRole, setUser, setPassword, logout,setcurrentthemes }}>
       {children}
     </UserContext.Provider>
   );

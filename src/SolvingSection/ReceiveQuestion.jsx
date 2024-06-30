@@ -16,11 +16,16 @@ import Mcq from './Mcq';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
+import SettingsIcon from '@mui/icons-material/Settings';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import AlarmOnIcon from '@mui/icons-material/AlarmOn';
+import Timer from './timer'; // Adjust the import path as necessary
 import useCreateCourse from '../learnPath/CourseCreateApi';
 import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
 import { Upload } from '@mui/icons-material';
 import YouTubePlayer from './youtubeVideo';
+import AnchorTemporaryDrawer from './SideDrover';
+import Spinner from 'react-bootstrap/Spinner';
 
 function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
@@ -36,30 +41,71 @@ function QuestionApi() {
   const [loading, setLoading] = useState(false); // State for button loading
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar visibility
   const [currentans, setcurrentans] = useState('');
+  const [state, setState] = useState(false);
+  const [iSubmit, setiSubmit] = useState(false);
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
 
   const containerRef = useRef(null);
-
-  const scrollToBottom = () => {
-    const container = containerRef.current;
-    container.scrollTop = container.scrollHeight;
+  const dividerRef = useRef(null); // Ref for the divider
+  const [dragging, setDragging] = useState(false);
+  const [dividerPosition, setDividerPosition] = useState(40); // Initial position in percentage
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [level, setlevel] = useState(1);
+  const [btn1BG, set1btnBG] = useState(light);
+  const [btn2BG, set2btnBG] = useState(light);
+  const [btn3BG, set3btnBG] = useState(light);
+  
+  const toggleTimer = () => {
+    setIsTimerRunning(prevState => !prevState);
   };
 
-  useEffect(() => {
-    document.body.classList.add('no-scroll');
-    return () => {
-      document.body.classList.remove('no-scroll');
-    };
-  }, []);
+  const openSetting = () => {
+    if (state == true) {
+      setState(false);
+    } else {
+      setState(true);
+    }
+
+  };
+  const setinglevel = (val) => {
+    setlevel(val);
+  }
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('currentthemes');
-    if (savedTheme !== null) {
-      setcurrentthemes(JSON.parse(savedTheme));
+    if (level == 1) {
+      set1btnBG("grey");
+
+      set2btnBG(light);
+      set3btnBG(light);
+    } else if (level == 2) {
+      set2btnBG("grey");
+
+      set1btnBG(light);
+      set3btnBG(light);
     }
-  }, [setcurrentthemes]);
+    else if (level == 3) {
+      set3btnBG("grey");
+
+      set1btnBG(light);
+      set2btnBG(light);
+    }
+
+
+  }, [level, light])
+
+  useEffect(() => {
+
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    }, 250); // 1 second delay
+
+    return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+
 
   useEffect(() => {
     setProblem(problems[currentProblemIndex] || {});
@@ -98,7 +144,7 @@ function QuestionApi() {
 
       const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
       const courseToUpdate = existingCourses.find(course => course.title === navHistory);
-      console.log("courseToUpdate>>>>"+courseToUpdate.id);
+      console.log("courseToUpdate>>>>" + courseToUpdate.id);
       if (courseToUpdate) {
         const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
         if (result.success) {
@@ -148,7 +194,9 @@ function QuestionApi() {
 
   const handleOptionSelect = (value) => {
     setSelectedOption(value);
+
   };
+
 
   const getDifficultyLabel = () => {
     if (difficulty) {
@@ -192,8 +240,11 @@ function QuestionApi() {
       console.log(currentans.id);
       try {
         setLoading(true);
-        const response1 = await createCourse(navHistory, description);
-       const response2= await update();
+        try { const response1 = await createCourse(navHistory, description); }
+        catch (error) {
+          const response2 = await update();
+        }
+        const response2 = await update();
         const response = await axios.post(
           'https://testcfc.onrender.com/Posts',
           currentans,
@@ -206,7 +257,7 @@ function QuestionApi() {
         );
         console.log('Post created:', response.data);
         setLoading(false);
-        setSnackbarOpen(true); 
+        // setSnackbarOpen(true);
         setcurrentans('');
       } catch (error) {
         console.error('Error upload post:', error);
@@ -217,19 +268,41 @@ function QuestionApi() {
     }
   };
 
+  const editorRef = useRef();
 
-
-
-
-
+  const handleRunCode = () => {
+    if (editorRef.current) {
+      editorRef.current.getCode();
+    }
+  };
   return (
-    <div style={{ backgroundColor: bg, color: bg }}>
+    <div style={{ backgroundColor: bg, color: bg, paddingBottom: 1 }}>
       <br />
+
+
       <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
-      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 scroll-container" style={{ background: dark, color: ibg }}>
+      <div style={{ background: dark, color: ibg }}>
+        <div className='tollBar' style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex" }}>
+
+            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
+            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
+            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
+          </div>
+          <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
+              <AlarmOnIcon onClick={toggleTimer} />
+              <Timer running={isTimerRunning} />
+              <SettingsIcon onClick={openSetting} />
+              <RestartAltIcon />
+              <AnchorTemporaryDrawer open={state} />
+            </div>
+          </div>
+        </div>
         <Container fluid>
           <Row>
-            <Col className="editorsection" sm={2} style={{ height: "460px", width: "500px", overflowY: "scroll" }}>
+            <Col className="questionSection no-scroll" sm={2} style={{ height: "80vh", width: `${dividerPosition}%`, overflowY: "scroll" }}>
+
               <Grid container spacing={2}>
                 <Grid className='title' xs={9.5} >
                   <pre style={{ background: dark }}>{currentProblemIndex + 1}.{title}</pre><hr />
@@ -237,69 +310,89 @@ function QuestionApi() {
                 <Grid xs={2.5}>
                   <p className={`button ${getDifficultyLabel()}`} style={{ color: ibg }} >{getDifficultyLabel()}</p>
                 </Grid>
-                <Grid xs={14}>
-                  <pre style={{ background: dark }}>  {description} </pre>
-                </Grid>
-                <Grid xs={0}></Grid>
-
-                {example && <>
-                  <Grid className='subtitle' xs={15}><hr />
-                    Examples:
+                {level == 1 && <div>
+                  <Grid xs={14} style={{ width: "100%" }}>
+                    <pre style={{ background: dark }}>  {description} </pre>
                   </Grid>
-                  <Grid xs={16}>
-                    <pre style={{ background: dark }}>{example}</pre>
-                  </Grid>
-                </>}
+                  <Grid xs={0}></Grid>
 
-                {problem.solution && <>
-                  <Grid className='subtitle' xs={15}><hr />
-                    Input Format:
-                  </Grid>
-                  <Grid xs={16}>
-                    <pre style={{ background: dark }}>{problem.solution}</pre>
-                  </Grid>
-                </>}
-                {problem.constrain &&  <Grid className='subtitle' xs={15}><hr />
-                  Constrain:
+                  {example && <>
+                    <Grid className='subtitle' xs={15}><hr />
+                      Examples:
+                    </Grid>
+                    <Grid xs={16}>
+                      <pre style={{ background: dark }}>{example}</pre>
+                    </Grid>
+                  </>}
 
-                  <br />
-                  <pre> {problem.constrain}</pre>
-                </Grid>}
-                {problem.answer &&  <Grid className='subtitle' xs={15}><hr />
-                  Answer:
+                  {problem.solution && <>
+                    <Grid className='subtitle' xs={15}><hr />
+                      Input Format:
+                    </Grid>
+                    <Grid xs={16}>
+                      <pre style={{ background: dark }}>{problem.solution}</pre>
+                    </Grid>
+                  </>}
+                  {problem.constrain && <Grid className='subtitle' xs={15}><hr />
+                    Constrain:
 
-                  <br />
-                  <pre> {problem.answer}</pre>
-                </Grid>}
-                {problem.videoUrl &&  <Grid className='subtitle' xs={15}><hr />
-                  Solution Video:
-
-                  <br />
-                  <YouTubePlayer url={problem.videoUrl} />
-                </Grid>}
-
+                    <br />
+                    <pre> {problem.constrain}</pre>
+                  </Grid>}
+                </div>
+                }
+                {level == 2 && <div>
+                  {problem.videoUrl ? <Grid className='subtitle' xs={15}>
+                    Solution Video:
+                    <br />
+                    <div style={{ marginTop: 20 }}>
+                      <YouTubePlayer url={problem.videoUrl} />
+                    </div>
+                  </Grid> : <p style={{ marginLeft: 20 }}>No Solution for this question.</p>}
+                </div>}
+                {level == 3 &&
+                  <p style={{ marginLeft: 20 }}>No discuss for this question.</p>
+                }
               </Grid>
 
+
             </Col>
-            <Col sm className="editorsection" style={{ height: "460px", overflowY: "scroll" }} id="scrollContainer" ref={containerRef}>
+            {/* <div 
+              ref={dividerRef} 
+              className="divider" 
+              onMouseDown={handleMouseDown}
+            /> */}
+            <Col sm className="editorsection no-scroll" style={{ height: "80vh", overflowY: "scroll", width: `${100 - dividerPosition}%` }} id="scrollContainer" ref={containerRef}>
               {optionA ?
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
-                <MyEditor input={problem.solution} saveToDatabase={UploadAnswer} myfun={scrollToBottom} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                <>
+                  <MyEditor spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                </>
+
               }
             </Col>
           </Row>
         </Container>
       </div>
-      <div style={{ justifyContent: "center", alignItems: "center", display: "flex", paddingBottom: "100px", gap: "50px", background: bg }}>
+      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", margin: 10 }}>
         <Button
           startIcon={<SkipPreviousIcon />}
-          style={{ margin: "4px", backgroundColor: bc, color: ibg }}
+          style={{ margin: "4px", backgroundColor: light, color: ibg }}
           onClick={handlePrevious}
           disabled={currentProblemIndex === 0}
         >
           Previous
         </Button>
+        {!optionA && <Button
+          // startIcon={<SkipPreviousIcon />}
+          style={{ margin: "4px", backgroundColor: dark, color: ibg }}
+          onClick={handleRunCode}
+          disabled={currentProblemIndex === 0}
+        >
+          Run
+          {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
+        </Button>}
         {optionA ?
           <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
             Submit
@@ -311,9 +404,10 @@ function QuestionApi() {
             {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
           </Button>
         }
+
         <Button
           endIcon={<SkipNextIcon />}
-          style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: bc, color: ibg }}
+          style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: light, color: ibg }}
           onClick={handleNext}
           disabled={currentProblemIndex === problems.length - 1}
         >

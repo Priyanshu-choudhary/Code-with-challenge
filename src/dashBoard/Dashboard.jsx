@@ -127,11 +127,13 @@ function Dashboard() {
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
+                                        <a href="/">
                                             <img
                                                 className="h-8 w-8"
                                                 src={logo}
                                                 alt="Your name"
                                             />
+                                            </a>
                                             <p style={{ color: "white" }}>CFC </p>
                                         </div>
                                         <div className="hidden md:block">

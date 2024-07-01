@@ -52,7 +52,7 @@ export default function LeaderBoard() {
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
-    const { ibg, bg, light } = useContext(UserContext);
+    const { ibg, bg, light, role } = useContext(UserContext); // Extract role from UserContext
     const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export default function LeaderBoard() {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
-            fetch(`http://localhost:9090/Public/user/id/${id}`, {
+            fetch(`https://testcfc.onrender.com/Public/user/id/${id}`, {
                 method: 'DELETE',
             })
                 .then(response => {
@@ -138,16 +138,18 @@ export default function LeaderBoard() {
         { field: 'postCount', headerName: 'Question', width: 150 },
         {
             field: 'delete',
-            headerName: 'Delete',
+            headerName: '',
             width: 150,
             renderCell: (params) => (
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleDelete(params.row.id)}
-                >
-                    Delete
-                </Button>
+                role == 'ADMIN' ? (
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleDelete(params.row.id)}
+                    >
+                        Delete
+                    </Button>
+                ) : null
             ),
         },
     ];
@@ -157,7 +159,7 @@ export default function LeaderBoard() {
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '100%', backgroundColor: 'white' }}>
+                <div style={{ width: '60%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (

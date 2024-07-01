@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const [light, setlight] = useState("#27293a");
   const [bc, setbc] = useState("#5D12A8")
   const [ibg, setibc] = useState("white")
-  const [currentthemes, setcurrentthemes] = useState(false)
+  const [currentthemes, setcurrentthemes] = useState(true)
   const [URL, setURL] = useState("")
   const [fontSize, setFontSize] = useState('14px'); 
 

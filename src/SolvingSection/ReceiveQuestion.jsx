@@ -56,7 +56,7 @@ function QuestionApi() {
   const [btn1BG, set1btnBG] = useState(light);
   const [btn2BG, set2btnBG] = useState(light);
   const [btn3BG, set3btnBG] = useState(light);
-  
+
   const toggleTimer = () => {
     setIsTimerRunning(prevState => !prevState);
   };
@@ -72,6 +72,8 @@ function QuestionApi() {
   const setinglevel = (val) => {
     setlevel(val);
   }
+
+
 
   useEffect(() => {
     if (level == 1) {
@@ -211,12 +213,20 @@ function QuestionApi() {
   const handleNext = () => {
     if (currentProblemIndex < problems.length - 1) {
       setCurrentProblemIndex(currentProblemIndex + 1);
+
+      if (editorRef.current) {
+        editorRef.current.resetEditorState();
+      }
     }
   };
 
   const handlePrevious = () => {
     if (currentProblemIndex > 0) {
       setCurrentProblemIndex(currentProblemIndex - 1);
+      setCurrentProblemIndex(currentProblemIndex - 1);
+      if (editorRef.current) {
+        editorRef.current.resetEditorState();
+      }
     }
   };
 
@@ -317,11 +327,11 @@ function QuestionApi() {
                   <Grid xs={0}></Grid>
 
                   {example && <>
-                    <Grid className='subtitle' xs={15} style={{ }}><hr />
+                    <Grid className='subtitle' xs={15} style={{}}><hr />
                       Examples:
                     </Grid>
                     <Grid xs={16}>
-                      <pre style={{ background: dark ,width: "80%" }}>{example}</pre>
+                      <pre style={{ background: dark, width: "80%" }}>{example}</pre>
                     </Grid>
                   </>}
 
@@ -375,7 +385,7 @@ function QuestionApi() {
           </Row>
         </Container>
       </div>
-      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", marginLeft: 10,marginRight: 10 }}>
+      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", marginLeft: 10, marginRight: 10 }}>
         <Button
           startIcon={<SkipPreviousIcon />}
           style={{ margin: "4px", backgroundColor: light, color: ibg }}

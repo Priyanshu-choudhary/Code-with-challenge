@@ -77,6 +77,13 @@ const MyEditor = forwardRef(
       }
     }, [problem.templateCode]);
 
+    const resetEditorState = () => {
+      setOutput('');
+      setShowConfetti(false);
+      setisCorrect(false);
+      // Add any other state resets if needed
+    };
+
     const downloadFile = () => {
       const code = editorRef.current.getValue();
       const blobCode = createFileFromString(code, 'mycode.java');
@@ -118,6 +125,7 @@ const MyEditor = forwardRef(
     // Expose getCode to parent component using useImperativeHandle
     useImperativeHandle(ref, () => ({
       getCode,
+      resetEditorState,
     }));
 
     const handleLanguageChange = (lang) => {

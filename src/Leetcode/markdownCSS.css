@@ -18,7 +18,7 @@
     font-size: 3em;
     font-weight: bolder;
     margin-top: 0;
-    color: #FE9900;
+    color: #c76464;
   }
   
   .markdown-body h2 {
@@ -30,7 +30,7 @@
   .markdown-body h3 {
     font-size: 1.2em;
     margin-top: 1em;
-    color: rgb(251, 255, 0);
+    color: #8384ab;
   }
   
   .markdown-body p {

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Dashboard from '../dashBoard/Dashboard';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
 import { UserContext } from '../Context/UserContext';
@@ -45,20 +46,6 @@ function stringToColor(string) {
 
     return color;
 }
-
-const columns = [
-    { field: 'index', headerName: 'Index', width: 100 },
-    {
-        field: 'avatar',
-        headerName: 'Avatar',
-        width: 100,
-        renderCell: (params) => (
-            <Avatar {...stringAvatar(params.value)} />
-        ),
-    },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'postCount', headerName: 'Question', width: 150 },
-];
 
 export default function LeaderBoard() {
     const [rows, setRows] = useState([]);
@@ -117,12 +104,60 @@ export default function LeaderBoard() {
         console.log(selectedIndex);
     };
 
+    const handleDelete = (id) => {
+        if (window.confirm('Are you sure you want to delete this user?')) {
+            fetch(`http://localhost:9090/Public/user/id/${id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Remove the deleted user from the state
+                    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+                    window.alert('User deleted successfully.');
+                })
+                .catch(error => {
+                    console.error('Error deleting user:', error);
+                    window.alert('Failed to delete user.');
+                });
+        }
+    };
+
+    const columns = [
+        { field: 'index', headerName: 'Index', width: 100 },
+        {
+            field: 'avatar',
+            headerName: 'Avatar',
+            width: 100,
+            renderCell: (params) => (
+                <Avatar {...stringAvatar(params.value)} />
+            ),
+        },
+        { field: 'name', headerName: 'Name', width: 150 },
+        { field: 'postCount', headerName: 'Question', width: 150 },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 150,
+            renderCell: (params) => (
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDelete(params.row.id)}
+                >
+                    Delete
+                </Button>
+            ),
+        },
+    ];
+
     return (
         <div style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '50%', backgroundColor: 'white' }}>
+                <div style={{ width: '100%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (

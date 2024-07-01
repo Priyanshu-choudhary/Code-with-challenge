@@ -58,17 +58,24 @@ const MyEditor = forwardRef(
     } = useContext(UserContext);
     const [bgColor, setbgColor] = useState(light);
     const createCourse = useCreateCourse(); // Call the custom hook
+
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;
     };
 
     useEffect(() => {
-      if (bg == '#121418') {
+      if (bg === '#121418') {
         setThemes('vs-dark');
       } else {
         setThemes('light');
       }
     }, [bg]);
+
+    useEffect(() => {
+      if (editorRef.current) {
+        editorRef.current.setValue(problem.templateCode);
+      }
+    }, [problem.templateCode]);
 
     const downloadFile = () => {
       const code = editorRef.current.getValue();
@@ -101,7 +108,6 @@ const MyEditor = forwardRef(
         setOutput(output);
         if (output === answer) {
           setShowConfetti(true);
-          // handleSubmit();
           setTimeout(() => {
             setShowConfetti(false);
           }, 4000);
@@ -212,7 +218,7 @@ const MyEditor = forwardRef(
 
     const checkAnswer = useCallback(() => {
       let allPass = false;
-      if (output.output == answer) {
+      if (output.output === answer) {
         allPass = true;
         setbgColor('lightgreen');
       } else {
@@ -231,8 +237,6 @@ const MyEditor = forwardRef(
       }
 
       if (isCorrect) {
-        console.log('send problem');
-        console.log('after 1 sec');
         saveToDatabase(problem);
       }
     }, [
@@ -257,33 +261,6 @@ const MyEditor = forwardRef(
             options={options}
             language='java'
           />
-          {/* <div className="button-container">
-            <button onClick={getCode} className="btn btn-secondary" style={{ backgroundColor: bc, color: ibg }}>
-              Run {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
-            </button>{' '}
-            <button onClick={downloadFile} className="btn btn-secondary" style={{ backgroundColor: bc, color: ibg }}>
-              Download
-            </button>{' '}
-            <Dropdown as={ButtonGroup}>
-              <Button variant="secondary" style={{ backgroundColor: bc, color: ibg }}>{language}</Button>
-              <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" style={{ backgroundColor: bc, color: ibg }} />
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleLanguageChange("java")}>Java</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("c")}>C</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("cpp")}>C++</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("javascript")}>JavaScript</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("python3")}>Python3</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("python2")}>Python2</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("php")}>PHP</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("typescript")}>TypeScript</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("bash")}>Bash</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("sh")}>Shell</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("kotlin")}>Kotlin</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("rust")}>Rust</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleLanguageChange("scala")}>Scala</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>{' '}
-          </div> */}
           <div>
             {testCaseGroups.map((testCase, index) => (
               <div

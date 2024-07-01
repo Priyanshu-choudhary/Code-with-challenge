@@ -301,7 +301,7 @@ function QuestionApi() {
         </div>
         <Container fluid>
           <Row>
-            <Col className="questionSection no-scroll" sm={2} style={{ height: "80vh", width: `${dividerPosition}%`, overflowY: "scroll" }}>
+            <Col className="questionSection no-scroll" sm={2} style={{ height: "70vh", width: `${dividerPosition}%`, overflowY: "scroll" }}>
 
               <Grid container spacing={2}>
                 <Grid className='title' xs={9.5} >
@@ -317,11 +317,11 @@ function QuestionApi() {
                   <Grid xs={0}></Grid>
 
                   {example && <>
-                    <Grid className='subtitle' xs={15}><hr />
+                    <Grid className='subtitle' xs={15} style={{ }}><hr />
                       Examples:
                     </Grid>
                     <Grid xs={16}>
-                      <pre style={{ background: dark }}>{example}</pre>
+                      <pre style={{ background: dark ,width: "80%" }}>{example}</pre>
                     </Grid>
                   </>}
 
@@ -375,7 +375,7 @@ function QuestionApi() {
           </Row>
         </Container>
       </div>
-      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", margin: 10 }}>
+      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", marginLeft: 10,marginRight: 10 }}>
         <Button
           startIcon={<SkipPreviousIcon />}
           style={{ margin: "4px", backgroundColor: light, color: ibg }}

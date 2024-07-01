@@ -296,8 +296,8 @@ const LeetCodeClone = () => {
                       {role === "ADMIN" && (
                         <Button
                           variant="contained"
-                          color="secondary"
-                          style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}
+                          // color="secondary"
+                          style={{ background: "lightcoral", color: ibg, position: 'absolute', right: '200px' }}
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent navigating to the problem detail page
                             handleDeleteProblem(problem.id);

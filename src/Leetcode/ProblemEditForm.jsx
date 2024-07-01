@@ -137,14 +137,14 @@ const ProblemEditForm = () => {
       >
         {Object.keys(problemDetails).map((key) => (
           key !== 'tags' && (
-            key === 'solution' ?
+            key === 'solution' || key === 'boilerCode' || key === 'templateCode' || key === 'example' ?
             <TextField
               key={key}
               id={key}
               label={key.charAt(0).toUpperCase() + key.slice(1)}
               variant="outlined"
               multiline
-              rows={4} // Adjust the number of rows as needed
+              rows={6} // Adjust the number of rows as needed
               value={problemDetails[key]}
               onChange={handleInputChange}
             />

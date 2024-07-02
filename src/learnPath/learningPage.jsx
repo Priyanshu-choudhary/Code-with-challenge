@@ -18,7 +18,7 @@ function LearningPage() {
   const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
   const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const userCoursesRef = useRef(null);
   const officialCoursesRef = useRef(null);
@@ -41,15 +41,9 @@ function LearningPage() {
 
   useEffect(() => {
     const fetchUserCourses = async () => {
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-   
-
       try {
         const response = await fetch('https://testcfc.onrender.com/Course', {
           method: 'GET',
-          headers: {
-            'Authorization': basicAuth,
-          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -71,39 +65,27 @@ function LearningPage() {
     };
 
     const fetchOfficialCourses = async () => {
-      const officialAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-  
-
       try {
-       setloading(true);
-        const response = await fetch('https://testcfc.onrender.com/Course', {
+        setLoading(true);
+        const response = await fetch('https://testcfc.onrender.com/Course/OfficialCources', {
           method: 'GET',
-          headers: {
-            'Authorization': officialAuth,
-          },
         });
         if (response.ok) {
           const data = await response.json();
-          
           if (Array.isArray(data)) {
             localStorage.setItem('officialCourses', JSON.stringify(data));
             officialCoursesRef.current = data;
             setOfficialCourses(data);
-          
-       
           } else {
             console.error('Fetched official data is not an array:', data);
             setOfficialCourses([]);
-       
           }
         } else {
           console.error('Failed to fetch official courses:', response.status, response.statusText);
-
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
-     
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -118,32 +100,26 @@ function LearningPage() {
 
   const handleDelete = async (courseId, courseName) => {
     if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
-      const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
       try {
         const response = await fetch(`https://testcfc.onrender.com/Course/id/${courseId}`, {
           method: 'DELETE',
-          headers: {
-            'Authorization': basicAuth,
-          },
         });
         if (response.ok) {
           // Remove the course from state
           setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
           localStorage.setItem('officialCourses', JSON.stringify(officialCoursesRef.current.filter((course) => course.id !== courseId)));
-       
         } else {
           console.error('Failed to delete course:', response.status, response.statusText);
-         x
         }
       } catch (error) {
         console.error('Error deleting course:', error);
-       
       }
     }
   };
- return (
+
+  return (
     <PageContainer bg={bg}>
-      <div style={{  backgroundColor: bg, color: ibg }}>
+      <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
         <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
@@ -176,14 +152,11 @@ function LearningPage() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {officialCourses.map((course, index) => {
-             
               if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
-             
                 return (
                   <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
-                    
                     <ImgMediaCard
-                    id={course.id}
+                      id={course.id}
                       title={course.title}
                       image={course.image}
                       description={course.description}
@@ -193,21 +166,14 @@ function LearningPage() {
                       courseName={course.title} // Pass course name
                       permission={course.permission}
                     />
-                   
                   </div>
-                 
                 );
-              } else  {
-               
+              } else {
                 return null;
               }
             })}
-            {!officialCourses[0] &&  <div style={{position:"fixed",top:"50%",left:"50%",transform: "translate(-50%, -50%)", textAlign: "center"  }}><CircularProgress /></div>
-          }
+            {!officialCourses[0] && <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
           </div>
-          
-         
-          {/* <img src='https://i.postimg.cc/qgWM21rk/IMG-20240214-104108.jpg' border='0' alt='IMG-20240214-104108'/> */}
         </div>
       </div>
     </PageContainer>

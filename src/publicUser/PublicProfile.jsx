@@ -27,7 +27,7 @@ const PublicProfile = () => {
     const fetchData = async () => {
       try {
         // Fetch user data
-        const userResponse = await fetch(`https://testcfc.onrender.com/Public/${userId}`, {
+        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

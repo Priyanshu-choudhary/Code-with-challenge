@@ -56,7 +56,7 @@ export default function LeaderBoard() {
     const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
-        fetch('https://testcfc.onrender.com/Public/getUser')
+        fetch('https://hytechlabs.online:9090/Public/getUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -106,7 +106,7 @@ export default function LeaderBoard() {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
-            fetch(`https://testcfc.onrender.com/Public/user/id/${id}`, {
+            fetch(`https://hytechlabs.online:9090/Public/user/id/${id}`, {
                 method: 'DELETE',
             })
                 .then(response => {

@@ -52,13 +52,10 @@ export default function McqForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        `https://testcfc.onrender.com/Posts/Course/${uploadUrl}`,
+        `https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
         postData,
         {
-          auth: {
-            username: "OfficialCources",
-            password: "OfficialCources",
-          },
+        
         }
       );
       setAlert({ show: true, message: `Question uploaded successfully! to ${uploadUrl}`, severity: 'success' });

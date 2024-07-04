@@ -59,7 +59,7 @@ export default function CourseForm({ uploadUrl }) {
 
     try {
       const response = await axios.post(
-        'https://testcfc.onrender.com/Course',
+        'https://hytechlabs.online:9090/Course',
         postData,
         {
           headers: {

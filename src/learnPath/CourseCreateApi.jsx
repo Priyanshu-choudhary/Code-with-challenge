@@ -23,11 +23,11 @@ const useCreateCourse = () => {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
       console.log("course detail " + JSON.stringify(newCourse));
 
-      const response = await fetch('https://testcfc.onrender.com/Course', {
+      const response = await fetch('https://hytechlabs.online:9090/Course', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': basicAuth
+         
         },
         body: JSON.stringify(newCourse)
       });

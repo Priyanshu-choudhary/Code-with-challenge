@@ -78,11 +78,11 @@ export default function StripedGrid() {
 
         try {
             const basicAuth = 'Basic ' + btoa('ProblemSet:ProblemSet');
-            let API_URL = 'https://testcfc.onrender.com/Posts';
+            let API_URL = 'https://hytechlabs.online:9090/Posts/username/ProblemSet';
 
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
-                API_URL = `https://testcfc.onrender.com/Posts/filter?${tagsQuery}&exactMatch=true`;
+                API_URL = `https://hytechlabs.online:9090/Posts/filter?${tagsQuery}&exactMatch=true`;
             }
 
             // Check if there is cached data in local storage
@@ -90,7 +90,7 @@ export default function StripedGrid() {
             const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': basicAuth
+               
             };
 
             // Add If-Modified-Since header conditionally
@@ -168,10 +168,10 @@ export default function StripedGrid() {
         if (confirmed) {
             try {
                 const basicAuth = 'Basic ' + btoa(`${"ProblemSet"}:${"ProblemSet"}`);
-                const response = await axios.delete(`https://testcfc.onrender.com/Posts/id/${id}`, {
+                const response = await axios.delete(`https://hytechlabs.online:9090/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': basicAuth
+                      
                     }
                 });
                 console.log('Problem deleted:', response.data);

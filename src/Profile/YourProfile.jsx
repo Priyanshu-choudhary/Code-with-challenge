@@ -44,7 +44,7 @@ const YourProfile = () => {
         }
 
         // Fetch problems
-        const problemsResponse = await fetch("https://testcfc.onrender.com/Posts", {
+        const problemsResponse = await fetch("https://hytechlabs.online:9090/Posts", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const YourProfile = () => {
         }
 
         // Fetch user data
-        const userResponse = await fetch("https://testcfc.onrender.com/users/getUser", {
+        const userResponse = await fetch("https://hytechlabs.online:9090/users/getUser", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

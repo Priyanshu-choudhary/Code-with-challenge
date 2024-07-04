@@ -39,7 +39,7 @@ const ProblemEditForm = () => {
   useEffect(() => {
     const fetchProblemDetails = async () => {
       try {
-        const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
+        const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
           headers: {
             'Authorization': 'Basic ' + btoa('OfficialCources:OfficialCources')
           }
@@ -94,7 +94,7 @@ const ProblemEditForm = () => {
     setSubmitting(true); // Start showing spinner on submit
     try {
       console.log(JSON.stringify(problemDetails));
-      const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
+      const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

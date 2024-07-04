@@ -79,7 +79,7 @@ function UserCard({ userId, index }) { // Renamed Card to UserCard to avoid nami
     let isMounted = true; // Track whether the component is still mounted
 
     if (userId) {
-      fetch(`https://testcfc.onrender.com/Public/${userId}`)
+      fetch(`https://hytechlabs.online:9090/Public/${userId}`)
         .then(response => response.json())
         .then(data => {
           if (isMounted) { // Update state only if the component is still mounted

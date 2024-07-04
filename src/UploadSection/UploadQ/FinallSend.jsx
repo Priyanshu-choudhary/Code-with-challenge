@@ -13,7 +13,7 @@ const FinalSend = ({ step, uploadUrl }) => {
     const { formData, updateFormData } = useContext(FormContext);
     const { user, password, role,URL,setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
-    const [newUrl, setnewUrl] = useState('https://testcfc.onrender.com/Posts')
+    const [newUrl, setnewUrl] = useState('https://hytechlabs.online:9090/Posts')
     const [auth, setauth] = useState(URL)
     
     const handleTagsChange = useCallback((tags) => {
@@ -28,12 +28,12 @@ const FinalSend = ({ step, uploadUrl }) => {
     }
 
     useEffect(() => {
-        if (URL != 'YadiChoudhary') {
-            setnewUrl(`https://testcfc.onrender.com/Posts/Course/${URL}`);
+        if (URL != 'ProblemSet') {
+            setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${URL}/username/OfficialCources`);
             setauth("OfficialCources");
            
         } else {
-            setnewUrl('https://testcfc.onrender.com/Posts');
+            setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
         }
     }, [    URL]); // Add URL to the dependency array to run this effect whenever URL changes
     
@@ -51,7 +51,7 @@ const FinalSend = ({ step, uploadUrl }) => {
                 },
                 {
                     headers: {
-                        Authorization: `Basic ${btoa(`${auth}:${auth}`)}`, // Encode credentials
+                        // Authorization: `Basic ${btoa(`${auth}:${auth}`)}`, // Encode credentials
                         'Content-Type': 'application/json',
                     },
                 }

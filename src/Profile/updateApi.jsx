@@ -1,5 +1,5 @@
 async function createUser() {
-    const url = 'https://testcfc.onrender.com/users';
+    const url = 'https://hytechlabs.online:9090/users';
     const name = 'x';  // Replace with your username
     const password = 'x';  // Replace with your password
 

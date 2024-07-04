@@ -47,7 +47,7 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://testcfc.onrender.com/Posts/filter" : `https://testcfc.onrender.com/Posts/Course/${title}`;
+    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/Java%20Basics/username/OfficialCources`;
     setLoading(true); // Start loading indicator
 
     try {
@@ -66,7 +66,7 @@ const LeetCodeClone = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': basicAuth,
+        
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
@@ -100,10 +100,8 @@ const LeetCodeClone = () => {
   const fetchUserData = async () => {
     try {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      const response = await fetch(`https://testcfc.onrender.com/Course`, {
-        headers: {
-          'Authorization': basicAuth
-        }
+      const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
+        
       });
 
       if (response.ok) {
@@ -164,7 +162,7 @@ const LeetCodeClone = () => {
     if (confirmed) {
       try {
         const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-        const response = await fetch(`https://testcfc.onrender.com/Posts/id/${problemId}`, {
+        const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': basicAuth,

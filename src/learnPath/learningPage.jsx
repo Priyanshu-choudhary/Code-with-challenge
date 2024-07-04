@@ -42,7 +42,7 @@ function LearningPage() {
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch('https://testcfc.onrender.com/Course', {
+        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -67,7 +67,7 @@ function LearningPage() {
     const fetchOfficialCourses = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://testcfc.onrender.com/Course/OfficialCources', {
+        const response = await fetch('https://hytechlabs.online:9090/Course/OfficialCources', {
           method: 'GET',
         });
         if (response.ok) {
@@ -101,7 +101,7 @@ function LearningPage() {
   const handleDelete = async (courseId, courseName) => {
     if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
       try {
-        const response = await fetch(`https://testcfc.onrender.com/Course/id/${courseId}`, {
+        const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
           method: 'DELETE',
         });
         if (response.ok) {

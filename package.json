@@ -89,6 +89,9 @@
   "@react-oauth/google": "^0.12.1",
   
     
+  "appwrite": "^15.0.0",
+  
+    
   "axios": "^1.7.2",
   
     
@@ -108,6 +111,9 @@
   
     
   "react-dom": "^18.2.0",
+  
+    
+  "react-google-login": "^5.2.2",
   
     
   "react-hook-form": "^7.52.0",

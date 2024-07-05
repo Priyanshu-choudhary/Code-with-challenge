@@ -57,7 +57,7 @@ console.log(id);
           image={image}
           sx={{ height: '100%', objectFit: 'cover' }}
         />
-      </Box>
+      </Box>  
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           <p style={{ fontWeight: 'bolder' }}>{title}</p>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { account } from '../Appwrite/Config/Config';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -8,6 +9,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { GoogleLogin } from 'react-google-login';
 
 const RegisterForm = () => {
   const {
@@ -28,6 +30,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
+      await appwriteSignUp(data);
       const response = await fetch('https://hytechlabs.online:9090/register/temp', {
         method: 'POST',
         headers: {
@@ -56,6 +59,33 @@ const RegisterForm = () => {
     }
   };
 
+  const appwriteSignUp = async (data) => {
+    try {
+      const response = await account.create(
+        data.username, // ID (this should be unique; you can use a UUID if necessary)
+        data.email,
+        data.password,
+        data.username, // Name
+        // "guests"
+      );
+
+      console.log('Appwrite registration successful', response);
+      setAlertSeverity('success');
+      setAlertMessage('Appwrite registration successful');
+      return response;
+    } catch (error) {
+      console.error('Appwrite registration failed', error);
+      setAlertSeverity('error');
+      setAlertMessage('Appwrite registration failed');
+      throw error;
+    }
+  };
+
+  const responseGoogle = (response) => {
+    console.log(response);
+    // Handle Google login response here
+  };
+
   return (
     <Box
       component="form"
@@ -71,7 +101,7 @@ const RegisterForm = () => {
       }}
     >
       <Typography variant="h5" component="div" sx={{ mb: 2, textAlign: 'center' }}>
-        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form</p>
+        <p className="shine-effect" style={{ color: "white", backgroundColor: "#9d5cfa", padding: 5, borderRadius: 5 }}>Form</p>
       </Typography>
       <TextField
         fullWidth
@@ -157,6 +187,15 @@ const RegisterForm = () => {
         <Link href="/login" variant="body2">
           Already have an account? Login
         </Link>
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <GoogleLogin
+          clientId="YOUR_GOOGLE_CLIENT_ID"
+          buttonText="Sign in with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
       </Box>
     </Box>
   );

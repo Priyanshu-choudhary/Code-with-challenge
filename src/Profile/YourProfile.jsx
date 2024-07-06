@@ -64,18 +64,21 @@ const YourProfile = () => {
           }
           localStorage.setItem('problems', JSON.stringify(problemsData));
         }
+      }catch(error){
+        console.error("Error fetching user posts:", error);
+      }
 
+
+      try{
         // Fetch user data
-        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}}`, {
+        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`, {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          
-          }
+         
         });
 
         if (userResponse.status === 200) {
           const userData = await userResponse.json();
+          console.log("userdata>>>>"+JSON.stringify(userData));
           setUserData(userData);
 
           // Set avatar name (e.g., first letter of the user's name)

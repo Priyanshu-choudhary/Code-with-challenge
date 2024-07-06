@@ -5,9 +5,10 @@ import LoginLogo from 'react-login-page/logo-rect';
 import defaultBannerImage from '@react-login-page/page2/banner-image';
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
-import Dashboard from '../dashBoard/Dashboard';
-import { UserContext } from '../Context/UserContext';
+import { UserContext } from '../../Context/UserContext';
 import login from './LoginApi';
+import Dashboard from '../../dashBoard/Dashboard';
+import GoogleAuth from '../Google/Google';
 
 function LoginUser() {
   console.log("login user rerender");
@@ -82,6 +83,8 @@ function LoginUser() {
           <Link to="/register">or Sign-up</Link>
         </ButtonAfter>
       </LoginPage>
+      
+   
     </>
   );
 }

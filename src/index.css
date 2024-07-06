@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.googleButton{
+    position: absolute;
+    top: 400;
+    right: 300;
+    margin: 10px; /* Optional: Add margin if you want some space from the edges */
+    background-color: #f0f0f0; /* Optional: Background color for visibility */
+    padding: 10px; /* Optional: Padding for better appearance */
+    border: 1px solid #000000; /* Optional: Border for visibility */
+}

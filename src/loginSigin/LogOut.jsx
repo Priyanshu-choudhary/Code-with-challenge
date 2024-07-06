@@ -11,9 +11,13 @@ function LogOut() {
  
     useEffect(() => {
         logout();
+      
         console.log(localStorage.getItem("username"));
         console.log(user);
       }, []);
+
+
+     
   return (
     <><Dashboard/>
    <div className="flex justify-center items-center h-screen">

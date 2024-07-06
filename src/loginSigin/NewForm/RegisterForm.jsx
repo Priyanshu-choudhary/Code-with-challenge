@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { account } from '../Appwrite/Config/Config';
+import {account} from '../Appwrite/Config/Config.jsx'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { GoogleLogin } from 'react-google-login';
+import GoogleAuth from '../Google/Google.jsx';
 
 const RegisterForm = () => {
   const {
@@ -58,7 +58,6 @@ const RegisterForm = () => {
       setAlertOpen(true);
     }
   };
-
   const appwriteSignUp = async (data) => {
     try {
       const response = await account.create(
@@ -68,6 +67,10 @@ const RegisterForm = () => {
         data.username, // Name
         // "guests"
       );
+
+      // Send email verification request
+      // await account.createVerification('http://localhost:5173/login');
+
 
       console.log('Appwrite registration successful', response);
       setAlertSeverity('success');
@@ -79,11 +82,6 @@ const RegisterForm = () => {
       setAlertMessage('Appwrite registration failed');
       throw error;
     }
-  };
-
-  const responseGoogle = (response) => {
-    console.log(response);
-    // Handle Google login response here
   };
 
   return (
@@ -101,7 +99,7 @@ const RegisterForm = () => {
       }}
     >
       <Typography variant="h5" component="div" sx={{ mb: 2, textAlign: 'center' }}>
-        <p className="shine-effect" style={{ color: "white", backgroundColor: "#9d5cfa", padding: 5, borderRadius: 5 }}>Form</p>
+        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form</p>
       </Typography>
       <TextField
         fullWidth
@@ -187,15 +185,7 @@ const RegisterForm = () => {
         <Link href="/login" variant="body2">
           Already have an account? Login
         </Link>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <GoogleLogin
-          clientId="YOUR_GOOGLE_CLIENT_ID"
-          buttonText="Sign in with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
+      <GoogleAuth/>
       </Box>
     </Box>
   );

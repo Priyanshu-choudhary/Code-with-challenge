@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-import signUp from '../SignUpApi';
+import signUp from '../SignUpApiCreateUser';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);

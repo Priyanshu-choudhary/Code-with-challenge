@@ -1,6 +1,6 @@
 import React from 'react'
 import Dashboard from '../../dashBoard/Dashboard'
-import LoginForm from './LoginForm'
+// import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 
 function Testing() {

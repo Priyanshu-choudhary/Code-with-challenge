@@ -1,15 +1,11 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import "./style.css";
-
-import { UserContext } from '../Context/UserContext';
-// const { profileImg } = useContext(UserContext);
+import './style.css'; // Assuming style.css contains .shine-effect styling
 
 const cardStyles = {
-  
   container: (index) => ({
-    backgroundColor: index === 1 ? '#ffd700' : '#E2EAF4', // Conditional background color
+    backgroundColor: index === 1 ? '#ffd700' : '#E2EAF4',
     borderRadius: '5px',
     borderColor: 'black',
     boxShadow: '0px 10px 20px -10px #4603E9',
@@ -48,19 +44,6 @@ const cardStyles = {
     padding: '15px',
     marginTop: '30px',
   },
-  skillsList: {
-    listStyleType: 'none',
-    margin: '0',
-    padding: '0',
-  },
-  skillItem: {
-    border: '1px solid #2D2747',
-    borderRadius: '2px',
-    display: 'inline-block',
-    fontSize: '12px',
-    margin: '0 7px 7px 0',
-    padding: '7px',
-  },
 };
 
 const appStyles = {
@@ -70,23 +53,20 @@ const appStyles = {
   alignItems: 'top',
   justifyContent: 'top',
   flexDirection: 'column',
-  // minHeight: '100vh',
 };
 
-function UserCard({ userId, index,profileImg }) {
-  console.log(index);
-
+function UserCard({ userId, index }) {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    let isMounted = true; // Track whether the component is still mounted
+    let isMounted = true;
 
     if (userId) {
       fetch(`https://hytechlabs.online:9090/Public/${userId}`)
         .then(response => response.json())
         .then(data => {
-          if (isMounted) { // Update state only if the component is still mounted
+          if (isMounted) {
             setUser(data);
           }
         })
@@ -94,7 +74,7 @@ function UserCard({ userId, index,profileImg }) {
     }
 
     return () => {
-      isMounted = false; // Set to false when the component unmounts
+      isMounted = false;
     };
   }, [userId]);
 
@@ -103,16 +83,20 @@ function UserCard({ userId, index,profileImg }) {
   }
 
   const handleCardClick = () => {
-    navigate('/publicProfile', { state: { userId } }); // Navigate to /publicProfile with userId in state
+    navigate('/publicProfile', { state: { userId } });
   };
 
   return (
-    <div style={cardStyles.container(index)} className="shine-effect" onClick={handleCardClick}>
+    <div
+      className={index === 1 ? 'shine-effect' : ''}
+      style={cardStyles.container(index)}
+      onClick={handleCardClick}
+    >
       <span style={cardStyles.pro}>#{index}</span>
       <div style={cardStyles.avatarContainer}>
         <Avatar
           alt={user.name}
-          src={user.profileImg} // Assuming you have an avatarUrl in your user data
+          src={user.profileImg}
           sx={{ width: 80, height: 80, border: '2px solid #03BFCB' }}
         />
       </div>
@@ -131,7 +115,7 @@ function UserCard({ userId, index,profileImg }) {
 function MyCard({ userId, index }) {
   return (
     <div style={appStyles}>
-      <UserCard userId={userId} index={index} /> {/* Updated component name */}
+      <UserCard userId={userId} index={index} />
     </div>
   );
 }

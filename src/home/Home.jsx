@@ -105,7 +105,7 @@ function Home() {
                 <p style={{ color: "black", fontWeight: "bold" }}>Explore, code, compete: Courses, challenges, hackathons - your ultimate coding destination</p>
                 <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
                   <div className="col-12 col-md-auto">
-                    <a style={{fontSize:20,fontWeight:"bolder",borderWidth:5,borderColor:"black",backgroundColor:"grey",display:"flex",alignItems:"center",borderRadius:100,paddingLeft:30,paddingRight:30,height:50}} className="btn btn-primary w-100" href="https://code-for-challenge.vercel.app/login">Sign Up</a>
+                    <a style={{fontSize:20,fontWeight:"bolder",borderWidth:5,borderColor:bc,backgroundColor:bc,display:"flex",alignItems:"center",borderRadius:100,paddingLeft:30,paddingRight:30,height:50}} className="btn btn-primary w-100" href="/login">Sign Up</a>
                   </div>
                 </div>
               </div>

@@ -31,3 +31,6 @@
       left: 125%;
     }
   }
+  .golden-row {
+    background-color: rgb(255, 217, 0) !important;
+}

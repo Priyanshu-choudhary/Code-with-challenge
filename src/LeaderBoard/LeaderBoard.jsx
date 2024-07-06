@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
 import { UserContext } from '../Context/UserContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+// import './LeaderBoard.css'; // Import the CSS file
 
 const darkTheme = createTheme({
     palette: {
@@ -55,6 +56,9 @@ export default function LeaderBoard() {
     const { ibg, bg, light, role } = useContext(UserContext); // Extract role from UserContext
     const navigate = useNavigate(); // Initialize useNavigate
 
+    // Define an array of usernames to exclude
+    const excludeUsers = ["OfficialCources", "ProblemSet"];
+
     useEffect(() => {
         fetch('https://hytechlabs.online:9090/Public/getUser')
             .then(response => {
@@ -67,15 +71,19 @@ export default function LeaderBoard() {
                 console.log('Fetched data:', data);
 
                 if (Array.isArray(data)) {
-                    // Sort users by postCount in descending order
-                    data.sort((a, b) => b.postCount - a.postCount);
+                    // Filter out users to be excluded
+                    const filteredData = data.filter(user => !excludeUsers.includes(user.name));
 
-                    const formattedData = data.map((user, index) => ({
+                    // Sort users by rating in descending order
+                    filteredData.sort((a, b) => b.rating - a.rating);
+
+                    const formattedData = filteredData.map((user, index) => ({
                         id: user.id, // Assuming user.id is the unique ID of the user
                         index: index + 1,
                         avatar: user.name, // Use user.name for the avatar field
                         name: user.name,
                         postCount: user.postCount, // Include the postCount field
+                        rating: user.rating, // Include the rating field
                     }));
                     setRows(formattedData);
                 } else {
@@ -135,13 +143,14 @@ export default function LeaderBoard() {
             ),
         },
         { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'postCount', headerName: 'Question', width: 150 },
+        { field: 'postCount', headerName: 'Questions', width: 150 },
+        { field: 'rating', headerName: 'Rating', width: 150 }, // Add the Rating column
         {
             field: 'delete',
             headerName: '',
             width: 150,
             renderCell: (params) => (
-                role == 'ADMIN' ? (
+                role === 'ADMIN' ? (
                     <Button
                         variant="contained"
                         color="secondary"
@@ -159,7 +168,7 @@ export default function LeaderBoard() {
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '60%', backgroundColor: 'white' }}>
+                <div style={{ width: '66%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
@@ -168,6 +177,7 @@ export default function LeaderBoard() {
                                 style={{ backgroundColor: light, color: ibg }}
                                 rows={rows}
                                 columns={columns}
+                                getRowClassName={(params) => params.indexRelativeToCurrentPage === 0 ? 'golden-row' : ''}
                                 onRowClick={handleRowClick} // Add this line
                             />
                         </ThemeProvider>

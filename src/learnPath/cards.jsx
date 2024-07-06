@@ -49,8 +49,8 @@ export default function ImgMediaCard({ id,permission, title, image, description,
 console.log(id);
   return (
 
-    <Card style={{ backgroundColor: light, color: ibg }} sx={{ borderRadius: "15px", maxWidth: 345, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { opacity: "0.9", transform: 'scale(1.05)' } }}>
-      <Box sx={{ height: 180, overflow: 'hidden' }}>
+    <Card style={{ backgroundColor: light, color: ibg }} sx={{ borderRadius: "15px", maxWidth: 300, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { opacity: "0.9", transform: 'scale(1.05)' } }}>
+      <Box sx={{ height: 150, overflow: 'hidden' }}>
         <CardMedia
           component="img"
           alt={title}
@@ -62,7 +62,7 @@ console.log(id);
         <Typography gutterBottom variant="h5" component="div">
           <p style={{ fontWeight: 'bolder' }}>{title}</p>
         </Typography>
-        <Typography variant="body2" component="div">
+        {/* <Typography variant="body2" component="div">
           <pre style={{
             height: showFullDescription ? 'auto' : '6em',
             overflow: 'hidden',
@@ -74,7 +74,7 @@ console.log(id);
           <Button size="small" onClick={toggleDescription}>
             {showFullDescription ? 'Show less' : 'Read more'}
           </Button>
-        </Typography>
+        </Typography> */}
         <hr />
         <br />
         <div style={{display:"flex",justifyContent:"space-between"}}>

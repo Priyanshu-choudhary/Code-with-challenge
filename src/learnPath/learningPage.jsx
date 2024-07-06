@@ -121,7 +121,7 @@ function LearningPage() {
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        <p style={{ color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+        <p style={{marginLeft:10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
           <hr />
         </p>

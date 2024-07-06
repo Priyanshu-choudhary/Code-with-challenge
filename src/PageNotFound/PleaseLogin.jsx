@@ -1,4 +1,3 @@
-import { Dashboard } from "@mui/icons-material";
 
 export default function PleaseLogin() {
   return (

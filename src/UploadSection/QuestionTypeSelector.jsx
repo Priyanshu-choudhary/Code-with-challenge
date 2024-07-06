@@ -5,7 +5,7 @@ import MyStepper from './Stepper'; // Import the MyStepper component
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import CourseForm from './newCourse';
-import UnauthorizedPage from '../PageNotFound/PleaseLogin';
+import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
 import Autocomplete from '@mui/material/Autocomplete';
 
 export default function QuestionTypeSelector() {

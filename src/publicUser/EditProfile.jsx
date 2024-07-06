@@ -25,7 +25,7 @@ const ValidationTextFields = () => {
         const fetchUserData = async () => {
             const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
             try {
-                const response = await fetch('https://hytechlabs.online:9090/users/getUser', {
+                const response = await fetch('https://hytechlabs.online:9090/Public/showUser/${username}}', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,12 +63,12 @@ const ValidationTextFields = () => {
         };
 
         try {
-            const url = 'https://hytechlabs.online:9090/users';
+            const url = `https://hytechlabs.online:9090/Public/showUser/${user}}`;
             updatedData.password = password;
 
             const headers = new Headers();
             headers.set('Content-Type', 'application/json');
-            headers.set('Authorization', 'Basic ' + btoa(user + ":" + password));
+           
 
             const response = await fetch(url, {
                 method: 'PUT',

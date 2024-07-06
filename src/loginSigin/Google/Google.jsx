@@ -63,7 +63,7 @@ function GoogleAuth() {
       setContextPassword(key);
       setRole(userRole);
       
-      localStorage.setItem('user', userObject.name);
+      localStorage.setItem('user', JSON.stringify(userObject.name));
       localStorage.setItem('password', key);
       localStorage.setItem('role', userRole);
       

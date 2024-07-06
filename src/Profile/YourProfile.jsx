@@ -66,11 +66,11 @@ const YourProfile = () => {
         }
 
         // Fetch user data
-        const userResponse = await fetch("https://hytechlabs.online:9090/users/getUser", {
+        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': basicAuth
+          
           }
         });
 

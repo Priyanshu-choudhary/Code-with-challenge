@@ -62,7 +62,7 @@ function Home() {
           borderRadius: "10px",
           height: height,
           width: width,
-          boxShadow: isHovered ? '8px 5px 8px red' : '8px 5px 8px rgba(0, 0, 0, 0.1)',
+          boxShadow: isHovered ? '8px 5px 8px rgba(0, 0, 0, 0.5)' : '8px 5px 8px rgba(0, 0, 0, 0.1)',
           transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           marginLeft: "50px",

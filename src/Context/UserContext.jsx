@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   const [currentthemes, setcurrentthemes] = useState(true)
   const [URL, setURL] = useState("")
   const [fontSize, setFontSize] = useState('14px'); 
+  const [profileImage, setprofileImage] = useState("")
 
 useEffect(() => {
 
@@ -41,6 +42,11 @@ useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedPassword = localStorage.getItem('password');
     const storedRole=localStorage.getItem('role');
+    const storedProfileImage=localStorage.getItem('profileImage');
+
+    if(storedProfileImage){
+      setprofileImage(storedProfileImage);
+    }
 
     if(storedRole){
       setRole(storedRole);
@@ -58,6 +64,8 @@ useEffect(() => {
     localStorage.removeItem('user');
     localStorage.removeItem('password');
     localStorage.removeItem('role');
+    localStorage.removeItem('profileImage');
+    setprofileImage(null);
     setRole(null);
     setUser(null);
     setPassword(null);
@@ -65,7 +73,7 @@ useEffect(() => {
   };
 
   return (
-    <UserContext.Provider value={{fontSize,setFontSize,URL,setURL,ibg,bc,bg,dark,light, user, password, role,currentthemes, setRole, setUser, setPassword, logout,setcurrentthemes }}>
+    <UserContext.Provider value={{profileImage,setprofileImage,fontSize,setFontSize,URL,setURL,ibg,bc,bg,dark,light, user, password, role,currentthemes, setRole, setUser, setPassword, logout,setcurrentthemes }}>
       {children}
     </UserContext.Provider>
   );

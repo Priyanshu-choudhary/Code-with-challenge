@@ -8,7 +8,7 @@ const CLIENT_ID = '439620692192-5gcmgal8phjd64a9qecfcqa1qu5dsj6l.apps.googleuser
 
 function GoogleAuth() {
   
-  const { setUser,setRole, setPassword: setContextPassword } = useContext(UserContext);
+  const { setUser,setRole, setPassword: setContextPassword ,setprofileImage} = useContext(UserContext);
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [key, setkey] = useState("hqVFNyrLZKUXyicbaIHknSH06vcM6XPunnBYWnSQ4rls9vdH61v8zDJbAoCfI1E0EJN55XyJsjT9xGggIxhr0ioGN+nLnUK+wpcN7+ezp5M=")
@@ -36,7 +36,7 @@ function GoogleAuth() {
 
   const createUser=async (userObject)=>{
     try {
-      const response = await signUp(userObject.name, key, userObject.email);
+      const response = await signUp(userObject.name, key, userObject.email,userObject.picture);
       if (response.ok) {
         setMessage('Registration successful! Redirecting to login...');
        
@@ -62,10 +62,12 @@ function GoogleAuth() {
       setUser(userObject.name);
       setContextPassword(key);
       setRole(userRole);
+      setprofileImage(userObject.picture);
       
       localStorage.setItem('user', JSON.stringify(userObject.name));
       localStorage.setItem('password', key);
       localStorage.setItem('role', userRole);
+      localStorage.setItem('profileImage', userObject.picture);
       
       navigate('/yourProfile'); // Navigate only if login is successful
   } catch (error) {

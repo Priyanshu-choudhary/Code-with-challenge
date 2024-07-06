@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import "./style.css";
 
+import { UserContext } from '../Context/UserContext';
+// const { profileImg } = useContext(UserContext);
+
 const cardStyles = {
-  container: {
-    backgroundColor: '#E2EAF4',
+  
+  container: (index) => ({
+    backgroundColor: index === 1 ? '#ffd700' : '#E2EAF4', // Conditional background color
     borderRadius: '5px',
     borderColor: 'black',
     boxShadow: '0px 10px 20px -10px #4603E9',
@@ -16,8 +20,8 @@ const cardStyles = {
     maxWidth: '100%',
     textAlign: 'center',
     overflow: 'hidden',
-    cursor: 'pointer'
-  },
+    cursor: 'pointer',
+  }),
   pro: {
     color: '#231E39',
     backgroundColor: '#FEBB0B',
@@ -69,7 +73,7 @@ const appStyles = {
   // minHeight: '100vh',
 };
 
-function UserCard({ userId, index }) { // Renamed Card to UserCard to avoid naming conflict
+function UserCard({ userId, index,profileImg }) {
   console.log(index);
 
   const [user, setUser] = useState(null);
@@ -103,12 +107,12 @@ function UserCard({ userId, index }) { // Renamed Card to UserCard to avoid nami
   };
 
   return (
-    <div style={cardStyles.container} className="shine-effect" onClick={handleCardClick}>
+    <div style={cardStyles.container(index)} className="shine-effect" onClick={handleCardClick}>
       <span style={cardStyles.pro}>#{index}</span>
       <div style={cardStyles.avatarContainer}>
         <Avatar
           alt={user.name}
-          src={user.avatarUrl} // Assuming you have an avatarUrl in your user data
+          src={user.profileImg} // Assuming you have an avatarUrl in your user data
           sx={{ width: 80, height: 80, border: '2px solid #03BFCB' }}
         />
       </div>

@@ -79,7 +79,7 @@ const PublicProfile = () => {
                 <div style={{ backgroundColor: light, color: ibg }} >
                   <div className="p-4">
                     <h1><b>Personal info:</b></h1>
-                    Ph: {userData.number} <br />
+                    {/* Ph: {userData.number} <br /> */}
                     gmail: {userData.email}
                   </div>
                   <div className="p-4">

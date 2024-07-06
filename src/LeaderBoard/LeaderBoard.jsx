@@ -6,8 +6,7 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
 import { UserContext } from '../Context/UserContext';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-// import './LeaderBoard.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
 
 const darkTheme = createTheme({
     palette: {
@@ -53,14 +52,15 @@ export default function LeaderBoard() {
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
-    const { ibg, bg, light, role } = useContext(UserContext); // Extract role from UserContext
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [selectedProfileImg, setSelectedProfileImg] = useState(null); // State to store selected profile image URL
+    const { ibg, bg, light, role } = useContext(UserContext);
+    const navigate = useNavigate();
 
     // Define an array of usernames to exclude
     const excludeUsers = ["OfficialCources", "ProblemSet"];
 
     useEffect(() => {
-        fetch('https://hytechlabs.online:9090/Public/getUser')
+        fetch('https://hytechlabs.online:9090/Public/getAllUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -71,19 +71,18 @@ export default function LeaderBoard() {
                 console.log('Fetched data:', data);
 
                 if (Array.isArray(data)) {
-                    // Filter out users to be excluded
                     const filteredData = data.filter(user => !excludeUsers.includes(user.name));
 
-                    // Sort users by rating in descending order
                     filteredData.sort((a, b) => b.rating - a.rating);
 
                     const formattedData = filteredData.map((user, index) => ({
-                        id: user.id, // Assuming user.id is the unique ID of the user
+                        id: user.id,
                         index: index + 1,
-                        avatar: user.name, // Use user.name for the avatar field
+                        avatar: user.profileImg || user.name, // Use profileImg if available, otherwise use name
                         name: user.name,
-                        postCount: user.postCount, // Include the postCount field
-                        rating: user.rating, // Include the rating field
+                        postCount: user.postCount,
+                        rating: user.rating,
+                        profileImg: user.profileImg, // Include profileImg field
                     }));
                     setRows(formattedData);
                 } else {
@@ -99,16 +98,17 @@ export default function LeaderBoard() {
     }, []);
 
     useEffect(() => {
-        // Check if no user is selected and rows array is not empty
         if (selectedUserId === null && rows.length > 0) {
-            setSelectedUserId(rows[0].id); // Set the ID of the first user in rows
-            setSelectedIndex(1); // Set the index of the first user
+            setSelectedUserId(rows[0].id);
+            setSelectedIndex(1);
+            setSelectedProfileImg(rows[0].profileImg); // Set the profile image URL
         }
     }, [rows, selectedUserId]);
 
     const handleRowClick = (params) => {
         setSelectedUserId(params.id);
-        setSelectedIndex(params.row.index); // Extract the index of the clicked row
+        setSelectedIndex(params.row.index);
+        setSelectedProfileImg(params.row.profileImg); // Set the profile image URL
         console.log(selectedIndex);
     };
 
@@ -121,7 +121,6 @@ export default function LeaderBoard() {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    // Remove the deleted user from the state
                     setRows((prevRows) => prevRows.filter((row) => row.id !== id));
                     window.alert('User deleted successfully.');
                 })
@@ -139,12 +138,16 @@ export default function LeaderBoard() {
             headerName: 'Avatar',
             width: 100,
             renderCell: (params) => (
-                <Avatar {...stringAvatar(params.value)} />
+                params.value && params.value.startsWith('http') ? (
+                    <Avatar alt={params.row.name} src={params.value} />
+                ) : (
+                    <Avatar {...stringAvatar(params.value)} />
+                )
             ),
         },
         { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'postCount', headerName: 'Questions', width: 150 },
-        { field: 'rating', headerName: 'Rating', width: 150 }, // Add the Rating column
+        { field: 'postCount', headerName: 'Coding Questions', width: 160 },
+        { field: 'rating', headerName: 'Rating', width: 150 },
         {
             field: 'delete',
             headerName: '',
@@ -168,7 +171,7 @@ export default function LeaderBoard() {
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '66%', backgroundColor: 'white' }}>
+                <div style={{ width: '67%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
@@ -178,14 +181,19 @@ export default function LeaderBoard() {
                                 rows={rows}
                                 columns={columns}
                                 getRowClassName={(params) => params.indexRelativeToCurrentPage === 0 ? 'golden-row' : ''}
-                                onRowClick={handleRowClick} // Add this line
+                                onRowClick={handleRowClick}
                             />
                         </ThemeProvider>
                     )}
                 </div>
                 <div style={{ padding: '20px' }}>
                     <div className='card'>
-                        <MyCard userId={selectedUserId} index={selectedIndex} navigate={navigate} /> {/* Pass selectedUserId, selectedIndex, and navigate as props */}
+                        <MyCard
+                            userId={selectedUserId}
+                            index={selectedIndex}
+                            navigate={navigate}
+                            profileImg={selectedProfileImg} // Pass profileImg URL as prop
+                        />
                     </div>
                 </div>
             </div>

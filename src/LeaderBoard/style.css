@@ -1,12 +1,8 @@
 .shine-effect {
     position: relative;
-    /* background-color: #b0b0b0; */
-    /* color: white; */
     overflow: hidden;
   }
-  .golden-row {
-    background-color: gold !important;
-}
+
 
   .shine-effect::before {
     content: '';
@@ -15,7 +11,7 @@
     left: -75%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%,  rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
     transform: skewX(-25deg);
   }
   
@@ -32,5 +28,29 @@
     }
   }
   .golden-row {
-    background-color: rgb(255, 217, 0) !important;
+    font-weight: bold;
+    background-color: rgb(205, 186, 83) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.golden-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-25deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -75%;
+    }
+    100% {
+        left: 125%;
+    }
 }

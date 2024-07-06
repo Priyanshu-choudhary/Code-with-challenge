@@ -50,7 +50,7 @@ function classNames(...classes) {
 function Dashboard() {
     const navigate = useNavigate();
     console.log("Dashboard rerender");
-    const { user, setcurrentthemes, currentthemes } = useContext(UserContext);
+    const { user, setcurrentthemes, currentthemes,profileImage } = useContext(UserContext);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('currentthemes');
@@ -61,7 +61,7 @@ function Dashboard() {
 
     const handleClick = () => {
         navigate('/leaderboard');
-       
+
     };
 
     const handleSwitchChange = (event) => {
@@ -127,12 +127,12 @@ function Dashboard() {
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
-                                        <a href="/">
-                                            <img
-                                                className="h-8 w-8"
-                                                src={logo}
-                                                alt="Your name"
-                                            />
+                                            <a href="/">
+                                                <img
+                                                    className="h-8 w-8"
+                                                    src={logo}
+                                                    alt="Your name"
+                                                />
                                             </a>
                                             <p style={{ color: "white" }}>CFC </p>
                                         </div>
@@ -185,8 +185,12 @@ function Dashboard() {
                                                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                         <span className="sr-only">Open user menu</span>
 
-                                                        <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
-
+                                                        {/* <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar> */}
+                                                        {profileImage ? (
+                                                            <Avatar alt={user[0]} src={profileImage} sx={{ width: 40, height: 40 }} />
+                                                        ) : (
+                                                            <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+                                                        )}
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition

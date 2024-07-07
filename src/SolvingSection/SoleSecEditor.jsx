@@ -22,6 +22,7 @@ import useCreateCourse from '../learnPath/CourseCreateApi';
 const MyEditor = forwardRef(
   (
     {
+      CourseLanguage, 
       spin,
       input,
       saveToDatabase,
@@ -37,7 +38,7 @@ const MyEditor = forwardRef(
     },
     ref
   ) => {
-    const [language, setLanguage] = useState('java');
+    const [language, setLanguage] = useState(CourseLanguage);
     const [iSubmit, setiSubmit] = useState(false);
     const [output, setOutput] = useState('');
     const [themes, setThemes] = useState('vs-dark');
@@ -58,6 +59,12 @@ const MyEditor = forwardRef(
     } = useContext(UserContext);
     const [bgColor, setbgColor] = useState(light);
     const createCourse = useCreateCourse(); // Call the custom hook
+    
+    useEffect(() => {
+      setLanguage(CourseLanguage);
+      console.log(CourseLanguage);
+  }, [CourseLanguage]);
+
 
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;
@@ -263,11 +270,12 @@ const MyEditor = forwardRef(
             className='editor'
             height='400px'
             width='auto'
+            language={language}
             theme={themes}
             defaultValue={problem.templateCode}
             onMount={handleEditorDidMount}
             options={options}
-            language='java'
+           
           />
           <div>
             {testCaseGroups.map((testCase, index) => (

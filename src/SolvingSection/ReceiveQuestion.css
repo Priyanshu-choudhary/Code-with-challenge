@@ -109,3 +109,16 @@ body::-webkit-scrollbar-thumb:hover {
   width: 100%;
   
 }
+
+.overlay {
+    position: fixed;
+   
+    /* background-color: rgba(187, 181, 181); semi-transparent background */
+    z-index: 9999; /* ensures it's on top of everything else */
+   
+    
+}
+.LanguagebuttonMenu{
+
+/* color: #ff0000; */
+}

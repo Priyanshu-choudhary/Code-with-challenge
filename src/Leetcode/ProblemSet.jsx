@@ -31,7 +31,7 @@ const LeetCodeClone = () => {
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
   const location = useLocation();
-  const { totalQuestions, title, description, progress } = location.state || {};
+  const { language,totalQuestions, title, description, progress } = location.state || {};
   const PageContainer = styled.div`
     background-color: ${bg};
     height: 100vh;
@@ -41,9 +41,10 @@ const LeetCodeClone = () => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
-
+    console.log("language>>>>>>"+language);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
@@ -152,7 +153,8 @@ const LeetCodeClone = () => {
         navHistory,
         currentPage,
         CourseDescription: description,
-        totalProblems: problems.length // Pass the total number of problems
+        totalProblems: problems.length ,// Pass the total number of problems
+        language
       }
     });
   };

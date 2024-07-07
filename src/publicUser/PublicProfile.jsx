@@ -70,8 +70,12 @@ const PublicProfile = () => {
                 <div className="p-4" style={{ backgroundColor: light, color: ibg }}>
                   <div className="text-center">
                     <div className="inline-block relative">
-                      <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
-                    </div>
+                    {userData.profileImg ? (
+                        <Avatar alt={userData.name} src={userData.profileImg} sx={{ width: 120, height: 120 }} />
+                      ) : (
+                        <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
+                      )}
+                      </div>
                     <h2 className="mt-2 text-lg font-semibold text-gray-900" style={{ backgroundColor: light, color: ibg }}>{userData.name}</h2>
                     <p className="mt-1 text-sm text-gray-600" style={{ backgroundColor: light, color: ibg }}>Rating: {userData.rating}</p>
                   </div>

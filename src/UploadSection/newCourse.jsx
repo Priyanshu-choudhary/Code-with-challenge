@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -8,6 +7,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 
 export default function CourseForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
@@ -17,14 +20,19 @@ export default function CourseForm({ uploadUrl }) {
   });
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
-  const [permission, setPermission] = useState(''); // State to manage radio button value
-  const [loading, setLoading] = useState(false); // State to manage loading status
-  const [imageUrl, setImageUrl] = useState(''); // State to manage image URL
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [permission, setPermission] = useState('');
+  const [languages, setLanguages] = useState({
+    java: false,
+    python: false,
+    c: false,
+    cpp: false,
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
 
-    // Validate title to ensure it does not contain '/'
     if (id === 'title' && value.includes('/')) {
       setAlert({ show: true, message: 'Title cannot contain / character', severity: 'error' });
       return;
@@ -36,27 +44,35 @@ export default function CourseForm({ uploadUrl }) {
     }));
   };
 
-  const handlePermissionChange = (e) => {
-    setPermission(e.target.value);
-  };
-
   const handleImageUrlChange = (e) => {
     setImageUrl(e.target.value);
   };
 
+  const handlePermissionChange = (e) => {
+    setPermission(e.target.value);
+  };
+
+  const handleLanguageChange = (language) => {
+    setLanguages((prevLanguages) => ({
+      ...prevLanguages,
+      [language]: !prevLanguages[language],
+    }));
+  };
+
   const handleSubmit = async () => {
-    setLoading(true); // Set loading to true when the form is submitted
+    setLoading(true);
+
+    const selectedLanguages = Object.keys(languages).filter((lang) => languages[lang]);
 
     const postData = {
       title: formData.title,
       description: formData.description,
       totalQuestions: formData.totalQuestions,
       permission: permission,
-      image: imageUrl, // Include imageUrl in postData
+      image: imageUrl,
+      language: selectedLanguages,
     };
-
-    // console.log('Form data to be sent:', JSON.stringify(postData));
-
+// console.log(postData);
     try {
       const response = await axios.post(
         'https://hytechlabs.online:9090/Course',
@@ -87,7 +103,7 @@ export default function CourseForm({ uploadUrl }) {
 
       setAlert({ show: true, message: `Failed to upload course to ${uploadUrl}`, severity: 'error' });
     } finally {
-      setLoading(false); // Set loading to false after the API call is complete
+      setLoading(false);
     }
   };
 
@@ -130,35 +146,37 @@ export default function CourseForm({ uploadUrl }) {
           onChange={handleImageUrlChange}
           margin="normal"
         />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <label>
-            <input
-              type="radio"
-              value="public"
-              checked={permission === 'public'}
-              onChange={handlePermissionChange}
+        <div style={{padding:10, marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
+          {Object.keys(languages).map((lang) => (
+          
+           <FormControlLabel
+              key={lang}
+              control={<Checkbox checked={languages[lang]} onChange={() => handleLanguageChange(lang)} />}
+              label={lang.charAt(0).toUpperCase() + lang.slice(1)} // Capitalize first letter
             />
-            Public
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="private"
-              checked={permission === 'private'}
-              onChange={handlePermissionChange}
-            />
-            Private
-          </label>
+          ))}
+        </div>
+        <div style={{ marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
+        <RadioGroup
+            aria-label="permission"
+            name="permission"
+            value={permission}
+            onChange={handlePermissionChange}
+          >
+            <div style={{ margin: 10 }}>
+              <FormControlLabel value="public" control={<Radio />} label="Public" />
+              <FormControlLabel value="private" control={<Radio />} label="Private" />
+            </div>
+          </RadioGroup>
         </div>
         <Button
           style={{ width: "100%" }}
           variant="contained"
           color="primary"
           onClick={handleSubmit}
-          className="submit-button"
-          disabled={loading} // Disable the button when loading
+          disabled={loading}
         >
-          {loading ? <CircularProgress size={24} /> : 'Submit'} {/* Show spinner when loading */}
+          {loading ? <CircularProgress size={24} /> : 'Submit'}
         </Button>
       </Box>
     </>

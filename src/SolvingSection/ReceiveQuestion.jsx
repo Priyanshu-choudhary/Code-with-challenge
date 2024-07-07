@@ -31,7 +31,7 @@ function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const { language, CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
   const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
@@ -56,6 +56,16 @@ function QuestionApi() {
   const [btn1BG, set1btnBG] = useState(light);
   const [btn2BG, set2btnBG] = useState(light);
   const [btn3BG, set3btnBG] = useState(light);
+  const [selectedOption2, setSelectedOption2] = useState(language[0]);
+  const [dropdownToggle, setdropdownToggle] = useState(false)
+
+  const options = {
+    option1: 'ChatGPT',
+    option2: 'ChatGPT',
+  };
+  const handleSelect = (options) => {
+    setSelectedOption(options);
+  };
 
   const toggleTimer = () => {
     setIsTimerRunning(prevState => !prevState);
@@ -299,6 +309,42 @@ function QuestionApi() {
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
           </div>
+
+
+
+          {!optionA &&
+            <div>
+              {language[0] && <div className='dropdown'>
+                <button style={{ marginTop: 10, padding: 7, borderWidth: 1, borderRadius:10 ,borderColor:ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
+                  {selectedOption2}
+
+                </button>
+                {dropdownToggle &&
+                  <div className='overlay' style={{ borderRadius: 5, marginTop: 5 ,background:light,color:ibg,borderRadius:5,borderColor:bg}}>
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[0]); setdropdownToggle(false) }}>
+                      {language[0]}
+                    </button>
+
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[1]); setdropdownToggle(false) }}>
+                      {language[1]}
+                    </button>
+
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[2]); setdropdownToggle(false) }}>
+                      {language[2]}
+                    </button>
+
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[3]); setdropdownToggle(false) }}>
+                      {language[3]}
+                    </button>
+
+                  </div>}
+
+              </div>
+              }
+            </div>
+          }
+
+
           <div style={{ display: "flex" }}>
             <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
               <AlarmOnIcon onClick={toggleTimer} />
@@ -377,7 +423,7 @@ function QuestionApi() {
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
                 <>
-                  <MyEditor spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
                 </>
 
               }

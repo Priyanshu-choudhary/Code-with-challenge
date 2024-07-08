@@ -4,7 +4,7 @@ import signUp from '../SignUpApiCreateUser';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 
-const CLIENT_ID = '439620692192-5gcmgal8phjd64a9qecfcqa1qu5dsj6l.apps.googleusercontent.com';
+const CLIENT_ID = '439620692192-uvhfnu1pvafjoqidmqec05bdetk74j9r.apps.googleusercontent.com';
 
 function GoogleAuth() {
   

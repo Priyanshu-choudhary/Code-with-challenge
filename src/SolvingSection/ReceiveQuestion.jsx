@@ -26,6 +26,7 @@ import { Upload } from '@mui/icons-material';
 import YouTubePlayer from './youtubeVideo';
 import AnchorTemporaryDrawer from './SideDrover';
 import Spinner from 'react-bootstrap/Spinner';
+import HtmlRenderer from '../Leetcode/HtmlRenderer';
 
 function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
@@ -113,7 +114,7 @@ function QuestionApi() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     }, 250); // 1 second delay
-
+    console.log("problem>>>>" + JSON.stringify(problem));
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []); // Empty dependency array ensures this runs only once on mount
 
@@ -156,7 +157,7 @@ function QuestionApi() {
 
       const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
       const courseToUpdate = existingCourses.find(course => course.title === navHistory);
-      console.log("courseToUpdate>>>>" + courseToUpdate.id);
+      
       if (courseToUpdate) {
         const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
         if (result.success) {
@@ -368,7 +369,7 @@ function QuestionApi() {
                 </Grid>
                 {level == 1 && <div>
                   <Grid xs={14} style={{ width: "100%" }}>
-                    <pre style={{ background: dark }}>  {description} </pre>
+                    <pre style={{ background: dark }}>  <HtmlRenderer htmlContent={description} /> </pre>
                   </Grid>
                   <Grid xs={0}></Grid>
 
@@ -423,7 +424,7 @@ function QuestionApi() {
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
                 <>
-                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} testcase={testcase} boilerCode={boilerCode} />
+                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty}  />
                 </>
 
               }

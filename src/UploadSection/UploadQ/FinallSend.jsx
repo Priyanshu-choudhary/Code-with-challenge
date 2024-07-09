@@ -39,6 +39,7 @@ const FinalSend = ({ step, uploadUrl }) => {
     
     const handleSubmit = async (event) => {
         setISubmit(true);
+        console.log("++++++++"+JSON.stringify(formData));
         event.preventDefault();
         try {
             console.log("-----------"+URL);
@@ -74,6 +75,7 @@ const FinalSend = ({ step, uploadUrl }) => {
             <div className="editor-container">
                 <div className="sidebar">
                     <div className="sidebar-item" onClick={handleSubmit}>
+                        
                         Save {iSubmit && <Spinner animation="border" size="sm" />}
                     </div>
                     <hr />

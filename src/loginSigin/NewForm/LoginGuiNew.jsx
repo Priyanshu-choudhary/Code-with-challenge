@@ -14,18 +14,20 @@ function LoginGuiNew() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setUser, setRole, setPassword: setContextPassword } = useContext(UserContext);
+  const { setUser,setRole, setPassword: setContextPassword ,setprofileImage,profileImage} = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedPassword = localStorage.getItem('password');
     const storedRole = localStorage.getItem('role');
+    const storedImg= localStorage.getItem('profileImage');
 
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       setContextPassword(storedPassword);
       setRole(storedRole);
+      setprofileImage(storedImg);
       setIsLoggedIn(true);
     }
   }, [navigate, setUser, setContextPassword]);
@@ -47,9 +49,12 @@ function LoginGuiNew() {
       setUser(username);
       setContextPassword(password);
       setRole(userRole);
+      
+
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('password', password);
       localStorage.setItem('role', userRole);
+      
 
       navigate('/yourProfile'); // Navigate only if login is successful
     } catch (error) {
@@ -59,6 +64,9 @@ function LoginGuiNew() {
       // No need to alert here, it's already handled in the login function
     }
   }, [navigate, username, password, setUser, setContextPassword]);
+useEffect(() => {
+ console.log(">>>>>>>>>>>>>>>>"+profileImage);
+}, [])
 
   return (
     <div>

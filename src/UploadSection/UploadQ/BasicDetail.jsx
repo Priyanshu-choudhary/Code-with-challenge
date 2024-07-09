@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import './EditorComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FormContext } from '../../Context/FormContext';
+import Tinymce from '../../TinyMCE/TinyMCE'; // Import Tinymce component
 
 const BasicDetail = ({ step, uploadUrl }) => {
   const { formData, updateFormData } = useContext(FormContext);
@@ -10,6 +11,9 @@ const BasicDetail = ({ step, uploadUrl }) => {
     updateFormData({ [e.target.name]: e.target.value });
   };
 
+  const setDescription = (content) => {
+    updateFormData({ description: content });
+  };
   return (
     <>
       <div className="editor-container">
@@ -28,13 +32,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
 
           <div className="editor">
             <h2>Description</h2>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Add Your Question Description......."
-              className="editor-textarea"
-            />
+            <Tinymce setDescription={setDescription} /> {/* Replace TextField with Tinymce */}
           </div>
 
           <div className="editor">

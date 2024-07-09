@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
-import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import Tinymce from '../TinyMCE/TinyMCE';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'; // Example of using an icon
 
 export default function CourseForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ export default function CourseForm({ uploadUrl }) {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [permission, setPermission] = useState('');
+  const [imageDataUrl, setImageDataUrl] = useState(null);
   const [languages, setLanguages] = useState({
     java: false,
     python: false,
@@ -43,6 +45,17 @@ export default function CourseForm({ uploadUrl }) {
       [id]: value,
     }));
   };
+
+  const setDescription = (content) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      description: content,
+    }));
+  };
+
+  useEffect(() => {
+    setImageUrl(imageDataUrl);
+  }, [imageDataUrl]);
 
   const handleImageUrlChange = (e) => {
     setImageUrl(e.target.value);
@@ -72,7 +85,8 @@ export default function CourseForm({ uploadUrl }) {
       image: imageUrl,
       language: selectedLanguages,
     };
-// console.log(postData);
+
+    console.log(postData);
     try {
       const response = await axios.post(
         'https://hytechlabs.online:9090/Course',
@@ -107,6 +121,18 @@ export default function CourseForm({ uploadUrl }) {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageDataUrl(reader.result);
+        // console.log(reader.result); // Log base64 string to the console
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <>
       <Dashboard />
@@ -121,16 +147,6 @@ export default function CourseForm({ uploadUrl }) {
           margin="normal"
         />
         <TextField
-          id="description"
-          label="Description"
-          multiline
-          rows={15}
-          fullWidth
-          value={formData.description}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
           id="totalQuestions"
           label="Total Number of Questions"
           fullWidth
@@ -138,37 +154,63 @@ export default function CourseForm({ uploadUrl }) {
           onChange={handleChange}
           margin="normal"
         />
-        <TextField
-          id="imageUrl"
-          label="Image URL"
-          fullWidth
-          value={imageUrl}
-          onChange={handleImageUrlChange}
-          margin="normal"
-        />
-        <div style={{padding:10, marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
+
+        <p style={{ marginTop: 40, marginBottom: 10 }}>Add description:</p>
+        <Tinymce setDescription={setDescription} />
+        <br />
+        <div style={{ padding: 5, marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
+          <p style={{ margin: 5, color: "#636161" }}>Select course languages:</p>
           {Object.keys(languages).map((lang) => (
-          
-           <FormControlLabel
+            <FormControlLabel
               key={lang}
               control={<Checkbox checked={languages[lang]} onChange={() => handleLanguageChange(lang)} />}
               label={lang.charAt(0).toUpperCase() + lang.slice(1)} // Capitalize first letter
             />
           ))}
         </div>
+        <br />
+        <div>
+          {/* Custom Choose button */}
+          <div style={{borderWidth:3,marginTop:10, marginBottom:10,}}>
+            <p style={{ margin: 5, color: "#636161" }}> Select Course Template Image</p>
+          <label htmlFor="file-upload" style={{padding:30,display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            <CloudUploadIcon style={{ marginRight: '5px' }} /> Upload Image
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          </div>
+          {imageDataUrl && (
+            <div>
+              <p style={{ color: 'green' }}>Image successfully uploaded</p>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <img src={imageDataUrl} alt="Selected" style={{ width: '400px', height: '300px' }} />
+              </div>
+            </div>
+          )}
+        </div>
+        <hr />
+        
+
         <div style={{ marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
-        <RadioGroup
+          <RadioGroup
             aria-label="permission"
             name="permission"
             value={permission}
             onChange={handlePermissionChange}
           >
+            <p style={{ display: "flex", margin: 5 }}>Tip: <span style={{ color: "#F9A4A4" }}>Set your course private until it is fully uploaded (you can modify it anytime).</span></p>
             <div style={{ margin: 10 }}>
               <FormControlLabel value="public" control={<Radio />} label="Public" />
               <FormControlLabel value="private" control={<Radio />} label="Private" />
             </div>
           </RadioGroup>
         </div>
+
         <Button
           style={{ width: "100%" }}
           variant="contained"

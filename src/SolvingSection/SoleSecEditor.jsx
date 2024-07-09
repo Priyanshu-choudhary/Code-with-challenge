@@ -31,9 +31,7 @@ const MyEditor = forwardRef(
       title,
       description,
       difficulty,
-      Example,
-      testcase,
-      boilerCode,
+      Example, 
       courseTitle = '',
     },
     ref
@@ -44,6 +42,8 @@ const MyEditor = forwardRef(
     const [themes, setThemes] = useState('vs-dark');
     const [showConfetti, setShowConfetti] = useState(false);
     const [isCorrect, setisCorrect] = useState(false);
+    const [boilerCode, setboilerCode] = useState(problem.codeTemplates[language].boilerCode);
+    const [templateCode, settemplateCode] = useState(problem.codeTemplates[language].templateCode);
     const editorRef = useRef(null);
 
     const {
@@ -62,8 +62,11 @@ const MyEditor = forwardRef(
     
     useEffect(() => {
       setLanguage(CourseLanguage);
-      console.log(CourseLanguage);
-  }, [CourseLanguage]);
+  //  console.log(problem);
+      setboilerCode(problem.codeTemplates[CourseLanguage].boilerCode); // "c++ cc"
+      settemplateCode(problem.codeTemplates[CourseLanguage].templateCode); // "c++ bc"
+
+  }, [CourseLanguage,problem.codeTemplates]);
 
 
     const handleEditorDidMount = (editor, monaco) => {
@@ -80,9 +83,9 @@ const MyEditor = forwardRef(
 
     useEffect(() => {
       if (editorRef.current) {
-        editorRef.current.setValue(problem.templateCode);
+        editorRef.current.setValue(templateCode);
       }
-    }, [problem.templateCode]);
+    }, [templateCode]);
 
     const resetEditorState = () => {
       setOutput('');
@@ -127,7 +130,7 @@ const MyEditor = forwardRef(
           }, 4000);
         }
       }
-    }, [answer, boilerCode, courseTitle, language, testcase]);
+    }, [answer,  courseTitle, language]);
 
     // Expose getCode to parent component using useImperativeHandle
     useImperativeHandle(ref, () => ({
@@ -272,7 +275,7 @@ const MyEditor = forwardRef(
             width='auto'
             language={language}
             theme={themes}
-            defaultValue={problem.templateCode}
+            defaultValue={templateCode}
             onMount={handleEditorDidMount}
             options={options}
            

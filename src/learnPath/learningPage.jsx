@@ -101,8 +101,14 @@ function LearningPage() {
   const handleDelete = async (courseId, courseName) => {
     if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
       try {
+        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
         const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth,
+           
+          }
         });
         if (response.ok) {
           // Remove the course from state
@@ -125,7 +131,8 @@ function LearningPage() {
           Learn Skills
           <hr />
         </p>
-        <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+      {userCourses[0] && 
+       <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
           <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Resume Preparation
           </p>
@@ -143,8 +150,8 @@ function LearningPage() {
               />
             ))}
             {!userCourses[0] && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
-          </div>
-        </div>
+          </div>  
+        </div>}
 
         <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
           <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>

@@ -23,6 +23,7 @@ import Test from './Leetcode/test';
 import Testing from './loginSigin/NewForm/testing';
 import QueryParamsExample from './loginSigin/NewForm/QuearyParamsExample';
 import LoginGuiNew from './loginSigin/NewForm/LoginGuiNew';
+import Tinymce from './TinyMCE/TinyMCE';
 
 
 
@@ -58,6 +59,7 @@ function App() {
               <Route path="/register" element={<Testing />} />
               <Route path="/verify-email" element={<QueryParamsExample />} />
               <Route path="/login" element={<LoginGuiNew />} />
+              <Route path="/TextEditor" element={<Tinymce />} />
 
 
 

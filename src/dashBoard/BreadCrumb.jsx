@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import TerminalOutlinedIcon from '@mui/icons-material/TerminalOutlined';
-import logo from "/logo2.jpg"
+import logo from "/logo2.png"
 
 import { UserContext } from '../Context/UserContext';
 
@@ -33,12 +33,12 @@ export default function IconBreadcrumbs({ currentPage = '', title = '', question
 
   return (
     <div role="presentation" style={{ display: "flex" }}>
-      <div style={{ display: "flex", borderColor:light,borderWidth:1.5,borderRadius:10}}>
+     
         <a href="/">
-          <img height={20} width={30} src={logo} style={{ marginLeft: 5 }} alt='logo' />
+          <img height={40} width={70} src={logo} style={{ marginLeft: 5,padding:5 }} alt='logo' />
         </a>
-        <p style={{ color: ibg, paddingTop: 7, marginRight: 5}}>CFC</p>
-      </div>
+       
+     
       <Breadcrumbs aria-label="breadcrumb" style={{ paddingTop: 7 }}>
         <Link
           underline="hover"

@@ -1,7 +1,10 @@
+
 async function login(username, password) {
     const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
+  
 
     try {
+      
         const response = await fetch('https://hytechlabs.online:9090/users/login', {
             method: 'POST',
             headers: {
@@ -14,7 +17,11 @@ async function login(username, password) {
         if (response.ok) {
             const userData = await response.json();  // Parse the response as JSON
             const roles = userData.roles; 
+            const img=userData.profileImg;
+            localStorage.setItem('profileImage', img);
+          
             console.log('Roles:', roles);
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++");
             return roles; 
         } else {
             console.log('Login failed');

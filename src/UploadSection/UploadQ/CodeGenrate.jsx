@@ -7,23 +7,60 @@ import { Editor } from '@monaco-editor/react';
 const CodeGenrate = ({ step, uploadUrl }) => {
   const { formData, updateFormData } = useContext(FormContext);
 
+  const handleLanguageChange = (event) => {
+    updateFormData({ selectedLanguage: event.target.value });
+  };
+
   const handleInputChangeCode = (value) => {
-    updateFormData({ code: value });
+    updateFormData({
+      codeTemplates: {
+        ...formData.codeTemplates,
+        [formData.selectedLanguage]: {
+          ...formData.codeTemplates[formData.selectedLanguage],
+          boilerCode: value,
+        },
+      },
+    });
   };
 
   const handleInputChangeTemplateCode = (value) => {
-    updateFormData({ templateCode: value });
+    updateFormData({
+      codeTemplates: {
+        ...formData.codeTemplates,
+        [formData.selectedLanguage]: {
+          ...formData.codeTemplates[formData.selectedLanguage],
+          templateCode: value,
+        },
+      },
+    });
   };
+
+  const languages = ['java', 'python', 'c', 'cpp'];
 
   return (
     <>
-      
       <div className="editor" style={{ marginTop: '20px' }}>
+        <div style={{borderWidth:2,padding:5,borderRadius:10}}>
+          <h2 >Select Language:</h2>
+          
+          <div style={{padding:5}}>
+          <select onChange={handleLanguageChange} value={formData.selectedLanguage}>
+            {languages.map((lang) => (
+              <option key={lang} value={lang}>
+                {lang.toUpperCase()}
+              </option>
+            ))}
+          </select>
+          </div>
+          
+        </div>
+        <br />
+        <div style={{borderWidth:2,padding:5,borderRadius:10}}>
         <h2>Write your checker code:</h2>
         <div style={{ height: '250px', marginBottom: '20px' }}>
           <Editor
-            value={formData.code}
-            language="java"
+            value={formData.codeTemplates[formData.selectedLanguage]?.boilerCode || ''}
+            language={formData.selectedLanguage}
             onChange={handleInputChangeCode}
             theme="vs-dark"
             options={{
@@ -35,11 +72,14 @@ const CodeGenrate = ({ step, uploadUrl }) => {
             }}
           />
         </div>
+        </div>
+        <br />
+        <div style={{borderWidth:2,padding:5,borderRadius:10}}>
         <h2>Write your Boiler code:</h2>
         <div style={{ height: '250px' }}>
           <Editor
-            value={formData.templateCode}
-            language="java"
+            value={formData.codeTemplates[formData.selectedLanguage]?.templateCode || ''}
+            language={formData.selectedLanguage}
             onChange={handleInputChangeTemplateCode}
             theme="vs-dark"
             options={{
@@ -50,6 +90,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
               },
             }}
           />
+        </div>
         </div>
       </div>
     </>

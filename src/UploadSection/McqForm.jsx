@@ -4,15 +4,16 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
-import Radio from '@mui/material/Radio';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import RadioGroup from '@mui/material/RadioGroup';
+import FormGroup from '@mui/material/FormGroup';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
 import Grid from '@mui/material/Grid';
+import Tinymce from '../TinyMCE/TinyMCE';
 
 export default function McqForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ export default function McqForm({ uploadUrl }) {
   });
 
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [selectedAnswers, setSelectedAnswers] = useState([]); // State to manage selected answers
   const [loading, setLoading] = useState(false); // State to manage loading status
 
   const handleChange = (e) => {
@@ -37,8 +38,11 @@ export default function McqForm({ uploadUrl }) {
     }));
   };
 
-  const handleRadioChange = (e) => {
-    setSelectedAnswer(e.target.value);
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setSelectedAnswers((prevSelected) => 
+      checked ? [...prevSelected, value] : prevSelected.filter((answer) => answer !== value)
+    );
   };
 
   const handleSubmit = async () => {
@@ -46,11 +50,12 @@ export default function McqForm({ uploadUrl }) {
 
     const postData = {
       ...formData,
-      answer: selectedAnswer,
+      answer: selectedAnswers,
       type: 'MCQ',
     };
 
     try {
+      console.log(postData);
       const response = await axios.post(
         `https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
         postData,
@@ -66,10 +71,21 @@ export default function McqForm({ uploadUrl }) {
     }
   };
 
+  const setDescription = (content) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      description: content,
+    }));
+  };
+  
+
   return (
     <>
+    
       <Dashboard />
+      
       <Box className="mcq-form-container">
+        
         {alert.show && <Alert severity={alert.severity}>{alert.message}</Alert>}
         <TextField
           id="title"
@@ -79,17 +95,11 @@ export default function McqForm({ uploadUrl }) {
           onChange={handleChange}
           margin="normal"
         />
-        <TextField
-          id="description"
-          label="Description"
-          multiline
-          rows={4}
-          fullWidth
-          value={formData.description}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
+        
+        <p style={{ marginTop: 20, marginBottom: 10 }}>Description</p>
+        <Tinymce setDescription={setDescription} /> {/* Replace TextField with Tinymce */}
+
+        {/* <TextField
           id="example"
           label="Example"
           multiline
@@ -98,92 +108,105 @@ export default function McqForm({ uploadUrl }) {
           value={formData.example}
           onChange={handleChange}
           margin="normal"
-        />
+        /> */}
+
         <FormControl component="fieldset" fullWidth>
-          <RadioGroup
-            aria-label="correct-answer"
-            name="correct-answer"
-            value={selectedAnswer}
-            onChange={handleRadioChange}
-          >
+          <FormGroup>
             <Grid container alignItems="center">
               <Grid item>
-                <Radio
-                  value="optionA"
-                  checked={selectedAnswer === 'optionA'}
-                  onChange={handleRadioChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  id="optionA"
-                  label="Option A"
-                  fullWidth
-                  value={formData.optionA}
-                  onChange={handleChange}
-                  margin="normal"
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="optionA"
+                      checked={selectedAnswers.includes('optionA')}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label={
+                    <TextField
+                      id="optionA"
+                      label="Option A"
+                      fullWidth
+                      value={formData.optionA}
+                      onChange={handleChange}
+                      margin="normal"
+                    />
+                  }
                 />
               </Grid>
             </Grid>
             <Grid container alignItems="center">
               <Grid item>
-                <Radio
-                  value="optionB"
-                  checked={selectedAnswer === 'optionB'}
-                  onChange={handleRadioChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  id="optionB"
-                  label="Option B"
-                  fullWidth
-                  value={formData.optionB}
-                  onChange={handleChange}
-                  margin="normal"
-                />
-              </Grid>
-            </Grid>
-            <Grid container alignItems="center">
-              <Grid item>
-                <Radio
-                  value="optionC"
-                  checked={selectedAnswer === 'optionC'}
-                  onChange={handleRadioChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  id="optionC"
-                  label="Option C"
-                  fullWidth
-                  value={formData.optionC}
-                  onChange={handleChange}
-                  margin="normal"
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="optionB"
+                      checked={selectedAnswers.includes('optionB')}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label={
+                    <TextField
+                      id="optionB"
+                      label="Option B"
+                      fullWidth
+                      value={formData.optionB}
+                      onChange={handleChange}
+                      margin="normal"
+                    />
+                  }
                 />
               </Grid>
             </Grid>
             <Grid container alignItems="center">
               <Grid item>
-                <Radio
-                  value="optionD"
-                  checked={selectedAnswer === 'optionD'}
-                  onChange={handleRadioChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  id="optionD"
-                  label="Option D"
-                  fullWidth
-                  value={formData.optionD}
-                  onChange={handleChange}
-                  margin="normal"
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="optionC"
+                      checked={selectedAnswers.includes('optionC')}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label={
+                    <TextField
+                      id="optionC"
+                      label="Option C"
+                      fullWidth
+                      value={formData.optionC}
+                      onChange={handleChange}
+                      margin="normal"
+                    />
+                  }
                 />
               </Grid>
             </Grid>
-          </RadioGroup>
+            <Grid container alignItems="center">
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="optionD"
+                      checked={selectedAnswers.includes('optionD')}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label={
+                    <TextField
+                      id="optionD"
+                      label="Option D"
+                      fullWidth
+                      value={formData.optionD}
+                      onChange={handleChange}
+                      margin="normal"
+                    />
+                  }
+                />
+              </Grid>
+            </Grid>
+          </FormGroup>
         </FormControl>
+        
         <Button
           variant="contained"
           color="primary"

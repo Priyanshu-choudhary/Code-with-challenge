@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import React, { useContext } from 'react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import logo from "/Mlogo.jpg";
+import logo from "/logo2.png";
 import award from "/award.png";
 import { UserContext } from '../Context/UserContext';
 import "./css.css"
@@ -123,18 +123,19 @@ function Dashboard() {
                 <Disclosure as="nav" className="bg-gray-800">
                     {({ open }) => (
                         <>
-                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-2">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
                                             <a href="/">
                                                 <img
-                                                    className="h-8 w-8"
+                                                   width={60}
+                                                   height={70}
                                                     src={logo}
-                                                    alt="Your name"
+                                                    alt="CFC"
                                                 />
                                             </a>
-                                            <p style={{ color: "white" }}>CFC </p>
+                                           
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">

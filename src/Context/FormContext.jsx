@@ -15,9 +15,8 @@ export const FormProvider = ({ children }) => {
     tags: [],
     testcases: {},
     permission: '',
-    code: '',
-    templateCode: '', // New field for template code
-    videoUrl: '', // New field for video URL
+    codeTemplates: {}, // Object to store code templates for different languages
+    selectedLanguage: 'java', // Default selected language
   });
 
   const updateFormData = (newData) => {

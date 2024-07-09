@@ -15,6 +15,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './markdownCSS.css';
 import Test from './test';
+import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
+
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -31,7 +33,7 @@ const LeetCodeClone = () => {
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
   const location = useLocation();
-  const { language,totalQuestions, title, description, progress } = location.state || {};
+  const { language, totalQuestions, title, description, progress } = location.state || {};
   const PageContainer = styled.div`
     background-color: ${bg};
     height: 100vh;
@@ -41,7 +43,7 @@ const LeetCodeClone = () => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    console.log("language>>>>>>"+language);
+    console.log("language>>>>>>" + language);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
 
@@ -67,7 +69,7 @@ const LeetCodeClone = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        
+
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
@@ -102,7 +104,7 @@ const LeetCodeClone = () => {
     try {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
       const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
-        
+
       });
 
       if (response.ok) {
@@ -153,7 +155,7 @@ const LeetCodeClone = () => {
         navHistory,
         currentPage,
         CourseDescription: description,
-        totalProblems: problems.length ,// Pass the total number of problems
+        totalProblems: problems.length,// Pass the total number of problems
         language
       }
     });
@@ -195,13 +197,59 @@ const LeetCodeClone = () => {
     <PageContainer>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} />
+        {/* <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} /> */}
         {user ? (
           <div className="leetcode-clone-container">
-            <div className="content" style={{ background: dark }}>
+            <div className="content" >
+              <div className='Description' style={{background:dark,padding:20,borderRadius:20,marginBottom:30}}>
               <div className='Profileheading' style={{ color: ibg }}>
                 {title || 'Java Questions'}
               </div>
+
+
+
+              {/* <div className="toggle-container">
+                <div style={{ display: 'flex', gap: '50px', color: ibg }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleToggleView('stats')}
+                  >
+                    Show Specs
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleToggleView('tags')}
+                  >
+                    Search by Tags
+                  </Button>
+                </div>
+                {view === 'stats' ? (
+                  <div className="stats-container" style={{ background: dark, color: ibg }}>
+                    {progress && <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
+                      <LinearProgress thickness={4} variant="determinate" value={(progress / totalQuestions) * 100} />
+                    </p>}
+                    {/* <p> {description} </p> */}
+              {/*
+                  </div>
+                ) : (
+                  <div className="tags-container" style={{ background: dark, color: ibg }}>
+                    <Tags onTagsChange={handleTagsChange} />
+                  </div>
+                )}
+              </div> */}
+              <hr />
+              <br />
+              <br />
+              <HtmlRenderer htmlContent={description} />
+              </div>
+
+              <div className='Description' style={{background:dark,padding:20,borderRadius:20,marginBottom:30}}>
+                <p  className='Profileheading' style={{ color: ibg }}>Questions:</p>
+                <hr />
+                <br />
+
               {loading ? (
                 <>
                   {problems.length > 0 ? (
@@ -262,7 +310,7 @@ const LeetCodeClone = () => {
                         </div>
                       ))}
                     </div>
-                  ) : <div style={{position:"fixed",top:"50%",left:"30%",transform: "translate(-50%, -50%)", textAlign: "center"  }}><CircularProgress /></div>}
+                  ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
                 </>
               ) : responseOk ? (
                 <div className="problem-list" style={{ color: ibg }}>
@@ -326,36 +374,7 @@ const LeetCodeClone = () => {
                 <p>Failed to load problems. Please try again later.</p>
               )}
             </div>
-            <div className="toggle-container">
-              <div style={{ display: 'flex', gap: '50px', color: ibg }}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleToggleView('stats')}
-                >
-                  Show Specs
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleToggleView('tags')}
-                >
-                  Search by Tags
-                </Button>
-              </div>
-              {view === 'stats' ? (
-                <div className="stats-container" style={{ background: dark, color: ibg }}>
-                  {progress && <p style={{ fontSize: "18px", fontWeight: "bolder" }}>In progress: {((progress / totalQuestions) * 100).toFixed(2)}%
-                    <LinearProgress thickness={4} variant="determinate" value={(progress / totalQuestions) * 100} />
-                  </p>}
-                  <Test description={description} />
-                </div>
-              ) : (
-                <div className="tags-container" style={{ background: dark, color: ibg }}>
-                  <Tags onTagsChange={handleTagsChange} />
-                </div>
-              )}
-            </div>
+</div>
           </div>
         ) : <PleaseLogin />}
       </div>

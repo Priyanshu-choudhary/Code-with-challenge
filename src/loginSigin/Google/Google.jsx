@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import signUp from '../SignUpApiCreateUser';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
+import login from '../NewForm/LoginApi';
 
 const CLIENT_ID = '439620692192-uvhfnu1pvafjoqidmqec05bdetk74j9r.apps.googleusercontent.com';
 
@@ -40,10 +41,10 @@ function GoogleAuth() {
       if (response.ok) {
         setMessage('Registration successful! Redirecting to login...');
        
-        login(userObject);
+        trylogin(userObject);
       } else if (response.status === 409) {
         setMessage('User already exists. Please choose a different username.');
-        login(userObject);
+        trylogin(userObject);
       } else {
         console.error('Error registering:', response.statusText);
         setMessage('An error occurred during registration. Please try again.');
@@ -55,7 +56,7 @@ function GoogleAuth() {
   };
 
 
-  const login =async(userObject)=>{
+  const trylogin =async(userObject)=>{
     try {
       const userRole = await login(userObject.name, key); 
     

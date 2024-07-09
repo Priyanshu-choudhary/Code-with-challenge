@@ -86,10 +86,10 @@ export default function CourseForm({ uploadUrl }) {
       language: selectedLanguages,
     };
 
-    console.log(postData);
+    // console.log(postData);
     try {
       const response = await axios.post(
-        'https://hytechlabs.online:9090/Course',
+        'https://localhost:9090/Course',
         postData,
         {
           headers: {

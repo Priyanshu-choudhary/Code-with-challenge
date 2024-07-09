@@ -157,7 +157,7 @@ function LearningPage() {
           <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Basic
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          {officialCourses[0] && <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {officialCourses.map((course, index) => {
               if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
                 return (
@@ -180,7 +180,7 @@ function LearningPage() {
               }
             })}
             {!officialCourses[0] && <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
-          </div>
+          </div>}
         </div>
       </div>
     </PageContainer>

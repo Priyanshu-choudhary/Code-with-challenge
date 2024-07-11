@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Dashboard } from '@mui/icons-material';
 
@@ -6,8 +6,9 @@ export default function Tinymce({ setDescription, initialValue }) {
     const editorRef = useRef(null);
 
     const logContent = (content) => {
-        // console.log(content);
-        setDescription(content);
+        if (editorRef.current) {
+            setDescription(content);
+        }
     };
 
     return (
@@ -15,7 +16,7 @@ export default function Tinymce({ setDescription, initialValue }) {
             <Dashboard />
             <Editor
                 apiKey='b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2'
-                onInit={(_evt, editor) => editorRef.current = editor}
+                onInit={(_evt, editor) => (editorRef.current = editor)}
                 initialValue={initialValue ? initialValue : "<p>Write your Description here.</p>"}
                 init={{
                     height: 500,

@@ -119,11 +119,12 @@ const MyEditor = forwardRef(
         setiSubmit(true);
         spin(true);
 
-        const output = await JDoodleExample(code, language, input, testcase);
+        const output = await JDoodleExample(code, language, input);
         setiSubmit(false);
         spin(false);
         setOutput(output);
-        if (output === answer) {
+        // console.log("asn="+answer);
+        if (output == answer) {
           setShowConfetti(true);
           setTimeout(() => {
             setShowConfetti(false);
@@ -236,7 +237,7 @@ const MyEditor = forwardRef(
 
     const checkAnswer = useCallback(() => {
       let allPass = false;
-      if (output.output === answer) {
+      if (output.output == answer) {
         allPass = true;
         setbgColor('lightgreen');
       } else {

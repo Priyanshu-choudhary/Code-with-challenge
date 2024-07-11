@@ -1,17 +1,18 @@
 import axios from 'axios';
 
-const JDoodleExample = async (code, language, input, testCases) => {
+const JDoodleExample = async (code, language, input) => {
+    console.log("code call JDoodleExample component");
     try {
-        console.log("Test Cases:", testCases);
-        let apiUrl = testCases && Object.keys(testCases).length > 0
-            ? "https://hytechlabs.online:9090/code/execute"
-            : "https://hytechlabs.online:9090/code/execute";
+    
+       console.log("script"+code);
+       console.log("language"+language);
+       console.log("input"+JSON.stringify(input));
 
-        const response = await axios.post(apiUrl, {
+        const response = await axios.post("https://hytechlabs.online:9090/code/execute", {
             script: code,
             language: language,
             stdin: input,
-            // testCases: testCases,
+           
         }, {
             headers: {
                 'Content-Type': 'application/json'

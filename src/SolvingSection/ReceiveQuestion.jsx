@@ -35,7 +35,7 @@ function QuestionApi() {
   const { language, CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
-  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', testcase = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
+  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
   const [themes, setthemes] = useState("vs-dark");
   const [selectedOption, setSelectedOption] = useState('');
   const [flag, setflag] = useState("true");
@@ -426,7 +426,8 @@ function QuestionApi() {
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
                 :
                 <>
-                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.solution} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty}  />
+                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty}  />
+                
                 </>
 
               }

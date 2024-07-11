@@ -26,8 +26,8 @@ const useCreateCourse = () => {
       const response = await fetch('https://hytechlabs.online:9090/Course', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-         
+          'Content-Type': 'application/json',   
+         'Authorization': basicAuth,
         },
         body: JSON.stringify(newCourse)
       });

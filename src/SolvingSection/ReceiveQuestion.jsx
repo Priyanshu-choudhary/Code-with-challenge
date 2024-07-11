@@ -114,7 +114,7 @@ function QuestionApi() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     }, 250); // 1 second delay
-    console.log("problem>>>>" + JSON.stringify(problem));
+   
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []); // Empty dependency array ensures this runs only once on mount
 
@@ -177,7 +177,8 @@ function QuestionApi() {
 
   const checkAnswer = async () => {
     setLoading(true);
-    if (selectedOption === answer) {
+    console.log("answer"+answer);
+    if (selectedOption == answer) {
       try {
         const progress = 0; // Example progress value, replace with actual logic
         const completeQuestions = [problem.id]; // Initialize with the current problem ID

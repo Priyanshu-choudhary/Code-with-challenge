@@ -22,7 +22,7 @@ import useCreateCourse from '../learnPath/CourseCreateApi';
 const MyEditor = forwardRef(
   (
     {
-      CourseLanguage, 
+      CourseLanguage,
       spin,
       input,
       saveToDatabase,
@@ -31,7 +31,7 @@ const MyEditor = forwardRef(
       title,
       description,
       difficulty,
-      Example, 
+      Example,
       courseTitle = '',
     },
     ref
@@ -59,14 +59,14 @@ const MyEditor = forwardRef(
     } = useContext(UserContext);
     const [bgColor, setbgColor] = useState(light);
     const createCourse = useCreateCourse(); // Call the custom hook
-    
+
     useEffect(() => {
       setLanguage(CourseLanguage);
-  //  console.log(problem);
+      //  console.log(problem);
       setboilerCode(problem.codeTemplates[CourseLanguage].boilerCode); // "c++ cc"
       settemplateCode(problem.codeTemplates[CourseLanguage].templateCode); // "c++ bc"
 
-  }, [CourseLanguage,problem.codeTemplates]);
+    }, [CourseLanguage, problem.codeTemplates]);
 
 
     const handleEditorDidMount = (editor, monaco) => {
@@ -130,7 +130,7 @@ const MyEditor = forwardRef(
           }, 4000);
         }
       }
-    }, [answer,  courseTitle, language]);
+    }, [answer, courseTitle, language]);
 
     // Expose getCode to parent component using useImperativeHandle
     useImperativeHandle(ref, () => ({
@@ -278,7 +278,7 @@ const MyEditor = forwardRef(
             defaultValue={templateCode}
             onMount={handleEditorDidMount}
             options={options}
-           
+
           />
           <div>
             {testCaseGroups.map((testCase, index) => (
@@ -336,9 +336,11 @@ const MyEditor = forwardRef(
                 borderRadius: '5px',
               }}
             >
-              {output.output}
+              {typeof output.output === 'string' ? output.output : JSON.stringify(output.output, null, 2)}
             </pre>
           )}
+
+
           {isCorrect && (
             <div className='confetti-container'>
               <div className='confetti'>

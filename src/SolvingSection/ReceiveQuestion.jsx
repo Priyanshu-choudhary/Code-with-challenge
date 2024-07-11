@@ -387,7 +387,8 @@ function QuestionApi() {
                       Input Format:
                     </Grid>
                     <Grid xs={16}>
-                      <pre style={{ background: dark }}>{problem.solution}</pre>
+                      {/* <pre style={{ background: dark }}>{problem.solution}</pre> */}
+                      {typeof output.output === 'string' ? output.output : JSON.stringify(problem.solution, null, 2)}
                     </Grid>
                   </>}
                   {problem.constrain && <Grid className='subtitle' xs={15}><hr />

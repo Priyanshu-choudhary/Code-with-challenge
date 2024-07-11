@@ -58,11 +58,11 @@ const FinalSend = ({ step, uploadUrl }) => {
             );
             console.log('Post created:', response.data);
             setISubmit(false);
-            alert('Question Uploaded To ' + Url);
+            alert('Question Uploaded To ' + URL);
         } catch (error) {
             console.error('Error creating post:', error);
             setISubmit(false);
-            alert('Failed to Upload To ' + Url);
+            alert('Failed to Upload To ' + URL);
         } finally {
             setISubmit(false);
         }

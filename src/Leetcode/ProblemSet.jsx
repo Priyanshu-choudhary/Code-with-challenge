@@ -75,41 +75,41 @@ const LeetCodeClone = () => {
   const fetchProblems = async (selectedTags = []) => {
     let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/Java%20Basics/username/OfficialCources`;
     setLoading(true); // Start loading indicator
-
+  
     try {
       let url = API_URL;
       if (selectedTags.length > 0) {
         const tagsQuery = selectedTags.join(',');
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
-
+  
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
-
+  
       const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-      // console.log(title);
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-
+  
       if (response.status === 204) {
         setProblems([]);
       } else if (response.status === 304) {
-        setProblems(cachedData.problems);
+        const sortedProblems = cachedData.problems.sort((a, b) => a.sequence - b.sequence);
+        setProblems(sortedProblems);
         setResponseOk(true);
       } else if (response.ok) {
         const data = await response.json();
-        setProblems(data);
+        const sortedProblems = data.sort((a, b) => a.sequence - b.sequence);
+        setProblems(sortedProblems);
         setResponseOk(true);
-
+  
         const newLastModified = response.headers.get('Last-Modified');
         localStorage.setItem('problemsData', JSON.stringify({
-          problems: data,
+          problems: sortedProblems,
           lastModified: newLastModified
         }));
       } else {
@@ -122,7 +122,7 @@ const LeetCodeClone = () => {
       setLoading(false);
     }
   };
-
+  
   const fetchUserData = async () => {
     try {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);

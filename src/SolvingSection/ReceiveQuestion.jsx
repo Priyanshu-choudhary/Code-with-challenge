@@ -388,8 +388,8 @@ function QuestionApi() {
                       Input Format:
                     </Grid>
                     <Grid xs={16}>
-                      {/* <pre style={{ background: dark }}>{problem.solution}</pre> */}
-                      {typeof problem.solution === 'string' ? problem.solution : JSON.stringify(problem.solution, null, 2)}
+                      <pre style={{ background: dark }}>{problem.input}</pre>
+                      {/* {typeof problem.solution === 'string' ? problem.solution : JSON.stringify(problem.solution, null, 2)} */}
                     </Grid>
                   </>}
                   {problem.constrain && <Grid className='subtitle' xs={15}><hr />

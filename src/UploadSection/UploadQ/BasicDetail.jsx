@@ -1,11 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import './EditorComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FormContext } from '../../Context/FormContext';
-import Tinymce from '../../TinyMCE/TinyMCE'; // Import Tinymce component
+import Tinymce from '../../TinyMCE/TinyMCE';
+import Chip from '@mui/material/Chip'; // Import Chip component
 
 const BasicDetail = ({ step, uploadUrl }) => {
   const { formData, updateFormData } = useContext(FormContext);
+  const [newAnswer, setNewAnswer] = useState('');
+
+  const handleAddAnswer = () => {
+    if (newAnswer.trim() !== '') {
+      updateFormData({
+        answer: [...(formData.answer || []), newAnswer.trim()]
+      });
+      setNewAnswer('');
+    }
+  };
+
+  const handleDeleteAnswer = (answerToDelete) => {
+    updateFormData({
+      answer: formData.answer.filter(answer => answer !== answerToDelete)
+    });
+  };
 
   const handleChange = (e) => {
     updateFormData({ [e.target.name]: e.target.value });
@@ -14,6 +31,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
   const setDescription = (content) => {
     updateFormData({ description: content });
   };
+
   return (
     <>
       <div className="editor-container">
@@ -31,7 +49,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>select Sequence no.</h2>
+            <h2>Select Sequence No.</h2>
             <input
               type="text"
               name="sequence"
@@ -44,7 +62,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
 
           <div className="editor">
             <h2>Description</h2>
-            <Tinymce setDescription={setDescription} /> {/* Replace TextField with Tinymce */}
+            <Tinymce setDescription={setDescription} />
           </div>
 
           <div className="editor">
@@ -53,9 +71,30 @@ const BasicDetail = ({ step, uploadUrl }) => {
               name="input"
               value={formData.input}
               onChange={handleChange}
-              placeholder="Start writing your Input format......."
+              placeholder="Start writing your input format..."
               className="editor-textarea"
             />
+          </div>
+
+          <div className="editor">
+            <h2>Add Answers</h2>
+            <textarea
+              id="newAnswer"
+              value={newAnswer}
+              onChange={(e) => setNewAnswer(e.target.value)}
+              placeholder="Add an answer..."
+              className="editor-textarea"
+            />
+            <button onClick={handleAddAnswer} className="editor-button">Add Answer</button>
+            <div className="editor-answers">
+              {formData.answer && formData.answer.map((answer, index) => (
+                <Chip
+                  key={index}
+                  label={answer}
+                  onDelete={() => handleDeleteAnswer(answer)}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="editor">
@@ -64,7 +103,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
               name="example"
               value={formData.example}
               onChange={handleChange}
-              placeholder="Give Example here..."
+              placeholder="Give example here..."
               className="editor-textarea"
             />
           </div>

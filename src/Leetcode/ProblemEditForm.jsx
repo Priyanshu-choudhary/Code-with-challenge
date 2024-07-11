@@ -226,6 +226,7 @@ const ProblemEditForm = () => {
                   key={key}
                   id={key}
                   fullWidth
+                  multiline
                   label={key.charAt(0).toUpperCase() + key.slice(1)}
                   variant="outlined"
                   value={problemDetails[key]}

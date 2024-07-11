@@ -87,7 +87,7 @@ const LeetCodeClone = () => {
       const lastModified = cachedData.lastModified || null;
 
       const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-      console.log(title);
+      // console.log(title);
       const response = await fetch(url, {
         method: 'GET',
         headers: {

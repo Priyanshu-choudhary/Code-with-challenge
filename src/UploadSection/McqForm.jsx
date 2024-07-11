@@ -18,6 +18,7 @@ import Tinymce from '../TinyMCE/TinyMCE';
 export default function McqForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
     title: '',
+    sequence:'',
     description: '',
     example: '',
     optionA: '',
@@ -40,7 +41,7 @@ export default function McqForm({ uploadUrl }) {
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    setSelectedAnswers((prevSelected) => 
+    setSelectedAnswers((prevSelected) =>
       checked ? [...prevSelected, value] : prevSelected.filter((answer) => answer !== value)
     );
   };
@@ -60,7 +61,7 @@ export default function McqForm({ uploadUrl }) {
         `https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
         postData,
         {
-        
+
         }
       );
       setAlert({ show: true, message: `Question uploaded successfully! to ${uploadUrl}`, severity: 'success' });
@@ -77,15 +78,15 @@ export default function McqForm({ uploadUrl }) {
       description: content,
     }));
   };
-  
+
 
   return (
     <>
-    
+
       <Dashboard />
-      
+
       <Box className="mcq-form-container">
-        
+
         {alert.show && <Alert severity={alert.severity}>{alert.message}</Alert>}
         <TextField
           id="title"
@@ -95,7 +96,16 @@ export default function McqForm({ uploadUrl }) {
           onChange={handleChange}
           margin="normal"
         />
-        
+
+        <TextField
+          id="sequence"
+          label="sequence"
+          fullWidth
+          value={formData.sequence}
+          onChange={handleChange}
+          margin="normal"
+        />
+
         <p style={{ marginTop: 20, marginBottom: 10 }}>Description</p>
         <Tinymce setDescription={setDescription} /> {/* Replace TextField with Tinymce */}
 
@@ -206,7 +216,7 @@ export default function McqForm({ uploadUrl }) {
             </Grid>
           </FormGroup>
         </FormControl>
-        
+
         <Button
           variant="contained"
           color="primary"

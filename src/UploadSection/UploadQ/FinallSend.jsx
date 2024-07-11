@@ -39,11 +39,10 @@ const FinalSend = ({ step, uploadUrl }) => {
     
     const handleSubmit = async (event) => {
         setISubmit(true);
-        console.log("++++++++"+JSON.stringify(formData));
+        console.log(JSON.stringify(formData));
         event.preventDefault();
         try {
-            console.log("-----------"+URL);
-            console.log("-----------"+newUrl);
+           
             const response = await axios.post(
                 newUrl,
                 {
@@ -59,11 +58,11 @@ const FinalSend = ({ step, uploadUrl }) => {
             );
             console.log('Post created:', response.data);
             setISubmit(false);
-            alert('Question Uploaded To ' + uploadUrl);
+            alert('Question Uploaded To ' + Url);
         } catch (error) {
             console.error('Error creating post:', error);
             setISubmit(false);
-            alert('Failed to Upload To ' + uploadUrl);
+            alert('Failed to Upload To ' + Url);
         } finally {
             setISubmit(false);
         }

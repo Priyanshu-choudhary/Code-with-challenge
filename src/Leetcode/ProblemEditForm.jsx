@@ -15,6 +15,7 @@ const ProblemEditForm = () => {
   
   const [problemDetails, setProblemDetails] = useState({
     title: '',
+    sequence:'',
     description: '',
     example: '',
     difficulty: '',

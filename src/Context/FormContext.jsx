@@ -7,13 +7,13 @@ export const FormProvider = ({ children }) => {
     title: '',
     description: '',
     example: '',
-    answer: '',
+    answer: [],
     difficulty: '',
     constrain: '',
+    sequence:'',
     time: '',
-    TC: '',
-    tags: [],
-    testcases: {},
+    input:'',
+   
     permission: '',
     codeTemplates: {}, // Object to store code templates for different languages
     selectedLanguage: 'java', // Default selected language

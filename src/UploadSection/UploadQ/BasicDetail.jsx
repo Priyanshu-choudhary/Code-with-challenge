@@ -31,6 +31,18 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
+            <h2>select Sequence no.</h2>
+            <input
+              type="text"
+              name="sequence"
+              value={formData.sequence}
+              placeholder="Sequence no."
+              className="editor-input"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="editor">
             <h2>Description</h2>
             <Tinymce setDescription={setDescription} /> {/* Replace TextField with Tinymce */}
           </div>
@@ -38,8 +50,8 @@ const BasicDetail = ({ step, uploadUrl }) => {
           <div className="editor">
             <h2>Add Input Format</h2>
             <textarea
-              name="solution"
-              value={formData.solution}
+              name="input"
+              value={formData.input}
               onChange={handleChange}
               placeholder="Start writing your Input format......."
               className="editor-textarea"

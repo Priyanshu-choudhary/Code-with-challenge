@@ -1,4 +1,11 @@
 /* markdown.css */
+
+
+.float-right {
+  float: right;
+
+}
+
 .markdown-body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -53,4 +60,8 @@
     border-radius: 4px;
 
   }
-  
+  .rainbow-border {
+    /* Additional styling for the div container */
+    width: 300px; /* Adjust size as needed */
+    margin: 20px auto;
+  }

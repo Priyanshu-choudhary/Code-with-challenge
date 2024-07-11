@@ -2,18 +2,13 @@ import { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Dashboard } from '@mui/icons-material';
 
-export default function Tinymce({ setDescription }) {
+export default function Tinymce({ setDescription, initialValue }) {
     const editorRef = useRef(null);
 
-    useEffect(() => {
-        if (editorRef.current) {
-            const intervalId = setInterval(() => {
-                setDescription(editorRef.current.getContent());
-            }, 1000);
-
-            return () => clearInterval(intervalId);
-        }
-    }, [setDescription]);
+    const logContent = (content) => {
+        // console.log(content);
+        setDescription(content);
+    };
 
     return (
         <>
@@ -21,7 +16,7 @@ export default function Tinymce({ setDescription }) {
             <Editor
                 apiKey='b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2'
                 onInit={(_evt, editor) => editorRef.current = editor}
-                initialValue="<p>Write your Description here.</p>"
+                initialValue={initialValue ? initialValue : "<p>Write your Description here.</p>"}
                 init={{
                     height: 500,
                     menubar: true,
@@ -71,6 +66,7 @@ export default function Tinymce({ setDescription }) {
                         }
                     }
                 }}
+                onEditorChange={logContent}
             />
         </>
     );

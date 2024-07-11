@@ -95,7 +95,7 @@ function LearningPage() {
   }, [user, password, updateMaxCardWidth]);
 
   const handleCardClick = (course) => {
-    navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions } });
+    navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions,courseId:course.id,course } });
   };
 
   const handleDelete = async (courseId, courseName) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
@@ -16,7 +16,9 @@ import remarkGfm from 'remark-gfm';
 import './markdownCSS.css';
 import Test from './test';
 import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import CreateIcon from '@mui/icons-material/Create';
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -33,17 +35,38 @@ const LeetCodeClone = () => {
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
   const location = useLocation();
-  const { language, totalQuestions, title, description, progress } = location.state || {};
+  const { language, totalQuestions, title, description, progress,courseId ,course} = location.state || {};
   const PageContainer = styled.div`
     background-color: ${bg};
     height: 100vh;
   `;
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [contentHeight, setContentHeight] = useState(400);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const fullHeight = contentRef.current.scrollHeight;
+      setContentHeight(fullHeight * 0.23); // Set initial height to 70% of full content
+    }
+    // console.log("Course "+JSON.stringify(course));
+  }, []);
+  const scrollToRef = useRef(null);
+
+  // Step 3: Define the scroll functionality in the event handler
+  const handleClick = () => {
+    // Scroll to the element
+    scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+  const toggleReadMore = () => {
+    setIsExpanded(!isExpanded);
+  };
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    console.log("language>>>>>>" + language);
+    // console.log("language>>>>>>" + language);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
 
@@ -116,7 +139,7 @@ const LeetCodeClone = () => {
         } else {
           setCompleteQuestions([]);
         }
-        console.log(">>>>>>>>>>>>>>", completeQuestions);
+        // console.log(">>>>>>>>>>>>>>", completeQuestions);
       } else {
         console.error('Failed to fetch user data.');
       }
@@ -193,6 +216,8 @@ const LeetCodeClone = () => {
     navigate(`/edit/${problemId}`);
   };
 
+
+
   return (
     <PageContainer>
       <div style={{ backgroundColor: bg, color: ibg }}>
@@ -201,13 +226,32 @@ const LeetCodeClone = () => {
         {user ? (
           <div className="leetcode-clone-container">
             <div className="content" >
-              <div className='Description' style={{background:dark,padding:20,borderRadius:20,marginBottom:30}}>
-              <div className='Profileheading' style={{ color: ibg }}>
-                {title || 'Java Questions'}
+              <div className='description '>
+                <div
+                  ref={contentRef}
+                  style={{
+                    height: isExpanded ? 'auto' : `${contentHeight}px`,
+                    overflow: 'hidden',
+                    transition: 'height 0.3s ease',
+                    color:ibg
+
+                  }}
+                  onClick={handleClick}
+                >
+                  <HtmlRenderer htmlContent={description}  />
+                </div>
+                <div style={{ display: "flex",justifyContent:"center",alignItems:"center", color: "skyblue"}}>
+                  <button style={{ borderWidth: 0, borderRadius: 5 }}  onClick={toggleReadMore}>
+                    {isExpanded ? '' : 'Read More'}
+                    {isExpanded ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
+                    
+                  </button>
+                </div>
+                <div  className="button-86" style={{position:"absolute",right:10,top:90,color:"black"}} >
+                  <CreateIcon  fontSize='large'  onClick={()=>{ navigate('/CourseEdit', { state: { ...course,courseDetail:course } });}}/>
+                </div>
+
               </div>
-
-
-
               {/* <div className="toggle-container">
                 <div style={{ display: 'flex', gap: '50px', color: ibg }}>
                   <Button
@@ -239,142 +283,142 @@ const LeetCodeClone = () => {
                   </div>
                 )}
               </div> */}
-              <hr />
-              <br />
-              <br />
-              <HtmlRenderer htmlContent={description} />
-              </div>
 
-              <div className='Description' style={{background:dark,padding:20,borderRadius:20,marginBottom:30}}>
-                <p  className='Profileheading' style={{ color: ibg }}>Questions:</p>
+              <br />
+              <br />
+              <br />
+
+
+              <div ref={scrollToRef} className='Description' style={{ marginLeft:20,marginRight:20,background: dark, padding: 20, borderRadius: 20, marginBottom: 30 }}>
+                <p className='Profileheading' style={{ color: ibg }}>Questions:</p>
                 <hr />
                 <br />
 
-              {loading ? (
-                <>
-                  {problems.length > 0 ? (
-                    <div className="problem-list" style={{ color: ibg }}>
-                      {problems.map((problem, index) => (
-                        <div
-                          key={problem.id}
-                          className="problem"
-                          onClick={() => handleProblemClick(problem, index)}
-                          style={{
-                            backgroundColor: hoverIndex === index ? bc : light,
-                            transition: 'background-color 0.3s',
-                            cursor: 'pointer',
-                            color: ibg,
-                            borderRadius: "5px",
-                            position: 'relative'
-                          }}
-                          onMouseEnter={() => setHoverIndex(index)}
-                          onMouseLeave={() => setHoverIndex(null)}
-                        >
-                          <div className="problem-title">
-                            {index + 1}. {problem.title}
-                            {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green' }} />} {/* Show done icon for completed questions */}
-                          </div>
-                          <div className="problem-details">
-                            {problem.type === "MCQ" ? (
-                              <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>
-                            ) : (
-                              <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                {loading ? (
+                  <div >
+                    {problems.length > 0 ? (
+                      <div className="problem-list" style={{ color: ibg }}>
+                        {problems.map((problem, index) => (
+                          <div
+                            key={problem.id}
+                            className="problem"
+                            onClick={() => handleProblemClick(problem, index)}
+                            style={{
+                              backgroundColor: hoverIndex === index ? bc : light,
+                              transition: 'background-color 0.3s',
+                              cursor: 'pointer',
+                              color: ibg,
+                              borderRadius: "5px",
+                              position: 'relative'
+                            }}
+                            onMouseEnter={() => setHoverIndex(index)}
+                            onMouseLeave={() => setHoverIndex(null)}
+                          >
+                            <div className="problem-title">
+                              {index + 1}. {problem.title}
+                              {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green' }} />} {/* Show done icon for completed questions */}
+                            </div>
+                            <div className="problem-details">
+                              {problem.type === "MCQ" ? (
+                                <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>
+                              ) : (
+                                <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                              )}
+                            </div>
+                            {role === "ADMIN" && (
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent navigating to the problem detail page
+                                  handleDeleteProblem(problem.id);
+                                }}
+                                size='small'
+                              >
+                                Delete
+                              </Button>
+                            )}
+                            {role === "ADMIN" && (
+                              <Button
+                                style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent navigating to the problem detail page
+                                  handleEditProblem(problem.id);
+                                }}
+                                size='small'
+                              >
+                                Edit
+                              </Button>
                             )}
                           </div>
-                          {role === "ADMIN" && (
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent navigating to the problem detail page
-                                handleDeleteProblem(problem.id);
-                              }}
-                              size='small'
-                            >
-                              Delete
-                            </Button>
-                          )}
-                          {role === "ADMIN" && (
-                            <Button
-                              style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent navigating to the problem detail page
-                                handleEditProblem(problem.id);
-                              }}
-                              size='small'
-                            >
-                              Edit
-                            </Button>
+                        ))}
+                      </div>
+                    ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
+                  </div>
+                ) : responseOk ? (
+                  <div className="problem-list" style={{ color: ibg }}>
+                    {problems.length > 0 ? problems.map((problem, index) => (
+                      <div
+                        key={problem.id}
+                        className="problem"
+                        onClick={() => handleProblemClick(problem, index)}
+                        style={{
+                          backgroundColor: hoverIndex === index ? bc : light,
+                          transition: 'background-color 0.3s',
+                          cursor: 'pointer',
+                          color: ibg,
+                          borderRadius: "5px",
+                          position: 'relative'
+                        }}
+                        onMouseEnter={() => setHoverIndex(index)}
+                        onMouseLeave={() => setHoverIndex(null)}
+                      >
+                        <div className="problem-title">
+                          {index + 1}. {problem.title}
+                          {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green' }} />} {/* Show done icon for completed questions */}
+                        </div>
+                        <div className="problem-details">
+                          {problem.type === "MCQ" ? (
+                            <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "10px 1px,10px,15px", borderColor: "blueviolet" }}>MCQ</p>
+                          ) : (
+                            <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
                           )}
                         </div>
-                      ))}
-                    </div>
-                  ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
-                </>
-              ) : responseOk ? (
-                <div className="problem-list" style={{ color: ibg }}>
-                  {problems.length > 0 ? problems.map((problem, index) => (
-                    <div
-                      key={problem.id}
-                      className="problem"
-                      onClick={() => handleProblemClick(problem, index)}
-                      style={{
-                        backgroundColor: hoverIndex === index ? bc : light,
-                        transition: 'background-color 0.3s',
-                        cursor: 'pointer',
-                        color: ibg,
-                        borderRadius: "5px",
-                        position: 'relative'
-                      }}
-                      onMouseEnter={() => setHoverIndex(index)}
-                      onMouseLeave={() => setHoverIndex(null)}
-                    >
-                      <div className="problem-title">
-                        {index + 1}. {problem.title}
-                        {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green' }} />} {/* Show done icon for completed questions */}
-                      </div>
-                      <div className="problem-details">
-                        {problem.type === "MCQ" ? (
-                          <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "10px 1px,10px,15px", borderColor: "blueviolet" }}>MCQ</p>
-                        ) : (
-                          <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
+                        {role === "ADMIN" && (
+                          <Button
+                            variant="contained"
+                            // color="secondary"
+                            style={{ background: "lightcoral", color: ibg, position: 'absolute', right: '200px' }}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent navigating to the problem detail page
+                              handleDeleteProblem(problem.id);
+                            }}
+                            size='small'
+                          >
+                            Delete
+                          </Button>
+                        )}
+                        {role === "ADMIN" && (
+                          <Button
+                            style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent navigating to the problem detail page
+                              handleEditProblem(problem.id);
+                            }}
+                            size='small'
+                          >
+                            Edit
+                          </Button>
                         )}
                       </div>
-                      {role === "ADMIN" && (
-                        <Button
-                          variant="contained"
-                          // color="secondary"
-                          style={{ background: "lightcoral", color: ibg, position: 'absolute', right: '200px' }}
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent navigating to the problem detail page
-                            handleDeleteProblem(problem.id);
-                          }}
-                          size='small'
-                        >
-                          Delete
-                        </Button>
-                      )}
-                      {role === "ADMIN" && (
-                        <Button
-                          style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent navigating to the problem detail page
-                            handleEditProblem(problem.id);
-                          }}
-                          size='small'
-                        >
-                          Edit
-                        </Button>
-                      )}
-                    </div>
-                  )) : <p>No problems found.</p>}
-                </div>
-              ) : (
-                <p>Failed to load problems. Please try again later.</p>
-              )}
+                    )) : <p>No problems found.</p>}
+                  </div>
+                ) : (
+                  <p>Failed to load problems. Please try again later.</p>
+                )}
+              </div>
             </div>
-</div>
           </div>
         ) : <PleaseLogin />}
       </div>

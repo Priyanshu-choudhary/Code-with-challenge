@@ -68,6 +68,9 @@ const MyEditor = forwardRef(
 
     }, [CourseLanguage, problem.codeTemplates]);
 
+useEffect(() => {
+  setboilerCode(problem.codeTemplates[language].boilerCode);
+}, [language,templateCode,])
 
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;

@@ -383,7 +383,7 @@ function QuestionApi() {
                     </Grid>
                   </>}
 
-                  {problem.solution && <>
+                  {problem.input && <>
                     <Grid className='subtitle' xs={15}><hr />
                       Input Format:
                     </Grid>

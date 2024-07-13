@@ -41,7 +41,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
     <>
       <div className="editor" style={{ marginTop: '20px' }}>
         <div style={{borderWidth:2,padding:5,borderRadius:10}}>
-          <h2 >Select Language:</h2>
+          <p >Select Language:</p>
           
           <div style={{padding:5}}>
           <select onChange={handleLanguageChange} value={formData.selectedLanguage}>
@@ -56,7 +56,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
         </div>
         <br />
         <div style={{borderWidth:2,padding:5,borderRadius:10}}>
-        <h2>Write your checker code:</h2>
+        <p>Write your checker code:</p>
         <div style={{ height: '250px', marginBottom: '20px' }}>
           <Editor
             value={formData.codeTemplates[formData.selectedLanguage]?.boilerCode || ''}
@@ -75,7 +75,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
         </div>
         <br />
         <div style={{borderWidth:2,padding:5,borderRadius:10}}>
-        <h2>Write your Boiler code:</h2>
+        <p>Write your Boiler code:</p>
         <div style={{ height: '250px' }}>
           <Editor
             value={formData.codeTemplates[formData.selectedLanguage]?.templateCode || ''}

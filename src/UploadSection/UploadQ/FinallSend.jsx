@@ -109,7 +109,7 @@ const FinalSend = ({ step, uploadUrl }) => {
                 </div>
                 <div className="editor-content">
                     <div className="editor">
-                        <h2>Constrain:</h2>
+                        <p>Constrain:</p>
                         <textarea
                             name="constrain"
                             value={formData.constrain}
@@ -120,7 +120,7 @@ const FinalSend = ({ step, uploadUrl }) => {
                     </div>
 
                     <div className="editor">
-                        <h2>Time Complexity:</h2>
+                        <p>Time Complexity:</p>
                         <textarea
                             name="TC"
                             value={formData.TC}
@@ -131,7 +131,7 @@ const FinalSend = ({ step, uploadUrl }) => {
                     </div>
 
                     <div className="editor">
-                        <h2>Time to solve:</h2>
+                        <p>Time to solve:</p>
                         <textarea
                             name="time"
                             value={formData.time}

@@ -37,7 +37,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
       <div className="editor-container">
         <div className="editor-content">
           <div className="editor">
-            <h2>Additional Information</h2>
+            <p>Additional Information</p>
             <input
               type="text"
               name="title"
@@ -49,7 +49,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>Select Sequence No.</h2>
+            <p>Select Sequence No.</p>
             <input
               type="text"
               name="sequence"
@@ -61,12 +61,12 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>Description</h2>
+            <p>Description</p>
             <Tinymce setDescription={setDescription} />
           </div>
 
           <div className="editor">
-            <h2>Add Input Format</h2>
+            <p>Add Input Format</p>
             <textarea
               name="input"
               value={formData.input}
@@ -77,7 +77,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>Add Answers</h2>
+            <p>Add Answers</p>
             <textarea
               id="newAnswer"
               value={newAnswer}
@@ -98,7 +98,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>Add Example</h2>
+            <p>Add Example</p>
             <textarea
               name="example"
               value={formData.example}
@@ -109,7 +109,7 @@ const BasicDetail = ({ step, uploadUrl }) => {
           </div>
 
           <div className="editor">
-            <h2>Solution Video URL</h2>
+            <p>Solution Video URL</p>
             <input
               type="text"
               name="videoUrl"

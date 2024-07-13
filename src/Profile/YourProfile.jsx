@@ -131,20 +131,20 @@ const YourProfile = () => {
                 </div>
                 <div style={{ backgroundColor: light, color: ibg }} >
                   <div className="p-4">
-                    <h1><b>Personal info:</b></h1>
+                    <p><b>Personal info:</b></p>
                     Ph: {userData.number} <br />
                     gmail: {userData.email}
                   </div>
                   <div className="p-4">
-                    <h1><b>Collage:</b></h1>
+                    <p><b>Collage:</b></p>
                     {userData.collage} <br />
-                    <h1><b>Branch:</b></h1>
+                    <p><b>Branch:</b></p>
                     {userData.branch}
-                    <h1><b>Year:</b></h1>
+                    <p><b>Year:</b></p>
                     {userData.year}
                   </div>
                   <div className="p-4">
-                    <h1><b>Links:</b></h1>
+                    <p><b>Links:</b></p>
                     Github<br />
                     Instagram <br />
                     Linkdin

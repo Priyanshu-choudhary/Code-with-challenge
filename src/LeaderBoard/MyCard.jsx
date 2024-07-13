@@ -100,7 +100,7 @@ function UserCard({ userId, index }) {
           sx={{ width: 80, height: 80, border: '2px solid #03BFCB' }}
         />
       </div>
-      <h3 style={{ fontSize: "20px", color: "black", fontWeight: "bolder" }}>{user.name}</h3>
+      <h3 style={{  color: "black", fontWeight: "bolder" }}>{user.name}</h3>
       <h6>{user.location}</h6>
       <p>{user.collage}</p>
       <p>{user.city}</p>

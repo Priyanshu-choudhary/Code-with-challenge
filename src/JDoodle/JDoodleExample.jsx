@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 const JDoodleExample = async (code, language, input) => {
-    console.log("code call JDoodleExample component");
+   
     try {
     
-       console.log("script"+code);
-       console.log("language"+language);
-       console.log("input"+JSON.stringify(input));
+      
 
         const response = await axios.post("https://hytechlabs.online:9090/code/execute", {
             script: code,
@@ -18,7 +16,7 @@ const JDoodleExample = async (code, language, input) => {
                 'Content-Type': 'application/json'
             }
         });
-        //  console.log("output>>>>>>"+response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Error executing code:', error);

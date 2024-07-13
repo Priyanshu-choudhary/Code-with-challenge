@@ -62,15 +62,12 @@ const MyEditor = forwardRef(
 
     useEffect(() => {
       setLanguage(CourseLanguage);
-      //  console.log(problem);
-      setboilerCode(problem.codeTemplates[CourseLanguage].boilerCode); // "c++ cc"
-      settemplateCode(problem.codeTemplates[CourseLanguage].templateCode); // "c++ bc"
-
+      settemplateCode(problem.codeTemplates[CourseLanguage].templateCode);
     }, [CourseLanguage, problem.codeTemplates]);
 
-useEffect(() => {
-  setboilerCode(problem.codeTemplates[language].boilerCode);
-}, [language,templateCode,])
+    useEffect(() => {
+      setboilerCode(problem.codeTemplates[language].boilerCode);
+    }, [language, templateCode, problem.codeTemplates]);
 
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;
@@ -115,10 +112,10 @@ useEffect(() => {
       return new File([blob], fileName, { type: 'text/plain' });
     };
 
-    const getCode = useCallback(async () => {
+    const getCode = useCallback(async (currentBoilerCode, currentTemplateCode) => {
       if (editorRef.current) {
         let code = editorRef.current.getValue();
-        code = boilerCode + code;
+        code = currentBoilerCode + code;
         setiSubmit(true);
         spin(true);
 
@@ -126,19 +123,19 @@ useEffect(() => {
         setiSubmit(false);
         spin(false);
         setOutput(output);
-        // console.log("asn="+answer);
-        if (output == answer) {
+
+        if (output === answer) {
           setShowConfetti(true);
           setTimeout(() => {
             setShowConfetti(false);
           }, 4000);
         }
       }
-    }, [answer, courseTitle, language]);
+    }, [answer, courseTitle, language, input, spin]);
 
     // Expose getCode to parent component using useImperativeHandle
     useImperativeHandle(ref, () => ({
-      getCode,
+      getCode: () => getCode(boilerCode, templateCode),
       resetEditorState,
     }));
 
@@ -186,13 +183,11 @@ useEffect(() => {
             .map((line) => line.trim())
             .filter((line) => line);
 
-          // Initialize empty placeholders
           let input = '';
           let expectedOutput = '';
           let output = '';
           let status = '';
 
-          // Process each line to match known patterns or treat as additional output
           lines.forEach((line) => {
             if (line.startsWith('Input:')) {
               input = line.replace('Input: ', '');
@@ -203,17 +198,14 @@ useEffect(() => {
             } else if (line.startsWith('Status:')) {
               status = line.replace('Status: ', '');
             } else {
-              // Handle any other lines here, for example:
               if (output === '') {
-                output = line; // Directly assign if it hasn't been assigned
+                output = line;
               } else {
-                // Append to existing output if needed
                 output += '\n' + line;
               }
             }
           });
 
-          // Return the structured object
           return { testCaseNumber, input, expectedOutput, output, status };
         });
 
@@ -226,11 +218,7 @@ useEffect(() => {
       let allPass = true;
       for (let i = 0; i < testCaseGroups.length; i++) {
         if (testCaseGroups[i].status === 'Pass' || testCaseGroups[i].status == null) {
-          console.log('testcase no ', i, ' status ', testCaseGroups[i].status);
-
-          console.log('condition set to true');
           setisCorrect(true);
-          console.log('condition after setting to true' + isCorrect);
         } else {
           setisCorrect(false);
           break;
@@ -240,7 +228,7 @@ useEffect(() => {
 
     const checkAnswer = useCallback(() => {
       let allPass = false;
-      if (output.output == answer) {
+      if (output.output === answer) {
         allPass = true;
         setbgColor('lightgreen');
       } else {
@@ -248,10 +236,9 @@ useEffect(() => {
       }
 
       setisCorrect(allPass);
-    }, [testCaseGroups]);
-    useEffect(() => {
-      console.log('iscorrect', isCorrect);
+    }, [answer, output.output]);
 
+    useEffect(() => {
       if (answer) {
         checkAnswer();
       } else {
@@ -261,14 +248,7 @@ useEffect(() => {
       if (isCorrect) {
         saveToDatabase(problem);
       }
-    }, [
-      output,
-      isCorrect,
-      checkTestcaseAnswer,
-      checkAnswer,
-      problem,
-      saveToDatabase,
-    ]);
+    }, [output, isCorrect, checkTestcaseAnswer, checkAnswer, problem, saveToDatabase]);
 
     return (
       <>
@@ -282,7 +262,6 @@ useEffect(() => {
             defaultValue={templateCode}
             onMount={handleEditorDidMount}
             options={options}
-
           />
           <div>
             {testCaseGroups.map((testCase, index) => (
@@ -290,8 +269,7 @@ useEffect(() => {
                 key={index}
                 style={{
                   color: 'black',
-                  backgroundColor:
-                    testCase.status === 'Pass' ? 'lightgreen' : 'lightcoral',
+                  backgroundColor: testCase.status === 'Pass' ? 'lightgreen' : 'lightcoral',
                   margin: '10px',
                   padding: '10px',
                   borderRadius: '5px',
@@ -344,7 +322,6 @@ useEffect(() => {
             </pre>
           )}
 
-
           {isCorrect && (
             <div className='confetti-container'>
               <div className='confetti'>
@@ -359,3 +336,4 @@ useEffect(() => {
 );
 
 export default React.memo(MyEditor);
+

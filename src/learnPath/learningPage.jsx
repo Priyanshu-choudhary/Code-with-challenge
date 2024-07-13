@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef, useCallback } from 'react';
+import React, { Fragment,useEffect, useState, useContext, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import ImgMediaCard from './cards';
@@ -42,6 +42,7 @@ function LearningPage() {
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
+        console.log("user"+user);
         const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
           method: 'GET',
         });
@@ -90,9 +91,12 @@ function LearningPage() {
       }
     };
 
-    fetchUserCourses();
     fetchOfficialCourses();
-  }, [user, password, updateMaxCardWidth]);
+    if (user != null) {
+      fetchUserCourses();
+      
+    } 
+  }, []);
 
   const handleCardClick = (course) => {
     navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions,courseId:course.id,course } });
@@ -187,4 +191,4 @@ function LearningPage() {
   );
 }
 
-export default LearningPage;
+export default React.memo(LearningPage);

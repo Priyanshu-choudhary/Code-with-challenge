@@ -73,7 +73,7 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/Java%20Basics/username/OfficialCources`;
+    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://localhost:9090/Posts/Course/Java%20Basics/username/OfficialCources`;
     setLoading(true); // Start loading indicator
   
     try {
@@ -164,7 +164,7 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
-    fetchUserData();
+    // fetchUserData();
     if (title) {
       setNavHistory(`${title}`);
     }

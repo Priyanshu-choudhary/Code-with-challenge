@@ -5,11 +5,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../Context/UserContext';
 
-export default function Mcq({ title, options, onOptionSelect }) {
-  
+export default function Mcq({ title, options, onOptionSelect, reset }) {
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState('');
@@ -20,15 +19,23 @@ export default function Mcq({ title, options, onOptionSelect }) {
     setValue(selectedValue);
     setHelperText(' ');
     setError(false);
-    onOptionSelect(selectedValue);
+    onOptionSelect(value);
   };
-  
+
+  useEffect(() => {
+    if (reset) {
+      setValue('');
+      setHelperText('');
+      setError(false);
+    }
+    // console.log("mcq select  "+value);
+  }, [options]);
 
   return (
     <div style={{ display: "flex" }}>
       <div style={{ backgroundColor: ibg, width: "1px" }}></div>
       <FormControl sx={{ m: 2, color: ibg, width: '100%', overflowY: 'hidden' }} error={error}>
-        <FormLabel id="demo-error-radios" sx={{ color: ibg, fontWeight: 'bolder' }}></FormLabel>
+        {/* <FormLabel id="demo-error-radios" sx={{ color: ibg, fontWeight: 'bolder' }}>{title}</FormLabel> */}
         <RadioGroup
           aria-labelledby="demo-error-radios"
           name="quiz"

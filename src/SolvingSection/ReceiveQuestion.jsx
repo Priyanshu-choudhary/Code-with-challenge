@@ -59,6 +59,7 @@ function QuestionApi() {
   const [btn3BG, set3btnBG] = useState(light);
   const [selectedOption2, setSelectedOption2] = useState(language[0]);
   const [dropdownToggle, setdropdownToggle] = useState(false)
+  const [resetMcq, setResetMcq] = useState(false);
 
   const options = {
     option1: 'ChatGPT',
@@ -66,6 +67,7 @@ function QuestionApi() {
   };
   const handleSelect = (options) => {
     setSelectedOption(options);
+    setResetMcq(true); // Trigger MCQ reset
   };
 
   const toggleTimer = () => {
@@ -223,21 +225,26 @@ function QuestionApi() {
   };
 
   const handleNext = () => {
+    setResetMcq(true);
     if (currentProblemIndex < problems.length - 1) {
       setCurrentProblemIndex(currentProblemIndex + 1);
-
+      setResetMcq(true);
       if (editorRef.current) {
+        setResetMcq(true);
         editorRef.current.resetEditorState();
       }
     }
   };
 
   const handlePrevious = () => {
+    setResetMcq(true);
     if (currentProblemIndex > 0) {
+      setResetMcq(true);
       setCurrentProblemIndex(currentProblemIndex - 1);
       setCurrentProblemIndex(currentProblemIndex - 1);
       if (editorRef.current) {
         editorRef.current.resetEditorState();
+        setResetMcq(true);
       }
     }
   };
@@ -423,7 +430,7 @@ function QuestionApi() {
             /> */}
             <Col sm className="editorsection no-scroll" style={{ height: "80vh", overflowY: "scroll", width: `${100 - dividerPosition}%` }} id="scrollContainer" ref={containerRef}>
               {optionA ?
-                <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} />
+                <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
                 :
                 <>
                   <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty}  />

@@ -71,7 +71,7 @@ function Firstpage() {
           <h2><u>Latest</u></h2>
           <div className="contest-list" ref={scrollContainerRef}>
             {contests.map(contest => (
-              contest.id === '66942c9f8658830984798988' && 
+              contest.id === '669568c5857e730fbb67141c' && 
               <ContestCard key={contest.id} contest={contest}   />
             ))}
           </div>

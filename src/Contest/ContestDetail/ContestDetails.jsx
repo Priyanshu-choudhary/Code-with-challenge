@@ -85,11 +85,11 @@ function ContestDetails() {
     return (
         <div>
             <Dashboard />
-            <img className="banner-image"  src={`/public/${contest.bannerImage}`} alt={contest.nameOfContest} />
+            <img className="banner-image"  src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
             <div className="contest-header">
                 <div className="contest-header-content">
 
-                    <img className="logo" src={`/public/${contest.logo}`} alt="logo" />
+                    <img className="logo" src={`/${contest.logo}`} alt="logo" />
                     <h2>{contest.nameOfContest} | {contest.nameOfOrganization}</h2>
                     
                     <button className='RegisterButton' style={{fontSize:25}}>Register</button>

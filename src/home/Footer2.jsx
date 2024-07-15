@@ -38,7 +38,7 @@ export default function Footer2() {
                 <MDBIcon icon="gem" className="me-3" />
                 Code For Challenge 
               </h6>
-              <img src="/public/logo2.png" alt="codeforchallenge logo" width={200}/>
+              <img src="/logo2.png" alt="codeforchallenge logo" width={200}/>
             </MDBCol>
 
 

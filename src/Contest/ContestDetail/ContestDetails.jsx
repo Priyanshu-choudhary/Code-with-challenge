@@ -43,7 +43,7 @@ function ContestDetails() {
     };
 
     useEffect(() => {
-        axios.get(`https://localhost:9090/Contest/id/${id}`)
+        axios.get(`https://hytechlabs.online:9090/Contest/id/${id}`)
             .then(response => {
                 setContest(response.data);
             })

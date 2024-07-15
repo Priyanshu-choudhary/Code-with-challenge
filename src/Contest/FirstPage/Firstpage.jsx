@@ -30,7 +30,7 @@ function Firstpage() {
   }, [navbar]);
 
   useEffect(() => {
-    axios.get('https://localhost:9090/Contest')
+    axios.get('https://hytechlabs.online:9090/Contest')
       .then(response => {
         setContests(response.data);
       })

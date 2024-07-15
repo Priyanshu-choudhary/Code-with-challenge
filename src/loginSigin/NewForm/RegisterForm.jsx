@@ -69,7 +69,7 @@ const RegisterForm = () => {
       );
 
       // Send email verification request
-      // await account.createVerification('http://localhost:5173/login');
+      
 
 
       console.log('Appwrite registration successful', response);

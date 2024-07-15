@@ -16,7 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 // Dummy user data
 const myuser = {
     name: 'Tom Cook',
@@ -30,6 +30,7 @@ const navigation = [
     { name: 'Learn', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
+    { name: 'contest', href: '/contest', current: false },
     { name: 'Upload', href: '/Upload', current: false },
 
 ]
@@ -170,6 +171,7 @@ function Dashboard() {
                                                 control={<MaterialUISwitch checked={currentthemes} />}
                                                 onChange={handleSwitchChange}
                                             />
+                                            
                                             <img style={{ height: "30px", marginRight: "10px" }} src={award} alt="leaderboard" onClick={() => handleClick()} />
 
                                             <button

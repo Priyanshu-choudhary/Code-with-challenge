@@ -24,6 +24,8 @@ import QueryParamsExample from './loginSigin/NewForm/QuearyParamsExample';
 import LoginGuiNew from './loginSigin/NewForm/LoginGuiNew';
 import Tinymce from './TinyMCE/TinyMCE';
 import CourseEdit from './Leetcode/CourseEdit';
+import Firstpage from './Contest/FirstPage/Firstpage';
+import ContestDetails from './Contest/ContestDetail/ContestDetails';
 
 function App() {
   console.log("app rerender");
@@ -58,6 +60,8 @@ function App() {
             <Route path="/login" element={<LoginGuiNew />} />
             <Route path="/TextEditor" element={<Tinymce />} />
             <Route path="/CourseEdit" element={<CourseEdit />} />
+            <Route path="/contest" element={<Firstpage />} />
+            <Route path="/ContestDetail/:id" element={<ContestDetails />} />
           </Routes>
         </FormProvider>
       </UserProvider>

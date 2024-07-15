@@ -66,7 +66,7 @@ const LeetCodeClone = () => {
     const handleResize = () => {
       setScreenSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    // console.log("language>>>>>>" + language);
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
 

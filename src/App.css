@@ -1,13 +1,13 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0rem;
+  /* text-align: center; */
 }
 
 .logo {
   height: 6em;
-  padding: 1.5em;
+  /* padding: 1.5em; */
   will-change: filter;
   transition: filter 300ms;
 }
@@ -39,4 +39,157 @@
 
 .read-the-docs {
   color: #888;
+}
+/* src/styles.css */
+.contest-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px;
+  
+}
+
+/* src/styles.css */
+.contest-card {
+
+  border-width: 1px;
+  border-radius: 10px;
+  width: 400px;
+  padding: 0;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.contest-card:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.contest-card img {
+  border-radius: 10px;
+  width: 400px;
+  height: 180px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); 
+}
+
+.contest-card .content3 {
+  padding: 10px;
+  color: black;
+  /* max-width: initial; */
+}
+
+.contest-card .content3 p.divider {
+  background-color: white;
+  width: 400px;
+  height: 1px;
+}
+
+
+
+
+/* first page of contest */
+
+/* General styles */
+/* src/App.css or src/styles.css */
+
+/* Main container */
+.main-container {
+  background-color: white;
+}
+
+/* Featured opportunities section */
+
+
+/* Separator */
+.separator {
+  width: 100%;
+  height: 2px;
+  background-color: #BA0103;
+  /* margin: 10px 0; */
+}
+.separator-gray {
+  width: 100%;
+  height: 1px;
+  background-color: #cdcbcb;
+  margin: 10px 0 10px;
+}
+
+/* Contest list */
+.contest-list {
+  display: flex;
+  overflow-x: hidden;
+  position: relative;
+  padding: 15px;
+  color: var(--ibg);
+}
+.heading{
+  margin-top: 100px;
+  background: linear-gradient(358.8deg, rgba(255, 255, 255, 1) 2.9%, rgba(218, 238, 248, 1) 91.7%);
+}
+.contest-list2 {
+  display: flex;
+  overflow-x: hidden;
+  max-width: 1800px;
+  padding: 15px;
+  color: var(--ibg);
+}
+
+/* Scroll buttons */
+.scroll-button {
+  position: sticky;
+  top: 150px;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 100px;
+  height: 50px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.scroll-button.left {
+  left: 10px;
+}
+
+.scroll-button.right {
+  right: 10px;
+}
+
+/* Navbar container */
+.navbar-container {
+  background: linear-gradient(358.8deg, rgba(255, 255, 255, 1) 2.9%, rgba(218, 238, 248, 1) 91.7%);
+  margin-top: 100px;
+}
+
+/* Hide scrollbar */
+.contest-list::-webkit-scrollbar {
+  display: none;
+}
+
+.contest-list2::-webkit-scrollbar {
+  display: none;
+}
+.RegisterButton {
+  position: absolute;
+  background-color: rgb(255, 230, 0);
+  padding: 5px 15px;
+  border-radius: 10px;
+  margin-top: 50px;
+  /* margin-right: 90% ; */
+  font-weight: bold;
+  height: fit-content;
+  left: 140px;
+  transition: filter 300ms;
+}
+.RegisterButton:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+  /* filter: drop-shadow(0 0 1em #fffb00); */
+  transition: filter 300ms;
+ 
 }

@@ -26,6 +26,7 @@ import Tinymce from './TinyMCE/TinyMCE';
 import CourseEdit from './Leetcode/CourseEdit';
 import Firstpage from './Contest/FirstPage/Firstpage';
 import ContestDetails from './Contest/ContestDetail/ContestDetails';
+import ContestRules from './Contest/TestScreen';
 
 function App() {
   console.log("app rerender");
@@ -62,6 +63,8 @@ function App() {
             <Route path="/CourseEdit" element={<CourseEdit />} />
             <Route path="/contest" element={<Firstpage />} />
             <Route path="/ContestDetail/:id" element={<ContestDetails />} />
+            <Route path="/vhgfh7t67xw5458gf5643sd6" element={<ContestRules />} />
+            <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
           </Routes>
         </FormProvider>
       </UserProvider>

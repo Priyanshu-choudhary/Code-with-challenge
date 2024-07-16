@@ -6,7 +6,7 @@ import BasicDetail from './BasicDetail';
 import CodeGenrate from './CodeGenrate';
 import FinalSend from './FinallSend';
 
-const EditorPosts = ({ step, uploadUrl }) => {
+const EditorPosts = ({ step, uploadUrl ,contestName}) => {
     const { user, password, role } = useContext(UserContext);
 
 
@@ -22,7 +22,7 @@ const EditorPosts = ({ step, uploadUrl }) => {
             )}
 
             {step === 3 && (
-                <FinalSend />
+                <FinalSend contestName={contestName} />
             )}
         </>
     );

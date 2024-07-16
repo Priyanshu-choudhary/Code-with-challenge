@@ -1,6 +1,7 @@
 // FinalSend.jsx
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
+
 import './EditorComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form } from 'react-bootstrap';
@@ -9,13 +10,13 @@ import Spinner from 'react-bootstrap/Spinner';
 import Tags from '../Tags';
 import { FormContext } from '../../Context/FormContext';
 
-const FinalSend = ({ step, uploadUrl }) => {
+const FinalSend = ({ step, uploadUrl,contestName }) => {
     const { formData, updateFormData } = useContext(FormContext);
-    const { user, password, role,URL,setURL } = useContext(UserContext);
+    const { user, password, role, URL, setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
     const [newUrl, setnewUrl] = useState('https://hytechlabs.online:9090/Posts')
     const [auth, setauth] = useState(URL)
-    
+
     const handleTagsChange = useCallback((tags) => {
         updateFormData({ tags });
     }, [updateFormData]);
@@ -23,26 +24,33 @@ const FinalSend = ({ step, uploadUrl }) => {
     const handleInputChange = (e) => {
         updateFormData({ [e.target.name]: e.target.value });
     };
-    const checkUrl=()=>{
-       
+    const checkUrl = () => {
+
     }
+useEffect(() => {
+ console.log("contest name"+contestName);
+}, [contestName])
 
     useEffect(() => {
-        if (URL != 'ProblemSet') {
-            setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${URL}/username/OfficialCources`);
-            setauth("OfficialCources");
-           
+        if (contestName) {
+            setnewUrl(`https://hytechlabs.online:9090/Contest/${contestName}/username/Contest`);
         } else {
-            setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
+            if (URL != 'ProblemSet') {
+                setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${URL}/username/OfficialCources`);
+                setauth("OfficialCources");
+            } else {
+                setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
+            }
         }
-    }, [    URL]); // Add URL to the dependency array to run this effect whenever URL changes
-    
+
+    }, [URL,contestName]); // Add URL to the dependency array to run this effect whenever URL changes
+
     const handleSubmit = async (event) => {
         setISubmit(true);
         console.log(JSON.stringify(formData));
         event.preventDefault();
         try {
-           
+
             const response = await axios.post(
                 newUrl,
                 {
@@ -67,14 +75,14 @@ const FinalSend = ({ step, uploadUrl }) => {
             setISubmit(false);
         }
     };
-    
+
 
     return (
         <>
             <div className="editor-container">
                 <div className="sidebar">
                     <div className="sidebar-item" onClick={handleSubmit}>
-                        
+
                         Save {iSubmit && <Spinner animation="border" size="sm" />}
                     </div>
                     <hr />

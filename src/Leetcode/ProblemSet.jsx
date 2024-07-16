@@ -5,8 +5,6 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
 import { CircularProgress, Button } from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
-import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
 import MarkdownDisplay from './MarkdownFormate';

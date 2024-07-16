@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext,useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Dashboard from '../dashBoard/Dashboard';
 
-
+import { useParams } from 'react-router-dom';
 
 import { UserContext } from '../Context/UserContext';
 import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
@@ -19,7 +19,7 @@ const steps = ['Add basic details', 'Test cases and boiler code', 'Select tags/T
 export default function MyStepper({ uploadUrl }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  
+  const { contestName } = useParams();
   const { user, password,role } = useContext(UserContext);
 
   const totalSteps = () => {
@@ -67,6 +67,9 @@ export default function MyStepper({ uploadUrl }) {
     setActiveStep(0);
     setCompleted({});
   };
+useEffect(() => {
+console.log("contestName "+contestName);
+}, [contestName])
 
   return (
     <>
@@ -95,7 +98,7 @@ export default function MyStepper({ uploadUrl }) {
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-             <EditorPosts uploadUrl={uploadUrl} step={activeStep+1 }/>
+             <EditorPosts uploadUrl={uploadUrl} contestName={contestName} step={activeStep+1 }/>
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Button

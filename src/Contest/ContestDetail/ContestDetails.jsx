@@ -26,11 +26,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import '/src/ContestDetails.css';
 import Rules from './Rules';
-
+import CreateIcon from '@mui/icons-material/Create';
 import { UserContext } from '/src/Context/UserContext';
 import GettingStart from './GettingStart';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function ContestDetails() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [contest, setContest] = useState(null);
     const { bg, light, dark, user } = useContext(UserContext);
@@ -153,6 +155,10 @@ function ContestDetails() {
         <div>
             <Dashboard />
             <img className="banner-image" src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
+            <div  className="button-86" style={{position:"absolute",right:10,top:90,color:"black"}} >
+                  <CreateIcon  fontSize='large'  onClick={()=>{ navigate(`/UploadQuestion/${contest.nameOfContest}`)}}/>
+                </div>
+
             <div className="contest-header">
                 <div className="contest-header-content">
                     <img className="logo" src={`/${contest.logo}`} alt="logo" />

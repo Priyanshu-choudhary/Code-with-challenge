@@ -94,7 +94,7 @@ function ContestDetails() {
     }
 
     const handleRegister = () => {
-        if (!user ) {
+        if (!user) {
             alert("You need to log in to register.");
             return;
         }
@@ -124,6 +124,23 @@ function ContestDetails() {
             .catch(error => {
                 console.error('There was an error updating the contest!', error);
             });
+    };
+
+    const handleShare = () => {
+        const url = window.location.href;
+
+        if (navigator.share) {
+            navigator.share({
+                title: contest.nameOfContest,
+                url: url
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            }).catch(console.error);
+        }
     };
 
     return (
@@ -174,10 +191,10 @@ function ContestDetails() {
                         {isRegistered ? <div style={{display:"flex"}}><CheckCircleIcon style={{marginTop:5,marginRight:5}}/> <p>Done!</p></div>: "Register"}
                     </button>
 
-                        <ShareIcon fontSize='large' />
-                        <div onClick={() => setisFav(!isFav)}>
-                            {isFav ? <FavoriteBorderIcon fontSize='large' /> : <FavoriteIcon fontSize='large' />}
-                        </div>
+                    <div className='shareIcon' onClick={handleShare}><ShareIcon fontSize='large' /></div>
+                    <div onClick={() => setisFav(!isFav)}>
+                        {isFav ? <FavoriteBorderIcon fontSize='large' /> : <FavoriteIcon fontSize='large' />}
+                    </div>
                     </div>
                     <p className="separator-gray"></p>
                     <div className="info-item">

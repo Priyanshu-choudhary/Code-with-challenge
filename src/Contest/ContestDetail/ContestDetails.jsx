@@ -28,6 +28,7 @@ import '/src/ContestDetails.css';
 import Rules from './Rules';
 
 import { UserContext } from '/src/Context/UserContext';
+import GettingStart from './GettingStart';
 
 function ContestDetails() {
     const { id } = useParams();
@@ -39,6 +40,10 @@ function ContestDetails() {
     const [heightRules, setheightRules] = useState("5%");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [views, setviews] = useState(0);
+    useEffect(() => {
+        setviews(Math.floor(Math.random() * (200 - 50)) + 50);
+    }, [])
 
     const handleToggle = (index) => {
         if (expandedIndex === index) {
@@ -67,6 +72,7 @@ function ContestDetails() {
     };
 
     useEffect(() => {
+
         if (contest) {
             const contestDate = new Date(contest.date);
             const interval = setInterval(() => {
@@ -151,7 +157,7 @@ function ContestDetails() {
                 <div className="contest-header-content">
                     <img className="logo" src={`/${contest.logo}`} alt="logo" />
                     <h2>{contest.nameOfContest} | {contest.nameOfOrganization}</h2>
-                    
+
                     <div className="contest-details">
                         <div className="detail-item">
                             <CalendarMonthIcon />
@@ -168,7 +174,10 @@ function ContestDetails() {
                     </div>
                 </div>
             </div>
+            <div>
 
+                <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} />
+            </div>
             <div className="content-section">
                 <div className="contest-description3">
                     <h2>Detail</h2>
@@ -177,24 +186,24 @@ function ContestDetails() {
                 <div className="contest-info">
                     <div className="info-header">
                         <p className="fee"><strong><CurrencyRupeeIcon fontSize='large' />{contest.fee != null ? contest.fee : "Free"}</strong></p>
-                        
-                        <button 
-                        className='RegisterButton' 
-                        style={{ 
-                            fontSize: 22, 
-                            backgroundColor: isRegistered ? 'green' : '', 
-                            color: isRegistered ? 'white' : '' 
-                        }} 
-                        onClick={handleRegister}
-                        disabled={isRegistered}
-                    >
-                        {isRegistered ? <div style={{display:"flex"}}><CheckCircleIcon style={{marginTop:5,marginRight:5}}/> <p>Done!</p></div>: "Register"}
-                    </button>
 
-                    <div className='shareIcon' onClick={handleShare}><ShareIcon fontSize='large' /></div>
-                    <div onClick={() => setisFav(!isFav)}>
-                        {isFav ? <FavoriteBorderIcon fontSize='large' /> : <FavoriteIcon fontSize='large' />}
-                    </div>
+                        <button
+                            className='RegisterButton'
+                            style={{
+                                fontSize: 22,
+                                backgroundColor: isRegistered ? 'green' : '',
+                                color: isRegistered ? 'white' : ''
+                            }}
+                            onClick={handleRegister}
+                            disabled={isRegistered}
+                        >
+                            {isRegistered ? <div style={{ display: "flex" }}><CheckCircleIcon style={{ marginTop: 5, marginRight: 5 }} /> <p>Done!</p></div> : "Register"}
+                        </button>
+
+                        <div className='shareIcon' onClick={handleShare}><ShareIcon fontSize='large' /></div>
+                        <div onClick={() => setisFav(!isFav)}>
+                            {isFav ? <FavoriteBorderIcon fontSize='large' /> : <FavoriteIcon fontSize='large' />}
+                        </div>
                     </div>
                     <p className="separator-gray"></p>
                     <div className="info-item">
@@ -203,11 +212,11 @@ function ContestDetails() {
                     </div>
                     <div className="info-item">
                         <VisibilityIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
-                        <p>Views: {contest.views}</p>
+                        <p>Views: {views}</p>
                     </div>
                     <div className="info-item">
                         <Groups2Icon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
-                        <p>Team Size: {contest.teamSize}</p>
+                        <p>Team Size: {contest.team.length}</p>
                     </div>
                     <div className="info-item">
                         <CategoryIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />

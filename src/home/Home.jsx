@@ -13,6 +13,7 @@ import ScrollableCardList from './ScrollableCardList';
 import Footer2 from './Footer2';
 import "./home.css"
 import { useNavigate } from 'react-router-dom';
+import TermsAndServise from '../TermsAndService/TermsAndServise';
 
 function Home() {
   const [typedInstance, setTypedInstance] = useState(null);
@@ -190,6 +191,7 @@ function Home() {
         <h2 className="section-heading text-center" style={{ fontSize: "40px", fontWeight: "bold" }}>User Count</h2>
         <UserCount />
         <Newsletter />
+        {/* <TermsAndServise /> */}
         <Footer />
         <Footer2 />
       </div>

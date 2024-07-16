@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Dashboard from '/src/dashBoard/Dashboard';
@@ -21,19 +21,25 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import StarsIcon from '@mui/icons-material/Stars';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import '/src/ContestDetails.css';
 import Rules from './Rules';
 
+import { UserContext } from '/src/Context/UserContext';
+
 function ContestDetails() {
     const { id } = useParams();
     const [contest, setContest] = useState(null);
+    const { bg, light, dark, user } = useContext(UserContext);
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isFav, setisFav] = useState(true);
     const [expandedIndex, setExpandedIndex] = useState(null);
     const [heightRules, setheightRules] = useState("5%");
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isRegistered, setIsRegistered] = useState(false);
+
     const handleToggle = (index) => {
         if (expandedIndex === index) {
             setExpandedIndex(null);
@@ -46,15 +52,20 @@ function ContestDetails() {
         axios.get(`https://hytechlabs.online:9090/Contest/id/${id}`)
             .then(response => {
                 setContest(response.data);
+                if (response.data.registeredUser.includes(user)) {
+                    setIsRegistered(true);
+                }
             })
             .catch(error => {
                 console.error('There was an error fetching the contest details!', error);
             });
-    }, [id]);
+    }, [id, user]);
+
     const toggleReadMore = () => {
         setIsExpanded(!isExpanded);
-       isExpanded?setheightRules("100%"):setheightRules("5%");
-      };    
+        isExpanded ? setheightRules("100%") : setheightRules("5%");
+    };
+
     useEffect(() => {
         if (contest) {
             const contestDate = new Date(contest.date);
@@ -82,19 +93,49 @@ function ContestDetails() {
         return <div>Loading...</div>;
     }
 
+    const handleRegister = () => {
+        if (!user ) {
+            alert("You need to log in to register.");
+            return;
+        }
+
+        const registeredUser = Array.isArray(contest.registeredUser) ? contest.registeredUser : [];
+        if (registeredUser.includes(user)) {
+            alert("You are already registered.");
+            return;
+        }
+
+        const updatedContest = {
+            ...contest,
+            registeredUser: [...registeredUser, user]
+        };
+
+        axios.put(`https://hytechlabs.online:9090/Contest/id/${id}`, updatedContest, {
+            auth: {
+                username: 'Contest',
+                password: 'Contest'
+            }
+        })
+            .then(response => {
+                setContest(response.data);
+                setIsRegistered(true);
+                alert("Successfully registered!");
+            })
+            .catch(error => {
+                console.error('There was an error updating the contest!', error);
+            });
+    };
+
     return (
         <div>
             <Dashboard />
-            <img className="banner-image"  src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
+            <img className="banner-image" src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
             <div className="contest-header">
                 <div className="contest-header-content">
-
                     <img className="logo" src={`/${contest.logo}`} alt="logo" />
                     <h2>{contest.nameOfContest} | {contest.nameOfOrganization}</h2>
                     
-                    <button className='RegisterButton' style={{fontSize:25}}>Register</button>
                     <div className="contest-details">
-                      
                         <div className="detail-item">
                             <CalendarMonthIcon />
                             <p>{new Date(contest.date).toLocaleDateString()}</p>
@@ -119,6 +160,20 @@ function ContestDetails() {
                 <div className="contest-info">
                     <div className="info-header">
                         <p className="fee"><strong><CurrencyRupeeIcon fontSize='large' />{contest.fee != null ? contest.fee : "Free"}</strong></p>
+                        
+                        <button 
+                        className='RegisterButton' 
+                        style={{ 
+                            fontSize: 22, 
+                            backgroundColor: isRegistered ? 'green' : '', 
+                            color: isRegistered ? 'white' : '' 
+                        }} 
+                        onClick={handleRegister}
+                        disabled={isRegistered}
+                    >
+                        {isRegistered ? <div style={{display:"flex"}}><CheckCircleIcon style={{marginTop:5,marginRight:5}}/> <p>Done!</p></div>: "Register"}
+                    </button>
+
                         <ShareIcon fontSize='large' />
                         <div onClick={() => setisFav(!isFav)}>
                             {isFav ? <FavoriteBorderIcon fontSize='large' /> : <FavoriteIcon fontSize='large' />}
@@ -126,38 +181,35 @@ function ContestDetails() {
                     </div>
                     <p className="separator-gray"></p>
                     <div className="info-item">
-                        <HowToRegIcon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}}/>
-                        <p>Registration: {100}</p>
+                        <HowToRegIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
+                        <p>Registration: {contest.registeredUser.length}</p>
                     </div>
                     <div className="info-item">
-                        <VisibilityIcon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}}/>
-                        <p>Views: {863}</p>
+                        <VisibilityIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
+                        <p>Views: {contest.views}</p>
                     </div>
                     <div className="info-item">
-                        <Groups2Icon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}}/>
-                        <p>Team Size: {4}</p>
+                        <Groups2Icon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
+                        <p>Team Size: {contest.teamSize}</p>
                     </div>
                     <div className="info-item">
-                        <CategoryIcon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}} />
+                        <CategoryIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                         <p>Category: {contest.type}</p>
                     </div>
-                    <div className="info-item" >
-                        <LanguageIcon fontSize='large'style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}} />
+                    <div className="info-item">
+                        <LanguageIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                         <p>Link: {contest.link}</p>
                     </div>
                 </div>
             </div>
-{/* /////////////////////////////2//////////////////////////////////////// */}
-            <div className="content-section" >
+            <div className="content-section">
                 <div className="contest-description3">
-                   <h2>Rounds</h2>
+                    <h2>Rounds</h2>
                     {contest.rounds.map((rule, index) => (
                         <div key={index} className="eligibility-item">
-                          
                             <li>{rule}</li>
                         </div>
                     ))}
-                   
                 </div>
                 <div className="eligibility-section">
                     <div className="eligibility-header">
@@ -166,28 +218,21 @@ function ContestDetails() {
                     <p className="separator-gray"></p>
                     {contest.eligibility.map((rule, index) => (
                         <div key={index} className="eligibility-item">
-                            <WorkspacesIcon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}}/>
+                            <WorkspacesIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                             <p>{rule}</p>
                         </div>
                     ))}
                 </div>
             </div>
-            {/* /////////////////////////////3//////////////////////////////////////// */}
-            <div className="content-section" >
-                <div className="contest-description3"style={{height:heightRules}}>
-                   <h2>Rules</h2>
+            <div className="content-section">
+                <div className="contest-description3" style={{ height: heightRules }}>
+                    <h2>Rules</h2>
                     {contest.rules.map((rule, index) => (
                         <div key={index} className="eligibility-item">
-                          
                             <li>{rule}</li>
                         </div>
                     ))}
-                     <Rules value={heightRules} />
-                     {/* <button style={{ borderWidth: 1, borderRadius: 5 ,borderColor:"blue",padding:5}}  onClick={toggleReadMore}>
-                    {isExpanded ? '' : 'Read More'}
-                    {isExpanded ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
-                    
-                  </button> */}
+                    <Rules value={heightRules} />
                 </div>
                 <div className="eligibility-section2">
                     <div className="eligibility-header">
@@ -196,32 +241,29 @@ function ContestDetails() {
                     <p className="separator-gray"></p>
                     {contest.rewards.map((rule, index) => (
                         <div key={index} className="eligibility-item">
-                            <StarsIcon fontSize='large' style={{borderRadius:5,borderWidth:1.5,borderColor:"lightgray",marginRight:10}}/>
+                            <StarsIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                             <p>{rule}</p>
                         </div>
                     ))}
                 </div>
-           </div>
-           {/* /////////////////////////////4//////////////////////////////////////// */}
-           <div className="content-section2">
-            <div className="contest-description2">
-                <h2>FAQ's</h2>
-                {contest.faq.map((rule, index) => (
-                    <div key={index} className="faq-item">
-                         <p className="separator-gray"></p>
-                        <ul style={{fontSize:20}} onClick={() => handleToggle(index)}>{rule}{expandedIndex === index ?<KeyboardArrowUpIcon fontSize='large'/>:<KeyboardArrowDownIcon  fontSize='large'/>}</ul>
-                        {expandedIndex === index ? (
-                            <>
-                                <div style={{marginLeft:30,fontWeight:"bold"}}>{contest.faqAnswer[index]}</div>
-                            </>
-                        ) : (<div className='eligibility-item'></div>
-                            
-                        )}
-                     
-                    </div>
-                ))}
             </div>
-        </div>
+            <div className="content-section2">
+                <div className="contest-description2">
+                    <h2>FAQ's</h2>
+                    {contest.faq.map((rule, index) => (
+                        <div key={index} className="faq-item">
+                            <p className="separator-gray"></p>
+                            <ul style={{ fontSize: 20 }} onClick={() => handleToggle(index)}>{rule}{expandedIndex === index ? <KeyboardArrowUpIcon fontSize='large' /> : <KeyboardArrowDownIcon fontSize='large' />}</ul>
+                            {expandedIndex === index ? (
+                                <>
+                                    <div style={{ marginLeft: 30, fontWeight: "bold" }}>{contest.faqAnswer[index]}</div>
+                                </>
+                            ) : (<div className='eligibility-item'></div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <Footer2 />
         </div>

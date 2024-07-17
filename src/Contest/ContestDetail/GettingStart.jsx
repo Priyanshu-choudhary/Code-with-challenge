@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import GetStartButton from '/src/Buttons/GetStart';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 function GettingStart({ days, hours, minutes, isRegistered }) {
     const [isStart, setisStart] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (days <= 150 && hours <= 100) {
@@ -14,9 +15,10 @@ function GettingStart({ days, hours, minutes, isRegistered }) {
 
     const handelClick = () => {
         console.log("click");
+        navigate(`/vhgfh7t67xw5458gf5643sd6/${contest.nameOfContest}`)
     };
 
-    return (
+    return (    
         <div>
             {isRegistered && !isStart &&
                 <div style={{ textAlign: "center", width: "100%", height: 70, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>

@@ -27,15 +27,16 @@ import YouTubePlayer from './youtubeVideo';
 import AnchorTemporaryDrawer from './SideDrover';
 import Spinner from 'react-bootstrap/Spinner';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
+import MiniProblemDrawerComponent from './MiniProblemList';
 
 function QuestionApi() {
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, CourseDescription, totalProblems, problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const { language, CourseDescription='', totalProblems='', problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
-  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', boilerCode = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
+  const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
   const [themes, setthemes] = useState("vs-dark");
   const [selectedOption, setSelectedOption] = useState('');
   const [flag, setflag] = useState("true");
@@ -43,6 +44,7 @@ function QuestionApi() {
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar visibility
   const [currentans, setcurrentans] = useState('');
   const [state, setState] = useState(false);
+  const [state2, setState2] = useState(false);
   const [iSubmit, setiSubmit] = useState(false);
 
   const createCourse = useCreateCourse();
@@ -79,6 +81,15 @@ function QuestionApi() {
       setState(false);
     } else {
       setState(true);
+    }
+
+  };
+
+  const openMiniProblemDrswer = () => {
+    if (state2 == true) {
+      setState2(false);
+    } else {
+      setState2(true);
     }
 
   };
@@ -317,6 +328,8 @@ function QuestionApi() {
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
+            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => state2?setState2(false):setState2(true)}>List</button>
+          <MiniProblemDrawerComponent problems={problems} open={state2} onClose={()=>{setState2(false)}}/>
           </div>
 
 

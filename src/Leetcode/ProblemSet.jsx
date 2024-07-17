@@ -5,6 +5,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
 import { CircularProgress, Button } from '@mui/material';
+
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
 import MarkdownDisplay from './MarkdownFormate';
@@ -42,6 +43,7 @@ const LeetCodeClone = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [contentHeight, setContentHeight] = useState(450);
   const contentRef = useRef(null);
+
 
   useEffect(() => {
     if (contentRef.current) {

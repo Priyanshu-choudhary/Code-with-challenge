@@ -32,6 +32,7 @@ import MiniProblemDrawerComponent from './MiniProblemList';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 import TestModeHeading from './TestModeHeading';
+import SecurityChecks from '../Contest/Security/SecurityChecks';
 function QuestionApi() {
   const { id, detailsType } = useParams();
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
@@ -66,6 +67,7 @@ function QuestionApi() {
   const [selectedOption2, setSelectedOption2] = useState(language[0] == "java" ? language[0] : language[language.length - 1]);
   const [dropdownToggle, setdropdownToggle] = useState(false)
   const [resetMcq, setResetMcq] = useState(false);
+  const [contestStartDate, setcontestStartDate] = useState("")
   // console.log("type "+detailsType);
   const options = {
     option1: 'ChatGPT',
@@ -278,6 +280,67 @@ function QuestionApi() {
 
   };
 
+  
+const userContestDetailsCreate= async ()=>{
+  try {
+    // Make API call to create the contest
+    // console.log(user + " " + password);
+    const newContest = {
+      nameOfContest: contest.nameOfContest,
+      nameOfOrganization: contest.nameOfOrganization,
+      date: new Date(),
+
+    };
+
+    const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+    console.log("contest detail " + JSON.stringify(newContest));
+
+    const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': basicAuth,
+      },
+      body: JSON.stringify(newContest)
+    });
+
+    const contentType = response.headers.get('content-type');
+    let data;
+
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      console.error('Unexpected response format:', text);
+      throw new Error('Failed to create contest: Unexpected response format');
+    }
+
+    if (!response.ok) {
+      throw new Error('Failed to create contest');
+    }
+
+
+    console.log('contest created:', data);
+    setcontestStartDate(data.date)
+    
+    // console.log("date on which contest created "+data.date);
+  } catch (error) {
+    console.error('Error creating contest:', error);
+    throw error; // Rethrow the error to handle it in the calling component
+  }
+
+}
+useEffect(() => {
+  console.log("date on which contest created "+contestStartDate);
+}, [contestStartDate])
+
+useEffect(() => {
+  if (detailsType=="Contest") {
+    userContestDetailsCreate();
+  }
+ 
+}, [])
+
   const handleSubmitContestQuestion = async () => {
     if (!currentans.id) {
       alert('Correctly Run the code First.');
@@ -285,51 +348,7 @@ function QuestionApi() {
 
       try {
         setLoading(true);
-        try {
-          // Make API call to create the contest
-          // console.log(user + " " + password);
-          const newContest = {
-            nameOfContest: contest.nameOfContest,
-            nameOfOrganization: contest.nameOfOrganization,
-            date: new Date(),
-
-          };
-
-          const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-          console.log("contest detail " + JSON.stringify(newContest));
-
-          const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': basicAuth,
-            },
-            body: JSON.stringify(newContest)
-          });
-
-          const contentType = response.headers.get('content-type');
-          let data;
-
-          if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-          } else {
-            const text = await response.text();
-            console.error('Unexpected response format:', text);
-            throw new Error('Failed to create contest: Unexpected response format');
-          }
-
-          if (!response.ok) {
-            throw new Error('Failed to create contest');
-          }
-
-
-          console.log('contest created:', data);
-        
-        } catch (error) {
-          console.error('Error creating contest:', error);
-          throw error; // Rethrow the error to handle it in the calling component
-        }
-
+       
         // const response2 = await update();
         const response = await axios.post(
           `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
@@ -342,6 +361,7 @@ function QuestionApi() {
           }
         );
         console.log('Post created:', response.data);
+        
         setLoading(false);
         // setSnackbarOpen(true);
         setcurrentans('');
@@ -401,13 +421,13 @@ function QuestionApi() {
   return (
     <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
       <br />
-
+{detailsType == "Contest" && <SecurityChecks/>}
 
       {detailsType == "Course" &&
         <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
       }
       {detailsType == "Contest" &&
-        <TestModeHeading initialTimeLeft={timeLeft} />
+        <TestModeHeading initialTimeLeft={timeLeft} startedAt={contestStartDate} />
       }
 
       <div style={{ background: dark, color: ibg, height: "100vh" }}>

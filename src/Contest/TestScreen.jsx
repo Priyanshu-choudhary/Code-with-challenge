@@ -22,7 +22,7 @@ const TestScreen = ({ onAgree }) => {
   const [problems, setProblems] = useState([]);
   const [responseOk, setResponseOk] = useState(true);
   const [loading, setLoading] = useState(true);
-  console.log("2 "+JSON.stringify(contest));
+  // console.log("2 "+JSON.stringify(contest));
   useEffect(() => {
     if (screenfull.isEnabled) {
       screenfull.on('change', () => {

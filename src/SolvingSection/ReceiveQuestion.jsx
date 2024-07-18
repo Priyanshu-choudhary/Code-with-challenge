@@ -298,7 +298,7 @@ function QuestionApi() {
           const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
           console.log("contest detail " + JSON.stringify(newContest));
 
-          const response = await fetch(`https://hytechlabs.onlne:9090/UserDetailsContest`, {
+          const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -332,7 +332,7 @@ function QuestionApi() {
 
         // const response2 = await update();
         const response = await axios.post(
-          `https://hytechlabs.onlne:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+          `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
           currentans,
           {
             auth: {

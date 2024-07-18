@@ -24,7 +24,7 @@ const useCreateUserContestDetail = () => {
             const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
             console.log("contest detail " + JSON.stringify(newContest));
 
-            const response = await fetch(`https://hytechlabs.onlne:9090/UserDetailsContest/${nameOfContest}/username/${user}`, {
+            const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest/${nameOfContest}/username/${user}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

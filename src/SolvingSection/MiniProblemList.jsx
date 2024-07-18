@@ -14,7 +14,7 @@ const MiniProblemDrawerComponent = ({ open, onClose, problems, setIndex, contest
   useEffect(() => {
     const fetchCompletedProblems = async () => {
       try {
-        const response = await axios.get(`https://hytechlabs.onlne:9090/UserDetailsContest/${user}/${contestName}`);
+        const response = await axios.get(`https://hytechlabs.online:9090/UserDetailsContest/${user}/${contestName}`);
         //  const postTitles = response.data.posts.map(post => post.title);
         setCompletedProblems(JSON.stringify(response.data[0].posts || []));
      

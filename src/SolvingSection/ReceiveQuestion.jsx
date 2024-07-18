@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import "./ReceiveQuestion.css";
 import axios from 'axios';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -21,6 +21,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import Timer from './timer'; // Adjust the import path as necessary
 import useCreateCourse from '../learnPath/CourseCreateApi';
+import useCreateUserContestDetail from '/src/Contest/UserDetails/CreateUserDetails';
 import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
 import { Upload } from '@mui/icons-material';
 import YouTubePlayer from './youtubeVideo';
@@ -28,12 +29,15 @@ import AnchorTemporaryDrawer from './SideDrover';
 import Spinner from 'react-bootstrap/Spinner';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
 import MiniProblemDrawerComponent from './MiniProblemList';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
+import TestModeHeading from './TestModeHeading';
 function QuestionApi() {
+  const { id, detailsType } = useParams();
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, CourseDescription='', totalProblems='', problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const { contest = '', timeLeft, language, CourseDescription = '', totalProblems = '', problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
   const [problem, setProblem] = useState(problems[currentIndex] || {});
   const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
@@ -59,10 +63,10 @@ function QuestionApi() {
   const [btn1BG, set1btnBG] = useState(light);
   const [btn2BG, set2btnBG] = useState(light);
   const [btn3BG, set3btnBG] = useState(light);
-  const [selectedOption2, setSelectedOption2] = useState(language[0]);
+  const [selectedOption2, setSelectedOption2] = useState(language[0] == "java" ? language[0] : language[language.length - 1]);
   const [dropdownToggle, setdropdownToggle] = useState(false)
   const [resetMcq, setResetMcq] = useState(false);
-
+  // console.log("type "+detailsType);
   const options = {
     option1: 'ChatGPT',
     option2: 'ChatGPT',
@@ -127,7 +131,7 @@ function QuestionApi() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     }, 250); // 1 second delay
-   
+
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []); // Empty dependency array ensures this runs only once on mount
 
@@ -170,7 +174,7 @@ function QuestionApi() {
 
       const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
       const courseToUpdate = existingCourses.find(course => course.title === navHistory);
-      
+
       if (courseToUpdate) {
         const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
         if (result.success) {
@@ -190,7 +194,7 @@ function QuestionApi() {
 
   const checkAnswer = async () => {
     setLoading(true);
-    console.log("answer"+answer);
+    console.log("answer" + answer);
     if (selectedOption == answer) {
       try {
         const progress = 0; // Example progress value, replace with actual logic
@@ -246,7 +250,9 @@ function QuestionApi() {
       }
     }
   };
-
+  const setIndex = (index) => {
+    setCurrentProblemIndex(index);
+  }
   const handlePrevious = () => {
     setResetMcq(true);
     if (currentProblemIndex > 0) {
@@ -264,14 +270,89 @@ function QuestionApi() {
     setSnackbarOpen(false);
   };
   const UploadAnswer = (ans) => {
-    console.log("run automic", ans);
+    // console.log("run automic", ans);
     if (ans.id) {
       setcurrentans(ans)
     }
 
-    console.log(currentans);
+
   };
 
+  const handleSubmitContestQuestion = async () => {
+    if (!currentans.id) {
+      alert('Correctly Run the code First.');
+    } else {
+
+      try {
+        setLoading(true);
+        try {
+          // Make API call to create the contest
+          // console.log(user + " " + password);
+          const newContest = {
+            nameOfContest: contest.nameOfContest,
+            nameOfOrganization: contest.nameOfOrganization,
+            date: new Date(),
+
+          };
+
+          const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+          console.log("contest detail " + JSON.stringify(newContest));
+
+          const response = await fetch(`https://hytechlabs.onlne:9090/UserDetailsContest`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': basicAuth,
+            },
+            body: JSON.stringify(newContest)
+          });
+
+          const contentType = response.headers.get('content-type');
+          let data;
+
+          if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+          } else {
+            const text = await response.text();
+            console.error('Unexpected response format:', text);
+            throw new Error('Failed to create contest: Unexpected response format');
+          }
+
+          if (!response.ok) {
+            throw new Error('Failed to create contest');
+          }
+
+
+          console.log('contest created:', data);
+        
+        } catch (error) {
+          console.error('Error creating contest:', error);
+          throw error; // Rethrow the error to handle it in the calling component
+        }
+
+        // const response2 = await update();
+        const response = await axios.post(
+          `https://hytechlabs.onlne:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+          currentans,
+          {
+            auth: {
+              username: user,
+              password: password,
+            },
+          }
+        );
+        console.log('Post created:', response.data);
+        setLoading(false);
+        // setSnackbarOpen(true);
+        setcurrentans('');
+      } catch (error) {
+        console.error('Error upload post to user contest solving:', error);
+        setLoading(false);
+        setcurrentans('');
+      }
+
+    }
+  }
 
   const handleSubmit = async () => {
     if (!currentans.id) {
@@ -315,34 +396,46 @@ function QuestionApi() {
       editorRef.current.getCode();
     }
   };
+
+
   return (
-    <div style={{ backgroundColor: bg, color: bg, paddingBottom: 1 }}>
+    <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
       <br />
 
 
-      <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
-      <div style={{ background: dark, color: ibg }}>
-        <div className='tollBar' style={{ display: "flex", justifyContent: "space-between" }}>
+      {detailsType == "Course" &&
+        <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
+      }
+      {detailsType == "Contest" &&
+        <TestModeHeading initialTimeLeft={timeLeft} />
+      }
+
+      <div style={{ background: dark, color: ibg, height: "100vh" }}>
+        <div className='' style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ display: "flex" }}>
-
+            <KeyboardDoubleArrowRightIcon fontSize='large' style={{ marginTop: 13, marginLeft: 20, borderRadius: 10, borderColor: ibg, borderRadius: "10px 10px 0px 0px", borderWidth: 1 }} onClick={() => state2 ? setState2(false) : setState2(true)} />
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
-            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
-            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
-            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => state2?setState2(false):setState2(true)}>List</button>
-          <MiniProblemDrawerComponent problems={problems} open={state2} onClose={()=>{setState2(false)}}/>
+            {!detailsType == "Contest" &&
+              <div>
+                <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
+                <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
+              </div>
+            }
+            <div style={{ marginTop: 15 }}>
+              <MiniProblemDrawerComponent contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
+            </div>
           </div>
-
 
 
           {!optionA &&
             <div>
               {language[0] && <div className='dropdown'>
-                <button style={{ marginTop: 10, padding: 7, borderWidth: 1, borderRadius:10 ,borderColor:ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
+                <button style={{ marginTop: 10, padding: 7, borderWidth: 1, borderRadius: 10, borderColor: ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
                   {selectedOption2}
 
                 </button>
                 {dropdownToggle &&
-                  <div className='overlay' style={{ borderRadius: 5, marginTop: 5 ,background:light,color:ibg,borderRadius:5,borderColor:bg}}>
+                  <div className='overlay' style={{ borderRadius: 5, marginTop: 5, background: light, color: ibg, borderRadius: 5, borderColor: bg }}>
                     <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[0]); setdropdownToggle(false) }}>
                       {language[0]}
                     </button>
@@ -446,8 +539,8 @@ function QuestionApi() {
                 <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
                 :
                 <>
-                  <MyEditor CourseLanguage={selectedOption2 } spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty}  />
-                
+                  <MyEditor CourseLanguage={selectedOption2} spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />
+
                 </>
 
               }
@@ -455,44 +548,57 @@ function QuestionApi() {
           </Row>
         </Container>
       </div>
-      <div className="sticky-bottom-center" style={{ backgroundColor: light, borderRadius: 10, width: "100%", marginLeft: 10, marginRight: 10 }}>
-        <Button
-          startIcon={<SkipPreviousIcon />}
-          style={{ margin: "4px", backgroundColor: light, color: ibg }}
-          onClick={handlePrevious}
-          disabled={currentProblemIndex === 0}
-        >
-          Previous
-        </Button>
-        {!optionA && <Button
-          // startIcon={<SkipPreviousIcon />}
-          style={{ margin: "4px", backgroundColor: dark, color: ibg }}
-          onClick={handleRunCode}
-          disabled={currentProblemIndex === 0}
-        >
-          Run
-          {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
-        </Button>}
-        {optionA ?
-          <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-            Submit
-            {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
+      <div className="sticky-bottom-center" style={{ backgroundColor: light, width: "100%" }}>
+        <div style={{ display: "flex", marginLeft: "30%" }}>
+          <Button
+            startIcon={<SkipPreviousIcon />}
+            style={{ margin: "4px", backgroundColor: light, color: ibg }}
+            onClick={handlePrevious}
+            disabled={currentProblemIndex === 0}
+          >
+            Previous
           </Button>
-          :
-          <Button onClick={handleSubmit} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-            Submit
-            {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
-          </Button>
-        }
+          {!optionA && <Button
+            // startIcon={<SkipPreviousIcon />}
+            style={{ margin: "4px", backgroundColor: dark, color: ibg }}
+            onClick={handleRunCode}
 
-        <Button
-          endIcon={<SkipNextIcon />}
-          style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: light, color: ibg }}
-          onClick={handleNext}
-          disabled={currentProblemIndex === problems.length - 1}
-        >
-          Next
-        </Button>
+          >
+            Run
+            {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
+          </Button>}
+
+          {detailsType == "Course" ?
+            <div>
+              {optionA ?
+                <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+                  Submit
+                  {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
+                </Button>
+                :
+                <Button onClick={handleSubmit} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+                  Submit code
+                  {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
+                </Button>
+              }
+            </div>
+            :
+            <Button onClick={handleSubmitContestQuestion} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
+              Submit Question
+              {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
+            </Button>
+
+          }
+
+          <Button
+            endIcon={<SkipNextIcon />}
+            style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: light, color: ibg }}
+            onClick={handleNext}
+            disabled={currentProblemIndex === problems.length - 1}
+          >
+            Next
+          </Button>
+        </div>
       </div>
       <Snackbar
         open={snackbarOpen}

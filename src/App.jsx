@@ -28,6 +28,7 @@ import Firstpage from './Contest/FirstPage/Firstpage';
 import ContestDetails from './Contest/ContestDetail/ContestDetails';
 import TestScreen from './Contest/TestScreen';
 import ContestEdit from './Contest/Create/CreateContest';
+import ContestProblemList from './Contest/Problems/ContestProblemList';
 
 function App() {
   console.log("app rerender");
@@ -50,9 +51,9 @@ function App() {
             <Route path="/yourProfile" element={<YourProfile />} />
             <Route path="/EditorComponent" element={<EditorComponent />} />
             <Route path="/QuestionApi" element={<LeetCodeClone />} />
-            <Route path="/question/:id" element={<QuestionApi />} />
+            <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
             <Route path="/loginOld" element={<LoginUser />} />
-            <Route path="/edit/:problemId" element={<ProblemEditForm />} />
+            <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
             <Route path="/Data" element={<MyDataGrid />} />
             <Route path="/leaderboard" element={<LeaderBoard />} />
             <Route path="/learn" element={<LearningPage />} />
@@ -64,9 +65,10 @@ function App() {
             <Route path="/CourseEdit" element={<CourseEdit />} />
             <Route path="/contest" element={<Firstpage />} />
             <Route path="/ContestDetail/:id" element={<ContestDetails />} />
-            <Route path="/vhgfh7t67xw5458gf5643sd6/:contestName" element={<TestScreen />} />
+            <Route path="/vhgfh7t67xw5458gf5643sd6x" element={<TestScreen />} />
             <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
             <Route path="/create-contest" element={<ContestEdit />} />
+            <Route path="/contestProblemsList" element={<ContestProblemList />} />
           </Routes>
         </FormProvider>
       </UserProvider>

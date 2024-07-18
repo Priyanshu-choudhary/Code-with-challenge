@@ -1,27 +1,14 @@
-
-
-* {
-  box-sizing: border-box;
-  font-family: 'Rubik', sans-serif;
-}
-
 .ProblemList-container {
   width: 270px;
   height: 100%;
-  /* background-image: linear-gradient(to top, #e0f1c4 30%, #e6f6ff 100%); */
 }
 
 .ProblemList-items {
   width: 100%;
-  /* background: #ffffff; */
-  /* background-image: linear-gradient(to top, #e0f1c4 0%, #e6f6ff 70%); */
-  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
-  border-top: 10px solid $dark-pri;
 }
 
 .ProblemList-items-head p {
   padding: 5px 20px;
-  /* margin: 10px; */
   color: rgb(0, 0, 0);
   font-weight: bold;
   font-size: 25px;
@@ -29,42 +16,34 @@
 
 .ProblemList-items-head hr {
   width: 100%;
-  /* margin: 0px 30px; */
   border: 1px solid rgb(0, 0, 0);
 }
 
 .ProblemList-items-body {
   padding: 10px;
-  margin: 10px;
   display: grid;
   grid-gap: 10px;
 }
 
-.ProblemList-items-body-content {
+.miniProblem {
   padding: 10px;
-  padding-right: 0px;
-  display: grid;
-  grid-template-columns: 10fr 1fr;
-  font-size: 13px;
-  grid-gap: 10px;
-  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.ProblemList-items-body-content:hover {
-  border-radius: 15px;
-  border: 1px solid #000000;
-}
-.ProblemList-items-body:hover {
-  border-radius: 15px;
- /* background-color: aliceblue; */
-}
-.ProblemList-items-body-content i {
-  align-self: center;
-  font-size: 15px;
-  color: aqua;
+.miniProblem:hover {
+  background-color: rgba(117, 115, 115, 0.53);
+  font-size: 16px;
   font-weight: bold;
-  animation: icon 1.5s infinite forwards;
+}
+
+.ProblemList-item-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Adjust based on the container width */
 }
 
 @keyframes icon {

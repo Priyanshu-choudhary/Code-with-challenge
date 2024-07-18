@@ -8,11 +8,10 @@ import axios from 'axios';
 import Dashboard from '/src/dashBoard/Dashboard';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import Tinymce from '/src/TinyMCE/TinyMCE';
+import FormGroup from '@mui/material/FormGroup';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'; // Example of using an icon
 import { useNavigate, useLocation } from 'react-router-dom';
+import Tinymce from '/src/TinyMCE/TinyMCE';
 
 export default function ContestEdit() {
     const location = useLocation();
@@ -26,6 +25,7 @@ export default function ContestEdit() {
         fee: contestDetail.fee || '',
         bannerImage: contestDetail.bannerImage || '',
         logo: contestDetail.logo || '',
+        timeDuration: contestDetail.timeDuration || '',
         type: contestDetail.type || 'Online',
         team: contestDetail.team || [],
         eligibility: contestDetail.eligibility || [],
@@ -34,13 +34,13 @@ export default function ContestEdit() {
         faq: contestDetail.faq || [],
         faqAnswer: contestDetail.faqAnswer || [],
         rules: contestDetail.rules || [],
-        winners: contestDetail.winners || []
+        winners: contestDetail.winners || [],
+        language: contestDetail.language || []
     });
 
     const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-    const [logoUrl, setLogoUrl] = useState('');
+    const isEditMode = !!contestDetail.nameOfContest;
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -72,25 +72,45 @@ export default function ContestEdit() {
         }
     };
 
+    const handleLanguageChange = (event) => {
+        const { value, checked } = event.target;
+        setFormData((prevData) => {
+            const updatedLanguages = checked
+                ? [...prevData.language, value]
+                : prevData.language.filter(lang => lang !== value);
+            return {
+                ...prevData,
+                language: updatedLanguages,
+            };
+        });
+    };
+
     const handleSubmit = async () => {
         setLoading(true);
+        const apiUrl = isEditMode
+            ? `https://hytechlabs.online:9090/Contest/id/${contestDetail.id}`
+            : 'https://hytechlabs.online:9090/Contest';
+        
+        const method = isEditMode ? 'put' : 'post';
+        
         try {
-            const response = await axios.post(
-                'https://hytechlabs.online:9090/Contest',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    auth: {
-                        username: "OfficialCources",
-                        password: "OfficialCources",
-                    },
-                }
-            );
-            setAlert({ show: true, message: `Contest created successfully!`, severity: 'success' });
+            console.log("form data " + JSON.stringify(formData));
+            const response = await axios({
+                method: method,
+                url: apiUrl,
+                data: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                auth: {
+                    username: "Contest",
+                    password: "Contest",
+                },
+            });
+
+            setAlert({ show: true, message: `Contest ${isEditMode ? 'updated' : 'created'} successfully!`, severity: 'success' });
         } catch (error) {
-            setAlert({ show: true, message: `Failed to create contest`, severity: 'error' });
+            setAlert({ show: true, message: `Failed to ${isEditMode ? 'update' : 'create'} contest`, severity: 'error' });
         } finally {
             setLoading(false);
         }
@@ -201,7 +221,34 @@ export default function ContestEdit() {
                     onChange={(e) => handleArrayChange(e, 'winners')}
                     margin="normal"
                 />
-
+                <TextField
+                    id="timeDuration"
+                    label="Time Duration (in minutes)"
+                    fullWidth
+                    value={formData.timeDuration}
+                    onChange={handleChange}
+                    margin="normal"
+                    type="number"
+                    InputProps={{ inputProps: { min: 0 } }}
+                />
+                <div >
+                    <FormGroup>
+                        <p style={{ marginTop: 40, marginBottom: 10 }}>Select Languages:</p>
+                        {['java', 'c', 'cpp', 'python'].map(language => (
+                            <FormControlLabel
+                                key={language}
+                                control={
+                                    <Checkbox
+                                        checked={formData.language.includes(language)}
+                                        onChange={handleLanguageChange}
+                                        value={language}
+                                    />
+                                }
+                                label={language}
+                            />
+                        ))}
+                    </FormGroup>
+                </div>
                 <div>
                     <div style={{ marginTop: 10, marginBottom: 10 }}>
                         <p style={{ margin: 5, color: "#636161" }}>Select Contest Banner Image</p>
@@ -257,7 +304,7 @@ export default function ContestEdit() {
                     onClick={handleSubmit}
                     disabled={loading}
                 >
-                    {loading ? <CircularProgress size={24} /> : 'Submit'}
+                    {loading ? <CircularProgress size={24} /> : isEditMode ? 'Edit Contest' : 'Create Contest'}
                 </Button>
             </Box>
         </>

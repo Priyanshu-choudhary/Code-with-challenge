@@ -164,14 +164,14 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
-    // fetchUserData();
+    fetchUserData();
     if (title) {
       setNavHistory(`${title}`);
     }
   }, [title]);
 
   const handleProblemClick = (problem, index) => {
-    navigate(`/question/${problem.id}`, {
+    navigate(`/question/${problem.id}/Course`, {
       state: {
         problems,
         currentIndex: index,
@@ -213,7 +213,7 @@ const LeetCodeClone = () => {
   };
 
   const handleEditProblem = (problemId) => {
-    navigate(`/edit/${problemId}`);
+    navigate(`/edit/${problemId}/OfficialCources`);
   };
 
 

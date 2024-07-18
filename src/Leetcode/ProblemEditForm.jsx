@@ -10,7 +10,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import Tinymce from '../TinyMCE/TinyMCE';
 
 const ProblemEditForm = () => {
-  const { problemId } = useParams();
+  const { problemId, username } = useParams();
   const navigate = useNavigate();
   const { user, password, role } = useContext(UserContext);
 
@@ -49,7 +49,7 @@ const ProblemEditForm = () => {
       try {
         const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
           headers: {
-            'Authorization': 'Basic ' + btoa('OfficialCources:OfficialCources')
+            'Authorization': 'Basic ' + btoa(`${username}:${username}`)
           }
         });
 
@@ -164,7 +164,7 @@ const ProblemEditForm = () => {
     setSubmitting(true);
     try {
       const updatedDetails = { ...problemDetails, description: descriptionRef.current };
-      const response = await fetch(`https://hytechlabs.online:9090/Posts/username/OfficialCources/id/${problemId}`, {
+      const response = await fetch(`https://hytechlabs.online:9090/Posts/username/${username}/id/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -36,6 +36,7 @@ const MyEditor = forwardRef(
     },
     ref
   ) => {
+
     const [language, setLanguage] = useState(CourseLanguage);
     const [iSubmit, setiSubmit] = useState(false);
     const [output, setOutput] = useState('');
@@ -45,6 +46,7 @@ const MyEditor = forwardRef(
     const [boilerCode, setboilerCode] = useState(problem.codeTemplates[language].boilerCode);
     const [templateCode, settemplateCode] = useState(problem.codeTemplates[language].templateCode);
     const editorRef = useRef(null);
+
 
     const {
       fontSize,
@@ -90,9 +92,10 @@ const MyEditor = forwardRef(
     const resetEditorState = () => {
       setOutput('');
       setShowConfetti(false);
-      setisCorrect(false);
+      // setisCorrect(false);
       // Add any other state resets if needed
     };
+
 
     const downloadFile = () => {
       const code = editorRef.current.getValue();
@@ -215,6 +218,7 @@ const MyEditor = forwardRef(
     const testCaseGroups = parseOutput(output.output);
 
     const checkTestcaseAnswer = useCallback(() => {
+    
       let allPass = true;
       for (let i = 0; i < testCaseGroups.length; i++) {
         if (testCaseGroups[i].status === 'Pass' || testCaseGroups[i].status == null) {
@@ -227,6 +231,7 @@ const MyEditor = forwardRef(
     }, [testCaseGroups]);
 
     const checkAnswer = useCallback(() => {
+      console.log("only ans check "+answer);
       let allPass = false;
       if (output.output === answer) {
         allPass = true;
@@ -239,13 +244,15 @@ const MyEditor = forwardRef(
     }, [answer, output.output]);
 
     useEffect(() => {
-      if (answer) {
+      // console.log("ans= "+answer);
+      if (!answer) {
         checkAnswer();
       } else {
         checkTestcaseAnswer();
       }
 
       if (isCorrect) {
+   
         saveToDatabase(problem);
       }
     }, [output, isCorrect, checkTestcaseAnswer, checkAnswer, problem, saveToDatabase]);

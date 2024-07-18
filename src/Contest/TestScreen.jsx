@@ -5,22 +5,24 @@ import '/src/ContestRules.css';
 import TermsAndServise from '../TermsAndService/TermsAndServise';
 import GetStartButton from '/src/Buttons/GetStart';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+
 const TestScreen = ({ onAgree }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [termExpand, setTermExpand] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [vertical, setvertical] = useState("top")
-  const [horizontal, sethorizontal] = useState("right")
+  const [vertical, setVertical] = useState('top');
+  const [horizontal, setHorizontal] = useState('right');
   const navigate = useNavigate();
-  const { contestName } = useParams();
+
+  const location = useLocation();
+  const { contest } = location.state || {}; // Default to an empty object if state is undefined
+
   const [problems, setProblems] = useState([]);
   const [responseOk, setResponseOk] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [languages, setlanguages] = useState("java");
-  
+  console.log("2 "+JSON.stringify(contest));
   useEffect(() => {
     if (screenfull.isEnabled) {
       screenfull.on('change', () => {
@@ -40,63 +42,41 @@ const TestScreen = ({ onAgree }) => {
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('contextmenu', (e) => e.preventDefault());
 
-
-    const fetchProblems = async (selectedTags = []) => {
-      let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Contest/${contestName}/username/contest`;
-      setLoading(true); // Start loading indicator
+    const fetchProblems = async () => {
+      const API_URL = `https://hytechlabs.online:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
+      setLoading(true);
 
       try {
-        let url = API_URL;
-
-
-        const response = await fetch(url, {
+        const response = await fetch(API_URL, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            ...(lastModified && { 'If-Modified-Since': lastModified })
-          }
+          },
         });
 
         if (response.status === 204) {
           setProblems([]);
         } else if (response.status === 304) {
-          const sortedProblems = cachedData.problems.sort((a, b) => a.sequence - b.sequence);
-          setProblems(sortedProblems);
+          // Handle 304 Not Modified if you are caching responses
+          // setProblems(cachedData.problems);
           setResponseOk(true);
         } else if (response.ok) {
           const data = await response.json();
           const sortedProblems = data.sort((a, b) => a.sequence - b.sequence);
           setProblems(sortedProblems);
           setResponseOk(true);
-
-          const newLastModified = response.headers.get('Last-Modified');
-
         } else {
           setResponseOk(false);
         }
       } catch (error) {
-        console.error("Error fetching problems:", error);
+        console.error('Error fetching problems:', error);
         setResponseOk(false);
       } finally {
         setLoading(false);
       }
     };
 
-
-    useEffect(() => {
-      fetchProblems();
-    }, [])
-
-    const handleProblemClick = () => {
-      navigate(`/question/${contestName}`, {
-        state: {
-          problems,
-          currentIndex: 0,
-          totalProblems: problems.length,
-          language
-        }
-      });
-    };
+    fetchProblems();
 
     return () => {
       if (screenfull.isEnabled) {
@@ -105,15 +85,24 @@ const TestScreen = ({ onAgree }) => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('contextmenu', (e) => e.preventDefault());
     };
-  }, []);
+  }, [contest]);
 
   const handleStartContest = () => {
     if (screenfull.isEnabled && !screenfull.isFullscreen) {
       screenfull.request();
     }
     if (agreed) {
-      onAgree();
-      handleProblemClick();
+      // onAgree();
+      navigate(`/question/${contest.nameOfContest}/Contest`, {
+        state: {
+          problems,
+          currentIndex: 0,
+          totalProblems: problems.length,
+          language: contest.language,
+          timeLeft:contest.timeDuration,
+          contest:contest,
+        },
+      });
     } else {
       setAlertMessage('Please agree to the rules and regulations.');
       setAlertOpen(true);
@@ -129,7 +118,7 @@ const TestScreen = ({ onAgree }) => {
   };
 
   return (
-    <div className="contest-rules" style={{ borderWidth: 2, borderColor: " rgb(36, 153, 255)", borderRadius: 10, marginTop: 50 }}>
+    <div className="contest-rules" style={{ borderWidth: 2, borderColor: 'rgb(36, 153, 255)', borderRadius: 10, marginTop: 50 }}>
       <h1>Contest Rules and Regulations</h1>
       <hr />
       <br />
@@ -141,7 +130,7 @@ const TestScreen = ({ onAgree }) => {
         <li>No external help or collaboration is allowed.</li>
         <li>Any violation of these rules will result in disqualification.</li>
         <li>
-          I agree to <span style={{ color: "blue", cursor: "pointer" }} onClick={() => setTermExpand(!termExpand)}>user and service agreements</span>.
+          I agree to <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setTermExpand(!termExpand)}>user and service agreements</span>.
           {termExpand && <TermsAndServise />}
         </li>
       </ul>
@@ -149,10 +138,10 @@ const TestScreen = ({ onAgree }) => {
         <input style={{ width: 20 }} type="checkbox" checked={agreed} onChange={handleAgreeChange} />
         I agree to the rules and regulations
       </label>
-      {!isFullscreen && <GetStartButton onClick={handleStartContest} disabled={!agreed} value={"Full Screen"} />}
-      {isFullscreen && <GetStartButton onClick={handleStartContest} disabled={!agreed} value={"Start"} />}
+      {!isFullscreen && <GetStartButton onClick={handleStartContest} disabled={!agreed} value={'Full Screen'} />}
+      {isFullscreen && <GetStartButton onClick={handleStartContest} disabled={!agreed} value={'Start'} />}
 
-      <Snackbar open={alertOpen} autoHideDuration={60000} onClose={handleCloseAlert} anchorOrigin={{ vertical, horizontal }}>
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical, horizontal }}>
         <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
           {alertMessage}
         </Alert>

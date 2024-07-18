@@ -30,6 +30,8 @@ import CreateIcon from '@mui/icons-material/Create';
 import { UserContext } from '/src/Context/UserContext';
 import GettingStart from './GettingStart';
 import { useNavigate, useLocation } from 'react-router-dom';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 
 function ContestDetails() {
     const navigate = useNavigate();
@@ -155,9 +157,14 @@ function ContestDetails() {
         <div>
             <Dashboard />
             <img className="banner-image" src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
-            <div  className="button-86" style={{position:"absolute",right:10,top:90,color:"black"}} >
-                  <CreateIcon  fontSize='large'  onClick={()=>{ navigate(`/UploadQuestion/${contest.nameOfContest}`)}}/>
-                </div>
+           
+            <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
+                <AddToPhotosIcon fontSize='large'onClick={() => { navigate(`/contestProblemsList`, { state: { contest } }); }} />
+            </div>
+            <div className="button-86" style={{ position: "absolute", right: 10, top: 90, color: "black" }} >
+                <CreateIcon fontSize='large' onClick={() => { navigate(`/create-contest`, { state: { contestDetail:contest } } )}}  />
+            </div>
+
 
             <div className="contest-header">
                 <div className="contest-header-content">
@@ -177,12 +184,16 @@ function ContestDetails() {
                             <CategoryIcon />
                             <p>{contest.type}</p>
                         </div>
+                        <div className="detail-item">
+                            <AccessAlarmsIcon />
+                            <p>{contest.timeDuration} min </p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div>
 
-                <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} />
+                <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} contest={contest} />
             </div>
             <div className="content-section">
                 <div className="contest-description3">

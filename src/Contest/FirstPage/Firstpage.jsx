@@ -68,8 +68,8 @@ function Firstpage() {
       <Dashboard />
       <section className="featured-opportunities">
         <p className="separator"></p>
-        <img src="Designer (1).png" alt="CFC Contest page" />
-        <p className="separator"></p>
+        <img src="bannerImageContest.png" alt="CFC Contest page" />
+        {/* <p className="separator"></p> */}
 
         <div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
           <p style={{ paddingTop: 30, fontSize: "20px" }}>Launch your tailored competition or quiz effortlessly <strong> create </strong>  your own custom challenge now.</p>

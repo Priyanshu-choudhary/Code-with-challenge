@@ -33,7 +33,7 @@ const MiniProblemDrawerComponent = ({ open, onClose, problems, setIndex, contest
           <div className="ProblemList-items-head">
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <p style={{ color: ibg }}>Problems List</p>
-              <img style={{ marginTop: 10, background: dark }} src="/public/checklist.gif" alt="problemList" width={40} />
+              <img style={{ marginTop: 10, background: dark }} src="checklist.gif" alt="problemList" width={40} />
             </div>
             <IconButton style={{ color: ibg }} onClick={onClose}>
               <CloseIcon />

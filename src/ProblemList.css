@@ -39,6 +39,20 @@
   font-weight: bold;
 }
 
+.miniProblem2 {
+  padding: 10px;
+ 
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.miniProblem2:hover {
+  background-color: rgba(117, 115, 115, 0.53);
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .ProblemList-item-title {
   white-space: nowrap;
   overflow: hidden;

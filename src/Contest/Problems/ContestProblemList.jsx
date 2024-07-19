@@ -62,7 +62,7 @@ function ContestProblemList() {
 
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <p style={{ color: ibg }}>Edit Problems List</p>
-                            <img style={{ marginTop: 10, background: dark }} src="/public/checklist.gif" alt="problemList" width={40} />
+                            <img style={{ marginTop: 10, background: dark }} src="/checklist.gif" alt="problemList" width={40} />
                         </div>
 
 

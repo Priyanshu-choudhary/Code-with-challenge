@@ -32,6 +32,7 @@ import GettingStart from './GettingStart';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import GetStartButton from '../../Buttons/GetStart';
 
 function ContestDetails() {
     const navigate = useNavigate();
@@ -184,16 +185,16 @@ function ContestDetails() {
                             <CategoryIcon />
                             <p>{contest.type}</p>
                         </div>
-                        <div className="detail-item">
-                            <AccessAlarmsIcon />
-                            <p>{contest.timeDuration} min </p>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
             <div>
 
                 <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} contest={contest} />
+            </div>
+            <div>
+               <GetStartButton value={"Show Result"} onClick={()=>{navigate(`/ContestResults/findBy`, { state: { contest:contest } } )}}/>
             </div>
             <div className="content-section">
                 <div className="contest-description3">
@@ -231,6 +232,10 @@ function ContestDetails() {
                         <VisibilityIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                         <p>Views: {views}</p>
                     </div>
+                    <div className="info-item">
+                            <AccessAlarmsIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }}/>
+                            <p>Duration: {contest.timeDuration} min </p>
+                        </div>
                     <div className="info-item">
                         <Groups2Icon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                         <p>Team Size: {contest.team.length}</p>

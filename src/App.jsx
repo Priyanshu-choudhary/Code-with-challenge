@@ -29,6 +29,7 @@ import ContestDetails from './Contest/ContestDetail/ContestDetails';
 import TestScreen from './Contest/TestScreen';
 import ContestEdit from './Contest/Create/CreateContest';
 import ContestProblemList from './Contest/Problems/ContestProblemList';
+import ContestResult from './Contest/Results/ContestResult';
 
 function App() {
   console.log("app rerender");
@@ -69,6 +70,8 @@ function App() {
             <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
             <Route path="/create-contest" element={<ContestEdit />} />
             <Route path="/contestProblemsList" element={<ContestProblemList />} />
+            <Route path="/ContestResults/findBy" element={<ContestResult />} />
+            
           </Routes>
         </FormProvider>
       </UserProvider>

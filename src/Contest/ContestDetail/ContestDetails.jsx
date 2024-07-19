@@ -33,6 +33,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import GetStartButton from '../../Buttons/GetStart';
+import BoxLoder from '../../Loder/BoxLoder';
 
 function ContestDetails() {
     const navigate = useNavigate();
@@ -101,7 +102,7 @@ function ContestDetails() {
     }, [contest]);
 
     if (!contest) {
-        return <div>Loading...</div>;
+        return <BoxLoder/>;
     }
 
     const handleRegister = () => {

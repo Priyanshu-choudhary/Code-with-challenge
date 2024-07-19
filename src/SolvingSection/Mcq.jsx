@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../Context/UserContext';
 
-export default function Mcq({ title, options, onOptionSelect, reset }) {
+export default function Mcq({ title, options, onOptionSelect, reset,problem }) {
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState('');
@@ -17,7 +17,7 @@ export default function Mcq({ title, options, onOptionSelect, reset }) {
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
     setValue(selectedValue);
-    setHelperText(' ');
+    // setHelperText(' ');
     setError(false);
   };
 useEffect(() => {
@@ -31,7 +31,7 @@ useEffect(() => {
       setError(false);
     }
     // console.log("mcq select  "+value);
-  }, [options]);
+  }, [problem]);
 
   return (
     <div style={{ display: "flex" }}>

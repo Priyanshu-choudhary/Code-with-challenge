@@ -137,9 +137,6 @@ function QuestionApi() {
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []); // Empty dependency array ensures this runs only once on mount
 
-useEffect(() => {
- console.log("select> "+selectedOption);
-}, [selectedOption])
 
 
   useEffect(() => {
@@ -561,7 +558,7 @@ useEffect(() => {
             /> */}
             <Col sm className="editorsection no-scroll" style={{ height: "80vh", overflowY: "scroll", width: `${100 - dividerPosition}%` }} id="scrollContainer" ref={containerRef}>
               {optionA ?
-                <Mcq title={"questionTitle"} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
+                <Mcq title={"questionTitle"} problem={problem} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
                 :
                 <>
                   <MyEditor CourseLanguage={selectedOption2} spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />

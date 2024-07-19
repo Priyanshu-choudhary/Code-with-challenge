@@ -1,4 +1,4 @@
-import React, { Fragment,useEffect, useState, useContext, useRef, useCallback } from 'react';
+import React, { Fragment, useEffect, useState, useContext, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import ImgMediaCard from './cards';
@@ -6,6 +6,7 @@ import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
 import styled from 'styled-components';
 import { CircularProgress, Button } from '@mui/material';
+import BoxLoder from '../Loder/BoxLoder'; // Import BoxLoder
 
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
@@ -18,7 +19,7 @@ function LearningPage() {
   const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
   const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Initialize loading to true
 
   const userCoursesRef = useRef(null);
   const officialCoursesRef = useRef(null);
@@ -62,12 +63,13 @@ function LearningPage() {
         }
       } catch (error) {
         console.error('Error fetching user courses:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchOfficialCourses = async () => {
       try {
-        setLoading(true);
         const response = await fetch('https://hytechlabs.online:9090/Course/OfficialCources', {
           method: 'GET',
         });
@@ -86,20 +88,19 @@ function LearningPage() {
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchOfficialCourses();
     if (user != null) {
       fetchUserCourses();
-      
-    } 
+    } else {
+      setLoading(false); // If no user, set loading to false
+    }
   }, []);
 
   const handleCardClick = (course) => {
-    navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions,courseId:course.id,course } });
+    navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions, courseId: course.id, course } });
   };
 
   const handleDelete = async (courseId, courseName) => {
@@ -111,7 +112,6 @@ function LearningPage() {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': basicAuth,
-           
           }
         });
         if (response.ok) {
@@ -126,66 +126,84 @@ function LearningPage() {
       }
     }
   };
+useEffect(() => {
+console.log("loading happing "+loading);
+}, [loading])
 
   return (
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        <p style={{marginLeft:10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
+        <p style={{ marginLeft: 10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
           <hr />
         </p>
-      {userCourses[0] && 
-       <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-            Resume Preparation
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-            {userCourses.map((course, index) => (
-              <YourProgressCard
-                key={index}
-                title={course.title}
-                progress={course.progress}
-                totalQuestions={course.totalQuestions}
-                rating={course.rating}
-                completeQuestions={course.completeQuestions}
-                course={course}
-                style={{ width: `${maxCardWidth}px` }}
-              />
-            ))}
-            {!userCourses[0] && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
-          </div>  
-        </div>}
-
-        <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-            Basic
-          </p>
-          {officialCourses[0] && <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-            {officialCourses.map((course, index) => {
-              if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
-                return (
-                  <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
-                    <ImgMediaCard
-                      id={course.id}
+        {loading ? (
+         
+          <BoxLoder /> 
+       
+        ) : (
+          <>
+            {userCourses[0] && (
+              <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+                <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+                  Resume Preparation
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                  {userCourses.map((course, index) => (
+                    <YourProgressCard
+                      key={index}
                       title={course.title}
-                      image={course.image}
-                      description={course.description}
+                      progress={course.progress}
                       totalQuestions={course.totalQuestions}
-                      handleDelete={handleDelete} // Pass handleDelete function
-                      courseId={course.id} // Pass course ID
-                      courseName={course.title} // Pass course name
-                      permission={course.permission}
+                      rating={course.rating}
+                      completeQuestions={course.completeQuestions}
+                      course={course}
+                      style={{ width: `${maxCardWidth}px` }}
                     />
-                  </div>
-                );
-              } else {
-                return null;
-              }
-            })}
-            {!officialCourses[0] && <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
-          </div>}
-        </div>
+                  ))}
+                  {!userCourses[0] && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
+                </div>
+              </div>
+            )}
+
+            <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+              <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+                Basic
+              </p>
+              {officialCourses[0] && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                  {officialCourses.map((course, index) => {
+                    if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
+                      return (
+                        <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+                          <ImgMediaCard
+                            id={course.id}
+                            title={course.title}
+                            image={course.image}
+                            description={course.description}
+                            totalQuestions={course.totalQuestions}
+                            handleDelete={handleDelete} // Pass handleDelete function
+                            courseId={course.id} // Pass course ID
+                            courseName={course.title} // Pass course name
+                            permission={course.permission}
+                          />
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                  {!officialCourses[0] && (
+                    <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }}>
+                      <CircularProgress />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </PageContainer>
   );

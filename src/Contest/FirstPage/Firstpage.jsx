@@ -8,6 +8,7 @@ import NavBar from './navbar';
 import Footer2 from '../../home/Footer2';
 import "/src/App.css";
 import CreateButton from '../../Buttons/CreateButton';
+import BoxLoder from '/src/Loder/BoxLoder'; // Import BoxLoder
 
 function Firstpage() {
   const [contests, setContests] = useState([]);
@@ -16,6 +17,7 @@ function Firstpage() {
   const [navHeading, setNavHeading] = useState("Upcoming Contests");
   const scrollContainerRef = useRef(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // Initialize loading to true
 
   useEffect(() => {
     const headings = [
@@ -37,6 +39,9 @@ function Firstpage() {
       })
       .catch(error => {
         console.error('There was an error fetching the contest data!', error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false after data is fetched
       });
   }, []);
 
@@ -44,6 +49,7 @@ function Firstpage() {
     console.log("click");
     navigate(`/ContestDetails/${id}`);
   };
+
   const handleCreateContestClick = () => {
     console.log("click");
     navigate(`/create-contest`);
@@ -69,25 +75,26 @@ function Firstpage() {
       <section className="featured-opportunities">
         <p className="separator"></p>
         <img src="bannerImageContest.png" alt="CFC Contest page" />
-        {/* <p className="separator"></p> */}
-
         <div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
-          <p style={{ paddingTop: 30, fontSize: "20px" }}>Launch your tailored competition or quiz effortlessly <strong> create </strong>  your own custom challenge now.</p>
+          <p style={{ paddingTop: 30, fontSize: "20px" }}>Launch your tailored competition or quiz effortlessly <strong> create </strong> your own custom challenge now.</p>
           <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Host Contest"} /></div>
         </div>
-        
 
         <div className="navbar-container">
           <p className="separator"></p>
           <NavBar setnavbar={setNavbar} />
           <h2>{navHeading}</h2>
-          <div className="contest-list2" ref={scrollContainerRef}>
-            <button className="scroll-button left" onClick={() => scroll(-600)}>&lt;</button>
-            {contests.map(contest => (
-              <ContestCard key={contest.id} contest={contest} onClick={() => handleContestClick(contest.id)} />
-            ))}
-            <button className="scroll-button right" onClick={() => scroll(600)}>&gt;</button>
-          </div>
+          {loading ? (
+            <BoxLoder /> // Show BoxLoder while loading
+          ) : (
+            <div className="contest-list2" ref={scrollContainerRef}>
+              <button className="scroll-button left" onClick={() => scroll(-600)}>&lt;</button>
+              {contests.map(contest => (
+                <ContestCard key={contest.id} contest={contest} onClick={() => handleContestClick(contest.id)} />
+              ))}
+              <button className="scroll-button right" onClick={() => scroll(600)}>&gt;</button>
+            </div>
+          )}
         </div>
 
         <div className="heading">
@@ -102,9 +109,7 @@ function Firstpage() {
             ))}
           </div>
         </div>
-       
       </section>
-      
       <Footer2 />
     </div>
   );

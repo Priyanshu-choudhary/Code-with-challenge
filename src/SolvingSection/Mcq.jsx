@@ -19,8 +19,10 @@ export default function Mcq({ title, options, onOptionSelect, reset }) {
     setValue(selectedValue);
     setHelperText(' ');
     setError(false);
-    onOptionSelect(value);
   };
+useEffect(() => {
+  onOptionSelect(value);
+}, [value])
 
   useEffect(() => {
     if (reset) {

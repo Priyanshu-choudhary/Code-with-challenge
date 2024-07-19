@@ -243,8 +243,10 @@ const MyEditor = forwardRef(
       setisCorrect(allPass);
     }, [answer, output.output]);
 
+
+    
     useEffect(() => {
-      // console.log("ans= "+answer);
+       console.log("ans= "+answer);
       if (!answer) {
         checkAnswer();
       } else {

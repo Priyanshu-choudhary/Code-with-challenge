@@ -92,7 +92,7 @@ console.log(id);
               color: bg,
               // Darker shade on hover
             },
-          }}>Star</Button>
+          }}>Start</Button>
         {role == "ADMIN" ? <Button
           variant="contained"
           color="primary" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'

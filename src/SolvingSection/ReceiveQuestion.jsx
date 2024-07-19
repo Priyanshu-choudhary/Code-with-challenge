@@ -137,6 +137,9 @@ function QuestionApi() {
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []); // Empty dependency array ensures this runs only once on mount
 
+useEffect(() => {
+ console.log("select> "+selectedOption);
+}, [selectedOption])
 
 
   useEffect(() => {
@@ -196,7 +199,9 @@ function QuestionApi() {
 
   const checkAnswer = async () => {
     setLoading(true);
-    console.log("answer" + answer);
+    console.log("answer>> " + answer);
+    console.log("selectedOption>> " + selectedOption);
+
     if (selectedOption == answer) {
       try {
         const progress = 0; // Example progress value, replace with actual logic
@@ -323,7 +328,7 @@ const userContestDetailsCreate= async ()=>{
     console.log('contest created:', data);
     setcontestStartDate(data.date)
     
-    // console.log("date on which contest created "+data.date);
+ 
   } catch (error) {
     console.error('Error creating contest:', error);
     throw error; // Rethrow the error to handle it in the calling component
@@ -331,8 +336,8 @@ const userContestDetailsCreate= async ()=>{
 
 }
 useEffect(() => {
-  console.log("date on which contest created "+contestStartDate);
-}, [contestStartDate])
+  console.log("ans "+answer);
+}, [])
 
 useEffect(() => {
   if (detailsType=="Contest") {
@@ -592,7 +597,7 @@ useEffect(() => {
             <div>
               {optionA ?
                 <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-                  Submit
+                  Submit mcq
                   {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
                 </Button>
                 :

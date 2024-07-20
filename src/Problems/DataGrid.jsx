@@ -8,7 +8,7 @@ import Tags from '../UploadSection/Tags';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
-import BoxLoder from '../Loder/BoxLoder';
+import BoxLoader from '../Loader/BoxLoader';
 
 
 const ODD_OPACITY = 0.2;
@@ -269,7 +269,7 @@ export default function StripedGrid() {
                     </Grid>
                 </Grid>
                 {isLoading ? (
-                   <BoxLoder/>
+                   <BoxLoader/>
                 ) : (
                     <ThemeProvider theme={darkTheme}>
                         <StripedDataGrid

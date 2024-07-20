@@ -161,7 +161,7 @@
     color: hsl(224, 30%, 27%);
   }
   
-  .btn {
+  .Resultbtn {
     width: 100%;
     padding: 10px;
     color: #ffffff;
@@ -177,7 +177,7 @@
     transition: all 0.3s;
   }
   
-  .btn:hover {
+  .Resultbtn:hover {
     transform: translateY(5px);
     background-image: linear-gradient(to left, #aa076b, #61045f);
   }

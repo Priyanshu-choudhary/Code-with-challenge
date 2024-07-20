@@ -8,7 +8,7 @@ import NavBar from './navbar';
 import Footer2 from '../../home/Footer2';
 import "/src/App.css";
 import CreateButton from '../../Buttons/CreateButton';
-import BoxLoder from '/src/Loder/BoxLoder'; // Import BoxLoder
+import BoxLoader from '/src/Loader/BoxLoader'; // Import BoxLoader
 
 function Firstpage() {
   const [contests, setContests] = useState([]);
@@ -85,7 +85,7 @@ function Firstpage() {
           <NavBar setnavbar={setNavbar} />
           <h2>{navHeading}</h2>
           {loading ? (
-            <BoxLoder /> // Show BoxLoder while loading
+            <BoxLoader /> // Show BoxLoader while loading
           ) : (
             <div className="contest-list2" ref={scrollContainerRef}>
               <button className="scroll-button left" onClick={() => scroll(-600)}>&lt;</button>

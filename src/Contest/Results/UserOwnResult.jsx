@@ -33,7 +33,7 @@ function UserOwnResult({totalParticipants,yourRank}) {
             <div className="result-text-box">
               <div className="heading-secondary">excellent</div>
               <p className="paragraph">
-                You scored higher than <strong style={{color:"yellow"}}>{yourRank/totalParticipants*100}% </strong>of the people who have taken these tests.
+                You are in Top <strong style={{color:"yellow"}}>{(totalParticipants-yourRank+1)/totalParticipants*100}% </strong>of the people who have taken these tests.
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ function UserOwnResult({totalParticipants,yourRank}) {
                 <div className="result-box"><span>72</span> / 100</div>
               </div>
               <div className="summary__cta">
-                <button className="btn btn__continue">Continue</button>
+                <button className="Resultbtn btn__continue">Continue</button>
               </div>
             </div>
           </div>

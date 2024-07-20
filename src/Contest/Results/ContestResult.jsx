@@ -36,11 +36,11 @@ function ContestResult() {
           const data = await response.json();
           console.log("data "+JSON.stringify(data));
           const participantNames = data.map(participant => participant.name);
-          const userIndex = participantNames.indexOf(user.name); // Assuming `user.name` is available in context
+          const userIndex = participantNames.indexOf(user); // Assuming `user.name` is available in context
 
           setParticipants(participantNames);
           setContestName(data[0].contestDetails[0].nameOfContest);
-          setUserRank(userIndex + 1); // Rank is 1-based
+          setUserRank(userIndex); 
           setResponseOk(true);
         } else {
           setResponseOk(false);
@@ -54,7 +54,7 @@ function ContestResult() {
     };
 
     fetchUserBasedOnContestName();
-  }, [contest.nameOfContest, user.name]);
+  }, [contest.nameOfContest, user]);
 
   return (
     <>

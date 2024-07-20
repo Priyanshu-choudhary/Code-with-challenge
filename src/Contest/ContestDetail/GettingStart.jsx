@@ -7,7 +7,7 @@ function GettingStart({ days, hours, minutes, isRegistered, contest }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (days <= 250 && hours <= 100) {
+        if (days <= 330 && hours <= 100) {
             setisStart(true);
         } else {
             setisStart(false);

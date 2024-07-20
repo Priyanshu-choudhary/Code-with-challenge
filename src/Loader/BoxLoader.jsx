@@ -1,6 +1,6 @@
 import React from 'react'
-import "/src/boxLoder.css";
-function BoxLoder() {
+import "/src/BoxLoader.css";
+function BoxLoader() {
     return (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center" ,height:"100vh"}} >
             <div className="loader">
@@ -36,4 +36,4 @@ function BoxLoder() {
     )
 }
 
-export default BoxLoder
+export default BoxLoader

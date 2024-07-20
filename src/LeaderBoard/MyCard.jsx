@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import './style.css'; // Assuming style.css contains .shine-effect styling
+import BoxLoader from '../Loader/BoxLoader';
 
 const cardStyles = {
   container: (index) => ({
@@ -79,7 +80,10 @@ function UserCard({ userId, index }) {
   }, [userId]);
 
   if (!user) {
-    return <p>Loading...</p>;
+    return (
+      <div style={{backgroundColor:"black"}}>
+        <BoxLoader />
+      </div>);
   }
 
   const handleCardClick = () => {
@@ -100,7 +104,7 @@ function UserCard({ userId, index }) {
           sx={{ width: 80, height: 80, border: '2px solid #03BFCB' }}
         />
       </div>
-      <h3 style={{  color: "black", fontWeight: "bolder" }}>{user.name}</h3>
+      <h3 style={{ color: "black", fontWeight: "bolder" }}>{user.name}</h3>
       <h6>{user.location}</h6>
       <p>{user.collage}</p>
       <p>{user.city}</p>

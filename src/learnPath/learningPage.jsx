@@ -6,7 +6,7 @@ import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
 import styled from 'styled-components';
 import { CircularProgress, Button } from '@mui/material';
-import BoxLoder from '../Loder/BoxLoder'; // Import BoxLoder
+import BoxLoader from '../Loader/BoxLoader'; 
 
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
@@ -39,6 +39,9 @@ function LearningPage() {
     });
     setMaxCardWidth(maxWidth * 10); // Adjust the multiplier to account for font size and padding
   }, []);
+useEffect(() => {
+setLoading(true);
+}, [])
 
   useEffect(() => {
     const fetchUserCourses = async () => {
@@ -64,11 +67,12 @@ function LearningPage() {
       } catch (error) {
         console.error('Error fetching user courses:', error);
       } finally {
-        setLoading(false);
+  
       }
     };
 
     const fetchOfficialCourses = async () => {
+      setLoading(true);
       try {
         const response = await fetch('https://hytechlabs.online:9090/Course/OfficialCources', {
           method: 'GET',
@@ -88,6 +92,8 @@ function LearningPage() {
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
+      }  finally {
+        setLoading(false);
       }
     };
 
@@ -95,7 +101,7 @@ function LearningPage() {
     if (user != null) {
       fetchUserCourses();
     } else {
-      setLoading(false); // If no user, set loading to false
+      // setLoading(false); // If no user, set loading to false
     }
   }, []);
 
@@ -138,9 +144,10 @@ console.log("loading happing "+loading);
           Learn Skills
           <hr />
         </p>
+        
         {loading ? (
+         <BoxLoader /> 
          
-          <BoxLoder /> 
        
         ) : (
           <>

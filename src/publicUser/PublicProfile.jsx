@@ -6,6 +6,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
+import BoxLoader from '../Loader/BoxLoader';
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 
@@ -60,7 +61,7 @@ const PublicProfile = () => {
       <Dashboard />
       {isLoading ? (
         <div className="loading-screen">
-          <CircularProgress />
+          <BoxLoader />
         </div>
       ) : (
         <Grid container spacing={3} style={{ marginRight: "3px" }}>

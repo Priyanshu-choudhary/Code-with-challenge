@@ -30,9 +30,8 @@ const navigation = [
     { name: 'Learn', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
-    { name: 'contest', href: '/contest', current: false },
+    { name: 'Contest', href: '/contest', current: false },
     { name: 'Upload', href: '/Upload', current: false },
-
 ]
 
 // User menu items

@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MyCard from './MyCard';
 import { UserContext } from '../Context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import BoxLoader from '../Loader/BoxLoader';
 
 const darkTheme = createTheme({
     palette: {
@@ -170,7 +171,7 @@ export default function LeaderBoard() {
         <div style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {loading ?<BoxLoader/>:<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ width: '67%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
@@ -196,7 +197,7 @@ export default function LeaderBoard() {
                         />
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

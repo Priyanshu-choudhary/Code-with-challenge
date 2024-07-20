@@ -18,6 +18,7 @@ import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project st
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import CreateIcon from '@mui/icons-material/Create';
+import BoxLoader from '../Loader/BoxLoader';
 
 const LeetCodeClone = () => {
   const [problems, setProblems] = useState([]);
@@ -354,7 +355,7 @@ const LeetCodeClone = () => {
                           </div>
                         ))}
                       </div>
-                    ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><CircularProgress /></div>}
+                    ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><BoxLoader /></div>}
                   </div>
                 ) : responseOk ? (
                   <div className="problem-list" style={{ color: ibg }}>

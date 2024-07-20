@@ -6,9 +6,11 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import ValidationTextFields from './EditProfile';
 import Avatar from '@mui/material/Avatar';
-import { deepPurple } from '@mui/material/colors';
 import CircularProgress from '@mui/material/CircularProgress';
 import BoxLoader from '../Loader/BoxLoader';
+import Modal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 
@@ -18,6 +20,7 @@ const YourProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
   const [lastModified, setLastModified] = useState(null); // State to store the last modified time
+  const [open, setOpen] = useState(false); // State for modal open/close
   const navigate = useNavigate();
   const { bg, bc, dark, light, ibg, user, password, role, profileImage } = useContext(UserContext);
   const [userData, setUserData] = useState({});
@@ -30,12 +33,11 @@ const YourProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const localProblems = JSON.parse(localStorage.getItem('problems'));
         const localLastModified = localStorage.getItem('lastModified');
         const localUserData = JSON.parse(localStorage.getItem('userData'));
         const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        console.log(user+" "+password);
+        console.log(user + " " + password);
         if (localProblems && localUserData) {
           setProblems(localProblems);
           setNoOfQuestion(localProblems.length);
@@ -65,21 +67,19 @@ const YourProfile = () => {
           }
           localStorage.setItem('problems', JSON.stringify(problemsData));
         }
-      }catch(error){
+      } catch (error) {
         console.error("Error fetching user posts:", error);
       }
 
-
-      try{
+      try {
         // Fetch user data
         const userResponse = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`, {
           method: 'GET',
-         
         });
 
         if (userResponse.status === 200) {
           const userData = await userResponse.json();
-          console.log("userdata>>>>"+JSON.stringify(userData));
+          console.log("userdata>>>>" + JSON.stringify(userData));
           setUserData(userData);
 
           // Set avatar name (e.g., first letter of the user's name)
@@ -103,7 +103,11 @@ const YourProfile = () => {
   const toggleForm = () => {
     setShowForm(!showForm);
   };
-console.log("userdata "+userData.profileImg);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  console.log("userdata " + userData.profileImg);
   return (
     <div style={{ backgroundColor: bg }}>
       <Dashboard />
@@ -118,7 +122,7 @@ console.log("userdata "+userData.profileImg);
               <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="p-4" style={{ backgroundColor: light, color: ibg }}>
                   <div className="text-center">
-                    <div className="inline-block relative">
+                    <div className="inline-block relative" onClick={handleOpen} style={{ cursor: 'pointer' }}>
                       {profileImage ? (
                         <Avatar alt={userData.name} src={userData.profileImg} sx={{ width: 120, height: 120 }} />
                       ) : (
@@ -150,7 +154,6 @@ console.log("userdata "+userData.profileImg);
                     Instagram <br />
                     Linkdin
                   </div>
-
                 </div>
               </div>
             </div>
@@ -207,6 +210,25 @@ console.log("userdata "+userData.profileImg);
           </div>
         </div>
       )}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        // BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className="modal-image-content">
+            {profileImage ? (
+              <img src={userData.profileImg} alt={userData.name} className="modal-image" />
+            ) : (
+              <Avatar style={{ fontSize: "150px" }} sx={{ bgcolor: bc, width: 300, height: 300 }}>{avatarName}</Avatar>
+            )}
+          </div>
+        </Fade>
+      </Modal>
     </div>
   );
 };

@@ -5,8 +5,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Avatar from '@mui/material/Avatar';
-import CircularProgress from '@mui/material/CircularProgress';
 import BoxLoader from '../Loader/BoxLoader';
+import Modal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 
@@ -14,6 +16,7 @@ const PublicProfile = () => {
   const [problems, setProblems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
+  const [open, setOpen] = useState(false); // State for modal open/close
   const navigate = useNavigate();
   const location = useLocation(); // Get the location object
   const { userId } = location.state; // Retrieve userId from location.state
@@ -56,6 +59,9 @@ const PublicProfile = () => {
     navigate(`/question/${problem.id}`, { state: problem });
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <div style={{ backgroundColor: bg }}>
       <Dashboard />
@@ -70,13 +76,13 @@ const PublicProfile = () => {
               <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="p-4" style={{ backgroundColor: light, color: ibg }}>
                   <div className="text-center">
-                    <div className="inline-block relative">
-                    {userData.profileImg ? (
+                    <div className="inline-block relative" onClick={handleOpen} style={{ cursor: 'pointer' }}>
+                      {userData.profileImg ? (
                         <Avatar alt={userData.name} src={userData.profileImg} sx={{ width: 120, height: 120 }} />
                       ) : (
                         <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
                       )}
-                      </div>
+                    </div>
                     <h2 className="mt-2 text-lg font-semibold text-gray-900" style={{ backgroundColor: light, color: ibg }}>{userData.name}</h2>
                     <p className="mt-1 text-sm text-gray-600" style={{ backgroundColor: light, color: ibg }}>Rating: {userData.rating}</p>
                   </div>
@@ -149,6 +155,39 @@ const PublicProfile = () => {
           </Grid>
         </Grid>
       )}
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '40%', 
+            backgroundColor: 'white',
+            // boxShadow: 24,
+            // padding: 'px',
+            // outline: 'none',
+            textAlign: 'center',
+          }}>
+            {userData.profileImg ? (
+              <img src={userData.profileImg} alt={userData.name} style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />
+            ) : (
+              <Avatar style={{ fontSize: "70px", width: '100%', height: 'auto' }} sx={{ bgcolor: bc }}>{avatarName}</Avatar>
+            )}
+          </div>
+        </Fade>
+      </Modal>
     </div>
   );
 };

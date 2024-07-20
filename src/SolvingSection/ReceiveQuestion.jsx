@@ -437,12 +437,12 @@ useEffect(() => {
           <div style={{ display: "flex" }}>
             <KeyboardDoubleArrowRightIcon fontSize='large' style={{ marginTop: 13, marginLeft: 20, borderRadius: 10, borderColor: ibg, borderRadius: "10px 10px 0px 0px", borderWidth: 1 }} onClick={() => state2 ? setState2(false) : setState2(true)} />
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
-            {!detailsType == "Contest" &&
+            
               <div>
                 <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
                 <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
               </div>
-            }
+            
             <div style={{ marginTop: 15 }}>
               <MiniProblemDrawerComponent contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
             </div>

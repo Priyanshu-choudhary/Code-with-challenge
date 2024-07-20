@@ -32,6 +32,7 @@ import ContestEdit from './Contest/Create/CreateContest';
 import ContestProblemList from './Contest/Problems/ContestProblemList';
 import ContestResult from './Contest/Results/ContestResult';
 import Maintenance from './Maintenance/Maintenance'; // Ensure correct import path
+import NewLeaderboard from './LeaderBoard/NewLeaderboard';
 
 function App() {
   const location = useLocation();
@@ -55,7 +56,7 @@ function App() {
             <Route path="/loginOld" element={<LoginUser />} />
             <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
             <Route path="/Data" element={<MyDataGrid />} />
-            <Route path="/leaderboard" element={<LeaderBoard />} />
+            <Route path="/Leaderboard2" element={<LeaderBoard />} />
             <Route path="/learn" element={<LearningPage />} />
             <Route path="/publicProfile" element={<PublicProfile />} />
             <Route path="/register" element={<Testing />} />
@@ -70,6 +71,7 @@ function App() {
             <Route path="/create-contest" element={<ContestEdit />} />
             <Route path="/contestProblemsList" element={<ContestProblemList />} />
             <Route path="/ContestResults/findBy" element={<ContestResult />} />
+            <Route path="/leaderboard" element={<NewLeaderboard />} />
           </Routes>
         </FormProvider>
       </UserProvider>

@@ -353,7 +353,7 @@ const LeetCodeClone = () => {
                           </div>
                         ))}
                       </div>
-                    ) : <div style={{ position: "fixed", top: "50%", left: "30%", transform: "translate(-50%, -50%)", textAlign: "center" }}><BoxLoader /></div>}
+                    ) : <BoxLoader />}
                   </div>
                 ) : responseOk ? (
                   <div className="problem-list" style={{ color: ibg }}>

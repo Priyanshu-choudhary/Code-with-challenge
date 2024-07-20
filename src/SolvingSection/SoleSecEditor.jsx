@@ -233,7 +233,7 @@ const MyEditor = forwardRef(
     const checkAnswer = useCallback(() => {
       console.log("only ans check "+answer);
       let allPass = false;
-      if (output.output === answer) {
+      if (output.output == answer) {
         allPass = true;
         setbgColor('lightgreen');
       } else {
@@ -247,7 +247,8 @@ const MyEditor = forwardRef(
     
     useEffect(() => {
        console.log("ans= "+answer);
-      if (!answer) {
+       console.log("is correct "+isCorrect);
+      if (answer[0]) {
         checkAnswer();
       } else {
         checkTestcaseAnswer();

@@ -68,7 +68,7 @@ function GoogleAuth() {
       localStorage.setItem('user', JSON.stringify(userObject.name));
       localStorage.setItem('password', key);
       localStorage.setItem('role', userRole);
-      localStorage.setItem('profileImage', userObject.picture);
+      localStorage.setItem('profileImage', "userObject.picture");
       
       navigate('/yourProfile'); // Navigate only if login is successful
   } catch (error) {

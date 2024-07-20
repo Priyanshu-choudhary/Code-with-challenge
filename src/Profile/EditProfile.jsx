@@ -59,6 +59,7 @@ const ValidationTextFields = () => {
                     ...prevData,
                     profileImg: reader.result, // Update profileImg with base64 string
                 }));
+                
             };
             reader.readAsDataURL(file);
         }

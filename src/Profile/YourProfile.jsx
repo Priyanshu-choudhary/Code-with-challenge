@@ -103,7 +103,7 @@ const YourProfile = () => {
   const toggleForm = () => {
     setShowForm(!showForm);
   };
-
+console.log("userdata "+userData.profileImg);
   return (
     <div style={{ backgroundColor: bg }}>
       <Dashboard />
@@ -120,7 +120,7 @@ const YourProfile = () => {
                   <div className="text-center">
                     <div className="inline-block relative">
                       {profileImage ? (
-                        <Avatar alt={userData.name} src={profileImage} sx={{ width: 120, height: 120 }} />
+                        <Avatar alt={userData.name} src={userData.profileImg} sx={{ width: 120, height: 120 }} />
                       ) : (
                         <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
                       )}

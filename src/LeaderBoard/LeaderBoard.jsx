@@ -70,7 +70,7 @@ export default function LeaderBoard() {
             })
             .then(data => {
                 console.log('Fetched data:', data);
-
+// console.log("user image data "+user.profileImg);
                 if (Array.isArray(data)) {
                     const filteredData = data.filter(user => !excludeUsers.includes(user.name));
 

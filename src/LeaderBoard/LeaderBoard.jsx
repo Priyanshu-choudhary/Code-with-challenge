@@ -58,7 +58,7 @@ export default function LeaderBoard() {
     const navigate = useNavigate();
 
     // Define an array of usernames to exclude
-    const excludeUsers = ["OfficialCources", "ProblemSet"];
+    const excludeUsers = ["OfficialCources", "ProblemSet","Contest"];
 
     useEffect(() => {
         fetch('https://hytechlabs.online:9090/Public/getAllUser')

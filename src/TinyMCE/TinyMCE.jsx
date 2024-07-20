@@ -24,7 +24,7 @@ export default function Tinymce({ setDescription, initialValue }) {
                 autosave_ask_before_unload: true,
                 powerpaste_allow_local_images: true,
                 plugins: [
-                    'a11ychecker', 'advcode', 'advlist', 'anchor', 'autolink', 'codesample', 'fullscreen', 'help',
+                    'a11ychecker', 'advcode', 'advlist', 'anchor', 'autolink', 'codesample', 'fullscreen',
                     'image', 'editimage', 'lists', 'link', 'fontselect', 'fontsizeselect', 'media', 'powerpaste', 'preview', 'searchreplace',
                     'table', 'tinymcespellchecker', 'visualblocks', 'wordcount', 'emoticons', 'insertdatetime',
                     'print', 'save', 'textcolor', 'colorpicker', 'charmap'
@@ -34,14 +34,14 @@ export default function Tinymce({ setDescription, initialValue }) {
                 spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
                 menu: {
-                    file: { title: 'File', items: 'newdocument restoredraft | preview | print | save' },
+                   
                     edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall' },
                     view: { title: 'View', items: 'code | visualaid visualblocks' },
                     insert: { title: 'Insert', items: 'image link media emoticons charmap codesample inserttable' },
                     format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | formats | removeformat' },
                     tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | code wordcount' },
                     table: { title: 'Table', items: 'inserttable | cell row column' },
-                    help: { title: 'Help', items: 'help' }
+                   
                 },
                 file_picker_callback: (callback, value, meta) => {
                     if (meta.filetype === 'image') {
@@ -83,9 +83,14 @@ export default function Tinymce({ setDescription, initialValue }) {
     }, []);
 
     return (
-        <>
-        
+        <div >
+        <div style={{position:"absolute",right:10,marginTop:2,paddingBottom:20,paddingRight:50,paddingLeft:50,backgroundColor:"white",zIndex:999,fontSize:20}}>
+           <strong>CFC</strong> 
+        </div>
             <textarea id="editor" defaultValue={initialValue ? initialValue : "<p>Write your Description here.</p>"} />
-        </>
+            <div style={{position:"absolute",right:0,top:854,paddingRight:50,paddingLeft:15,backgroundColor:"white",zIndex:999,fontSize:14}}>
+          build by <strong>CFC</strong> 
+        </div>
+        </div>
     );
 }

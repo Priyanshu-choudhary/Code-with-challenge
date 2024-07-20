@@ -220,9 +220,20 @@ const YourProfile = () => {
         }}
       >
         <Fade in={open}>
-          <div className="modal-image-content">
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '40%', 
+            backgroundColor: 'white',
+            // boxShadow: 24,
+            // padding: 'px',
+            // outline: 'none',
+            textAlign: 'center',
+          }}>
             {profileImage ? (
-              <img src={userData.profileImg} alt={userData.name} className="modal-image" />
+              <img src={userData.profileImg} alt={userData.name} className="modal-image" style={{ width: '100%', height: 'auto', borderRadius: '10px' }}/>
             ) : (
               <Avatar style={{ fontSize: "150px" }} sx={{ bgcolor: bc, width: 300, height: 300 }}>{avatarName}</Avatar>
             )}

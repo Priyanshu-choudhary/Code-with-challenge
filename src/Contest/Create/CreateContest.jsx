@@ -90,9 +90,9 @@ export default function ContestEdit() {
         const apiUrl = isEditMode
             ? `https://hytechlabs.online:9090/Contest/id/${contestDetail.id}`
             : 'https://hytechlabs.online:9090/Contest';
-        
+
         const method = isEditMode ? 'put' : 'post';
-        
+
         try {
             console.log("form data " + JSON.stringify(formData));
             const response = await axios({
@@ -115,7 +115,24 @@ export default function ContestEdit() {
             setLoading(false);
         }
     };
+    const setDescription = (content) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            description: content,
+        }));
+        // console.log("change");
+    };
 
+    useEffect(() => {
+        const setDescription = (content) => {
+            setFormData((prevData) => ({
+                ...prevData,
+                description: content,
+            }));
+            // console.log("change");
+        };
+
+    }, [])
     return (
         <>
             <Dashboard />
@@ -148,7 +165,9 @@ export default function ContestEdit() {
                     InputLabelProps={{ shrink: true }}
                 />
                 <p style={{ marginTop: 40, marginBottom: 10 }}>Add description:</p>
-                <Tinymce initialValue={formData.description} setDescription={(content) => setFormData({ ...formData, description: content })} />
+
+                <Tinymce initialValue={formData.description} setDescription={setDescription} />
+
                 <TextField
                     id="fee"
                     label="Fee"

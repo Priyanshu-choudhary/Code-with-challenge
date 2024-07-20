@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import LoginUser from './loginSigin/NewForm/LoginUserGUI';
 // import EditorPosts from './UploadSection/UploadQ';
 import Home from './home/Home';
@@ -30,15 +31,13 @@ import TestScreen from './Contest/TestScreen';
 import ContestEdit from './Contest/Create/CreateContest';
 import ContestProblemList from './Contest/Problems/ContestProblemList';
 import ContestResult from './Contest/Results/ContestResult';
+import Maintenance from './Maintenance/Maintenance'; // Ensure correct import path
 
 function App() {
-  console.log("app rerender");
-
   const location = useLocation();
 
   useEffect(() => {
     logPageView();
-    console.log("it is triggering..");
   }, [location]);
 
   return (
@@ -71,7 +70,6 @@ function App() {
             <Route path="/create-contest" element={<ContestEdit />} />
             <Route path="/contestProblemsList" element={<ContestProblemList />} />
             <Route path="/ContestResults/findBy" element={<ContestResult />} />
-            
           </Routes>
         </FormProvider>
       </UserProvider>
@@ -80,6 +78,32 @@ function App() {
 }
 
 function AppWrapper() {
+  const [isServerUp, setIsServerUp] = useState(true);
+  const [response2, setResponse] = useState("");
+
+  const checkBackendHealth = async () => {
+    try {
+      const response = await axios.get('https://hytechlabs.online:9090/Public/HealthCheck');
+      setIsServerUp(response.data === 'Ok!');
+      setResponse(response.data);
+      console.log("Server response:", response.data);
+    } catch (error) {
+      console.error("Server response error:", error.message);
+      setIsServerUp(false);
+    }
+  };
+
+  useEffect(() => {
+    checkBackendHealth();
+    const intervalId = setInterval(checkBackendHealth, 300000); // Check every 5 minutes
+    console.log("Checking server health...");
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, []);
+
+  if (!isServerUp) {
+    return <Maintenance />;
+  }
+
   return (
     <Router>
       <App />

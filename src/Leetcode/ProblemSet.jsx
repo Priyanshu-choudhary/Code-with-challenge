@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import './LeetcodeClone.css';
+import '/src/LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
@@ -8,11 +8,9 @@ import { CircularProgress, Button } from '@mui/material';
 
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
-import MarkdownDisplay from './MarkdownFormate';
 import DoneIcon from '@mui/icons-material/Done'; // Import done icon
-import ReactMarkdown from 'react-markdown';
+
 import remarkGfm from 'remark-gfm';
-import './markdownCSS.css';
 import Test from './test';
 import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

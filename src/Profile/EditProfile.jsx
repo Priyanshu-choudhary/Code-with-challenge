@@ -7,17 +7,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { UserContext } from '../Context/UserContext';
 
 const ValidationTextFields = () => {
-    const { bg,bc,ibg,dark,light,user, password } = useContext(UserContext);
+    const { bg, bc, ibg, dark, light, user, password } = useContext(UserContext);
     const [existingData, setExistingData] = useState({});
     const [formData, setFormData] = useState({
         email: '',
         number: '',
-        collage: '',
+        college: '',
         branch: '',
         year: '',
         skills: '',
         name: user,
         password: password,
+        profileImg: '', // Add profileImg to form data
     });
     const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +28,6 @@ const ValidationTextFields = () => {
             try {
                 const response = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`, {
                     method: 'GET',
-                   
                 });
                 const data = await response.json();
                 setExistingData(data);
@@ -50,19 +50,32 @@ const ValidationTextFields = () => {
         }));
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    profileImg: reader.result, // Update profileImg with base64 string
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Merge existing data with form data, excluding user and password
         const updatedData = {
-            // ...existingData,
             ...formData,
         };
 
         try {
             const url = 'https://hytechlabs.online:9090/users';
             updatedData.password = password;
-            console.log("user>>>> "+user+" password "+password);
+            console.log("user>>>> " + user + " password " + password);
             const headers = new Headers();
             headers.set('Content-Type', 'application/json');
             headers.set('Authorization', 'Basic ' + btoa(user + ":" + password));
@@ -144,10 +157,10 @@ const ValidationTextFields = () => {
                     />
                     <TextField
                         id="standard-required"
-                        label="Collage"
+                        label="College"
                         name="college"
                         variant="standard"
-                        value={formData.collage}
+                        value={formData.college}
                         onChange={handleChange}
                     />
                     <TextField
@@ -160,8 +173,20 @@ const ValidationTextFields = () => {
                         value={formData.skills}
                         onChange={handleChange}
                     />
+                    <input
+                        accept="image/*"
+                        type="file"
+                        onChange={handleFileChange}
+                        style={{ margin: '1em 0' }}
+                    />
+                    {formData.profileImg &&
+                        <div style={{position:"absolute",right:0,top:"50%"}}>
+                            <img src={`${formData.profileImg}`} alt="profile_img" />
+                        </div>
+                    }
                     <Button style={{ marginTop: "18%" }} variant="contained" endIcon={<SendIcon />} type="submit">
                         Save
+
                     </Button>
                 </div>
             </Box>

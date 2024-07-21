@@ -6,12 +6,12 @@ export default function Maintenance() {
         <div>
             <div style={{ display: "flex" }}>
                 <div style={{ position: "absolute", right: 10, marginTop: 10 }}>
-                    <img src="server.png" alt="server_maintenance" height={500} width={450} />
+                    <img src="/server.png" alt="server_maintenance" height={500} width={450} />
 
                 </div>
 
                 <div> 
-                    <img src="homeImg.png" alt="CFC_logo" height={500} width={450} />
+                    <img src="/homeImg.png" alt="CFC_logo" height={500} width={450} />
                 </div>
 
                 <div style={{ margin: 50 }}>

@@ -88,9 +88,13 @@ function NewLeaderboard() {
                                 <span className="leaderboard__index">{index + 1}</span>
                                 <img src={user.profileImg} alt={user.name} className="leaderboard__picture" />
                                 <span className="leaderboard__name">{user.name}</span>
-                                <span className="leaderboard__posts">{user.postCount}</span>
+                                <div style={{ position: "absolute", left: 400 }}>
+                                    <span className="leaderboard__posts">{user.postCount}</span>
+                                </div>
                                 <span className="leaderboard__value">
-                                    {user.rating && <div>{user.rating}<span>r</span></div>}
+                                    <div style={{ position: "absolute", left: 580 }}>
+                                        {user.rating && <div>{user.rating}<span>r</span></div>}
+                                    </div>
                                 </span>
                                 {role == "ADMIN" && <button className="leaderboard__delete" onClick={(e) => { e.stopPropagation(); deleteUser(user.id); }}>Delete</button>
                                 }
@@ -99,22 +103,22 @@ function NewLeaderboard() {
                     </main>
                 </article>
             }
-             {!loader &&
-            <div style={{ padding: '20px', position: "absolute", right: 0, top: 250 }}>
-                {selectedUser && (
-                    <div className='card'>
-                       
-                         <MyCard
-                            userId={selectedUser.id}
-                            index={users.indexOf(selectedUser) + 1}
-                            profileImg={selectedUser.profileImg}
-                            name={selectedUser.name}
-                            rating={selectedUser.rating}
-                            postCount={selectedUser.postCount}
-                        />
-                    </div>
-                )}
-            </div>}
+            {!loader &&
+                <div style={{ padding: '20px', position: "absolute", right: 0, top: 250 }}>
+                    {selectedUser && (
+                        <div className='card'>
+
+                            <MyCard
+                                userId={selectedUser.id}
+                                index={users.indexOf(selectedUser) + 1}
+                                profileImg={selectedUser.profileImg}
+                                name={selectedUser.name}
+                                rating={selectedUser.rating}
+                                postCount={selectedUser.postCount}
+                            />
+                        </div>
+                    )}
+                </div>}
         </div>
     );
 }

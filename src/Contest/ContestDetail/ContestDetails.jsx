@@ -34,12 +34,13 @@ import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import GetStartButton from '../../Buttons/GetStart';
 import BoxLoader from '../../Loader/BoxLoader';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function ContestDetails() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [contest, setContest] = useState(null);
-    const { bg, light, dark, user } = useContext(UserContext);
+    const { bg, light, dark, user, password, role } = useContext(UserContext);
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isFav, setisFav] = useState(true);
     const [expandedIndex, setExpandedIndex] = useState(null);
@@ -102,7 +103,7 @@ function ContestDetails() {
     }, [contest]);
 
     if (!contest) {
-        return <BoxLoader/>;
+        return <BoxLoader />;
     }
 
     const handleRegister = () => {
@@ -154,23 +155,55 @@ function ContestDetails() {
             }).catch(console.error);
         }
     };
+    const deleteUser = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this Contest?')) {
+            return;
+        }
+
+        const basicAuth = 'Basic ' + btoa(`Contest:Contest`);
+
+        try {
+            const response = await axios.delete(`https://hytechlabs.online:9090/Contest/id/${id}`, {
+                headers: {
+                    'Authorization': basicAuth
+                }
+            });
+
+            if (response.status === 200) {
+                alert("Contest deleted successfully.");
+            } else {
+                console.error('Error deleting Contest:', response);
+            }
+        } catch (error) {
+            console.error('Error deleting Contest:', error);
+        } finally {
+            navigate('/contest');
+        }
+    };
 
     return (
         <div>
             <Dashboard />
-            <img className="banner-image" src={`/${contest.bannerImage}`} alt={contest.nameOfContest} />
-           
-            <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
-                <AddToPhotosIcon fontSize='large'onClick={() => { navigate(`/contestProblemsList`, { state: { contest } }); }} />
-            </div>
-            <div className="button-86" style={{ position: "absolute", right: 10, top: 90, color: "black" }} >
-                <CreateIcon fontSize='large' onClick={() => { navigate(`/create-contest`, { state: { contestDetail:contest } } )}}  />
-            </div>
+            <img className="banner-image" src={contest.bannerImage} alt={contest.nameOfContest} />
+
+            {role=="ADMIN" &&
+                <div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
+                        <AddToPhotosIcon fontSize='large' onClick={() => { navigate(`/contestProblemsList`, { state: { contest } }); }} />
+                    </div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 90, color: "black" }} >
+                        <CreateIcon fontSize='large' onClick={() => { navigate(`/create-contest`, { state: { contestDetail: contest } }) }} />
+                    </div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 210, color: "black" }} >
+                        <DeleteForeverIcon fontSize='large' onClick={() => { deleteUser(contest.id) }} />
+                    </div>
+                </div>
+            }
 
 
             <div className="contest-header">
                 <div className="contest-header-content">
-                    <img className="logo" src={`/${contest.logo}`} alt="logo" />
+                    <img className="logo" src={contest.logo} alt="logo" />
                     <h2>{contest.nameOfContest} | {contest.nameOfOrganization}</h2>
 
                     <div className="contest-details">
@@ -186,7 +219,7 @@ function ContestDetails() {
                             <CategoryIcon />
                             <p>{contest.type}</p>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -195,7 +228,7 @@ function ContestDetails() {
                 <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} contest={contest} />
             </div>
             <div>
-               <GetStartButton value={"Show Result"} onClick={()=>{navigate(`/ContestResults/findBy`, { state: { contest:contest } } )}}/>
+                <GetStartButton value={"Show Result"} onClick={() => { navigate(`/ContestResults/findBy`, { state: { contest: contest } }) }} />
             </div>
             <div className="content-section">
                 <div className="contest-description3">
@@ -234,9 +267,9 @@ function ContestDetails() {
                         <p>Views: {views}</p>
                     </div>
                     <div className="info-item">
-                            <AccessAlarmsIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }}/>
-                            <p>Duration: {contest.timeDuration} min </p>
-                        </div>
+                        <AccessAlarmsIcon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
+                        <p>Duration: {contest.timeDuration} min </p>
+                    </div>
                     <div className="info-item">
                         <Groups2Icon fontSize='large' style={{ borderRadius: 5, borderWidth: 1.5, borderColor: "lightgray", marginRight: 10 }} />
                         <p>Team Size: {contest.team.length}</p>

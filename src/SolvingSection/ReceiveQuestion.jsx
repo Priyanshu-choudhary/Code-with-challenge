@@ -33,6 +33,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 
 import TestModeHeading from './TestModeHeading';
 import SecurityChecks from '../Contest/Security/SecurityChecks';
+import SubmitButton from '../Buttons/SubmitButton';
 function QuestionApi() {
   const { id, detailsType } = useParams();
   const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
@@ -68,6 +69,8 @@ function QuestionApi() {
   const [dropdownToggle, setdropdownToggle] = useState(false)
   const [resetMcq, setResetMcq] = useState(false);
   const [contestStartDate, setcontestStartDate] = useState("")
+  const [UserDetailsContestId, setUserDetailsContestId] = useState()
+  const [editorValue, seteditorValue] = useState()
   // console.log("type "+detailsType);
   const options = {
     option1: 'ChatGPT',
@@ -262,7 +265,7 @@ function QuestionApi() {
     if (currentProblemIndex > 0) {
       setResetMcq(true);
       setCurrentProblemIndex(currentProblemIndex - 1);
-      setCurrentProblemIndex(currentProblemIndex - 1);
+
       if (editorRef.current) {
         editorRef.current.resetEditorState();
         setResetMcq(true);
@@ -282,99 +285,128 @@ function QuestionApi() {
 
   };
 
-  
-const userContestDetailsCreate= async ()=>{
-  try {
-    // Make API call to create the contest
-    // console.log(user + " " + password);
-    const newContest = {
-      nameOfContest: contest.nameOfContest,
-      nameOfOrganization: contest.nameOfOrganization,
-      date: new Date(),
 
-    };
+  const userContestDetailsCreate = async () => {
+    try {
+      // Make API call to create the contest
+      // console.log(user + " " + password);
+      const newContest = {
+        nameOfContest: contest.nameOfContest,
+        nameOfOrganization: contest.nameOfOrganization,
+        date: new Date(),
 
-    const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-    console.log("contest detail " + JSON.stringify(newContest));
+      };
 
-    const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': basicAuth,
-      },
-      body: JSON.stringify(newContest)
-    });
+      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      console.log("contest detail " + JSON.stringify(newContest));
 
-    const contentType = response.headers.get('content-type');
-    let data;
+      const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': basicAuth,
+        },
+        body: JSON.stringify(newContest)
+      });
 
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      console.error('Unexpected response format:', text);
-      throw new Error('Failed to create contest: Unexpected response format');
-    }
+      const contentType = response.headers.get('content-type');
+      let data;
 
-    if (!response.ok) {
-      throw new Error('Failed to create contest');
-    }
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
 
 
-    console.log('contest created:', data);
-    setcontestStartDate(data.date)
-    
- 
-  } catch (error) {
-    console.error('Error creating contest:', error);
-    throw error; // Rethrow the error to handle it in the calling component
-  }
-
-}
-useEffect(() => {
-  console.log("ans "+answer);
-}, [])
-
-useEffect(() => {
-  if (detailsType=="Contest") {
-    userContestDetailsCreate();
-  }
- 
-}, [])
-
-  const handleSubmitContestQuestion = async () => {
-    if (!currentans.id) {
-      alert('Correctly Run the code First.');
-    } else {
-
-      try {
-        setLoading(true);
-       
-        // const response2 = await update();
-        const response = await axios.post(
-          `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
-          currentans,
-          {
-            auth: {
-              username: user,
-              password: password,
-            },
-          }
-        );
-        console.log('Post created:', response.data);
-        
-        setLoading(false);
-        // setSnackbarOpen(true);
-        setcurrentans('');
-      } catch (error) {
-        console.error('Error upload post to user contest solving:', error);
-        setLoading(false);
-        setcurrentans('');
+      } else {
+        const text = await response.text();
+        console.error('Unexpected response format:', text);
+        throw new Error('Failed to create contest: Unexpected response format');
+      }
+      if (response.ok) {
+        setUserDetailsContestId(data);
+      }
+      if (!response.ok) {
+        throw new Error('Failed to create contest');
       }
 
+
+      console.log('contest created:', data);
+      setcontestStartDate(data.date)
+
+
+    } catch (error) {
+      console.error('Error creating contest:', error);
+      throw error; // Rethrow the error to handle it in the calling component
     }
+
   }
+  useEffect(() => {
+    console.log("ans " + answer);
+  }, [])
+
+  useEffect(() => {
+    if (detailsType == "Contest") {
+      userContestDetailsCreate();
+    }
+
+  }, [])
+
+
+  function generateObjectId() {
+      let timestamp = (new Date().getTime() / 1000 | 0).toString(16);
+      let machineId = 'xxxxxxxxxxxx'.replace(/[x]/g, function() {
+          return (Math.random() * 16 | 0).toString(16);
+      }).toLowerCase();
+      let processId = 'xx';
+      let counter = 'xxxxxxxx'.replace(/[x]/g, function() {
+          return (Math.random() * 16 | 0).toString(16);
+      }).toLowerCase();
+  
+      return timestamp + machineId + processId + counter;
+  }
+  
+  const handleSubmitContestQuestion = async () => {
+    if (!currentans.id) {
+        alert('Correctly Run the code First.');
+    } else {
+        try {
+            setLoading(true);
+            console.log("current ans: " + JSON.stringify(currentans));
+            
+            // Ensure currentans.solution is an object
+            if (!currentans.solution) {
+                currentans.solution = {};
+            }
+
+            // Add the Java solution to the currentans.solution object
+            currentans.solution["java"] = {
+                solution: editorValue
+            };
+            currentans.id=generateObjectId();
+            // Optional: You can add solutions for other languages similarly
+            // currentans.solution["python"] = {
+            //     solution: pythonEditorValue
+            // };
+console.log("current ans "+currentans);
+            const response = await axios.post(
+                `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+                currentans,
+                {
+                    
+                }
+            );
+            console.log('Post created:', response.data);
+
+            setLoading(false);
+            // setSnackbarOpen(true);
+            setcurrentans('');
+        } catch (error) {
+            console.error('Error upload post to user contest solving:', error);
+            setLoading(false);
+            setcurrentans('');
+        }
+    }
+};
+
 
   const handleSubmit = async () => {
     if (!currentans.id) {
@@ -416,14 +448,47 @@ useEffect(() => {
   const handleRunCode = () => {
     if (editorRef.current) {
       editorRef.current.getCode();
+      console.log("code"+editorRef.current.getValue());
     }
   };
-
-
+  const getSolution = (code) => {
+    seteditorValue(code)
+      // console.log("code"+editorRef.current.getValue());
+    
+  }; 
+  useEffect(() => {
+    console.log("code "+editorValue);
+  }, [editorValue])
+  
+  useEffect(() => {
+    // console.log("id data> ", JSON.stringify(UserDetailsContestId.id));
+  }, [UserDetailsContestId])
+  const handleTestSubmit = async () => {
+    try {
+      const endTime = new Date().toISOString();;
+      const response = await axios.put(
+        `https://hytechlabs.online:9090/UserDetailsContest/id/${UserDetailsContestId.id}`,
+        { endTime },
+        {
+          auth: {
+            username: user,
+            password: password,
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("End time updated successfully.");
+      }
+    } catch (error) {
+      console.error("Error updating end time:", error);
+    }finally{
+      navigate("/contest")
+    }
+  };
   return (
     <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
       <br />
-{detailsType == "Contest" && <SecurityChecks/>}
+      {detailsType == "Contest" && <SecurityChecks />}
 
       {detailsType == "Course" &&
         <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
@@ -437,17 +502,20 @@ useEffect(() => {
           <div style={{ display: "flex" }}>
             <KeyboardDoubleArrowRightIcon fontSize='large' style={{ marginTop: 13, marginLeft: 20, borderRadius: 10, borderColor: ibg, borderRadius: "10px 10px 0px 0px", borderWidth: 1 }} onClick={() => state2 ? setState2(false) : setState2(true)} />
             <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
-            
-              <div>
-                <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
-                <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
-              </div>
-            
+
+            <div>
+              <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
+              <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
+            </div>
+
             <div style={{ marginTop: 15 }}>
               <MiniProblemDrawerComponent contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
             </div>
           </div>
 
+          <div style={{ position: "absolute", right: 10, top: 10 }}>
+            <SubmitButton onClick={() => { handleTestSubmit(); }} />
+          </div>
 
           {!optionA &&
             <div>
@@ -561,7 +629,7 @@ useEffect(() => {
                 <Mcq title={"questionTitle"} problem={problem} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
                 :
                 <>
-                  <MyEditor CourseLanguage={selectedOption2} spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />
+                  <MyEditor getSolution={getSolution} CourseLanguage={selectedOption2} spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />
 
                 </>
 

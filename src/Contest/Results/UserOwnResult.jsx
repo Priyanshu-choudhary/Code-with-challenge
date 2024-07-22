@@ -1,6 +1,42 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import "/src/UserOwnResult.css"
-function UserOwnResult({totalParticipants,yourRank}) {
+function UserOwnResult({totalParticipants,yourRank,username,nameOfContest}) {
+  const fetchParticipantDetails = async (username) => {
+    const [selectedParticipant, setSelectedParticipant] = useState(null);
+    const [participantDetails, setParticipantDetails] = useState(null);
+    const [detailsLoading, setDetailsLoading] = useState(false);
+  
+    const API_URL = `https://hytechlabs.online:9090/UserDetailsContest/${username}/${nameOfContest}`;
+    setDetailsLoading(true);
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setParticipantDetails(data);
+      } else {
+        setParticipantDetails(null);
+      }
+    } catch (error) {
+      console.error('Error fetching participant details:', error);
+      setParticipantDetails(null);
+    } finally {
+      setDetailsLoading(false);
+    }
+  };
+
+  const handleParticipantClick = (participant) => {
+    setSelectedParticipant(participant);
+    fetchParticipantDetails(participant.name);
+  };
+
+
   return (
     <div className="results-summary-container">
           <div className="confetti">
@@ -33,7 +69,7 @@ function UserOwnResult({totalParticipants,yourRank}) {
             <div className="result-text-box">
               <div className="heading-secondary">excellent</div>
               <p className="paragraph">
-                You are in Top <strong style={{color:"yellow"}}>{(totalParticipants-yourRank+1)/totalParticipants*100}% </strong>of the people who have taken these tests.
+                You are in Top <strong style={{color:"yellow"}}>{((totalParticipants-yourRank+1)/totalParticipants*100).toFixed(2)}% </strong>of the people who have taken these tests.
               </p>
             </div>
           </div>

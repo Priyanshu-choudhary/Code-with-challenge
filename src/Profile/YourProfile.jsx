@@ -7,7 +7,7 @@ import { UserContext } from '../Context/UserContext';
 import ValidationTextFields from './EditProfile';
 import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
-import BoxLoader from '../Loader/BoxLoader';
+import BoxLoader from '/src/Loader/BoxLoader';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';

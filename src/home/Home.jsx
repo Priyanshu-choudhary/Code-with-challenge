@@ -158,9 +158,9 @@ function Home() {
                       height="200px"
                       title="Compiler"
                       subtitle="A online Editor"
-                      imageUrl="./girl.png"
-                      imageWidth={110}
-                      imageHeight={180}
+                      imageUrl="./ide.png"
+                      imageWidth={150}
+                      imageHeight={150}
                       onClick={() => navigate('/EditorComponent')}
                     />
                     <Card
@@ -168,12 +168,12 @@ function Home() {
                       hoverBackground="lightgreen"
                       width="250px"
                       height="200px"
-                      title="Compete"
-                      subtitle="Creative Exploration"
+                      title="Cntest"
+                      subtitle="Code for contest"
                       imageUrl="./complete.webp"
                       imageWidth={180}
                       imageHeight={120}
-                      onClick={() => navigate('/leaderboard')}
+                      onClick={() => navigate('/contest')}
                     />
                   </div>
                 </div>

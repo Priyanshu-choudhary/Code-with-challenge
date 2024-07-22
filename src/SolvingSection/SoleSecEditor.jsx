@@ -33,6 +33,7 @@ const MyEditor = forwardRef(
       difficulty,
       Example,
       courseTitle = '',
+      getSolution,
     },
     ref
   ) => {
@@ -86,6 +87,7 @@ const MyEditor = forwardRef(
     useEffect(() => {
       if (editorRef.current) {
         editorRef.current.setValue(templateCode);
+
       }
     }, [templateCode]);
 
@@ -118,7 +120,9 @@ const MyEditor = forwardRef(
     const getCode = useCallback(async (currentBoilerCode, currentTemplateCode) => {
       if (editorRef.current) {
         let code = editorRef.current.getValue();
+        getSolution(code);
         code = currentBoilerCode + code;
+        
         setiSubmit(true);
         spin(true);
 

@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '/src/Context/UserContext';
 import Dashboard from '/src/dashBoard/Dashboard';
-import ContestCard from '/src/Contest/ContestCard';
 import NavBar from './navbar';
 import Footer2 from '../../home/Footer2';
 import "/src/App.css";
 import CreateButton from '../../Buttons/CreateButton';
 import BoxLoader from '/src/Loader/BoxLoader'; // Import BoxLoader
+import ContestCard from './ContestCard';
 
 function Firstpage() {
   const [contests, setContests] = useState([]);

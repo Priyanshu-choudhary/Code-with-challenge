@@ -13,7 +13,7 @@ export default function Tinymce({ setDescription, initialValue }) {
 
     useEffect(() => {
         const script = document.createElement('script');
-        script.src = '/tinymce/js/tinymce/tinymce.min.js';  
+        script.src = '../../../tinymce/js/tinymce/tinymce.min.js';  
         script.referrerPolicy = 'origin';
         script.onload = () => {
             tinymce.init({

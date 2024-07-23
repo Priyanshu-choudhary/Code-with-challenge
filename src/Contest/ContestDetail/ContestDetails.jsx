@@ -35,6 +35,7 @@ import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import GetStartButton from '../../Buttons/GetStart';
 import BoxLoader from '../../Loader/BoxLoader';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import HtmlRenderer from '../../Leetcode/HtmlRenderer';
 
 function ContestDetails() {
     const navigate = useNavigate();
@@ -186,7 +187,7 @@ function ContestDetails() {
             <Dashboard />
             <img className="banner-image" src={contest.bannerImage} alt={contest.nameOfContest} />
 
-            {role=="ADMIN" &&
+            {role == "ADMIN" &&
                 <div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
                         <AddToPhotosIcon fontSize='large' onClick={() => { navigate(`/contestProblemsList`, { state: { contest } }); }} />
@@ -223,17 +224,20 @@ function ContestDetails() {
                     </div>
                 </div>
             </div>
-            <div>
+            {isRegistered &&
+                <div>
 
-                <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} contest={contest} />
-            </div>
-            <div>
-                <GetStartButton value={"Show Result"} onClick={() => { navigate(`/ContestResults/findBy`, { state: { contest: contest } }) }} />
-            </div>
+                    <GettingStart days={timeLeft.days} hours={timeLeft.hours} minutes={timeLeft.minutes} isRegistered={isRegistered} contest={contest} />
+                </div>}
+            {isRegistered &&
+                <div>
+                    <GetStartButton value={"Show Result"} onClick={() => { navigate(`/ContestResults/findBy`, { state: { contest: contest } }) }} />
+                </div>}
             <div className="content-section">
                 <div className="contest-description3">
                     <h2>Detail</h2>
-                    <p>{contest.description}</p>
+                    <HtmlRenderer htmlContent={contest.description} />
+
                 </div>
                 <div className="contest-info">
                     <div className="info-header">

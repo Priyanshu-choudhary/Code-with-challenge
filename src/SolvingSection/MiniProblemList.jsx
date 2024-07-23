@@ -7,17 +7,21 @@ import '/src/ProblemList.css'; // Import your CSS file for styling
 import { UserContext } from '../Context/UserContext';
 import axios from 'axios';
 
-const MiniProblemDrawerComponent = ({ open, onClose, problems, setIndex, contestName, user }) => {
+const MiniProblemDrawerComponent = ({setsubmitProblemTitle,setsubmitProblem, open, onClose, problems, setIndex, contestName, user }) => {
   const { bg, light, dark, ibg } = useContext(UserContext);
   const [completedProblems, setCompletedProblems] = useState([]);
-
+  // const [problems, setProblems] = useState([]);
   useEffect(() => {
     const fetchCompletedProblems = async () => {
       try {
         const response = await axios.get(`https://hytechlabs.online:9090/UserDetailsContest/${user}/${contestName}`);
         //  const postTitles = response.data.posts.map(post => post.title);
         setCompletedProblems(JSON.stringify(response.data[0].posts || []));
-     
+        const newProblems = response.data[0].posts.map((problem) => ({
+          id: problem.id,
+          title: problem.title,
+        }));
+        setsubmitProblem(newProblems);
       } catch (error) {
         console.error('Error fetching completed problems:', error);
       }
@@ -25,6 +29,7 @@ const MiniProblemDrawerComponent = ({ open, onClose, problems, setIndex, contest
 
     fetchCompletedProblems();
   }, [open]);
+
 
   return (
     <Drawer anchor="left" open={open} onClose={onClose}>

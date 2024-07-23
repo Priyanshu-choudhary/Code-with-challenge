@@ -71,6 +71,10 @@ function QuestionApi() {
   const [contestStartDate, setcontestStartDate] = useState("")
   const [UserDetailsContestId, setUserDetailsContestId] = useState()
   const [editorValue, seteditorValue] = useState()
+  const [submitProblem, setsubmitProblem] = useState([])
+  const [submitProblemTitle, setsubmitProblemTitle] = useState([])
+  const [btnTitle, setBtnTitle] = useState("Submit Question");
+
   // console.log("type "+detailsType);
   const options = {
     option1: 'ChatGPT',
@@ -80,7 +84,16 @@ function QuestionApi() {
     setSelectedOption(options);
     setResetMcq(true); // Trigger MCQ reset
   };
+  useEffect(() => {
+    const checkIfProblemAttempted = () => {
+      const attempted = submitProblem.some(
+        (doneproblem) => problem.title === doneproblem.title
+      );
+      setBtnTitle(attempted ? "Submit Again" : "Submit Question");
+    };
 
+    checkIfProblemAttempted();
+  }, [currentProblemIndex, problem, submitProblem]);
   const toggleTimer = () => {
     setIsTimerRunning(prevState => !prevState);
   };
@@ -352,60 +365,63 @@ function QuestionApi() {
 
 
   function generateObjectId() {
-      let timestamp = (new Date().getTime() / 1000 | 0).toString(16);
-      let machineId = 'xxxxxxxxxxxx'.replace(/[x]/g, function() {
-          return (Math.random() * 16 | 0).toString(16);
-      }).toLowerCase();
-      let processId = 'xx';
-      let counter = 'xxxxxxxx'.replace(/[x]/g, function() {
-          return (Math.random() * 16 | 0).toString(16);
-      }).toLowerCase();
-  
-      return timestamp + machineId + processId + counter;
+    let timestamp = (new Date().getTime() / 1000 | 0).toString(16);
+    let machineId = 'xxxxxxxxxxxx'.replace(/[x]/g, function () {
+      return (Math.random() * 16 | 0).toString(16);
+    }).toLowerCase();
+    let processId = 'xx';
+    let counter = 'xxxxxxxx'.replace(/[x]/g, function () {
+      return (Math.random() * 16 | 0).toString(16);
+    }).toLowerCase();
+
+    return timestamp + machineId + processId + counter;
   }
-  
+
   const handleSubmitContestQuestion = async () => {
     if (!currentans.id) {
-        alert('Correctly Run the code First.');
+      alert('Correctly Run the code First.');
     } else {
-        try {
-            setLoading(true);
-            console.log("current ans: " + JSON.stringify(currentans));
-            
-            // Ensure currentans.solution is an object
-            if (!currentans.solution) {
-                currentans.solution = {};
-            }
+      try {
+        setLoading(true);
+        console.log("current ans: " + JSON.stringify(currentans));
 
-            // Add the Java solution to the currentans.solution object
-            currentans.solution["java"] = {
-                solution: editorValue
-            };
-            currentans.id=generateObjectId();
-            // Optional: You can add solutions for other languages similarly
-            // currentans.solution["python"] = {
-            //     solution: pythonEditorValue
-            // };
-console.log("current ans "+currentans);
-            const response = await axios.post(
-                `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
-                currentans,
-                {
-                    
-                }
-            );
-            console.log('Post created:', response.data);
-
-            setLoading(false);
-            // setSnackbarOpen(true);
-            setcurrentans('');
-        } catch (error) {
-            console.error('Error upload post to user contest solving:', error);
-            setLoading(false);
-            setcurrentans('');
+        // Ensure currentans.solution is an object
+        if (!currentans.solution) {
+          currentans.solution = {};
         }
+
+        // Add the Java solution to the currentans.solution object
+        currentans.solution["java"] = {
+          solution: editorValue
+        };
+        if (btnTitle=="Submit Question") {
+          currentans.id = generateObjectId();
+        }
+        // currentans.id = generateObjectId();
+        // Optional: You can add solutions for other languages similarly
+        // currentans.solution["python"] = {
+        //     solution: pythonEditorValue
+        // };
+        // console.log("current ans "+currentans);
+        const response = await axios.post(
+          `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+          currentans,
+          {
+
+          }
+        );
+        console.log('Post created:', response.data);
+
+        setLoading(false);
+        // setSnackbarOpen(true);
+        setcurrentans('');
+      } catch (error) {
+        console.error('Error upload post to user contest solving:', error);
+        setLoading(false);
+        setcurrentans('');
+      }
     }
-};
+  };
 
 
   const handleSubmit = async () => {
@@ -448,18 +464,15 @@ console.log("current ans "+currentans);
   const handleRunCode = () => {
     if (editorRef.current) {
       editorRef.current.getCode();
-      console.log("code"+editorRef.current.getValue());
+      console.log("code" + editorRef.current.getValue());
     }
   };
+
   const getSolution = (code) => {
     seteditorValue(code)
-      // console.log("code"+editorRef.current.getValue());
-    
-  }; 
-  useEffect(() => {
-    console.log("code "+editorValue);
-  }, [editorValue])
-  
+  };
+
+
   useEffect(() => {
     // console.log("id data> ", JSON.stringify(UserDetailsContestId.id));
   }, [UserDetailsContestId])
@@ -481,7 +494,7 @@ console.log("current ans "+currentans);
       }
     } catch (error) {
       console.error("Error updating end time:", error);
-    }finally{
+    } finally {
       navigate("/contest")
     }
   };
@@ -509,7 +522,7 @@ console.log("current ans "+currentans);
             </div>
 
             <div style={{ marginTop: 15 }}>
-              <MiniProblemDrawerComponent contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
+              <MiniProblemDrawerComponent setsubmitProblemTitle={setsubmitProblemTitle} setsubmitProblem={setsubmitProblem} contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
             </div>
           </div>
 
@@ -674,7 +687,9 @@ console.log("current ans "+currentans);
             </div>
             :
             <Button onClick={handleSubmitContestQuestion} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-              Submit Question
+
+              {btnTitle}
+
               {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
             </Button>
 

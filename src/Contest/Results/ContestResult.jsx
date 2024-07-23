@@ -137,9 +137,9 @@ function ContestResult() {
       <Dashboard />
       <div className="ProblemList-container" style={{ backgroundColor: light, color: ibg, width: "100%", height: "140vh" }}>
         <div className="ProblemList-items" style={{ backgroundColor: light, color: ibg }}>
-          <div style={{ display: "flex", position: "absolute", right: 10, top: 120, backgroundColor: "white", borderRadius: 10 }}>
+         {participants[0] && <div style={{ display: "flex", position: "absolute", right: 10, top: 120, backgroundColor: "white", borderRadius: 10 }}>
             <UserOwnResult totalParticipants={participants.length} yourRank={userRank + 1} />
-          </div>
+          </div>}
           <div className="ProblemList-items-head">
             <div style={{ display: "flex", gap: 0 }}>
               <p style={{ color: ibg }}>Participants List</p>

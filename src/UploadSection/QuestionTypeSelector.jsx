@@ -32,10 +32,7 @@ export default function QuestionTypeSelector() {
     return <McqForm uploadUrl={uploadUrl} />;
   } else if (selectedOption === 'coding') {
     return <MyStepper uploadUrl={uploadUrl} />;
-  } else if (selectedOption === 'course') {
-    return <CourseForm uploadUrl={uploadUrl} />;
-  }
-
+  } 
   return (
     <>
       <Dashboard />
@@ -106,14 +103,7 @@ export default function QuestionTypeSelector() {
               >
                 Coding Question
               </Button>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleOptionSelect('course')}
-                style={{ margin: '10px' }}
-              >
-                New Course
-              </Button>
+             
             </CardContent>
           </Card>
         </div>

@@ -72,7 +72,7 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/Java%20Basics/username/OfficialCources`;
+    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/${course.title}/username/OfficialCources`;
     setLoading(true); // Start loading indicator
   
     try {
@@ -350,7 +350,9 @@ const LeetCodeClone = () => {
                                 Edit
                               </Button>
                             )}
+                           
                           </div>
+                           
                         ))}
                       </div>
                     ) : <BoxLoader />}
@@ -407,8 +409,9 @@ const LeetCodeClone = () => {
                             }}
                             size='small'
                           >
-                            Edit
+                            Edit {problem.sequence}
                           </Button>
+                          
                         )}
                       </div>
                     )) : <p>No problems found.</p>}

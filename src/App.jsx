@@ -33,6 +33,7 @@ import ContestProblemList from './Contest/Problems/ContestProblemList';
 import ContestResult from './Contest/Results/ContestResult';
 import Maintenance from './Maintenance/Maintenance'; // Ensure correct import path
 import NewLeaderboard from './LeaderBoard/NewLeaderboard';
+import CourseForm from './UploadSection/newCourse';
 
 function App() {
   const location = useLocation();
@@ -72,6 +73,8 @@ function App() {
             <Route path="/contestProblemsList" element={<ContestProblemList />} />
             <Route path="/ContestResults/findBy" element={<ContestResult />} />
             <Route path="/leaderboard" element={<NewLeaderboard />} />
+            <Route path="/CourseForm" element={<CourseForm />} />
+            
           </Routes>
         </FormProvider>
       </UserProvider>

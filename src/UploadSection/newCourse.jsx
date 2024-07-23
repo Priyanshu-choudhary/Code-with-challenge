@@ -13,7 +13,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Tinymce from '../TinyMCE/TinyMCE';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'; // Example of using an icon
 
-export default function CourseForm({ uploadUrl }) {
+export default function CourseForm({ uploadUrl2 }) {
+  const [uploadUrl, setuploadUrl] = useState("OfficialCources")
   const [formData, setFormData] = useState({
     title: '',
     description: '',

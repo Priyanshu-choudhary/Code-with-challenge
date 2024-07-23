@@ -6,8 +6,9 @@ import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
 import styled from 'styled-components';
 import { CircularProgress, Button } from '@mui/material';
-import BoxLoader from '../Loader/BoxLoader'; 
-
+import BoxLoader from '../Loader/BoxLoader';
+import CreateButton from '../Buttons/CreateButton';
+import CourseForm from '/src/UploadSection/newCourse.jsx';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -39,14 +40,14 @@ function LearningPage() {
     });
     setMaxCardWidth(maxWidth * 10); // Adjust the multiplier to account for font size and padding
   }, []);
-useEffect(() => {
-setLoading(true);
-}, [])
+  useEffect(() => {
+    setLoading(true);
+  }, [])
 
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
-        console.log("user"+user);
+        console.log("user" + user);
         const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
           method: 'GET',
         });
@@ -67,7 +68,7 @@ setLoading(true);
       } catch (error) {
         console.error('Error fetching user courses:', error);
       } finally {
-  
+
       }
     };
 
@@ -92,7 +93,7 @@ setLoading(true);
         }
       } catch (error) {
         console.error('Error fetching official courses:', error);
-      }  finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -132,23 +133,31 @@ setLoading(true);
       }
     }
   };
-useEffect(() => {
-console.log("loading happing "+loading);
-}, [loading])
+  useEffect(() => {
+    console.log("loading happing " + loading);
+  }, [loading])
+  const handleCreateContestClick = () => {
+  
+    navigate(`/CourseForm`);
+  };
 
   return (
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
+        <div style={{ color:"black",display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
+          <p style={{ paddingTop: 30, fontSize: "20px" }}>Create your own Courses now.</p>
+          <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
+        </div>
         <p style={{ marginLeft: 10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
           <hr />
         </p>
-        
+
         {loading ? (
-         <BoxLoader /> 
-         
-       
+          <BoxLoader />
+
+
         ) : (
           <>
             {userCourses[0] && (

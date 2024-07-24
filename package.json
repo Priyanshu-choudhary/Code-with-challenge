@@ -31,8 +31,6 @@
   
   "dependencies": {
   
-
-  
     
   "@emotion/react": "^11.11.4",
   
@@ -102,7 +100,8 @@
     
   "bootstrap": "^5.3.3",
   
-
+    
+  "froala-editor": "^4.2.1",
   
     
   "jwt-decode": "^4.0.0",
@@ -121,6 +120,9 @@
   
     
   "react-dom": "^18.2.0",
+  
+    
+  "react-froala-wysiwyg": "^4.2.1",
   
     
   "react-ga": "^3.3.1",

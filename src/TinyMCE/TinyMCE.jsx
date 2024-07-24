@@ -136,7 +136,31 @@ export default function Tinymce({ setDescription, initialValue }) {
                 ],
                 // Enable base64 image upload
                 imageUploadToBase64: true,
-                // Additional configurations as needed
+                // Custom image upload handler
+                events: {
+                    'image.beforeUpload': function (files) {
+                        // Create a FileReader object
+                        const reader = new FileReader();
+
+                        // Set the onload callback
+                        reader.onload = (e) => {
+                            // Get the base64 string
+                            const base64 = e.target.result;
+
+                            // Insert the image into the editor
+                            this.image.insert(base64, null, null, this.image.get(), files[0]);
+
+                            // Prevent the default upload
+                            return false;
+                        };
+
+                        // Read the file as a data URL (base64)
+                        reader.readAsDataURL(files[0]);
+
+                        // Prevent the default upload
+                        return false;
+                    }
+                },
             }}
         />
     );

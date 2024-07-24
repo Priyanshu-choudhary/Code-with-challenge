@@ -154,12 +154,7 @@ function LearningPage() {
           <hr />
         </p>
 
-        {loading ? (
-          <BoxLoader />
-
-
-        ) : (
-          <>
+    
             {userCourses[0] && (
               <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
@@ -218,8 +213,7 @@ function LearningPage() {
                 </div>
               )}
             </div>
-          </>
-        )}
+        
       </div>
     </PageContainer>
   );

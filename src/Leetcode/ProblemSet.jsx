@@ -271,7 +271,7 @@ console.log(currentCourse);
                   }}
                   onClick={handleClick}
                 >
-                  <HtmlRenderer htmlContent={currentCourse.description || ""}  />
+                  <HtmlRenderer htmlContent={description || ""}  />
                 </div>
                 <div style={{ display: "flex",justifyContent:"center",alignItems:"center", color: "skyblue"}}>
                   <button style={{ borderWidth: 0, borderRadius: 5 }}  onClick={toggleReadMore}>

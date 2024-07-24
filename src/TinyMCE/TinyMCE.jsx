@@ -108,11 +108,8 @@ export default function Tinymce({ setDescription, initialValue }) {
 
     const handleModelChange = (newContent) => {
         setContent(newContent);
-       
-       
-            setDescription(newContent);
-            console.log(newContent);
-        
+        setDescription(newContent);
+        console.log(newContent);
     };
 
     useEffect(() => {
@@ -137,8 +134,11 @@ export default function Tinymce({ setDescription, initialValue }) {
                     'align', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'fontAwesome', 'image', 'link', 'lists',
                     'paragraphFormat', 'quote', 'save', 'spellChecker', 'table', 'url', 'wordPaste'
                 ],
-                // additional configurations as needed
+                // Enable base64 image upload
+                imageUploadToBase64: true,
+                // Additional configurations as needed
             }}
         />
     );
 }
+

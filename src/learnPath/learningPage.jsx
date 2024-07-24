@@ -145,6 +145,7 @@ function LearningPage() {
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
+        {loading&& <p style={{color:ibg,position:"absolute",right:5,Button:10}}>loading</p> }
         <div style={{ color:"black",display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
           <p style={{ paddingTop: 30, fontSize: "20px" }}>Create your own Courses now.</p>
           <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>

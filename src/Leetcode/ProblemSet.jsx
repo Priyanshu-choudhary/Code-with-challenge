@@ -29,6 +29,7 @@ const LeetCodeClone = () => {
   const [currentPage, setCurrentPage] = useState('Learn Skills');
   const [hoverIndex, setHoverIndex] = useState(null);
   const [completeQuestions, setCompleteQuestions] = useState([]);
+  const [currentCourse, setcurrentCourse] = useState();
 
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
@@ -163,7 +164,7 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
-    fetchUserData();
+    // fetchUserData();
     if (title) {
       setNavHistory(`${title}`);
     }
@@ -215,6 +216,39 @@ const LeetCodeClone = () => {
     navigate(`/edit/${problemId}/OfficialCources`);
   };
 
+  const fetchOfficialCourses = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`https://hytechlabs.online:9090/Course/id/${course.id}`, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          localStorage.setItem(`${course.title}`, JSON.stringify(data));
+          // officialCoursesRef.current = data;
+          setOfficialCourses(data);
+        } else {
+          console.error('Fetched courses with id data is not an array:', data);
+          setOfficialCourses([]);
+        }
+      } else {
+        console.error('Failed to fetch courses with id:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching  courses with id:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+useEffect(() => {
+  fetchOfficialCourses();
+  setcurrentCourse(localStorage.getItem(course.title))
+
+}, [])
+useEffect(() => {
+console.log(currentCourse);
+}, [currentCourse])
 
 
   return (
@@ -237,7 +271,7 @@ const LeetCodeClone = () => {
                   }}
                   onClick={handleClick}
                 >
-                  <HtmlRenderer htmlContent={description}  />
+                  {/* <HtmlRenderer htmlContent={currentCourse.description || ""}  /> */}
                 </div>
                 <div style={{ display: "flex",justifyContent:"center",alignItems:"center", color: "skyblue"}}>
                   <button style={{ borderWidth: 0, borderRadius: 5 }}  onClick={toggleReadMore}>

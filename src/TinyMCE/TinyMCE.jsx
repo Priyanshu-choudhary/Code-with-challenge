@@ -95,7 +95,7 @@
 //         // </div>
 //     );
 // }
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import FroalaEditor from 'react-froala-wysiwyg';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -104,17 +104,25 @@ import 'froala-editor/css/froala_style.min.css';
 
 export default function Tinymce({ setDescription, initialValue }) {
     const editorRef = useRef(null);
+    const [content, setContent] = useState(initialValue ? initialValue : "<p>Write your Description here.</p>");
 
-    const handleModelChange = (content) => {
-        if (editorRef.current) {
-            setDescription(content);
-        }
+    const handleModelChange = (newContent) => {
+        setContent(newContent);
+       
+       
+            setDescription(newContent);
+            console.log(newContent);
+        
     };
+
+    useEffect(() => {
+        setContent(initialValue);
+    }, [initialValue]);
 
     return (
         <FroalaEditor
             tag='textarea'
-            model={initialValue ? initialValue : "<p>Write your Description here.</p>"}
+            model={content}
             onModelChange={handleModelChange}
             config={{
                 ref: editorRef,

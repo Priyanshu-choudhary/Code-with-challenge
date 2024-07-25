@@ -274,6 +274,7 @@ const LeetCodeClone = () => {
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
         {/* <IconBreadcrumbs currentPage={currentPage} title={title} history={location.state} /> */}
+        {/* {course.image && <img style={{width:"100%"}} src={course.image} alt={course.image} />} */}
         {user ? (
           <div className="leetcode-clone-container">
             <div className="content" >

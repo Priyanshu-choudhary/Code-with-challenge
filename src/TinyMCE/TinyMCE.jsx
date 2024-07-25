@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const Tinymce = () => {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '/public/tinymce/js/tinymce/tinymce.min.js';
+    script.src = '/src/tinymceLib/js/tinymce/tinymce.min.js';
     script.onload = () => {
       window.tinymce.init({
         selector: '#mytextarea',

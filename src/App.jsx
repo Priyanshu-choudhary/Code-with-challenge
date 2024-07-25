@@ -74,7 +74,7 @@ function App() {
             <Route path="/ContestResults/findBy" element={<ContestResult />} />
             <Route path="/leaderboard" element={<NewLeaderboard />} />
             <Route path="/CourseForm" element={<CourseForm />} />
-            
+            <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
           </Routes>
         </FormProvider>
       </UserProvider>
@@ -84,7 +84,7 @@ function App() {
 
 function AppWrapper() {
   const [isServerUp, setIsServerUp] = useState(true);
-  const [response2, setResponse] = useState("");
+  const [response, setResponse] = useState("");
 
   const checkBackendHealth = async () => {
     try {
@@ -102,6 +102,26 @@ function AppWrapper() {
     checkBackendHealth();
     const intervalId = setInterval(checkBackendHealth, 300000); // Check every 5 minutes
     console.log("Checking server health...");
+
+    const checkLocalStorageLimit = () => {
+      try {
+        // Test item to check localStorage quota
+        const testItem = 'test';
+        localStorage.setItem('testKey', testItem);
+        localStorage.removeItem('testKey');
+        console.log('Local storage is within limit.');
+      } catch (e) {
+        if (e.code === DOMException.QUOTA_EXCEEDED_ERR || e.name === 'QuotaExceededError') {
+          console.warn('Local storage limit exceeded. Clearing all data.');
+          localStorage.clear();
+        } else {
+          console.error('Failed to save to local storage:', e);
+        }
+      }
+    };
+
+    checkLocalStorageLimit();
+
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 

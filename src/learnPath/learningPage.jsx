@@ -84,6 +84,7 @@ function LearningPage() {
             localStorage.setItem('officialCourses', JSON.stringify(data));
             officialCoursesRef.current = data;
             setOfficialCourses(data);
+            // console.log(">>>>> "+JSON.stringify(data));
           } else {
             console.error('Fetched official data is not an array:', data);
             setOfficialCourses([]);
@@ -140,6 +141,11 @@ function LearningPage() {
   
     navigate(`/CourseForm`);
   };
+useEffect(() => {
+  officialCourses.map((course, index) => {
+    console.log(">>>>> "+course.title);
+  })
+}, [officialCourses])
 
   return (
     <PageContainer bg={bg}>

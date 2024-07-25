@@ -7,10 +7,12 @@ import { UserContext } from '../Context/UserContext';
 import CourseForm from './newCourse';
 import UnauthorizedPage from '../PageNotFound/UnauthorizedPage';
 import Autocomplete from '@mui/material/Autocomplete';
+import { useParams } from 'react-router-dom';
 
 export default function QuestionTypeSelector() {
+  const { uploadURL } = useParams();
   const [selectedOption, setSelectedOption] = useState(null);
-  const [uploadUrl, setUploadUrl] = useState('');
+  const [uploadUrl, setUploadUrl] = useState(uploadURL);
   const { bc, ibg, bg, light, dark, role,setURL } = useContext(UserContext);
 
   // Predefined options for autocomplete

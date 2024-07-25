@@ -5,11 +5,11 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Tags from '../UploadSection/Tags';
 import { CircularProgress, Button } from '@mui/material';
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PleaseLogin from '../PageNotFound/PleaseLogin';
 import styled from 'styled-components';
 import DoneIcon from '@mui/icons-material/Done'; // Import done icon
-
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import remarkGfm from 'remark-gfm';
 import Test from './test';
 import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
@@ -34,7 +34,7 @@ const LeetCodeClone = () => {
   const navigate = useNavigate();
   const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
   const location = useLocation();
-  const { language, totalQuestions, title, description, progress,courseId ,course} = location.state || {};
+  const { language, totalQuestions, title, description, progress, courseId, course } = location.state || {};
   const PageContainer = styled.div`
     background-color: ${bg};
     height: 100vh;
@@ -50,7 +50,7 @@ const LeetCodeClone = () => {
       const fullHeight = contentRef.current.scrollHeight;
       setContentHeight(fullHeight * 0.19); // Set initial height to 70% of full content
     }
-    // console.log("Course "+JSON.stringify(course));
+
   }, []);
   const scrollToRef = useRef(null);
 
@@ -75,17 +75,17 @@ const LeetCodeClone = () => {
   const fetchProblems = async (selectedTags = []) => {
     let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/${course.title}/username/OfficialCources`;
     setLoading(true); // Start loading indicator
-  
+
     try {
       let url = API_URL;
       if (selectedTags.length > 0) {
         const tagsQuery = selectedTags.join(',');
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
-  
+
       const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
       const lastModified = cachedData.lastModified || null;
-  
+
       const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
       const response = await fetch(url, {
         method: 'GET',
@@ -94,7 +94,7 @@ const LeetCodeClone = () => {
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
-  
+
       if (response.status === 204) {
         setProblems([]);
       } else if (response.status === 304) {
@@ -106,7 +106,7 @@ const LeetCodeClone = () => {
         const sortedProblems = data.sort((a, b) => a.sequence - b.sequence);
         setProblems(sortedProblems);
         setResponseOk(true);
-  
+
         const newLastModified = response.headers.get('Last-Modified');
         localStorage.setItem('problemsData', JSON.stringify({
           problems: sortedProblems,
@@ -122,7 +122,7 @@ const LeetCodeClone = () => {
       setLoading(false);
     }
   };
-  
+
   const fetchUserData = async () => {
     try {
       const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
@@ -224,14 +224,11 @@ const LeetCodeClone = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        if (Array.isArray(data)) {
-          localStorage.setItem(`${course.title}`, JSON.stringify(data));
-          // officialCoursesRef.current = data;
-          setOfficialCourses(data);
-        } else {
-          console.error('Fetched courses with id data is not an array:', data);
-          setOfficialCourses([]);
-        }
+
+        localStorage.setItem(`${course.title}`, JSON.stringify(data));
+        // officialCoursesRef.current = data;
+        setcurrentCourse(data);
+
       } else {
         console.error('Failed to fetch courses with id:', response.status, response.statusText);
       }
@@ -241,15 +238,36 @@ const LeetCodeClone = () => {
       setLoading(false);
     }
   };
-useEffect(() => {
-  fetchOfficialCourses();
-  setcurrentCourse(localStorage.getItem(course.title))
+  useEffect(() => {
+    // fetchOfficialCourses();
+    setcurrentCourse(localStorage.getItem(course.title))
 
-}, [])
-useEffect(() => {
-console.log(currentCourse);
-}, [currentCourse])
+  }, [])
 
+
+  const handleDelete = async (courseId, courseName) => {
+    if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
+      try {
+        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
+        const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': basicAuth,
+          }
+        });
+        if (response.ok) {
+          // Remove the course from state
+          setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
+          localStorage.setItem('officialCourses', JSON.stringify(officialCoursesRef.current.filter((course) => course.id !== courseId)));
+        } else {
+          console.error('Failed to delete course:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting course:', error);
+      }
+    }
+  };
 
   return (
     <PageContainer>
@@ -266,24 +284,34 @@ console.log(currentCourse);
                     height: isExpanded ? 'auto' : `${contentHeight}px`,
                     overflow: 'hidden',
                     transition: 'height 0.3s ease',
-                    color:ibg
+                    color: ibg
 
                   }}
                   onClick={handleClick}
                 >
-                  <HtmlRenderer htmlContent={description || ""}  />
+                 <HtmlRenderer htmlContent={description || ""} />
                 </div>
-                <div style={{ display: "flex",justifyContent:"center",alignItems:"center", color: "skyblue"}}>
-                  <button style={{ borderWidth: 0, borderRadius: 5 }}  onClick={toggleReadMore}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", color: "skyblue" }}>
+                  <button style={{ borderWidth: 0, borderRadius: 5 }} onClick={toggleReadMore}>
                     {isExpanded ? '' : 'Read More'}
-                    {isExpanded ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
-                    
+                    {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+
                   </button>
                 </div>
-                <div  className="button-86" style={{position:"absolute",right:10,top:90,color:"black"}} >
-                  <CreateIcon  fontSize='large'  onClick={()=>{ navigate('/CourseEdit', { state: { ...course,courseDetail:course } });}}/>
-                </div>
 
+                {role == "ADMIN" &&
+                  <div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
+                      <AddToPhotosIcon fontSize='large' onClick={() => {  navigate(`/QuestionTypeSelector/${course.title}`)}} />
+                    </div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 90, color: "black" }} >
+                      <CreateIcon fontSize='large' onClick={() => { navigate('/CourseEdit', { state: { ...course, courseDetail: course } }); }} />
+                    </div>
+                    <div className="button-86" style={{ position: "absolute", right: 10, top: 210, color: "black" }} >
+                      <DeleteForeverIcon fontSize='large' onClick={() => { handleDelete(course.id, course.title);  navigate('/learn') } } />
+                    </div>
+                  </div>
+                }
               </div>
               {/* <div className="toggle-container">
                 <div style={{ display: 'flex', gap: '50px', color: ibg }}>
@@ -322,7 +350,7 @@ console.log(currentCourse);
               <br />
 
 
-              <div ref={scrollToRef} className='Description' style={{ marginLeft:20,marginRight:20,background: dark, padding: 20, borderRadius: 20, marginBottom: 30 }}>
+              <div ref={scrollToRef} className='Description' style={{ marginLeft: 20, marginRight: 20, background: dark, padding: 20, borderRadius: 20, marginBottom: 30 }}>
                 <p className='Profileheading' style={{ color: ibg }}>Questions:</p>
                 <hr />
                 <br />
@@ -384,9 +412,9 @@ console.log(currentCourse);
                                 Edit
                               </Button>
                             )}
-                           
+
                           </div>
-                           
+
                         ))}
                       </div>
                     ) : <BoxLoader />}
@@ -445,7 +473,7 @@ console.log(currentCourse);
                           >
                             Edit {problem.sequence}
                           </Button>
-                          
+
                         )}
                       </div>
                     )) : <p>No problems found.</p>}

@@ -93,7 +93,7 @@ console.log(id);
               // Darker shade on hover
             },
           }}>Start</Button>
-        {role == "ADMIN" ? <Button
+        {/* {role == "ADMIN" ? <Button
           variant="contained"
           color="primary" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
           sx={{
@@ -102,7 +102,7 @@ console.log(id);
               backgroundColor: '#d32f2f', // Darker shade on hover
             },
           }}
-          size="small" onClick={() => handleDelete(courseId, courseName)}>Delete</Button> : <></>}
+          size="small" onClick={() => handleDelete(courseId, courseName)}>Delete</Button> : <></>} */}
 
         <p style={{ marginLeft: 'auto', backgroundColor: bc, padding: '5px 15px', borderRadius: "10px", paddingLeft: '5px', fontWeight: 'bolder' }}>*Free</p>
       </CardActions>

@@ -109,7 +109,7 @@ export default function Tinymce({ setDescription, initialValue }) {
     const handleModelChange = (newContent) => {
         setContent(newContent);
         setDescription(newContent);
-        console.log(newContent);
+        // console.log(newContent);
     };
 
     useEffect(() => {

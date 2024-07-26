@@ -32,6 +32,42 @@
   "dependencies": {
   
     
+  "@ckeditor/ckeditor5-basic-styles": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-build-classic": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-essentials": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-font": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-image": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-link": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-list": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-media-embed": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-paragraph": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-react": "^8.0.0",
+  
+    
+  "@ckeditor/ckeditor5-table": "^42.0.2",
+  
+    
+  "@ckeditor/ckeditor5-upload": "^42.0.2",
+  
+    
   "@emotion/react": "^11.11.4",
   
     

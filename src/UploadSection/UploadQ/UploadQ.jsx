@@ -22,7 +22,7 @@ const EditorPosts = ({ step, uploadUrl ,contestName}) => {
             )}
 
             {step === 3 && (
-                <FinalSend contestName={contestName} />
+                <FinalSend contestName={contestName} uploadUrl={uploadUrl} />
             )}
         </>
     );

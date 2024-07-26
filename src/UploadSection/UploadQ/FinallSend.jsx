@@ -29,14 +29,15 @@ const FinalSend = ({ step, uploadUrl,contestName }) => {
     }
 useEffect(() => {
  console.log("contest name"+contestName);
-}, [contestName])
+ console.log("courseUrl "+uploadUrl);
+}, [contestName,uploadUrl])
 
     useEffect(() => {
         if (contestName) {
             setnewUrl(`https://hytechlabs.online:9090/Contest/${contestName}/username/Contest`);
         } else {
-            if (URL != 'ProblemSet') {
-                setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${URL}/username/OfficialCources`);
+            if (uploadUrl != 'ProblemSet') {
+                setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`);
                 setauth("OfficialCources");
             } else {
                 setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');

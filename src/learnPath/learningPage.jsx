@@ -81,7 +81,7 @@ function LearningPage() {
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data)) {
-            localStorage.setItem('officialCourses', JSON.stringify(data));
+            // localStorage.setItem('officialCourses', JSON.stringify(data));
             officialCoursesRef.current = data;
             setOfficialCourses(data);
             // console.log(">>>>> "+JSON.stringify(data));

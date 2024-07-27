@@ -394,7 +394,7 @@ function QuestionApi() {
         currentans.solution["java"] = {
           solution: editorValue
         };
-        if (btnTitle=="Submit Question") {
+        if (btnTitle == "Submit Question") {
           currentans.id = generateObjectId();
         }
         // currentans.id = generateObjectId();
@@ -526,10 +526,12 @@ function QuestionApi() {
             </div>
           </div>
 
-          <div style={{ position: "absolute", right: 10, top: 10 }}>
-            <SubmitButton onClick={() => { handleTestSubmit(); }} />
-          </div>
-
+          {detailsType == "Course" &&
+            <div style={{ position: "absolute", right: 10, top: 10 }}>
+              <SubmitButton onClick={() => { handleTestSubmit(); }} />
+            </div>
+          }
+          
           {!optionA &&
             <div>
               {language[0] && <div className='dropdown'>

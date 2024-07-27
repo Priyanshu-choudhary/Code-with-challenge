@@ -194,7 +194,7 @@ useEffect(() => {
                   {officialCourses.map((course, index) => {
                     if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
                       return (
-                        <div key={index} style={{ flex: '1 1 45%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
+                        <div key={index} style={{ flex: '1 1 4%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
                           <ImgMediaCard
                             id={course.id}
                             title={course.title}

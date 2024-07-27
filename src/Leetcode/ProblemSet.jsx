@@ -41,14 +41,14 @@ const LeetCodeClone = () => {
   `;
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [contentHeight, setContentHeight] = useState(450);
+  const [contentHeight, setContentHeight] = useState(520);
   const contentRef = useRef(null);
 
 
   useEffect(() => {
     if (contentRef.current) {
-      const fullHeight = contentRef.current.scrollHeight;
-      setContentHeight(fullHeight * 0.19); // Set initial height to 70% of full content
+      // const fullHeight = contentRef.current.scrollHeight;
+      setContentHeight(520); // Set initial height to 70% of full content
     }
 
   }, []);

@@ -3,9 +3,10 @@ import React, { createContext, useState, useEffect } from 'react';
 export const CourseContext = createContext();
 
 export const CourseProvider = ({ children }) => {
-  const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
-  const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
+  const [officialCourses, setOfficialCourses] = useState([]);
+  const [userCourses, setUserCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const fetchOfficialCourses = async () => {
     setLoading(true);
     try {
@@ -15,8 +16,6 @@ export const CourseProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         if (Array.isArray(data)) {
-          localStorage.clear("officialCourses")
-          localStorage.setItem('officialCourses', JSON.stringify(data));
           setOfficialCourses(data);
         } else {
           console.error('Fetched official data is not an array:', data);
@@ -33,18 +32,15 @@ export const CourseProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    
-    if (officialCourses.length === 0) {
-      fetchOfficialCourses();
-    } else {
-      setLoading(false);
-    }
-  }, [officialCourses]);
-const updatCoursee=()=>{
     fetchOfficialCourses();
-}
+  }, []);
+
+  const updateCourses = () => {
+    fetchOfficialCourses();
+  };
+
   return (
-    <CourseContext.Provider value={{ updatCoursee,officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading }}>
+    <CourseContext.Provider value={{ updateCourses, officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading }}>
       {children}
     </CourseContext.Provider>
   );

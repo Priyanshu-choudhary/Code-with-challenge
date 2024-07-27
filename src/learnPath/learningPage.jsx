@@ -19,7 +19,7 @@ const PageContainer = styled.div`
 function LearningPage() {
   const navigate = useNavigate();
   const { ibg, user, password, bg, dark, role } = useContext(UserContext);
-  const { updatCoursee,officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
+  const { updateCourses,officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
 
   const userCoursesRef = useRef(null);
@@ -122,7 +122,7 @@ function LearningPage() {
         <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
           <p style={{display:"flex" ,gap:30,fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Official Courses
-           {role=="ADMIN" && <button onClick={() => updatCoursee()}> <RefreshIcon/></button>}
+           {role=="ADMIN" && <button onClick={() => updateCourses()}> <RefreshIcon/></button>}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (

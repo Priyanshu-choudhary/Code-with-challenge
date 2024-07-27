@@ -164,7 +164,7 @@ const LeetCodeClone = () => {
 
   useEffect(() => {
     fetchProblems();
-    // fetchUserData();
+    fetchUserData();
     if (title) {
       setNavHistory(`${title}`);
     }

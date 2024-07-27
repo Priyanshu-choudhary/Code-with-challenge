@@ -171,8 +171,6 @@
 import React, { useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import Font from '@ckeditor/ckeditor5-font/src/font';
-// import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 
 export default function Tinymce({ setDescription, initialValue }) {
     const editorRef = useRef(null);
@@ -194,7 +192,6 @@ export default function Tinymce({ setDescription, initialValue }) {
                 }}
                 onChange={logContent}
                 config={{
-                   
                     toolbar: [
                         'heading', '|',
                         'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',

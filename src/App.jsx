@@ -34,6 +34,7 @@ import ContestResult from './Contest/Results/ContestResult';
 import Maintenance from './Maintenance/Maintenance'; // Ensure correct import path
 import NewLeaderboard from './LeaderBoard/NewLeaderboard';
 import CourseForm from './UploadSection/newCourse';
+import { CourseProvider } from './Context/CourseContex';
 
 function App() {
   const location = useLocation();
@@ -46,36 +47,40 @@ function App() {
     <div className="App">
       <UserProvider>
         <FormProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Upload" element={<QuestionTypeSelector />} />
-            <Route path="/logout" element={<LogOut />} />
-            <Route path="/yourProfile" element={<YourProfile />} />
-            <Route path="/EditorComponent" element={<EditorComponent />} />
-            <Route path="/QuestionApi" element={<LeetCodeClone />} />
-            <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
-            <Route path="/loginOld" element={<LoginUser />} />
-            <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
-            <Route path="/Data" element={<MyDataGrid />} />
-            <Route path="/Leaderboard2" element={<LeaderBoard />} />
-            <Route path="/learn" element={<LearningPage />} />
-            <Route path="/publicProfile" element={<PublicProfile />} />
-            <Route path="/register" element={<Testing />} />
-            <Route path="/verify-email" element={<QueryParamsExample />} />
-            <Route path="/login" element={<LoginGuiNew />} />
-            <Route path="/TextEditor" element={<Tinymce />} />
-            <Route path="/CourseEdit" element={<CourseEdit />} />
-            <Route path="/contest" element={<Firstpage />} />
-            <Route path="/ContestDetail/:id" element={<ContestDetails />} />
-            <Route path="/vhgfh7t67xw5458gf5643sd6x" element={<TestScreen />} />
-            <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
-            <Route path="/create-contest" element={<ContestEdit />} />
-            <Route path="/contestProblemsList" element={<ContestProblemList />} />
-            <Route path="/ContestResults/findBy" element={<ContestResult />} />
-            <Route path="/leaderboard" element={<NewLeaderboard />} />
-            <Route path="/CourseForm" element={<CourseForm />} />
-            <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
-          </Routes>
+          <CourseProvider>
+
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Upload" element={<QuestionTypeSelector />} />
+              <Route path="/logout" element={<LogOut />} />
+              <Route path="/yourProfile" element={<YourProfile />} />
+              <Route path="/EditorComponent" element={<EditorComponent />} />
+              <Route path="/QuestionApi" element={<LeetCodeClone />} />
+              <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
+              <Route path="/loginOld" element={<LoginUser />} />
+              <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
+              <Route path="/Data" element={<MyDataGrid />} />
+              <Route path="/Leaderboard2" element={<LeaderBoard />} />
+              <Route path="/learn" element={<LearningPage />} />
+              <Route path="/publicProfile" element={<PublicProfile />} />
+              <Route path="/register" element={<Testing />} />
+              <Route path="/verify-email" element={<QueryParamsExample />} />
+              <Route path="/login" element={<LoginGuiNew />} />
+              <Route path="/TextEditor" element={<Tinymce />} />
+              <Route path="/CourseEdit" element={<CourseEdit />} />
+              <Route path="/contest" element={<Firstpage />} />
+              <Route path="/ContestDetail/:id" element={<ContestDetails />} />
+              <Route path="/vhgfh7t67xw5458gf5643sd6x" element={<TestScreen />} />
+              <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
+              <Route path="/create-contest" element={<ContestEdit />} />
+              <Route path="/contestProblemsList" element={<ContestProblemList />} />
+              <Route path="/ContestResults/findBy" element={<ContestResult />} />
+              <Route path="/leaderboard" element={<NewLeaderboard />} />
+              <Route path="/CourseForm" element={<CourseForm />} />
+              <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
+            </Routes>
+
+          </CourseProvider>
         </FormProvider>
       </UserProvider>
     </div>

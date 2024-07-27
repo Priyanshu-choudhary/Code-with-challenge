@@ -4,11 +4,13 @@ import Dashboard from '../dashBoard/Dashboard';
 import ImgMediaCard from './cards';
 import YourProgressCard from './YourProgressCard';
 import { UserContext } from '../Context/UserContext';
+import { CourseContext } from '/src/Context/CourseContex.jsx';
 import styled from 'styled-components';
 import { CircularProgress, Button } from '@mui/material';
 import BoxLoader from '../Loader/BoxLoader';
 import CreateButton from '../Buttons/CreateButton';
 import CourseForm from '/src/UploadSection/newCourse.jsx';
+
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -17,13 +19,12 @@ const PageContainer = styled.div`
 function LearningPage() {
   const navigate = useNavigate();
   const { ibg, user, password, bg, dark, role } = useContext(UserContext);
-  const [userCourses, setUserCourses] = useState(() => JSON.parse(localStorage.getItem('userCourses')) || []);
-  const [officialCourses, setOfficialCourses] = useState(() => JSON.parse(localStorage.getItem('officialCourses')) || []);
+  const { officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
-  const [loading, setLoading] = useState(true); // Initialize loading to true
 
   const userCoursesRef = useRef(null);
   const officialCoursesRef = useRef(null);
+
 
   const updateMaxCardWidth = useCallback((courses) => {
     let maxWidth = 0;
@@ -40,14 +41,10 @@ function LearningPage() {
     });
     setMaxCardWidth(maxWidth * 10); // Adjust the multiplier to account for font size and padding
   }, []);
-  useEffect(() => {
-    setLoading(true);
-  }, [])
 
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
-        console.log("user" + user);
         const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
           method: 'GET',
         });
@@ -67,48 +64,17 @@ function LearningPage() {
         }
       } catch (error) {
         console.error('Error fetching user courses:', error);
-      } finally {
-
       }
     };
 
-    const fetchOfficialCourses = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('https://hytechlabs.online:9090/Course/OfficialCources', {
-          method: 'GET',
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data)) {
-            // localStorage.setItem('officialCourses', JSON.stringify(data));
-            officialCoursesRef.current = data;
-            setOfficialCourses(data);
-            // console.log(">>>>> "+JSON.stringify(data));
-          } else {
-            console.error('Fetched official data is not an array:', data);
-            setOfficialCourses([]);
-          }
-        } else {
-          console.error('Failed to fetch official courses:', response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching official courses:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOfficialCourses();
     if (user != null) {
       fetchUserCourses();
-    } else {
-      // setLoading(false); // If no user, set loading to false
     }
-  }, []);
+  }, [user, setUserCourses, updateMaxCardWidth]);
 
   const handleCardClick = (course) => {
     navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions, courseId: course.id, course } });
+    console.log("click");
   };
 
   const handleDelete = async (courseId, courseName) => {
@@ -134,25 +100,17 @@ function LearningPage() {
       }
     }
   };
-  useEffect(() => {
-    console.log("loading happing " + loading);
-  }, [loading])
+
   const handleCreateContestClick = () => {
-  
     navigate(`/CourseForm`);
   };
-useEffect(() => {
-  officialCourses.map((course, index) => {
-    console.log(">>>>> "+course.title);
-  })
-}, [officialCourses])
 
   return (
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        {loading&& <p style={{color:ibg,position:"absolute",right:5,Button:10}}>loading</p> }
-        <div style={{ color:"black",display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
+        {loading && <p style={{ color: ibg, position: "absolute", right: 5, bottom: 10 }}>loading</p>}
+        <div style={{ color: "black", display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
           <p style={{ paddingTop: 30, fontSize: "20px" }}>Create your own Courses now.</p>
           <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
         </div>
@@ -160,70 +118,53 @@ useEffect(() => {
           Learn Skills
           <hr />
         </p>
-
-    
-            {userCourses[0] && (
-              <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-                <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-                  Resume Preparation
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-                  {userCourses.map((course, index) => (
-                    <YourProgressCard
-                      key={index}
-                      title={course.title}
-                      progress={course.progress}
-                      totalQuestions={course.totalQuestions}
-                      rating={course.rating}
-                      completeQuestions={course.completeQuestions}
-                      course={course}
-                      style={{ width: `${maxCardWidth}px` }}
-                    />
-                  ))}
-                  {!userCourses[0] && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
-                </div>
-              </div>
-            )}
-
-            <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-              <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
-                Basic
-              </p>
-              {officialCourses[0] && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-                  {officialCourses.map((course, index) => {
-                    if (course.permission === 'public' || (course.permission === 'private' && role === 'ADMIN')) {
-                      return (
-                        <div key={index} style={{ flex: '1 1 4%', minWidth: '300px' }} onClick={() => handleCardClick(course)}>
-                          <ImgMediaCard
-                            id={course.id}
-                            title={course.title}
-                            image={course.image}
-                            description={course.description}
-                            totalQuestions={course.totalQuestions}
-                            handleDelete={handleDelete} // Pass handleDelete function
-                            courseId={course.id} // Pass course ID
-                            courseName={course.title} // Pass course name
-                            permission={course.permission}
-                          />
-                        </div>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
-                  {!officialCourses[0] && (
-                    <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center" }}>
-                      <CircularProgress />
-                    </div>
-                  )}
-                </div>
-              )}
+        {userCourses.length > 0 && (
+          <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+            <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+              Resume Preparation
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+              {userCourses.map((course, index) => (
+                <YourProgressCard
+                  key={index}
+                  title={course.title}
+                  progress={course.progress}
+                  totalQuestions={course.totalQuestions}
+                  rating={course.rating}
+                  completeQuestions={course.completeQuestions}
+                  course={course}
+                  style={{ width: `${maxCardWidth}px` }}
+                />
+              ))}
+              {userCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
             </div>
-        
+          </div>
+        )}
+        <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+            Official Courses
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
+            {officialCourses.map((course, index) => (
+             <div onClick={() => handleCardClick(course)}>
+             <ImgMediaCard
+                key={index}
+                title={course.title}
+                description={course.description}
+                image={course.image}
+                permission={course.permission}
+                totalQuestions={course.totalQuestions}
+                
+                role={role}
+              />
+              </div>
+            ))}
+            {officialCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>No official courses available.</p>}
+          </div>
+        </div>
       </div>
     </PageContainer>
   );
 }
 
-export default React.memo(LearningPage);
+export default LearningPage;

@@ -19,34 +19,6 @@ export default function ImgMediaCard({ id,permission, title, image, description,
   const [currentPermission, setCurrentPermission] = useState(permission);
 
 
-  const toggleDescription = () => {
-    setShowFullDescription(!showFullDescription);
-  };
-  const handlePermissionChange = async () => {
-    const newPermission = currentPermission === 'public' ? 'private' : 'public';
-    const url = `https://hytechlabs.online:9090/Course/id/${id}`;
-    const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-
-    try {
-      const response = await fetch(url, {
-        method: 'PUT', // Use PATCH to update only the permission field
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': basicAuth,
-        },
-        body: JSON.stringify({ permission: newPermission }),
-      });
-
-      if (response.ok) {
-        setCurrentPermission(newPermission); // Update the permission state if the request was successful
-      } else {
-        console.error('Failed to update permission:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('Error updating permission:', error);
-    }
-  };
-console.log(id);
   return (
 
     <Card style={{ backgroundColor: light, color: ibg }} sx={{ borderRadius: "15px", maxWidth: 300, transition: 'transform 0.3s ease-in-out, background-color 0.3s ease-in-out', '&:hover': { opacity: "0.9", transform: 'scale(1.05)' } }}>
@@ -62,47 +34,24 @@ console.log(id);
         <Typography gutterBottom variant="h5" component="div">
           <p style={{ fontWeight: 'bolder' }}>{title}</p>
         </Typography>
-        {/* <Typography variant="body2" component="div">
-          <pre style={{
-            height: showFullDescription ? 'auto' : '6em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: showFullDescription ? 'none' : '4',
-            WebkitBoxOrient: 'vertical'
-          }}> <ReactMarkdown>{description}</ReactMarkdown></pre>
-          <Button size="small" onClick={toggleDescription}>
-            {showFullDescription ? 'Show less' : 'Read more'}
-          </Button>
-        </Typography> */}
         <hr />
         <br />
         <div style={{display:"flex",justifyContent:"space-between"}}>
           <p>Questions: {totalQuestions}</p>
-         {role=="ADMIN" && <button style={{backgroundColor:bc,padding:"5px",borderRadius:"10px"}}onClick={() => handlePermissionChange()}>{permission}</button>
-  }</div>
+         {role=="ADMIN" && <button style={{backgroundColor:bc,padding:"5px",borderRadius:"10px"}}>{permission}</button>}
+  </div>
       </CardContent>
       <CardActions>
         <Button size="small" variant="contained"
-          color="error" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
+          color="error"
           sx={{
-            backgroundColor: bc, // Custom red color
+            backgroundColor: bc, 
             '&:hover': {
               backgroundColor: ibg,
               color: bg,
-              // Darker shade on hover
+      
             },
           }}>Start</Button>
-        {/* {role == "ADMIN" ? <Button
-          variant="contained"
-          color="primary" // Using 'error' for a red color, which is suitable for actions that could be considered 'dangerous'
-          sx={{
-            backgroundColor: '#f44336', // Custom red color
-            '&:hover': {
-              backgroundColor: '#d32f2f', // Darker shade on hover
-            },
-          }}
-          size="small" onClick={() => handleDelete(courseId, courseName)}>Delete</Button> : <></>} */}
 
         <p style={{ marginLeft: 'auto', backgroundColor: bc, padding: '5px 15px', borderRadius: "10px", paddingLeft: '5px', fontWeight: 'bolder' }}>*Free</p>
       </CardActions>

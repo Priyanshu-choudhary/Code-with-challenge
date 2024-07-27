@@ -51,6 +51,7 @@ function LearningPage() {
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data)) {
+            // localStorage.clear("");
             localStorage.setItem('userCourses', JSON.stringify(data));
             userCoursesRef.current = data;
             setUserCourses(data);
@@ -77,33 +78,11 @@ function LearningPage() {
     console.log("click");
   };
 
-  const handleDelete = async (courseId, courseName) => {
-    if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
-      try {
-        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-        const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': basicAuth,
-          }
-        });
-        if (response.ok) {
-          // Remove the course from state
-          setOfficialCourses((prevCourses) => prevCourses.filter((course) => course.id !== courseId));
-          localStorage.setItem('officialCourses', JSON.stringify(officialCoursesRef.current.filter((course) => course.id !== courseId)));
-        } else {
-          console.error('Failed to delete course:', response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error('Error deleting course:', error);
-      }
-    }
-  };
-
+  
   const handleCreateContestClick = () => {
     navigate(`/CourseForm`);
   };
+  
 
   return (
     <PageContainer bg={bg}>

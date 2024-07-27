@@ -15,6 +15,7 @@ export const CourseProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         if (Array.isArray(data)) {
+          localStorage.clear("officialCourses")
           localStorage.setItem('officialCourses', JSON.stringify(data));
           setOfficialCourses(data);
         } else {

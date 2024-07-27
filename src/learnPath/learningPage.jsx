@@ -10,7 +10,7 @@ import { CircularProgress, Button } from '@mui/material';
 import BoxLoader from '../Loader/BoxLoader';
 import CreateButton from '../Buttons/CreateButton';
 import CourseForm from '/src/UploadSection/newCourse.jsx';
-
+import RefreshIcon from '@mui/icons-material/Refresh';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -19,7 +19,7 @@ const PageContainer = styled.div`
 function LearningPage() {
   const navigate = useNavigate();
   const { ibg, user, password, bg, dark, role } = useContext(UserContext);
-  const { officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
+  const { updatCoursee,officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
 
   const userCoursesRef = useRef(null);
@@ -141,8 +141,9 @@ function LearningPage() {
           </div>
         )}
         <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-          <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+          <p style={{display:"flex" ,gap:30,fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Official Courses
+           {role=="ADMIN" && <button onClick={() => updatCoursee()}> <RefreshIcon/></button>}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (

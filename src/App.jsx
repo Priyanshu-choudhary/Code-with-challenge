@@ -94,9 +94,11 @@ function AppWrapper() {
   const checkBackendHealth = async () => {
     try {
       const response = await axios.get('https://hytechlabs.online:9090/Public/HealthCheck');
-      setIsServerUp(response.data === 'Ok!');
-      setResponse(response.data);
-      console.log("Server response:", response.data);
+      const healthData = response.data;
+      const isHealthy = healthData.server_status === 'running' && healthData.database_status === 'up';
+      setIsServerUp(isHealthy);
+      setResponse(JSON.stringify(healthData, null, 2));
+      console.log("Server response:", healthData);
     } catch (error) {
       console.error("Server response error:", error.message);
       setIsServerUp(false);

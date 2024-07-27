@@ -526,7 +526,6 @@ function QuestionApi() {
             </div>
           </div>
 
-          {detailsType == "Course" &&
             <div style={{ position: "absolute", right: 10, top: 10 }}>
               <SubmitButton onClick={() => { handleTestSubmit(); }} />
             </div>

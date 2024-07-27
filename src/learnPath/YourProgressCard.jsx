@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 function YourProgressCard({ title, progress ,rating,completeQuestions,totalQuestions,course}) {
   const {bc, ibg,bg, light,dark } = useContext(UserContext);
   const navigate = useNavigate();
-  const handleCardClick = (card) => {
-    console.log(card);
-    navigate('/QuestionApi', { state: card });
+  const handleCardClick = (course) => {
+    // console.log(card);
+    navigate('/QuestionApi', { state: course });
   };
 
   return (

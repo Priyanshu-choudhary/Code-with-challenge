@@ -27,7 +27,6 @@ export default function CourseEdit({ course }) {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState(courseDetail.image);
     const [permission, setPermission] = useState(courseDetail.permission);
-    const [imageDataUrl, setImageDataUrl] = useState(courseDetail.image);
 
     const initialLanguages = {
         java: courseDetail.language.includes('java'),
@@ -68,14 +67,6 @@ export default function CourseEdit({ course }) {
         }));
     };
 
-    useEffect(() => {
-        setImageUrl(imageDataUrl);
-    }, [imageDataUrl]);
-
-    const handleImageUrlChange = (e) => {
-        setImageUrl(e.target.value);
-    };
-
     const handlePermissionChange = (e) => {
         setPermission(e.target.value);
     };
@@ -85,6 +76,29 @@ export default function CourseEdit({ course }) {
             ...prevLanguages,
             [language]: !prevLanguages[language],
         }));
+    };
+
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                const uploadedImageUrl = response.data.fileUrl; // Adjust according to your server's response structure
+                setImageUrl(uploadedImageUrl);
+                setAlert({ show: true, message: 'Image uploaded successfully!', severity: 'success' });
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                setAlert({ show: true, message: 'Error uploading image!', severity: 'error' });
+            }
+        }
     };
 
     const handleSubmit = async () => {
@@ -118,7 +132,7 @@ export default function CourseEdit({ course }) {
             );
 
             console.log('Response:', response.data);
-            setAlert({ show: true, message: `Course Edit successfully!`, severity: 'success' });
+            setAlert({ show: true, message: `Course edited successfully!`, severity: 'success' });
         } catch (error) {
             if (error.response) {
                 console.error('Error response data:', error.response.data);
@@ -130,20 +144,9 @@ export default function CourseEdit({ course }) {
                 console.error('Error message:', error.message);
             }
 
-            setAlert({ show: true, message: `Failed to Edit course `, severity: 'error' });
+            setAlert({ show: true, message: `Failed to edit course`, severity: 'error' });
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageDataUrl(reader.result);
-            };
-            reader.readAsDataURL(file);
         }
     };
 
@@ -186,9 +189,9 @@ export default function CourseEdit({ course }) {
                 <div>
                     {/* Custom Choose button */}
                     <div style={{ borderWidth: 3, marginTop: 10, marginBottom: 10 }}>
-                        <p style={{ margin: 5, color: "#636161" }}> Select Course Template Image</p>
+                        <p style={{ margin: 5, color: "#636161" }}>Select Course Template Image</p>
                         <label htmlFor="file-upload" style={{ padding: 30, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                            <CloudUploadIcon style={{ marginRight: '5px' }} /> {imageDataUrl ? "Change Image" : "Upload Image"}
+                            <CloudUploadIcon style={{ marginRight: '5px' }} /> {imageUrl ? "Change Image" : "Upload Image"}
                         </label>
                         <input
                             id="file-upload"
@@ -198,11 +201,11 @@ export default function CourseEdit({ course }) {
                             style={{ display: 'none' }}
                         />
                     </div>
-                    {imageDataUrl && (
+                    {imageUrl && (
                         <div>
                             <p style={{ color: 'green' }}>Image successfully uploaded</p>
                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <img src={imageDataUrl} alt="Selected" style={{ width: '400px', height: '300px' }} />
+                                <img src={imageUrl} alt="Selected" style={{ width: '400px', height: '300px' }} />
                             </div>
                         </div>
                     )}

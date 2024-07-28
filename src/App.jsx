@@ -35,6 +35,8 @@ import Maintenance from './Maintenance/Maintenance'; // Ensure correct import pa
 import NewLeaderboard from './LeaderBoard/NewLeaderboard';
 import CourseForm from './UploadSection/newCourse';
 import { CourseProvider } from './Context/CourseContex';
+import ImageUpload from './fileUpload/FileUpload';
+import FileDownload from './fileUpload/DowloadFile';
 
 function App() {
   const location = useLocation();
@@ -78,6 +80,8 @@ function App() {
               <Route path="/leaderboard" element={<NewLeaderboard />} />
               <Route path="/CourseForm" element={<CourseForm />} />
               <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
+              <Route path="/ImageUpload" element={<ImageUpload />} />
+              <Route path="/FileDownload" element={<FileDownload />} />
             </Routes>
 
           </CourseProvider>

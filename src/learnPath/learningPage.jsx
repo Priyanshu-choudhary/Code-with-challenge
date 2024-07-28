@@ -45,7 +45,7 @@ function LearningPage() {
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
+        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}/0/20`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -54,8 +54,8 @@ function LearningPage() {
             // localStorage.clear("");
             localStorage.setItem('userCourses', JSON.stringify(data));
             userCoursesRef.current = data;
-            setUserCourses(data);
-            updateMaxCardWidth(data);
+            setUserCourses(data[0].courses);
+            updateMaxCardWidth(data[0].courses);
           } else {
             console.error('Fetched user data is not an array:', data);
             setUserCourses([]);

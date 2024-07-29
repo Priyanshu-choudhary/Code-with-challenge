@@ -174,7 +174,7 @@ const ProblemEditForm = () => {
 
       if (response.ok) {
         alert('Problem updated successfully!');
-        navigate('/learn');
+        navigate(-1);
       } else {
         alert('Failed to update problem.');
       }
@@ -204,6 +204,10 @@ const ProblemEditForm = () => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
+         <Tinymce
+          initialValue={descriptionRef.current}
+          setDescription={setDescription}
+        />
         {Object.keys(problemDetails).map((key) => (
           key !== 'tags' && key !== 'answer' && (
             key === 'solution' || key === 'boilerCode' || key === 'codeTemplates' || key === 'templateCode' || key === 'example' ?
@@ -324,10 +328,7 @@ const ProblemEditForm = () => {
           ))}
         </div>
 
-        <Tinymce
-          initialValue={descriptionRef.current}
-          setDescription={setDescription}
-        />
+       
 
         <Button type="submit" variant="contained" color="primary" disabled={submitting}>
           {submitting ? <CircularProgress size={24} /> : 'Submit'}

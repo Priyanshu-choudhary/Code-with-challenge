@@ -83,7 +83,7 @@ const LeetCodeClone = () => {
         url += `?tags=${tagsQuery}&exactMatch=true`;
       }
 
-      const cachedData = JSON.parse(localStorage.getItem('problemsData')) || {};
+      const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
       const lastModified = cachedData.lastModified || null;
 
       const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
@@ -108,7 +108,7 @@ const LeetCodeClone = () => {
         setResponseOk(true);
 
         const newLastModified = response.headers.get('Last-Modified');
-        localStorage.setItem('problemsData', JSON.stringify({
+        localStorage.setItem(course.title, JSON.stringify({
           problems: sortedProblems,
           lastModified: newLastModified
         }));
@@ -153,7 +153,7 @@ const LeetCodeClone = () => {
   }, []);
 
   useEffect(() => {
-    const cachedData = JSON.parse(localStorage.getItem('problemsData'));
+    const cachedData = JSON.parse(localStorage.getItem(course.title));
     if (cachedData && cachedData.problems) {
       setProblems(cachedData.problems);
       setLoading(false); // Set loading to false immediately if we have cached data
@@ -216,33 +216,7 @@ const LeetCodeClone = () => {
     navigate(`/edit/${problemId}/OfficialCources`);
   };
 
-  const fetchOfficialCourses = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`https://hytechlabs.online:9090/Course/id/${course.id}`, {
-        method: 'GET',
-      });
-      if (response.ok) {
-        const data = await response.json();
 
-        localStorage.setItem(`${course.title}`, JSON.stringify(data));
-        // officialCoursesRef.current = data;
-        setcurrentCourse(data);
-
-      } else {
-        console.error('Failed to fetch courses with id:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching  courses with id:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    // fetchOfficialCourses();
-    setcurrentCourse(localStorage.getItem(course.title))
-
-  }, [])
 
 
   const handleDelete = async (courseId, courseName) => {

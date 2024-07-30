@@ -122,7 +122,7 @@ function LearningPage() {
         <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
           <p style={{display:"flex" ,gap:30,fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Official Courses
-           {role=="ADMIN" && <button onClick={() => updateCourses()}> <RefreshIcon/></button>}
+      <button onClick={() => updateCourses()}> <RefreshIcon/></button>
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (

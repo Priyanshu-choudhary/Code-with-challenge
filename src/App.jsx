@@ -37,6 +37,7 @@ import CourseForm from './UploadSection/newCourse';
 import { CourseProvider } from './Context/CourseContex';
 import ImageUpload from './fileUpload/FileUpload';
 import FileDownload from './fileUpload/DowloadFile';
+import ContinueLearing from './Leetcode/continueLearning';
 
 function App() {
   const location = useLocation();
@@ -58,6 +59,7 @@ function App() {
               <Route path="/yourProfile" element={<YourProfile />} />
               <Route path="/EditorComponent" element={<EditorComponent />} />
               <Route path="/QuestionApi" element={<LeetCodeClone />} />
+              <Route path="/ContinueLearing" element={<ContinueLearing />} />
               <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
               <Route path="/loginOld" element={<LoginUser />} />
               <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />

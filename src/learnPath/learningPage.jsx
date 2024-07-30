@@ -75,7 +75,7 @@ function LearningPage() {
 
   const handleCardClick = (course) => {
     navigate('/QuestionApi', { state: { ...course, totalQuestions: course.totalQuestions, courseId: course.id, course } });
-    console.log("click");
+
   };
 
   
@@ -106,13 +106,14 @@ function LearningPage() {
               {userCourses.map((course, index) => (
                 <YourProgressCard
                   key={index}
-                  title={course.title}
-                  progress={course.progress}
-                  totalQuestions={course.totalQuestions}
-                  rating={course.rating}
-                  completeQuestions={course.completeQuestions}
-                  course={course}
-                  style={{ width: `${maxCardWidth}px` }}
+                    title={course.title}
+                    progress={course.progress}
+                    totalQuestions={course.totalQuestions}
+                    rating={course.rating}
+                    completeQuestions={course.completeQuestions}
+                    course={course}
+                    style={{ width: `${maxCardWidth}px` }}
+                    width={45}
                 />
               ))}
               {userCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}

@@ -34,9 +34,10 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import TestModeHeading from './TestModeHeading';
 import SecurityChecks from '../Contest/Security/SecurityChecks';
 import SubmitButton from '../Buttons/SubmitButton';
+import CodeBlock from './prismjsCodeViewer';
 function QuestionApi() {
   const { id, detailsType } = useParams();
-  const { bc, ibg, bg, light, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
+  const { bc, ibg, bg, light, role, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { contest = '', timeLeft, language, CourseDescription = '', totalProblems = '', problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
@@ -498,17 +499,17 @@ function QuestionApi() {
       navigate("/contest")
     }
   };
+
+  const handleEditProblem = (problemId) => {
+    navigate(`/edit/${problemId}/OfficialCources`);
+  };
+
   return (
     <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
-      <br />
-      {detailsType == "Contest" && <SecurityChecks />}
 
-      {detailsType == "Course" &&
-        <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
-      }
-      {detailsType == "Contest" &&
-        <TestModeHeading initialTimeLeft={timeLeft} startedAt={contestStartDate} />
-      }
+      {detailsType == "Contest" && <SecurityChecks />}
+      {detailsType == "Course" && <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />}
+      {detailsType == "Contest" && <TestModeHeading initialTimeLeft={timeLeft} startedAt={contestStartDate} />}
 
       <div style={{ background: dark, color: ibg, height: "100vh" }}>
         <div className='' style={{ display: "flex", justifyContent: "space-between" }}>
@@ -531,11 +532,11 @@ function QuestionApi() {
               <SubmitButton onClick={() => { handleTestSubmit(); }} />
             </div>
           }
-          
+
           {!optionA &&
             <div>
               {language[0] && <div className='dropdown'>
-                <button style={{ marginTop: 10, padding: 7, borderWidth: 1, borderRadius: 10, borderColor: ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
+                <button style={{ marginTop: 10, padding: 5, borderWidth: 1, borderRadius: 5, borderColor: ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
                   {selectedOption2}
 
                 </button>
@@ -567,6 +568,18 @@ function QuestionApi() {
 
           <div style={{ display: "flex" }}>
             <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
+              {role === "ADMIN" && (
+                <Button
+                  style={{ background: bc, color: ibg }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent navigating to the problem detail page
+                    handleEditProblem(problem.id);
+                  }}
+                  size='small'
+                >
+                  Edit
+                </Button>
+              )}
               <AlarmOnIcon onClick={toggleTimer} />
               <Timer running={isTimerRunning} />
               <SettingsIcon onClick={openSetting} />
@@ -624,6 +637,12 @@ function QuestionApi() {
                     <br />
                     <div style={{ marginTop: 20 }}>
                       <YouTubePlayer url={problem.videoUrl} />
+                      {/* <pre>{problem.solution[selectedOption2].solution}</pre> */}
+                      <br />
+                      <p>Solution Code</p>
+                      <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2}/>
+                      {/* <pre>{selectedOption2}</pre> */}
+
                     </div>
                   </Grid> : <p style={{ marginLeft: 20 }}>No Solution for this question.</p>}
                 </div>}

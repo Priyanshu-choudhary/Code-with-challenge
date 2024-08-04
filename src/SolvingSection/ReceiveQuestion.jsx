@@ -632,7 +632,7 @@ function QuestionApi() {
                 </div>
                 }
                 {level == 2 && <div>
-                  {problem.solution[selectedOption2]? <Grid className='subtitle' xs={15}>
+                  {problem.solution? <Grid className='subtitle' xs={15}>
                   
                     <div style={{ marginTop: 10 }}>
                      {problem.videoUrl&& <YouTubePlayer url={problem.videoUrl} />}
@@ -641,7 +641,7 @@ function QuestionApi() {
                       <p>Solution Code</p>
                      
                       {/* <pre>{selectedOption2}</pre> */}
-                    {problem.solution &&  <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2}/>}
+                    {problem.solution[selectedOption2].solution &&  <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2}/>}
                     </div>
                   </Grid> : <p style={{ marginLeft: 20 }}>No Solution for this question.</p>}
 

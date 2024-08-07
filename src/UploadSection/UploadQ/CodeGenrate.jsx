@@ -35,7 +35,7 @@ const CodeGenrate = ({ step, uploadUrl }) => {
     });
   };
 
-  const languages = ['java', 'python', 'c', 'cpp'];
+  const languages = ['java', 'python', 'c', 'cpp' , 'javascript'];
 
   return (
     <>

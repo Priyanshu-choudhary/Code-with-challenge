@@ -4,7 +4,11 @@ const JDoodleExample = async (code, language, input) => {
    
     try {
     
-      
+      if (language=="javascript") {
+        language="nodejs";
+      } else if(language=="python"){
+        language="python3"
+      }
 
         const response = await axios.post("https://hytechlabs.online:9090/code/execute", {
             script: code,

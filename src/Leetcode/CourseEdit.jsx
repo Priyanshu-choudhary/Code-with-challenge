@@ -33,6 +33,7 @@ export default function CourseEdit({ course }) {
         python: courseDetail.language.includes('python'),
         c: courseDetail.language.includes('c'),
         cpp: courseDetail.language.includes('cpp'),
+        javascript: courseDetail.language.includes('javascript'),
     };
 
     const [languages, setLanguages] = useState(initialLanguages);
@@ -43,6 +44,7 @@ export default function CourseEdit({ course }) {
             python: courseDetail.language.includes('python'),
             c: courseDetail.language.includes('c'),
             cpp: courseDetail.language.includes('cpp'),
+            javascript: courseDetail.language.includes('javascript'),
         });
     }, [courseDetail.language]);
 

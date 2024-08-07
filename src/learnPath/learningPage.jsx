@@ -11,6 +11,7 @@ import BoxLoader from '../Loader/BoxLoader';
 import CreateButton from '../Buttons/CreateButton';
 import CourseForm from '/src/UploadSection/newCourse.jsx';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import TopicsWiseSkill from './Skills/TopicsWiseSkill';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -19,7 +20,7 @@ const PageContainer = styled.div`
 function LearningPage() {
   const navigate = useNavigate();
   const { ibg, user, password, bg, dark, role } = useContext(UserContext);
-  const { updateCourses,officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
+  const { updateCourses, officialCourses, setOfficialCourses, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
   const [maxCardWidth, setMaxCardWidth] = useState(0);
 
   const userCoursesRef = useRef(null);
@@ -78,11 +79,11 @@ function LearningPage() {
 
   };
 
-  
+
   const handleCreateContestClick = () => {
     navigate(`/CourseForm`);
   };
-  
+
 
   return (
     <PageContainer bg={bg}>
@@ -106,14 +107,14 @@ function LearningPage() {
               {userCourses.map((course, index) => (
                 <YourProgressCard
                   key={index}
-                    title={course.title}
-                    progress={course.progress}
-                    totalQuestions={course.totalQuestions}
-                    rating={course.rating}
-                    completeQuestions={course.completeQuestions}
-                    course={course}
-                    style={{ width: `${maxCardWidth}px` }}
-                    width={45}
+                  title={course.title}
+                  progress={course.progress}
+                  totalQuestions={course.totalQuestions}
+                  rating={course.rating}
+                  completeQuestions={course.completeQuestions}
+                  course={course}
+                  style={{ width: `${maxCardWidth}px` }}
+                  width={45}
                 />
               ))}
               {userCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
@@ -121,28 +122,29 @@ function LearningPage() {
           </div>
         )}
         <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-          <p style={{display:"flex" ,gap:30,fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
+          <p style={{ display: "flex", gap: 30, fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
             Official Courses
-      <button onClick={() => updateCourses()}> <RefreshIcon/></button>
+            <button onClick={() => updateCourses()}> <RefreshIcon /></button>
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (
-             <div onClick={() => handleCardClick(course)}>
-             <ImgMediaCard
-                key={index}
-                title={course.title}
-                description={course.description}
-                image={course.image}
-                permission={course.permission}
-                totalQuestions={course.totalQuestions}
-                
-                role={role}
-              />
+              <div onClick={() => handleCardClick(course)}>
+                <ImgMediaCard
+                  key={index}
+                  title={course.title}
+                  description={course.description}
+                  image={course.image}
+                  permission={course.permission}
+                  totalQuestions={course.totalQuestions}
+
+                  role={role}
+                />
               </div>
             ))}
             {officialCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>No official courses available.</p>}
           </div>
         </div>
+        <TopicsWiseSkill/>
       </div>
     </PageContainer>
   );

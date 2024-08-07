@@ -328,8 +328,6 @@ function QuestionApi() {
 
       if (contentType && contentType.includes('application/json')) {
         data = await response.json();
-
-
       } else {
         const text = await response.text();
         console.error('Unexpected response format:', text);

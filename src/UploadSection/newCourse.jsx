@@ -31,6 +31,7 @@ export default function CourseForm({ uploadUrl2 }) {
     python: false,
     c: false,
     cpp: false,
+    javascript: false,
   });
 
   const handleChange = (e) => {

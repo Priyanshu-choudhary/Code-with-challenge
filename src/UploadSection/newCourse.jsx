@@ -12,9 +12,12 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Tinymce from '../TinyMCE/TinyMCE';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'; // Example of using an icon
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function CourseForm({ uploadUrl2 }) {
-  const [uploadUrl, setuploadUrl] = useState("OfficialCources")
+  const location = useLocation();
+  const { uploadUrl} = location.state || {};
+  // const [uploadUrl, setuploadUrl] = useState("OfficialCources")
   const [formData, setFormData] = useState({
     title: '',
     description: '',

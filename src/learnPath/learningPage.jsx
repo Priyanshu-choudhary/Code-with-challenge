@@ -11,7 +11,7 @@ import BoxLoader from '../Loader/BoxLoader';
 import CreateButton from '../Buttons/CreateButton';
 import CourseForm from '/src/UploadSection/newCourse.jsx';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import TopicsWiseSkill from './Skills/TopicsWiseSkill';
+import TopicsWiseSkill from '../Skill/TopicsWiseSkill';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -81,7 +81,12 @@ function LearningPage() {
 
 
   const handleCreateContestClick = () => {
-    navigate(`/CourseForm`);
+    // navigate(`/CourseForm`);
+    navigate(`/CourseForm`, {
+      state: {
+        uploadUrl:"OfficialCources",
+      }
+    });
   };
 
 

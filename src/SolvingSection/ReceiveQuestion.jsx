@@ -630,10 +630,9 @@ function QuestionApi() {
                 </div>
                 }
                 {level == 2 && <div>
-                  {problem.solution? <Grid className='subtitle' xs={15}>
-                  
+                  {problem.videoUrl&& <YouTubePlayer url={problem.videoUrl} />}
+                  {problem.solution[selectedOption2]? <Grid className='subtitle' xs={15}>
                     <div style={{ marginTop: 10 }}>
-                     {problem.videoUrl&& <YouTubePlayer url={problem.videoUrl} />}
                       {/* <pre>{JSON.stringify(problem.solution[selectedOption2].solution)}</pre> */}
                       <br />
                       <p>Solution Code</p>

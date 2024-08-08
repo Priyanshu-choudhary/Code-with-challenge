@@ -89,12 +89,7 @@ body {
     margin-bottom: 20px;
 }
 
-.Profilefilter input {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    flex-grow: 1;
-}
+
 
 .Profilefilter button {
     background-color: #54d21a;

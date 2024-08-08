@@ -640,11 +640,11 @@ function QuestionApi() {
                       {/* <pre>{selectedOption2}</pre> */}
                     {problem.solution[selectedOption2].solution &&  <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2}/>}
                     </div>
-                  </Grid> : <p style={{ marginLeft: 20 }}>No Solution for this question.</p>}
+                  </Grid> : <p style={{ margin: 20 }}>Solution code is not available.</p>}
 
                 </div>}
                 {level == 3 &&
-                  <p style={{ marginLeft: 20 }}>No discuss for this question.</p>
+                  <p style={{ margin:20 }}>No discuss for this question.</p>
                 }
               </Grid>
 

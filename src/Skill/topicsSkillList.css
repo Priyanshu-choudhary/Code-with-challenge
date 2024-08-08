@@ -39,23 +39,33 @@
     padding: 5px 10px;
     border-radius: 5px;
     font-weight: bold;
+ 
 }
 
-.tree-Profileproblem .tree-Profileproblem-difficulty.tree-easy {
+.tree-Profileproblem .tree-Profileproblem-difficulty.Easy {
     background-color: #54d21a;
     color: #fff;
-    padding-left: 20px;
-    padding-right: 25px;
+    /* margin-top: 10px; */
+    /* padding-right: 25px; */
+    /* font-size: 10;    */
 }
 
-.tree-Profileproblem .tree-Profileproblem-difficulty.tree-medium {
+.tree-Profileproblem .tree-Profileproblem-difficulty.Medium {
     background-color: #ff9800;
     color: #fff;
 }
 
-.tree-Profileproblem .tree-Profileproblem-difficulty.tree-hard {
+.tree-Profileproblem .tree-Profileproblem-difficulty.Hard {
     background-color: #f44336;
     color: #fff;
-    padding-left: 22px;
-    padding-right: 23px;
+    /* padding-left: 22px; */
+    /* padding-right: 23px; */
 }
+.vertical-line {
+    border-left: 1px solid #ffffff;
+    height: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+

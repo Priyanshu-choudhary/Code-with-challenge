@@ -44,9 +44,10 @@ function LearningPage() {
   }, []);
 
   useEffect(() => {
+
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}/0/20`, {
+        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}/0/20`, { //700ms
           method: 'GET',
         });
         if (response.ok) {

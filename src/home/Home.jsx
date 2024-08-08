@@ -168,7 +168,7 @@ function Home() {
                       hoverBackground="lightgreen"
                       width="250px"
                       height="200px"
-                      title="Cntest"
+                      title="Cotest"
                       subtitle="Code for contest"
                       imageUrl="./complete.webp"
                       imageWidth={180}

@@ -1,173 +1,131 @@
-import React, { useState } from 'react';
-import { Treebeard } from 'react-treebeard';
-import './TreeView.css';
+import React, { useState, useContext } from 'react';
+import Grid from '@mui/material/Unstable_Grid2';
+import { UserContext } from '/src/Context/UserContext';
 import Dashboard from '../dashBoard/Dashboard';
-import ToggleButton2 from './ToggleButton2';
+import './TreeView.css';
+import './topicsSkillList.css';
 
-const sampleData = {
-    name: 'DSA Course',
-    toggled: true,
-    children: [
-        {
-            name: 'Array',
-            children: [
-                {
-                    name: 'Lecture 1',
-                    children: [
-                        { name: 'Question 1' },
-                        { name: 'Question 2' }
-                    ]
-                },
-                {
-                    name: 'Lecture 2',
-                    children: [
-                        { name: 'Question 3' },
-                        { name: 'Question 4' }
-                    ]
-                }
-            ]
-        },
-        {
-            name: 'Linked List',
-            children: [
-                {
-                    name: 'Lecture 1',
-                    children: [
-                        { name: 'Question 5' },
-                        { name: 'Question 6' }
-                    ]
-                }, {
-                    name: 'Lecture 2',
-                    children: [
-                        { name: 'Question 7' },
-                        { name: 'Question 8' }
-                    ]
-                }
-            ]
-        }
-    ]
-};
+const sampleData = [
+    {
+        name: 'Step 1: Learn the basics',
+        children: [
+            {
+                name: 'Lecture 1',
+                children: [
+                    { name: 'Question 1' },
+                    { name: 'Question 2' }
+                ]
+            },
+            {
+                name: 'Lecture 2',
+                children: [
+                    { name: 'Question 3' },
+                    { name: 'Question 4' }
+                ]
+            }
+        ]
+    },
+    {
+        name: 'Step 2: Learn important sorting techniques',
+        children: [
+            {
+                name: 'Lecture 1',
+                children: [
+                    { name: 'Question 5' },
+                    { name: 'Question 6' }
+                ]
+            }, {
+                name: 'Lecture 2',
+                children: [
+                    { name: 'Question 7' },
+                    { name: 'Question 8' }
+                ]
+            }
+        ]
+    },
+    {
+        name: 'Step 3: Solve problems on Arrays',
+        children: [
+            {
+                name: 'Lecture 1',
+                children: [
+                    { name: 'Question 9' },
+                    { name: 'Question 10' }
+                ]
+            }, {
+                name: 'Lecture 2',
+                children: [
+                    { name: 'Question 11' },
+                    { name: 'Question 12' }
+                ]
+            }
+        ]
+    }
+];
+
 const TopicsWiseSkill = () => {
-    const [data, setData] = useState(sampleData);
-    const [cursor, setCursor] = useState(null);
+    const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
+    const [expandedNodes, setExpandedNodes] = useState({}); // State to track expanded nodes
 
-    const onToggle = (node, toggled) => {
-        if (cursor) {
-            cursor.active = false;
-        }
-        node.active = true;
-        if (node.children) {
-            node.toggled = toggled;
-        }
-        setCursor(node);
-        setData(Object.assign({}, data));
+    const { bg, bc, dark, light, ibg, user, password, role, profileImage } = useContext(UserContext);
+
+    const handleProblemClick = (nodeName) => {
+        // Toggle the expansion of the node
+        setExpandedNodes(prev => ({
+            ...prev,
+            [nodeName]: !prev[nodeName]
+        }));
     };
 
-    const customHeader = (node, style) => {
-        return (
-            <div style={style.base}>
-                <div style={style.title}>
-                    <ToggleButton
-                        onClick={() => onToggle(node, !node.toggled)}
-                        isOpen={node.toggled}
-                    />
-                    {node.name}
+    const renderTree = (nodes, parentKey = '') => {
+        return nodes.map((node, index) => {
+            const nodeKey = `${parentKey}${node.name}-${index}`;
+
+            return (
+                <div key={nodeKey} className="tree-Profileproblem" style={{
+                    backgroundColor: hoverIndex === nodeKey ? bc : light,
+                    transition: 'background-color 0.3s',
+                    cursor: 'pointer',
+                    color: ibg,
+                    borderRadius: "5px",
+                    marginTop:20,
+                    marginLeft: parentKey ? '20px' : '0',
+                    marginRight: parentKey ? '20px' : '0' // Indent children
+                }}
+                    onMouseEnter={() => setHoverIndex(nodeKey)}
+                    onMouseLeave={() => setHoverIndex(null)}
+                    onClick={() => handleProblemClick(nodeKey)}
+                >
+                    <div className="tree-Profileproblem-title">
+                        {node.name}
+                    </div>
+                    {/* Render children if node is expanded */}
+                    {expandedNodes[nodeKey] && node.children && (
+                        <div className="tree-Profilechildren">
+                            {renderTree(node.children, `${nodeKey}-`)}
+                        </div>
+                    )}
                 </div>
-            </div>
-        );
+            );
+        });
     };
 
     return (
         <div>
             <Dashboard />
-            <div className="tree-container">
-                <Treebeard
-                    data={data}
-                    onToggle={onToggle}
-                    decorators={{
-                        ...Treebeard.decorators,
-                        Header: customHeader,
-                    }}
-                    style={{
-                        tree: {
-                            base: {
-                                listStyle: 'none',
-                                backgroundColor: '#f9f9f9',
-                                margin: 0,
-                                padding: 10,
-                                color: '#333',
-                                fontFamily: 'Arial, sans-serif',
-                                fontSize: '18px'
-                            },
-                            node: {
-                                base: {
-                                    position: 'relative'
-                                },
-                                link: {
-                                    cursor: 'pointer',
-                                    position: 'relative',
-                                    padding: '5px 5px',
-                                    display: 'block'
-                                },
-                                activeLink: {
-                                    background: '#e6f7ff',
-                                    border: '1px solid #91d5ff',
-                                    borderRadius: '4px'
-                                },
-                                toggle: {
-                                    base: {
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                        verticalAlign: 'top',
-                                        marginLeft: '-5px',
-                                        height: '24px',
-                                        width: '24px'
-                                    },
-                                    wrapper: {
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        margin: '-7px 0 0 -7px',
-                                        height: '14px'
-                                    },
-                                    height: 14,
-                                    width: 14,
-                                    arrow: {
-                                        fill: '#9DA5AB',
-                                        strokeWidth: 0
-                                    }
-                                },
-                                header: {
-                                    base: {
-                                        display: 'inline-block',
-                                        verticalAlign: 'top',
-                                        color: '#333'
-                                    },
-                                    connector: {
-                                        width: '2px',
-                                        height: '12px',
-                                        borderLeft: 'solid 2px black',
-                                        borderBottom: 'solid 2px black',
-                                        position: 'absolute',
-                                        top: '0px',
-                                        left: '-21px'
-                                    },
-                                    title: {
-                                        lineHeight: '24px',
-                                        verticalAlign: 'middle'
-                                    }
-                                },
-                                subtree: {
-                                    listStyle: 'none',
-                                    paddingLeft: '19px'
-                                },
-                                loading: {
-                                    color: '#E2C089'
-                                }
-                            }
-                        }
-                    }}
-                />
+            <div className="tree-Profileheader">
+                <div className="tree-Profiletags"></div>
+            </div>
+            <div className="tree-Profilecontent" style={{ backgroundColor: dark, color: ibg }}>
+                <div className='Profileheading' style={{ backgroundColor: dark, color: ibg }}>
+                    <Grid container spacing={2}>
+                        <Grid xs={10}>Problem Solved:</Grid>
+                        {/* <Grid>{noOfQuestion}</Grid> */}
+                    </Grid>
+                </div>
+                <div className="tree-Profileproblem-list" style={{ backgroundColor: light, color: ibg }}>
+                    {sampleData ? renderTree(sampleData) : <p>No Data...</p>}
+                </div>
             </div>
         </div>
     );

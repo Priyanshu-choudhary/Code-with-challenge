@@ -32,6 +32,98 @@ const sampleData = [
                 ]
             }
         ]
+    },{
+        name: 'Step 2: Array',
+        childrenCount: 2,
+        children: [
+            {
+                name: 'Lecture 1',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 1', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' },
+                    { name: 'Question 2', hardness: 'Medium', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            },
+            {
+                name: 'Lecture 2',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            }
+        ]
+    },{
+        name: 'Step 3: shorting',
+        childrenCount: 2,
+        children: [
+            {
+                name: 'Lecture 1',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 1', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' },
+                    { name: 'Question 2', hardness: 'Medium', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            },
+            {
+                name: 'Lecture 2',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            }
+        ]
+    },{
+        name: 'Step 4: String',
+        childrenCount: 2,
+        children: [
+            {
+                name: 'Lecture 1',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 1', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' },
+                    { name: 'Question 2', hardness: 'Medium', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            },
+            {
+                name: 'Lecture 2',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            }
+        ]
+    },{
+        name: 'Step 5: linlList',
+        childrenCount: 2,
+        children: [
+            {
+                name: 'Lecture 1',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 1', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' },
+                    { name: 'Question 2', hardness: 'Medium', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            },
+            {
+                name: 'Lecture 2',
+                childrenCount: 2,
+                children: [
+                    { name: 'Question 3', hardness: 'Hard', link: '#', youtubeLink: '#', status: 'Incomplete' },
+                    { name: 'Question 4', hardness: 'Easy', link: '#', youtubeLink: '#', status: 'Complete' }
+                ]
+            }
+        ]
     },
     // Add more steps...
 ];
@@ -59,7 +151,7 @@ const TopicsWiseSkill = () => {
 
             return (
                 <div key={nodeKey} className={`${isQuestion?"border":"tree-Profileproblem"}`} style={{
-                    fontWeight: hoverIndex === nodeKey ? "bolder" : "normal",
+                    // fontWeight: hoverIndex === nodeKey ? "bolder" : "normal",
                     transition: 'background-color 0.3s',
                     cursor: 'pointer',
                     color: ibg,
@@ -108,9 +200,9 @@ const TopicsWiseSkill = () => {
                 <div className="tree-Profiletags"></div>
             </div>
             <div className="tree-Profilecontent" style={{ backgroundColor: dark, color: ibg }}>
-                <div className='Profileheading' style={{ backgroundColor: dark, color: ibg }}>
+                <div className='Profileheading text-center' style={{ backgroundColor: dark, color: ibg }}>
                     <Grid container spacing={2}>
-                        <Grid xs={10}>Problem Solved:</Grid>
+                        <Grid xs={10}>DSA:</Grid>
                     </Grid>
                 </div>
                 <div className="tree-Profileproblem-list" style={{ backgroundColor: light, color: ibg }}>

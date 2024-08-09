@@ -95,8 +95,8 @@ function TopicsWiseSkill() {
                             navigate(`/TreeView`);
                         }} style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                     {Topics.map((course, index) => (
-                        <SkillsCard title={Topics[index].title}  />
-
+                        // <SkillsCard title={Topics[index].title}  />
+                        <SkillsCard title={`DSA ${index}`}/>
                     ))}
 
                 </div>

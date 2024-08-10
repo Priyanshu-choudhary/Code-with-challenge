@@ -37,6 +37,7 @@ function Firstpage() {
       .then(response => {
         setContests(response.data);
       })
+
       .catch(error => {
         console.error('There was an error fetching the contest data!', error);
       })

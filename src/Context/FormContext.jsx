@@ -10,13 +10,13 @@ export const FormProvider = ({ children }) => {
     answer: [],
     difficulty: '',
     constrain: '',
-    sequence:'',
+    sequence: '',
     time: '',
-    input:'',
-   
+    input: '',
     permission: '',
     codeTemplates: {}, // Object to store code templates for different languages
     selectedLanguage: 'java', // Default selected language
+    solution: {}, // Object to store solution code for different languages
   });
 
   const updateFormData = (newData) => {

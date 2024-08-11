@@ -120,12 +120,17 @@ const MyEditor = forwardRef(
     const getCode = useCallback(async (currentBoilerCode, currentTemplateCode) => {
       if (editorRef.current) {
         let code = editorRef.current.getValue();
-        getSolution(code);
-        code = currentBoilerCode + code;
+        getSolution(code); 
+      
         
+        if (language=="python") {
+          code =   code+currentBoilerCode;
+        }else{
+        code = currentBoilerCode + code;
+        }
         setiSubmit(true);
         spin(true);
-
+   
         const output = await JDoodleExample(code, language, input);
         setiSubmit(false);
         spin(false);

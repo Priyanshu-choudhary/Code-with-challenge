@@ -10,12 +10,13 @@ import DoneIcon from '@mui/icons-material/Done';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 import sampleData from './ProblemData'; 
+import { useNavigate } from 'react-router-dom';
 
 
 const TopicsWiseSkill = () => {
     const [hoverIndex, setHoverIndex] = useState(null);
     const [expandedNodes, setExpandedNodes] = useState([]);
-
+    const navigate = useNavigate();
     const { bg, bc, dark, light, ibg } = useContext(UserContext);
 
     const toggleNodeExpansion = (nodeKey) => {
@@ -27,6 +28,21 @@ const TopicsWiseSkill = () => {
             }
         });
     };
+    const handleProblemClick = (problem, index) => {
+        console.log("clicked!");
+        
+        navigate(`/question/${problem[0].id}/Course`, {
+          state: {
+            problems:problem,
+            currentIndex: index,
+            navHistory:"Topics wise skill",
+            currentPage:"hello",
+            CourseDescription: "Course description",
+            totalProblems: 0,// Pass the total number of problems
+            language:["java"]
+          }
+        });
+      };
     const renderTree = (nodes, parentKey = '') => {
         return nodes.map((node, index) => {
             const nodeKey = `${parentKey}${node.name}-${index}`;
@@ -60,7 +76,7 @@ const TopicsWiseSkill = () => {
                         {hasQuestionChildren && expandedNodes.includes(nodeKey) && (
                             <div className="border rounded-tl-md rounded-tr-md " style={{marginLeft:50,marginRight:50, backgroundColor: "#FFECA1", color: "black", borderColor: bg }}>
                                 <div className="flex">
-                                    <p style={{ width: 35 }}> </p>Question<spam   className='vertical-line border-black'>&nbsp; </spam>
+                                    <p style={{ width: 57 }}> </p>Question<spam   className='vertical-line border-black'>&nbsp; </spam>
                                     <p style={{ width: 23    }}> </p>Status<spam className='vertical-line'>&nbsp; </spam>
                                     <p style={{ width: 150 }}>Question Link</p><br /><spam className='vertical-line'>&nbsp; </spam>
                                     <p style={{ width: 60 }}></p><spam className='vertical-line'>&nbsp; </spam>
@@ -70,14 +86,14 @@ const TopicsWiseSkill = () => {
                             </div>
                         )}
     
-                        {isQuestion && (
-                            <div className="question-details flex" style={{ paddingLeft: '20px', color: ibg }}>
+                        {isQuestion &&   node.problem && (
+                            <div className="question-details flex" style={{ paddingLeft: '20px', color: ibg }}  onClick={() => handleProblemClick(node.problem, 0)}>
                                 <spam className='vertical-line p-2'>&nbsp; </spam>
                                 <p style={{ width: 0 }}> </p>{node.status === "Complete" ? <CheckBoxOutlineBlankIcon style={{ marginRight: 20, marginTop: 10, color: ibg }} /> : <DoneIcon style={{ color: ibg,borderColor:ibg, borderRadius: 4, borderWidth: 2, marginRight: 22, marginLeft: 2, marginTop: 10 }} fontSize='small' />} <spam className='vertical-line'>&nbsp; </spam>
                                 <a style={{ width: 150 }} href={node.link} target="_blank" rel="noopener noreferrer">Question Link</a><br /><spam className='vertical-line'>&nbsp; </spam>
                                 <a style={{ width: 60 }} href={node.youtubeLink} target="_blank" rel="noopener noreferrer"><img className='mt-1' src="/youtube.svg" alt="youtube" width={45} /></a><spam className='vertical-line'>&nbsp; </spam>
-                                <p className={`tree-Profileproblem-difficulty m-1 text-center ${node.hardness}`} style={{ width: 100 }}>{node.hardness}</p> <spam className='vertical-line '>&nbsp; </spam>
-                                <p className={``} >{node.description}</p>
+                                <p className={`tree-Profileproblem-difficulty m-1 text-center ${node.problem&&node.problem[0].difficulty}`} style={{ width: 100 }}>{node.problem&&node.problem[0].difficulty   }</p> <spam className='vertical-line '>&nbsp; </spam>
+                                <p className={``} >{node.problem&& node.problem[0].title}</p>
                             </div>
                         )}
                     </div>

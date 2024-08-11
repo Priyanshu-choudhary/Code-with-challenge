@@ -9,7 +9,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
-import sampleData from './ProblemData'; 
+// import sampleData from './ProblemData'; 
+import sampleData from './NewProblemData'; 
 import { useNavigate } from 'react-router-dom';
 
 

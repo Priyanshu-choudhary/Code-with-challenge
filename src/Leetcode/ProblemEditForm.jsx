@@ -298,7 +298,7 @@ const ProblemEditForm = () => {
             <div key={language}>
               <h3 style={{ margin: "15px" }}>{language}</h3>
               <TextField
-                label="Template Code"
+                label="Boiler Code"
                 variant="outlined"
                 multiline
                 fullWidth
@@ -307,7 +307,7 @@ const ProblemEditForm = () => {
                 onChange={(e) => handleCodeTemplateChange(language, 'templateCode', e.target.value)}
               />
               <TextField
-                label="Boiler Code"
+                label="Checker Code"
                 variant="outlined"
                 multiline
                 rows={4}

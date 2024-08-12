@@ -245,7 +245,7 @@ Expected Output:
 5. Don't write comments like "//this is boiler code" in boiler code.
 6.write question description , time complexity,time to solve,  and easy, medium ,hard level and also give its solution` },
     // Add more documents as needed
-    { id: 4, title: "Coding Question Prompt for Javascript", content: `Coding Question Prompt for JS
+    { id: 4, title: "Coding Question Prompt for Javascript", content: `
 I am making a coding question website. In this website, the user solves the question. For this, I want you to generate two codes for me in javascript language. One is a boiler code with a solution function for a coding question for example:
 
 

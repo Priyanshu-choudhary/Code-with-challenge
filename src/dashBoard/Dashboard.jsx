@@ -51,7 +51,7 @@ function classNames(...classes) {
 function Dashboard() {
     const navigate = useNavigate();
     console.log("Dashboard rerender");
-    const { user, setcurrentthemes, currentthemes,profileImage } = useContext(UserContext);
+    const { user, setcurrentthemes, currentthemes,profileImage,role } = useContext(UserContext);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('currentthemes');
@@ -286,7 +286,7 @@ function Dashboard() {
                                     <div className="mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
                                             <Disclosure.Button
-                                                key={item.name}
+                                                key={`${role!="ADMIN" &&item.name}`}
                                                 as="a"
                                                 href={item.href}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"

@@ -613,7 +613,7 @@ function QuestionApi() {
                   </>}
 
                   {problem.input && <>
-                    <Grid className='subtitle' xs={15}><hr />
+                    <Grid className='subtitle' xs={12}><hr />
                       Input Format:
                     </Grid>
                     <Grid xs={16}>
@@ -621,7 +621,7 @@ function QuestionApi() {
                       {/* {typeof problem.solution === 'string' ? problem.solution : JSON.stringify(problem.solution, null, 2)} */}
                     </Grid>
                   </>}
-                  {problem.constrain && <Grid className='subtitle' xs={15}><hr />
+                  {problem.constrain && <Grid className='subtitle' xs={12}><hr />
                     Constrain:
 
                     <br />

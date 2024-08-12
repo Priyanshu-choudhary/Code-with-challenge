@@ -298,11 +298,12 @@ const ProblemEditForm = () => {
             <div key={language}>
               <h3 style={{ margin: "15px" }}>{language}</h3>
               <TextField
+              className='my-4'
                 label="Boiler Code"
                 variant="outlined"
                 multiline
                 fullWidth
-                rows={4}
+                // rows={12}
                 value={problemDetails.codeTemplates[language].templateCode}
                 onChange={(e) => handleCodeTemplateChange(language, 'templateCode', e.target.value)}
               />
@@ -310,7 +311,7 @@ const ProblemEditForm = () => {
                 label="Checker Code"
                 variant="outlined"
                 multiline
-                rows={4}
+                // rows={12}
                 fullWidth
                 value={problemDetails.codeTemplates[language].boilerCode}
                 onChange={(e) => handleCodeTemplateChange(language, 'boilerCode', e.target.value)}
@@ -318,8 +319,9 @@ const ProblemEditForm = () => {
               <TextField
                 label="Solution"
                 variant="outlined"
+                 className='my-4'
                 multiline
-                rows={4}
+                // rows={4}
                 fullWidth
                 value={problemDetails.solution[language]?.solution || ''}
                 onChange={(e) => handleSolutionChange(language, e.target.value)}

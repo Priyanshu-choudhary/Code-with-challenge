@@ -630,21 +630,18 @@ function QuestionApi() {
                 </div>
                 }
                 {level == 2 && <div>
-                  {problem.videoUrl&& <YouTubePlayer url={problem.videoUrl} />}
-                  {problem.solution[selectedOption2]? <Grid className='subtitle' xs={12}>
-                    <div style={{ marginTop: 10 }}>
-                      {/* <pre>{JSON.stringify(problem.solution[selectedOption2].solution)}</pre> */}
-                      <br />
-                      <p>Solution Code</p>
-                     
-                      {/* <pre>{selectedOption2}</pre> */}
-                    {problem.solution[selectedOption2].solution &&  <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2}/>}
-                    </div>
-                  </Grid> : <p style={{ margin: 20 }}>Solution code is not available.</p>}
+                  {problem.videoUrl && <YouTubePlayer url={problem.videoUrl} />}
+                  {problem.solution[selectedOption2] ?
+                    <Grid className='subtitle' xs={8}>
+                      <div style={{ marginTop: 10 }}>                   
+                        <br />
+                        {problem.solution[selectedOption2].solution && <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2} />}
+                      </div>
+                    </Grid> : <p style={{ margin: 20 }}>Solution code is not available.</p>}
 
                 </div>}
                 {level == 3 &&
-                  <p style={{ margin:20 }}>No discuss for this question.</p>
+                  <p style={{ margin: 20 }}>No discuss for this question.</p>
                 }
               </Grid>
 

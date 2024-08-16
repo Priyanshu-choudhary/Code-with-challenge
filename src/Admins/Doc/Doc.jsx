@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import documentData from './Documentdata';
 import './Doc.css';
-import Dashboard from '../dashBoard/Dashboard';
+
 import Button from '@mui/material/Button';
 
-function Doc() {
+function Document() {
     const [expanded, setExpanded] = useState({});
 
     const toggleReadMore = (id) => {
@@ -16,7 +16,7 @@ function Doc() {
 
     return (
         <div>
-            <Dashboard />
+        
             <div className="doc-container">
                 <h1 className="doc-heading">Important Documents</h1>
                 <div className="doc-list">
@@ -42,4 +42,4 @@ function Doc() {
     );
 }
 
-export default Doc;
+export default Document;

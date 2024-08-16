@@ -38,9 +38,9 @@ import { CourseProvider } from './Context/CourseContex';
 import ImageUpload from './fileUpload/FileUpload';
 import FileDownload from './fileUpload/DowloadFile';
 import ContinueLearing from './Leetcode/continueLearning';
-// import TreeView from './Skill/TreeViewQuestion';
 import TopicsWiseSkill from './Skill/TreeViewQuestion';
-import Doc from './Doc/Doc';
+
+import ManagerDashbord from './Admins/ManagerDashbord';
 
 function App() {
   const location = useLocation();
@@ -88,7 +88,7 @@ function App() {
               <Route path="/ImageUpload" element={<ImageUpload />} />
               <Route path="/FileDownload" element={<FileDownload />} />
               <Route path="/TreeView" element={<TopicsWiseSkill />} />
-              <Route path="/Doc" element={<Doc />} />
+              <Route path="/Doc" element={<ManagerDashbord />} />
 
             </Routes>
 

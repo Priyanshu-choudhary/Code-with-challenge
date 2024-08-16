@@ -17,11 +17,9 @@ function TopicsWiseSkill() {
     const { ibg, user, password, bg, dark, role } = useContext(UserContext);
     // const { updateCourses, Topics, setTopics, userCourses, setUserCourses, loading, setLoading } = useContext(CourseContext);
     const [maxCardWidth, setMaxCardWidth] = useState(0);
-
     const [Topics, setTopics] = useState([]);
     const [userCourses, setUserCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const userCoursesRef = useRef(null);
     const TopicsRef = useRef(null);
 
@@ -91,12 +89,15 @@ function TopicsWiseSkill() {
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
                     Topic wise Skills
                 </p>
-                <div onClick={() => {
-                            navigate(`/TreeView`);
-                        }} style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                <div    
+                style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                     {Topics.map((course, index) => (
                         // <SkillsCard title={Topics[index].title}  />
-                        <SkillsCard title={`DSA ${index}`}/>
+                        <div  onClick={() => {
+                            navigate(`/TreeView`, { state: {  course:course } });
+                        }} >
+                        <SkillsCard title={course.title} />
+                        </div>
                     ))}
 
                 </div>

@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function CourseEdit({ course }) {
     const location = useLocation();
-    const { courseDetail } = location.state || {};
+    const { courseDetail,auth } = location.state || {};
     const [formData, setFormData] = useState({
         title: courseDetail.title,
         description: courseDetail.description,
@@ -127,8 +127,8 @@ export default function CourseEdit({ course }) {
                         'Content-Type': 'application/json',
                     },
                     auth: {
-                        username: "OfficialCources",
-                        password: "OfficialCources",
+                        username: `${auth?auth:"OfficialCources"}`,
+                        password: `${auth?auth:"OfficialCources"}`,
                     },
                 }
             );

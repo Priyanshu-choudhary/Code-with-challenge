@@ -5,13 +5,9 @@ function SkillsCard({title}) {
         <div>
             <div className="ag-format-container">
                 <div className="ag-courses_box">
-                   
-                   
-                   
-                    
-                  
+   
                     <div className="ag-courses_item">
-                        <a href="#" className="ag-courses-item_link">
+                        <div className="ag-courses-item_link">
                             <div className="ag-courses-item_bg" />
                             <div className="ag-courses-item_title">
                                 {title}
@@ -22,7 +18,7 @@ function SkillsCard({title}) {
                                     8.8.2024
                                 </span>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>

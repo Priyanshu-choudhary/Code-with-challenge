@@ -20,7 +20,7 @@ function ManagerDashbord() {
             case 'component3':
                 return <Document />;
             default:
-                return <div>Select a component to display</div>;
+                return <Todo />;
         }
     };
 

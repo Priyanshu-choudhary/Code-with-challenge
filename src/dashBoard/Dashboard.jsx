@@ -28,7 +28,7 @@ const myuser = {
 const navigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Learn', href: '/Tutorials', current: false },
-    { name: 'Cources', href: '/learn', current: false },
+    { name: 'Courses', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
     { name: 'Contest', href: '/contest', current: false },

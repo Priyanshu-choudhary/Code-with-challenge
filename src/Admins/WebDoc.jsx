@@ -35,11 +35,11 @@ function WebDoc() {
             
             <div className='md:flex'>
             <div className='mt-10 ml-5 md:mt-20 md:ml-5'>
-                    <p className='font-bold my-5 text-lg    '>Topics</p>
+                    <p className='font-bold my-5 text-lg    '>In this article</p>
                     <ul>
                         {lectureData.map((section) => (
                             <li className='flex mt-2' key={section.id}>
-                               <RadioButtonCheckedIcon fontSize='sm' className='mt-1.5 mr-1 text-blue-500'/> <a href={`#${section.id}`} className=' text-blue-500 underline'>
+                               <RadioButtonCheckedIcon fontSize='sm' className='mt-1.5 mr-1 text-black'/> <a href={`#${section.id}`} className='text-black no-underline'>
                                     {section.heading}
                                 </a>
                             </li>

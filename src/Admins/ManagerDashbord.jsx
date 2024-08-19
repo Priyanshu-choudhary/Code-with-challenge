@@ -3,6 +3,8 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Document from './Doc/Doc';
 import Todo from '../TodoHeadings/Todo';
+import WebDoc from './WebDoc';
+    
 
 
 function ManagerDashbord() {
@@ -12,7 +14,7 @@ function ManagerDashbord() {
     const renderComponent = () => {
         switch (activeComponent) {
             case 'component1':
-                return <Document />;
+                return <WebDoc />;
             case 'component2':
                 return <Todo />;
             case 'component3':
@@ -26,12 +28,12 @@ function ManagerDashbord() {
         <div >
             <Dashboard />
             <div className='flex'>
-                <div style={{ backgroundColor: light, width: "20%", height: "100vh", color: ibg }}>
-                    <button className='btn btn-primary mb-3' onClick={() => setActiveComponent('component1')}>Documents files</button>
+                <div style={{ backgroundColor: light, width: "17%", height: "100vh", color: ibg }}>
+                    <button style={{width:200}} className='btn btn-primary mb-3' onClick={() => setActiveComponent('component1')}>Website Document</button>
                     <br />
-                    <button className='btn btn-primary mb-3'onClick={() => setActiveComponent('component2')}>To Do List</button>
+                    <button style={{width:200}} className='btn btn-primary mb-3 'onClick={() => setActiveComponent('component2')}>To Do List</button>
                     <br />
-                    <button className='btn btn-primary mb-3'onClick={() => setActiveComponent('component3')}>XXX</button>
+                    <button style={{width:200}} className='btn btn-primary mb-3'onClick={() => setActiveComponent('component3')}>Files</button>
                 </div>
                 <div style={{ width: "75%", height: "100vh" }}>
                     {renderComponent()}

@@ -43,6 +43,7 @@ import TopicsWiseSkill from './Skill/TreeViewQuestion';
 import ManagerDashbord from './Admins/ManagerDashbord';
 import TutorialMain from './TutorialPage/TutorialMain';
 import Lecture from './TutorialPage/Lecture';
+import AboutUs from './home/Aboutus/AboutUs.jsx';
 
 function App() {
   const location = useLocation();
@@ -93,6 +94,7 @@ function App() {
               <Route path="/Doc" element={<ManagerDashbord />} />
               <Route path="/Tutorials" element={<TutorialMain />} />
               <Route path="/lecture/:title" element={<Lecture />} />
+              <Route path="/AboutUs" element={<AboutUs />} />
               
             </Routes>
 

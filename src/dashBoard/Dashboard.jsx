@@ -32,14 +32,15 @@ const navigation = [
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
     { name: 'Contest', href: '/contest', current: false },
-    { name: 'Document', href: '/Document', current : false },
+   
 ]
 
 // User menu items
 const userNavigation = [
     { name: 'Your Profile', href: '/yourProfile' },
     { name: 'Settings', href: '#' },
-    { name: 'Documents', href: '/Doc' },
+    { name: 'Admins Management', href: '/Doc' },
+    { name: 'Documentation', href: '/Document' },
     { name: 'About us', href: '/AboutUs' },
     { name: 'Sign out', href: '/logout' },
 

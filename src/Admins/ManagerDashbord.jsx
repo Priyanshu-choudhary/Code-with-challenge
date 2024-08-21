@@ -3,8 +3,9 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Document from './Doc/Doc';
 import Todo from '../TodoHeadings/Todo';
-import WebDoc from './WebDoc';
+
 import FundsManagement from '../FundsManagements/FundsManagement';
+import DocumentPage from '../Document/DocumentPage';
     
 
 
@@ -15,7 +16,7 @@ function ManagerDashbord() {
     const renderComponent = () => {
         switch (activeComponent) {
             case 'component1':
-                return <WebDoc />;
+                return <DocumentPage />;
             case 'component2':
                 return <Todo />;
             case 'component3':

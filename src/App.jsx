@@ -41,10 +41,13 @@ import ContinueLearing from './Leetcode/continueLearning';
 import TopicsWiseSkill from './Skill/TreeViewQuestion';
 
 import ManagerDashbord from './Admins/ManagerDashbord';
+
+import DocumentPage from './Document/DocumentPage';
 import TutorialMain from './TutorialPage/TutorialMain';
 import Lecture from './TutorialPage/Lecture';
 import AboutUs from './home/Aboutus/AboutUs.jsx';
 import LectureForm from './TutorialPage/CreateLecture.jsx';
+
 
 function App() {
   const location = useLocation();
@@ -94,10 +97,12 @@ function App() {
               <Route path="/FileDownload" element={<FileDownload />} />
               <Route path="/TreeView" element={<TopicsWiseSkill />} />
               <Route path="/Doc" element={<ManagerDashbord />} />
+              <Route path="/Document" element={<DocumentPage />} />
               <Route path="/Tutorials" element={<TutorialMain />} />
               <Route path="/lecture/:title" element={<Lecture />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               
+
             </Routes>
 
           </CourseProvider>

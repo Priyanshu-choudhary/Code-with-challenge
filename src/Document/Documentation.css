@@ -1,0 +1,81 @@
+/* .documentation {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .documentation h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .documentation h2 {
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .documentation h3 {
+    margin-top: 10px;
+    color: #555;
+  }
+  
+  .documentation p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+   */
+   /* Container styling */
+.documentation {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Section titles */
+.documentation h2 {
+  font-size: 28px;
+  margin-top: 40px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  color: #007bff;
+}
+
+/* Subtitles */
+.documentation h3 {
+  font-size: 22px;
+  margin-top: 30px;
+  color: #0056b3;
+}
+
+/* Paragraphs */
+.documentation p {
+  margin: 10px 0;
+}
+
+/* Section spacing */
+.documentation section {
+  margin-bottom: 40px;
+}
+
+/* Links */
+.documentation a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.documentation a:hover {
+  text-decoration: underline;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Highlight the active section (optional) */
+.documentation section:target h2,
+.documentation section:target h3 {
+  color: #ff5722;
+}

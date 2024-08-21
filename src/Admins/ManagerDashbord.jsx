@@ -3,6 +3,9 @@ import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
 import Document from './Doc/Doc';
 import Todo from '../TodoHeadings/Todo';
+import WebDoc from './WebDoc';
+import FundsManagement from '../FundsManagements/FundsManagement';
+    
 
 
 function ManagerDashbord() {
@@ -12,28 +15,32 @@ function ManagerDashbord() {
     const renderComponent = () => {
         switch (activeComponent) {
             case 'component1':
-                return <Document />;
+                return <WebDoc />;
             case 'component2':
                 return <Todo />;
             case 'component3':
                 return <Document />;
+            case 'component4':
+                return <FundsManagement />;
             default:
-                return <div>Select a component to display</div>;
+                return <Todo />;
         }
     };
 
     return (
         <div >
             <Dashboard />
-            <div className='flex'>
-                <div style={{ backgroundColor: light, width: "20%", height: "100vh", color: ibg }}>
-                    <button className='btn btn-primary mb-3' onClick={() => setActiveComponent('component1')}>Documents files</button>
+            <div className='Side-Drover flex'>
+                <div style={{ backgroundColor: light, width: "17%", height: "100vh", color: ibg }}>
+                    <button style={{width:200}} className='btn btn-primary mb-3' onClick={() => setActiveComponent('component1')}>Website Document</button>
                     <br />
-                    <button className='btn btn-primary mb-3'onClick={() => setActiveComponent('component2')}>To Do List</button>
+                    <button style={{width:200}} className='btn btn-primary mb-3 'onClick={() => setActiveComponent('component2')}>To Do List</button>
                     <br />
-                    <button className='btn btn-primary mb-3'onClick={() => setActiveComponent('component3')}>XXX</button>
+                    <button style={{width:200}} className='btn btn-primary mb-3'onClick={() => setActiveComponent('component3')}>Files</button>
+                    <br />
+                    <button style={{width:200}} className='btn btn-primary mb-3'onClick={() => setActiveComponent('component4')}>Funds Management</button>
                 </div>
-                <div style={{ width: "75%", height: "100vh" }}>
+                <div style={{ width: "100%", height: "100vh" }}>
                     {renderComponent()}
                 </div>
             </div>

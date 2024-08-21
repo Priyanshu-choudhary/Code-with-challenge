@@ -27,7 +27,8 @@ const myuser = {
 // Navigation items
 const navigation = [
     { name: 'Home', href: '/', current: false },
-    { name: 'Learn', href: '/learn', current: false },
+    { name: 'Learn', href: '/Tutorials', current: false },
+    { name: 'Courses', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/data', current: false },
     { name: 'Contest', href: '/contest', current: false },
@@ -39,7 +40,7 @@ const userNavigation = [
     { name: 'Your Profile', href: '/yourProfile' },
     { name: 'Settings', href: '#' },
     { name: 'Documents', href: '/Doc' },
-
+    { name: 'About us', href: '/AboutUs' },
     { name: 'Sign out', href: '/logout' },
 
 ]

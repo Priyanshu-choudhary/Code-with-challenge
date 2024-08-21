@@ -41,7 +41,12 @@ import ContinueLearing from './Leetcode/continueLearning';
 import TopicsWiseSkill from './Skill/TreeViewQuestion';
 
 import ManagerDashbord from './Admins/ManagerDashbord';
+
 import DocumentPage from './Document/DocumentPage';
+import TutorialMain from './TutorialPage/TutorialMain';
+import Lecture from './TutorialPage/Lecture';
+import AboutUs from './home/Aboutus/AboutUs.jsx';
+import LectureForm from './TutorialPage/CreateLecture.jsx';
 
 
 function App() {
@@ -86,13 +91,17 @@ function App() {
               <Route path="/ContestResults/findBy" element={<ContestResult />} />
               <Route path="/leaderboard" element={<NewLeaderboard />} />
               <Route path="/CourseForm" element={<CourseForm />} />
+              <Route path="/LectureForm" element={<LectureForm />} />
               <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
               <Route path="/ImageUpload" element={<ImageUpload />} />
               <Route path="/FileDownload" element={<FileDownload />} />
               <Route path="/TreeView" element={<TopicsWiseSkill />} />
               <Route path="/Doc" element={<ManagerDashbord />} />
               <Route path="/Document" element={<DocumentPage />} />
-
+              <Route path="/Tutorials" element={<TutorialMain />} />
+              <Route path="/lecture/:title" element={<Lecture />} />
+              <Route path="/AboutUs" element={<AboutUs />} />
+              
 
             </Routes>
 

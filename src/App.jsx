@@ -44,6 +44,7 @@ import ManagerDashbord from './Admins/ManagerDashbord';
 import TutorialMain from './TutorialPage/TutorialMain';
 import Lecture from './TutorialPage/Lecture';
 import AboutUs from './home/Aboutus/AboutUs.jsx';
+import LectureForm from './TutorialPage/CreateLecture.jsx';
 
 function App() {
   const location = useLocation();
@@ -87,6 +88,7 @@ function App() {
               <Route path="/ContestResults/findBy" element={<ContestResult />} />
               <Route path="/leaderboard" element={<NewLeaderboard />} />
               <Route path="/CourseForm" element={<CourseForm />} />
+              <Route path="/LectureForm" element={<LectureForm />} />
               <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
               <Route path="/ImageUpload" element={<ImageUpload />} />
               <Route path="/FileDownload" element={<FileDownload />} />

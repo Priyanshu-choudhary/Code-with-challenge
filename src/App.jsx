@@ -41,6 +41,8 @@ import ContinueLearing from './Leetcode/continueLearning';
 import TopicsWiseSkill from './Skill/TreeViewQuestion';
 
 import ManagerDashbord from './Admins/ManagerDashbord';
+import DocumentPage from './Document/DocumentPage';
+
 
 function App() {
   const location = useLocation();
@@ -89,6 +91,8 @@ function App() {
               <Route path="/FileDownload" element={<FileDownload />} />
               <Route path="/TreeView" element={<TopicsWiseSkill />} />
               <Route path="/Doc" element={<ManagerDashbord />} />
+              <Route path="/Document" element={<DocumentPage />} />
+
 
             </Routes>
 

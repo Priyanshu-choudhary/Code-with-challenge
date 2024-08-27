@@ -85,7 +85,7 @@ function LearningPage() {
     // navigate(`/CourseForm`);
     navigate(`/CourseForm`, {
       state: {
-        uploadUrl:"OfficialCources",
+        uploadUrl: "OfficialCources",
       }
     });
   };
@@ -96,10 +96,13 @@ function LearningPage() {
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
         {loading && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}>loading</p>}
-        <div style={{ color: "black", display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
-          <p style={{ paddingTop: 30, fontSize: "20px" }}>Create your own Courses now.</p>
-          <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
+        <div className="flex flex-col md:flex-row items-center justify-center text-black text-center  w-full h-21 md:h-20 mt-3 md:mt-5 " style={{ clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", backgroundColor: "gold" }}>
+          <p className="text-lg md:text-xl pt-2 md:pt-7 ">Create your own Courses now.</p>
+          <div className="pt-2 md:pt-3 md:pl-12 pb-2">
+            <CreateButton onClick={handleCreateContestClick} value={"Create New"} />
+          </div>
         </div>
+
         <p style={{ marginLeft: 10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
           <hr />
@@ -150,7 +153,7 @@ function LearningPage() {
             {officialCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>No official courses available.</p>}
           </div>
         </div>
-        <TopicsWiseSkill/>
+        <TopicsWiseSkill />
       </div>
     </PageContainer>
   );

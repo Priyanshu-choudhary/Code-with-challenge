@@ -106,13 +106,13 @@ function Home() {
                 <p style={{ color: "black", fontWeight: "bold" }}>Explore, code, compete: Courses, challenges, hackathons - your ultimate coding destination</p>
                 <div className="cta-holder row gx-md-3 gy-3 gy-md-0">
                   <div className="col-12 col-md-auto">
-                    <a style={{fontSize:20,fontWeight:"bolder",borderWidth:5,borderColor:bc,backgroundColor:bc,display:"flex",alignItems:"center",borderRadius:100,paddingLeft:30,paddingRight:30,height:50}} className="btn btn-primary w-100" href="/login">Sign Up</a>
+                    <a style={{maxWidth:150,fontSize:20,fontWeight:"bolder",borderWidth:5,borderColor:bc,backgroundColor:bc,display:"flex",alignItems:"center",borderRadius:100,paddingLeft:30,paddingRight:30,height:50}} className="btn btn-primary w-100" href="/login">Sign Up</a>
                   </div>
                 </div>
               </div>
-              <div className="MyCards col-12 col-md-6">
+              <div className=" col-12 col-md-6 ">
                 <div className="card-container " >
-                  <div className="card-row">
+                  <div className="">
                     <Card
                       background="lightgreen"
                       hoverBackground="lightblue"

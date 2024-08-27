@@ -83,20 +83,20 @@ function TopicsWiseSkill() {
         <div>
             <div style={{ color: "black", display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
                 <p style={{ paddingTop: 30, fontSize: "20px" }}>Add your own  Topics </p>
-                <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
+                <div className='md:pl-10 pl-5' style={{ paddingTop: 10 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
             </div>
             <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
                     Topic wise Skills
                 </p>
-                <div    
-                style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+                <div
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                     {Topics.map((course, index) => (
                         // <SkillsCard title={Topics[index].title}  />
-                        <div  onClick={() => {
-                            navigate(`/TreeView`, { state: {  course:course } });
+                        <div onClick={() => {
+                            navigate(`/TreeView`, { state: { course: course } });
                         }} >
-                        <SkillsCard title={course.title} />
+                            <SkillsCard title={course.title} />
                         </div>
                     ))}
 

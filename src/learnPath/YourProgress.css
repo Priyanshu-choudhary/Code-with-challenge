@@ -1,0 +1,11 @@
+/* Default width for .cardWidth */
+.cardWidth {
+    width: 30%;
+}
+
+/* Mobile-specific width adjustment */
+@media (max-width: 768px) {
+    .cardWidth {
+       width: 100%; /* Full width on screens 768px or smaller */
+    }
+}

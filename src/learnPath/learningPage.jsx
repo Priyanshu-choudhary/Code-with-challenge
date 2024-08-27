@@ -8,10 +8,11 @@ import { CourseContext } from '/src/Context/CourseContex.jsx';
 import styled from 'styled-components';
 import { CircularProgress, Button } from '@mui/material';
 import BoxLoader from '../Loader/BoxLoader';
-import CreateButton from '../Buttons/CreateButton';
+
 import CourseForm from '/src/UploadSection/newCourse.jsx';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TopicsWiseSkill from '../Skill/TopicsWiseSkill';
+import PromoBanner from '../Banners/Banner';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -96,12 +97,11 @@ function LearningPage() {
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
         {loading && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}>loading</p>}
-        <div className="flex flex-col md:flex-row items-center justify-center text-black text-center  w-full h-21 md:h-20 mt-3 md:mt-5 " style={{ clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", backgroundColor: "gold" }}>
-          <p className="text-lg md:text-xl pt-2 md:pt-7 ">Create your own Courses now.</p>
-          <div className="pt-2 md:pt-3 md:pl-12 pb-2">
-            <CreateButton onClick={handleCreateContestClick} value={"Create New"} />
-          </div>
-        </div>
+       
+        <PromoBanner 
+        message="Create your own Courses now." 
+        onButtonClick={handleCreateContestClick} 
+        buttonText="Create New"/>
 
         <p style={{ marginLeft: 10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills

@@ -7,6 +7,7 @@ import SkillsCard from './SkillsCard';
 import CreateButton from '../Buttons/CreateButton';
 import YourProgressCard from '../learnPath/YourProgressCard';
 import { Topic } from '@mui/icons-material';
+import PromoBanner from '../Banners/Banner';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -81,10 +82,12 @@ function TopicsWiseSkill() {
 
     return (
         <div>
-            <div style={{ color: "black", display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 80, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
-                <p style={{ paddingTop: 30, fontSize: "20px" }}>Add your own  Topics </p>
-                <div className='md:pl-10 pl-5' style={{ paddingTop: 10 }}> <CreateButton onClick={handleCreateContestClick} value={"Create New"} /></div>
-            </div>
+
+            <PromoBanner
+                message="Add your own  Topics."
+                onButtonClick={handleCreateContestClick}
+                buttonText="Create New" />
+
             <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
                     Topic wise Skills

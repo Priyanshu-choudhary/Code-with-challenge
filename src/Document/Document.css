@@ -40,4 +40,10 @@
     background-color: #cccccc;
     cursor: not-allowed;
   }
-  
+  ul.a {
+    list-style-type: circle;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    padding: 20px;
+  }

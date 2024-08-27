@@ -23,6 +23,7 @@ const Documentation = ({ currentSection, onSectionChange }) => {
     const currentIndex = sections.indexOf(currentSection);
     if (currentIndex < sections.length - 1) {
       onSectionChange(sections[currentIndex + 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
     }
   };
 
@@ -30,6 +31,7 @@ const Documentation = ({ currentSection, onSectionChange }) => {
     const currentIndex = sections.indexOf(currentSection);
     if (currentIndex > 0) {
       onSectionChange(sections[currentIndex - 1]);
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
     }
   };
 
@@ -41,7 +43,7 @@ const Documentation = ({ currentSection, onSectionChange }) => {
   }, [currentSection]);
 
   return (
-    <div className="documentation ">
+    <div className="documentation">
       {sectionContent[currentSection]}
       <div className="doc-navigation-buttons">
         <button onClick={handlePrevious} disabled={sections.indexOf(currentSection) === 0}>

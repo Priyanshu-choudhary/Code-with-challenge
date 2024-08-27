@@ -247,7 +247,7 @@ const LeetCodeClone = () => {
     <PageContainer>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-     
+
         {user ? (
           <div className="leetcode-clone-container">
             <div className="content" >
@@ -263,7 +263,7 @@ const LeetCodeClone = () => {
                   }}
                   onClick={handleClick}
                 >
-                 <HtmlRenderer htmlContent={description || ""} />
+                  <HtmlRenderer htmlContent={description || ""} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", color: "skyblue" }}>
                   <button style={{ borderWidth: 0, borderRadius: 5 }} onClick={toggleReadMore}>
@@ -276,13 +276,13 @@ const LeetCodeClone = () => {
                 {role == "ADMIN" &&
                   <div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 150, color: "black" }} >
-                      <AddToPhotosIcon fontSize='large' onClick={() => {  navigate(`/QuestionTypeSelector/${course.title}`)}} />
+                      <AddToPhotosIcon fontSize='large' onClick={() => { navigate(`/QuestionTypeSelector/${course.title}`) }} />
                     </div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 90, color: "black" }} >
                       <CreateIcon fontSize='large' onClick={() => { navigate('/CourseEdit', { state: { ...course, courseDetail: course } }); }} />
                     </div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 210, color: "black" }} >
-                      <DeleteForeverIcon fontSize='large' onClick={() => { handleDelete(course.id, course.title);  navigate('/learn') } } />
+                      <DeleteForeverIcon fontSize='large' onClick={() => { handleDelete(course.id, course.title); navigate('/learn') }} />
                     </div>
                   </div>
                 }
@@ -394,7 +394,7 @@ const LeetCodeClone = () => {
                     ) : <BoxLoader />}
                   </div>
                 ) : responseOk ? (
-                  <div className="problem-list" style={{ color: ibg }}>
+                  <div className="problem-list " style={{ color: ibg }}>
                     {problems.length > 0 ? problems.map((problem, index) => (
                       <div
                         key={problem.id}
@@ -412,9 +412,19 @@ const LeetCodeClone = () => {
                         onMouseLeave={() => setHoverIndex(null)}
                       >
                         <div className="problem-title">
-                          {index + 1}. {problem.title}
-                          {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green' }} />} {/* Show done icon for completed questions */}
+                          {index + 1}. <span className="truncated-title">{problem.title}</span>
+                          {completeQuestions.includes(problem.id) && (
+                            <DoneIcon
+                              style={{
+                                backgroundColor: "#C0F5AB",
+                                borderRadius: "10px",
+                                marginLeft: "10px",
+                                color: 'green'
+                              }}
+                            />
+                          )}
                         </div>
+
                         <div className="problem-details">
                           {problem.type === "MCQ" ? (
                             <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "10px 1px,10px,15px", borderColor: "blueviolet" }}>MCQ</p>

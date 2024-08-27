@@ -6,7 +6,6 @@ body {
   .leetcode-clone-container {
     display: flex;
     gap: 20px;
-   
  
   }
   
@@ -56,6 +55,13 @@ body {
      color: white;
     padding: 10px;
     border-radius: 3%;
+  }
+  .truncated-title {
+    display: inline-block; /* Ensure the container doesn't stretch */
+    max-width: 200px; /* Adjust this width as needed */
+    white-space: nowrap; /* Prevent the text from wrapping to the next line */
+    overflow: hidden; /* Hide the overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis (...) to indicate overflow */
   }
   
   .problem {

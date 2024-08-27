@@ -362,6 +362,7 @@ const LeetCodeClone = () => {
                             </div>
                             {role === "ADMIN" && (
                               <Button
+                              className="hidden md:block"
                                 variant="contained"
                                 color="secondary"
                                 style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}
@@ -376,6 +377,7 @@ const LeetCodeClone = () => {
                             )}
                             {role === "ADMIN" && (
                               <Button
+                              className="hidden md:block"
                                 style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
                                 onClick={(e) => {
                                   e.stopPropagation(); // Prevent navigating to the problem detail page
@@ -435,6 +437,7 @@ const LeetCodeClone = () => {
                         {role === "ADMIN" && (
                           <Button
                             variant="contained"
+                            className="hidden md:block"
                             // color="secondary"
                             style={{ background: "lightcoral", color: ibg, position: 'absolute', right: '200px' }}
                             onClick={(e) => {
@@ -448,6 +451,7 @@ const LeetCodeClone = () => {
                         )}
                         {role === "ADMIN" && (
                           <Button
+                           className="hidden md:block"
                             style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
                             onClick={(e) => {
                               e.stopPropagation(); // Prevent navigating to the problem detail page

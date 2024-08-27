@@ -58,7 +58,7 @@ body {
   }
   .truncated-title {
     display: inline-block; /* Ensure the container doesn't stretch */
-    max-width: 200px; /* Adjust this width as needed */
+    max-width: 160px; /* Adjust this width as needed */
     white-space: nowrap; /* Prevent the text from wrapping to the next line */
     overflow: hidden; /* Hide the overflowing text */
     text-overflow: ellipsis; /* Add ellipsis (...) to indicate overflow */

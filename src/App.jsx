@@ -47,6 +47,7 @@ import TutorialMain from './TutorialPage/TutorialMain';
 import Lecture from './TutorialPage/Lecture';
 import AboutUs from './home/Aboutus/AboutUs.jsx';
 import LectureForm from './TutorialPage/CreateLecture.jsx';
+import EditLecture from './TutorialPage/editLecture.jsx';
 
 
 function App() {
@@ -100,6 +101,7 @@ function App() {
               <Route path="/Document" element={<DocumentPage />} />
               <Route path="/Tutorials" element={<TutorialMain />} />
               <Route path="/lecture/:title" element={<Lecture />} />
+              <Route path="/EditLecture/:id" element={<EditLecture />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               
 

@@ -184,15 +184,15 @@ const YourProfile = () => {
                 </div>
                 <div className="Profileproblem-list" style={{ backgroundColor: light, color: ibg }}  >
                   {problems.length > 0 ? problems.map((problem, index) => (
-                    <div key={problem.id} className="Profileproblem" style={{ 
+                    <div key={problem.id} className="Profileproblem" style={{
                       backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
                       transition: 'background-color 0.3s', // Smooth transition for background color change
                       cursor: 'pointer',
                       color: ibg,
-                      borderRadius:"5px"
+                      borderRadius: "5px"
                     }}
-                    onMouseEnter={() => setHoverIndex(index)}
-                    onMouseLeave={() => setHoverIndex(null)}>
+                      onMouseEnter={() => setHoverIndex(index)}
+                      onMouseLeave={() => setHoverIndex(null)}>
                       <div className="Profileproblem-title" onClick={() => handleProblemClick(problem)}>{index + 1}. {problem.title}</div>
                     </div>
                   )) : <p>Solve Your First Problems...</p>}
@@ -225,7 +225,7 @@ const YourProfile = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '40%', 
+            width: '40%',
             backgroundColor: 'white',
             // boxShadow: 24,
             // padding: 'px',
@@ -233,7 +233,7 @@ const YourProfile = () => {
             textAlign: 'center',
           }}>
             {profileImage ? (
-              <img src={userData.profileImg} alt={userData.name} className="modal-image" style={{ width: '100%', height: 'auto', borderRadius: '10px' }}/>
+              <img src={userData.profileImg} alt={userData.name} className="modal-image" style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />
             ) : (
               <Avatar style={{ fontSize: "150px" }} sx={{ bgcolor: bc, width: 300, height: 300 }}>{avatarName}</Avatar>
             )}

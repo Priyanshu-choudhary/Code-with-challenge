@@ -21,6 +21,8 @@ function Lecture() {
             });
                 const data = await response.json();
                 setLectureData(data);  // Assuming data.sections contains the lecture sections
+                console.log(JSON.stringify(lectureData));
+                
                 setLoading(false);
             } catch (error) {
                 setError(error.message);

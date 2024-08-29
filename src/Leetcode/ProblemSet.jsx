@@ -362,7 +362,7 @@ const LeetCodeClone = () => {
                             </div>
                             {role === "ADMIN" && (
                               <Button
-                              className="hidden md:block"
+                              className="hidden md:block" 
                                 variant="contained"
                                 color="secondary"
                                 style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}

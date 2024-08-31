@@ -44,14 +44,14 @@ function TopicsWiseSkill() {
     const fetchTopics = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://hytechlabs.online:9090/Course/Skills/0/10', {
+            const response = await fetch('https://hytechlabs.online:9090/TopicWiseSkills/OfficialTopics', {
                 method: 'GET',
             });
             if (response.ok) {
                 const data = await response.json();
                 if (Array.isArray(data)) {
-                    console.log("> " + JSON.stringify(data[0].courses));
-                    setTopics(data[0].courses);
+                    console.log("> " + JSON.stringify(data));
+                    setTopics(data[0].name);
                 } else {
                     console.error('Fetched official data is not an array:', data);
                     setTopics([]);
@@ -73,7 +73,7 @@ function TopicsWiseSkill() {
 
     const handleCreateContestClick = () => {
 
-        navigate(`/CourseForm`, {
+        navigate(`/TopicWiseSkill/CreateForm`, {
             state: {
                 uploadUrl: "Skills",
             }
@@ -89,9 +89,11 @@ function TopicsWiseSkill() {
                 buttonText="Create New" />
 
             <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
+               
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
                     Topic wise Skills
                 </p>
+
                 <div
                     style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                     {Topics.map((course, index) => (

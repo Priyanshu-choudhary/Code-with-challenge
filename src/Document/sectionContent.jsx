@@ -223,73 +223,73 @@ const sectionContent = {
   ),
   'user-interaction': (
     <>
-     <div className="user-interaction">
-  <h2>7. User Interaction</h2>
+      <div className="user-interaction">
+        <h2>7. User Interaction</h2>
 
-  <p>
-    This section describes how users interact with the platform, including key features and functionalities designed to enhance user experience. We aim to provide a seamless and engaging environment for both students and educators.
-  </p>
+        <p>
+          This section describes how users interact with the platform, including key features and functionalities designed to enhance user experience. We aim to provide a seamless and engaging environment for both students and educators.
+        </p>
 
-  <h3>1. User Interface (UI)</h3>
-  <p>
-    Our platform's user interface is designed with a focus on usability and accessibility. Key features include:
-    <ul className="a">
-      <li><strong>Responsive Design:</strong> The interface adjusts to different screen sizes and devices, ensuring a consistent experience across desktops, tablets, and smartphones.</li>
-      <li><strong>Intuitive Navigation:</strong> Easy-to-use navigation menus and links help users find what they need quickly.</li>
-      <li><strong>Interactive Elements:</strong> Buttons, forms, and other interactive elements are designed to be user-friendly and visually appealing.</li>
-    </ul>
-  </p>
+        <h3>1. User Interface (UI)</h3>
+        <p>
+          Our platform's user interface is designed with a focus on usability and accessibility. Key features include:
+          <ul className="a">
+            <li><strong>Responsive Design:</strong> The interface adjusts to different screen sizes and devices, ensuring a consistent experience across desktops, tablets, and smartphones.</li>
+            <li><strong>Intuitive Navigation:</strong> Easy-to-use navigation menus and links help users find what they need quickly.</li>
+            <li><strong>Interactive Elements:</strong> Buttons, forms, and other interactive elements are designed to be user-friendly and visually appealing.</li>
+          </ul>
+        </p>
 
-  <h3>2. User Registration and Authentication</h3>
-  <p>
-    Users can register and authenticate using secure methods. Key features include:
-    <ul className="a">
-      <li><strong>Sign Up:</strong> New users can create an account by providing essential information such as email, password, and user role (student or educator).</li>
-      <li><strong>Login:</strong> Registered users can log in using their email and password. Options for password recovery are available.</li>
-      <li><strong>Role-Based Access:</strong> Users are assigned roles that determine their access and permissions within the platform.</li>
-    </ul>
-  </p>
+        <h3>2. User Registration and Authentication</h3>
+        <p>
+          Users can register and authenticate using secure methods. Key features include:
+          <ul className="a">
+            <li><strong>Sign Up:</strong> New users can create an account by providing essential information such as email, password, and user role (student or educator).</li>
+            <li><strong>Login:</strong> Registered users can log in using their email and password. Options for password recovery are available.</li>
+            <li><strong>Role-Based Access:</strong> Users are assigned roles that determine their access and permissions within the platform.</li>
+          </ul>
+        </p>
 
-  <h3>3. Interactive Features</h3>
-  <p>
-    The platform offers various interactive features to enhance user engagement:
-    <ul className="a">
-      <li><strong>Code Editor:</strong> An integrated online code editor allows users to write, compile, and test code in multiple programming languages directly in their browser.</li>
-      <li><strong>Quizzes and Tests:</strong> Interactive quizzes and tests assess user knowledge and provide instant feedback.</li>
-      <li><strong>Discussion Forums:</strong> Forums enable users to discuss topics, ask questions, and share knowledge with peers and educators.</li>
-    </ul>
-  </p>
+        <h3>3. Interactive Features</h3>
+        <p>
+          The platform offers various interactive features to enhance user engagement:
+          <ul className="a">
+            <li><strong>Code Editor:</strong> An integrated online code editor allows users to write, compile, and test code in multiple programming languages directly in their browser.</li>
+            <li><strong>Quizzes and Tests:</strong> Interactive quizzes and tests assess user knowledge and provide instant feedback.</li>
+            <li><strong>Discussion Forums:</strong> Forums enable users to discuss topics, ask questions, and share knowledge with peers and educators.</li>
+          </ul>
+        </p>
 
-  <h3>4. Personalization</h3>
-  <p>
-    Users can personalize their experience to better suit their needs:
-    <ul className="a">
-      <li><strong>Profile Customization:</strong> Users can update their profile information, including profile picture, bio, and contact details.</li>
-      <li><strong>Dashboard:</strong> A personalized dashboard provides users with quick access to their courses, assignments, and progress reports.</li>
-      <li><strong>Notification Preferences:</strong> Users can set their preferences for receiving notifications about course updates, assignments, and platform announcements.</li>
-    </ul>
-  </p>
+        <h3>4. Personalization</h3>
+        <p>
+          Users can personalize their experience to better suit their needs:
+          <ul className="a">
+            <li><strong>Profile Customization:</strong> Users can update their profile information, including profile picture, bio, and contact details.</li>
+            <li><strong>Dashboard:</strong> A personalized dashboard provides users with quick access to their courses, assignments, and progress reports.</li>
+            <li><strong>Notification Preferences:</strong> Users can set their preferences for receiving notifications about course updates, assignments, and platform announcements.</li>
+          </ul>
+        </p>
 
-  <h3>5. Feedback and Support</h3>
-  <p>
-    Users can provide feedback and seek support through the following channels:
-    <ul className="a">
-      <li><strong>Feedback Forms:</strong> Users can submit feedback or suggestions via built-in feedback forms accessible from their dashboard.</li>
-      <li><strong>Help Center:</strong> A dedicated help center provides access to FAQs, troubleshooting guides, and contact information for support.</li>
-      <li><strong>Support Tickets:</strong> Users can create support tickets for specific issues or requests, which are tracked and resolved by our support team.</li>
-    </ul>
-  </p>
+        <h3>5. Feedback and Support</h3>
+        <p>
+          Users can provide feedback and seek support through the following channels:
+          <ul className="a">
+            <li><strong>Feedback Forms:</strong> Users can submit feedback or suggestions via built-in feedback forms accessible from their dashboard.</li>
+            <li><strong>Help Center:</strong> A dedicated help center provides access to FAQs, troubleshooting guides, and contact information for support.</li>
+            <li><strong>Support Tickets:</strong> Users can create support tickets for specific issues or requests, which are tracked and resolved by our support team.</li>
+          </ul>
+        </p>
 
-  <h3>6. Accessibility</h3>
-  <p>
-    We prioritize accessibility to ensure that all users, including those with disabilities, can effectively use the platform:
-    <ul className="a">
-      <li><strong>Keyboard Navigation:</strong> The platform supports full keyboard navigation for users who cannot use a mouse.</li>
-      <li><strong>Screen Reader Compatibility:</strong> The platform is compatible with screen readers to assist visually impaired users.</li>
-      <li><strong>Color Contrast:</strong> High color contrast and customizable themes improve readability and visual accessibility.</li>
-    </ul>
-  </p>
-</div>
+        <h3>6. Accessibility</h3>
+        <p>
+          We prioritize accessibility to ensure that all users, including those with disabilities, can effectively use the platform:
+          <ul className="a">
+            <li><strong>Keyboard Navigation:</strong> The platform supports full keyboard navigation for users who cannot use a mouse.</li>
+            <li><strong>Screen Reader Compatibility:</strong> The platform is compatible with screen readers to assist visually impaired users.</li>
+            <li><strong>Color Contrast:</strong> High color contrast and customizable themes improve readability and visual accessibility.</li>
+          </ul>
+        </p>
+      </div>
 
     </>
   ),
@@ -347,31 +347,47 @@ const sectionContent = {
       <div className="api-documentation">
         <h2>9. API Documentation</h2>
         <p>
-          The base URL for accessing the APIs is: <code>https://api.yourplatform.com/</code>
+          The base URL for accessing the APIs is: <code>https://hytechlabs.online/</code>
         </p>
-
+        <h3>Api Mini Map</h3>
+        <img src="./Screenshot 2024-08-31 105646.png" alt="APi MAP" />
         <h3>Endpoints</h3>
-
-        <h4>1. Endpoint Name</h4>
+<br />
+        <h4>1. HealthCheck</h4>
         <p>
-          <strong>URL:</strong> <code>/api/endpoint1</code><br />
-          <strong>Method:</strong> GET/POST/PUT/DELETE<br />
-          <strong>Description:</strong> Description of what this endpoint does.<br />
-          <strong>Parameters:</strong>
+          <strong>URL:</strong> <code>/HealthCheck</code><br />
+          <strong>Method:</strong> GET<br />
+          <strong>Description:</strong> It is used to get the health of the server like load , memory , space, ect.<br />
+          {/* <strong>Parameters:</strong>
           <ul className="a">
             <li><strong>param1:</strong> Description of parameter 1</li>
             <li><strong>param2:</strong> Description of parameter 2</li>
-          </ul>
+          </ul> */}
           <strong>Request Example:</strong>
           <code>
-            curl -X GET "https://api.yourplatform.com/api/endpoint1" -H "Authorization: Bearer YOUR_API_KEY"
+            curl -X GET "https://hytechlabs.online/HealthCheck"
           </code>
+          <br />
           <strong>Response Example:</strong>
           <code>
-
-            "key": "value",
-            "key2": "value2"
-
+            <br />
+            cpu_load: 0
+            <br />
+            database_status: "up"
+            <br />
+            disk_free_space: "2 GB"
+            <br />
+            disk_total_space: "6 GB"
+            <br />
+            heap_memory_max: "232 MB"
+            <br />
+            heap_memory_used: "75 MB"
+            <br />
+            non_heap_memory_max: "-1 B"
+            <br />
+            non_heap_memory_used: "94 MB"
+            <br />
+            server_status: "running"
           </code>
         </p>
       </div>

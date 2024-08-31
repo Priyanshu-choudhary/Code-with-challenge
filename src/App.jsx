@@ -48,6 +48,11 @@ import Lecture from './TutorialPage/Lecture';
 import AboutUs from './home/Aboutus/AboutUs.jsx';
 import LectureForm from './TutorialPage/CreateLecture.jsx';
 import EditLecture from './TutorialPage/editLecture.jsx';
+import CreateTopicSkillForm from './Skill/CreateTopicWiseSkill.jsx';
+import ProblemForm from './Skill/CreateTopicWiseSkill copy.jsx';
+
+import NestedForm from './Form/NestedForm.jsx';
+import TestForm from './Form/TestForm.jsx';
 
 
 function App() {
@@ -60,55 +65,60 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-        <FormProvider>
-          <CourseProvider>
+       
+          <FormProvider>
+            <CourseProvider>
 
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Upload" element={<QuestionTypeSelector />} />
-              <Route path="/logout" element={<LogOut />} />
-              <Route path="/yourProfile" element={<YourProfile />} />
-              <Route path="/EditorComponent" element={<EditorComponent />} />
-              <Route path="/QuestionApi" element={<LeetCodeClone />} />
-              <Route path="/ContinueLearing" element={<ContinueLearing />} />
-              <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
-              <Route path="/loginOld" element={<LoginUser />} />
-              <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
-              <Route path="/Data" element={<MyDataGrid />} />
-              <Route path="/Leaderboard2" element={<LeaderBoard />} />
-              <Route path="/learn" element={<LearningPage />} />
-              <Route path="/publicProfile" element={<PublicProfile />} />
-              <Route path="/register" element={<Testing />} />
-              <Route path="/verify-email" element={<QueryParamsExample />} />
-              <Route path="/login" element={<LoginGuiNew />} />
-              <Route path="/TextEditor" element={<Tinymce />} />
-              <Route path="/CourseEdit" element={<CourseEdit />} />
-              <Route path="/contest" element={<Firstpage />} />
-              <Route path="/ContestDetail/:id" element={<ContestDetails />} />
-              <Route path="/vhgfh7t67xw5458gf5643sd6x" element={<TestScreen />} />
-              <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
-              <Route path="/create-contest" element={<ContestEdit />} />
-              <Route path="/contestProblemsList" element={<ContestProblemList />} />
-              <Route path="/ContestResults/findBy" element={<ContestResult />} />
-              <Route path="/leaderboard" element={<NewLeaderboard />} />
-              <Route path="/CourseForm" element={<CourseForm />} />
-              <Route path="/LectureForm" element={<LectureForm />} />
-              <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
-              <Route path="/ImageUpload" element={<ImageUpload />} />
-              <Route path="/FileDownload" element={<FileDownload />} />
-              <Route path="/TreeView" element={<TopicsWiseSkill />} />
-              <Route path="/Doc" element={<ManagerDashbord />} />
-              <Route path="/Document" element={<DocumentPage />} />
-              <Route path="/Tutorials" element={<TutorialMain />} />
-              <Route path="/lecture/:title" element={<Lecture />} />
-              <Route path="/EditLecture/:id" element={<EditLecture />} />
-              <Route path="/AboutUs" element={<AboutUs />} />
-              
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/Upload" element={<QuestionTypeSelector />} />
+                <Route path="/logout" element={<LogOut />} />
+                <Route path="/yourProfile" element={<YourProfile />} />
+                <Route path="/EditorComponent" element={<EditorComponent />} />
+                <Route path="/QuestionApi" element={<LeetCodeClone />} />
+                <Route path="/ContinueLearing" element={<ContinueLearing />} />
+                <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
+                <Route path="/loginOld" element={<LoginUser />} />
+                <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
+                <Route path="/Data" element={<MyDataGrid />} />
+                <Route path="/Leaderboard2" element={<LeaderBoard />} />
+                <Route path="/learn" element={<LearningPage />} />
+                <Route path="/publicProfile" element={<PublicProfile />} />
+                <Route path="/register" element={<Testing />} />
+                <Route path="/verify-email" element={<QueryParamsExample />} />
+                <Route path="/login" element={<LoginGuiNew />} />
+                <Route path="/TextEditor" element={<Tinymce />} />
+                <Route path="/CourseEdit" element={<CourseEdit />} />
+                <Route path="/contest" element={<Firstpage />} />
+                <Route path="/ContestDetail/:id" element={<ContestDetails />} />
+                <Route path="/vhgfh7t67xw5458gf5643sd6x" element={<TestScreen />} />
+                <Route path="/UploadQuestion/:contestName" element={<MyStepper />} />
+                <Route path="/create-contest" element={<ContestEdit />} />
+                <Route path="/contestProblemsList" element={<ContestProblemList />} />
+                <Route path="/ContestResults/findBy" element={<ContestResult />} />
+                <Route path="/leaderboard" element={<NewLeaderboard />} />
+                <Route path="/CourseForm" element={<CourseForm />} />
+                <Route path="/LectureForm" element={<LectureForm />} />
+                <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
+                <Route path="/ImageUpload" element={<ImageUpload />} />
+                <Route path="/FileDownload" element={<FileDownload />} />
+                <Route path="/TreeView" element={<TopicsWiseSkill />} />
+                <Route path="/Doc" element={<ManagerDashbord />} />
+                <Route path="/Document" element={<DocumentPage />} />
+                <Route path="/Tutorials" element={<TutorialMain />} />
+                <Route path="/lecture/:title" element={<Lecture />} />
+                <Route path="/EditLecture/:id" element={<EditLecture />} />
+                <Route path="/AboutUs" element={<AboutUs />} />
+                <Route path="/TopicWiseSkill/CreateForm" element={<CreateTopicSkillForm />} />
+                <Route path="/Form" element={<NestedForm />} />
+                <Route path="/TestForm" element={<TestForm />} />
 
-            </Routes>
 
-          </CourseProvider>
-        </FormProvider>
+              </Routes>
+
+            </CourseProvider>
+          </FormProvider>
+        
       </UserProvider>
     </div>
   );

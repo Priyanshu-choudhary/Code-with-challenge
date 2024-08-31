@@ -89,10 +89,7 @@ const handleDelete = async (courseId, courseName) => {
                       <DeleteForeverIcon fontSize='large' onClick={() => { handleDelete(id.id, id.title);}} />
                     </div>
                   </div>
-                }
-             
-             
-                
+                }     
             <div  className='md:flex'>
                 <div style={{backgroundColor:dark}}className='pt-2 pl-2'>
                     <p className='font-bold mb-3  text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
@@ -107,7 +104,7 @@ const handleDelete = async (courseId, courseName) => {
                 </div>
                 <div style={{ borderLeft: "1px solid #000"}}></div>
                 <div>
-                    <div style={{backgroundColor:bc ,width:"fit-content"}} className='uppercase rounded ml-5 mt-5 md:mx-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
+                    <div style={{backgroundColor:bc ,width:"fit-content"}} className='uppercase rounded ml-5  md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
                     {lectureData.map((section, index) => (
                         <div key={section.id} id={section.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                             <h2 className='text-2xl font-bold flex'>

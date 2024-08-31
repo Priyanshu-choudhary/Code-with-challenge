@@ -123,7 +123,7 @@ function Home() {
                       imageUrl="./learn.png"
                       imageWidth={120}
                       imageHeight={100}
-                      onClick={() => navigate('/learn')}
+                      onClick={() => navigate('/Tutorials')}
                     />
                     <Card
                       background="#DFB1EC"

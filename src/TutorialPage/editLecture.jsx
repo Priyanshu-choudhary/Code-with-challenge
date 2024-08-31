@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import Dashboard from '../dashBoard/Dashboard';
 import { useParams } from 'react-router-dom';
+import Tinymce from '../TinyMCE/TinyMCE'; // Importing your TinyMCE component
 
 export default function EditLecture() {
   const { id } = useParams(); // Assuming the lecture ID is passed as a route parameter
@@ -52,10 +53,9 @@ export default function EditLecture() {
     }));
   };
 
-  const handleSectionChange = (index, e) => {
-    const { id, value } = e.target;
+  const handleSectionChange = (index, field, value) => {
     const newSections = formData.sections.map((section, i) => 
-      i === index ? { ...section, [id]: value } : section
+      i === index ? { ...section, [field]: value } : section
     );
     setFormData({ ...formData, sections: newSections });
   };
@@ -124,7 +124,7 @@ export default function EditLecture() {
               label={`Section ID ${index + 1}`}
               fullWidth
               value={section.id}
-              onChange={(e) => handleSectionChange(index, e)}
+              onChange={(e) => handleSectionChange(index, 'id', e.target.value)}
               margin="normal"
             />
             <TextField
@@ -132,16 +132,12 @@ export default function EditLecture() {
               label={`Section Heading ${index + 1}`}
               fullWidth
               value={section.heading}
-              onChange={(e) => handleSectionChange(index, e)}
+              onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
               margin="normal"
             />
-            <TextField
-              id="content"
-              label={`Section Content ${index + 1}`}
-              fullWidth
-              value={section.content}
-              onChange={(e) => handleSectionChange(index, e)}
-              margin="normal"
+            <Tinymce
+              initialValue={section.content}
+              setDescription={(value) => handleSectionChange(index, 'content', value)}
             />
           </div>
         ))}

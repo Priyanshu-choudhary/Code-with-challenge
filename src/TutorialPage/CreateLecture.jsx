@@ -6,8 +6,9 @@ import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import Dashboard from '../dashBoard/Dashboard';
+import Tinymce from '../TinyMCE/TinyMCE'; // Importing your TinyMCE component
 
-export default function LectureForm({}) {
+export default function LectureForm() {
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
@@ -27,10 +28,9 @@ export default function LectureForm({}) {
     }));
   };
 
-  const handleSectionChange = (index, e) => {
-    const { id, value } = e.target;
+  const handleSectionChange = (index, field, value) => {
     const newSections = formData.sections.map((section, i) => 
-      i === index ? { ...section, [id]: value } : section
+      i === index ? { ...section, [field]: value } : section
     );
     setFormData({ ...formData, sections: newSections });
   };
@@ -46,27 +46,26 @@ export default function LectureForm({}) {
     setLoading(true);
 
     try {
-        const response = await axios.post(
-          'https://hytechlabs.online:9090/Lecture',
-          formData,
-          {
-            headers: { 'Content-Type': 'application/json' },
-            auth: {
-              username: 'testleacture', // Replace with your actual username
-              password: 'testleacture'  // Replace with your actual password
-            }
+      const response = await axios.post(
+        'https://hytechlabs.online:9090/Lecture',
+        formData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          auth: {
+            username: 'testleacture', 
+            password: 'testleacture'  
           }
-        );
-      
-        console.log('Response:', response.data);
-        setAlert({ show: true, message: `Lecture uploaded successfully!`, severity: 'success' });
-      } catch (error) {
-        console.error('Error:', error);
-        setAlert({ show: true, message: `Failed to upload lecture`, severity: 'error' });
-      } finally {
-        setLoading(false);
-      }
-      
+        }
+      );
+
+      console.log('Response:', response.data);
+      setAlert({ show: true, message: `Lecture uploaded successfully!`, severity: 'success' });
+    } catch (error) {
+      console.error('Error:', error);
+      setAlert({ show: true, message: `Failed to upload lecture`, severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,6 +81,8 @@ export default function LectureForm({}) {
           value={formData.title}
           onChange={handleChange}
           margin="normal"
+          multiline
+          rows={2} // Specify the number of rows for the title
         />
 
         <TextField
@@ -91,6 +92,8 @@ export default function LectureForm({}) {
           value={formData.subtitle}
           onChange={handleChange}
           margin="normal"
+          multiline
+          rows={2} // Specify the number of rows for the subtitle
         />
 
         {formData.sections.map((section, index) => (
@@ -100,24 +103,24 @@ export default function LectureForm({}) {
               label={`Section ID ${index + 1}`}
               fullWidth
               value={section.id}
-              onChange={(e) => handleSectionChange(index, e)}
+              onChange={(e) => handleSectionChange(index, 'id', e.target.value)}
               margin="normal"
+              multiline
+              rows={1} // Specify the number of rows for the section ID
             />
             <TextField
               id="heading"
               label={`Section Heading ${index + 1}`}
               fullWidth
               value={section.heading}
-              onChange={(e) => handleSectionChange(index, e)}
+              onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
               margin="normal"
+              multiline
+              rows={2} // Specify the number of rows for the section heading
             />
-            <TextField
-              id="content"
-              label={`Section Content ${index + 1}`}
-              fullWidth
-              value={section.content}
-              onChange={(e) => handleSectionChange(index, e)}
-              margin="normal"
+            <Tinymce
+              initialValue={section.content}
+              setDescription={(value) => handleSectionChange(index, 'content', value)}
             />
           </div>
         ))}

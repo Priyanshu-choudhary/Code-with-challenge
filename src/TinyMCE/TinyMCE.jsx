@@ -4,6 +4,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Editor as TinyMCE } from '@tinymce/tinymce-react';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import axios from 'axios';
+import HtmlRenderer from '../Leetcode/HtmlRenderer';
 
 export default function EditorComponent({ setDescription, initialValue }) {
     const [editorType, setEditorType] = useState('ckeditor');
@@ -35,6 +36,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
                         data={content}
                         onReady={(editor) => {
                             ckEditorRef.current = editor;
+                            console.log(editor.config.get('contentsCss'));
                         }}
                         onChange={handleCKEditorChange}
                         config={{
@@ -81,7 +83,8 @@ export default function EditorComponent({ setDescription, initialValue }) {
                                     'imageTextAlternative'
                                 ]
                             },
-                            extraPlugins: [MyCustomUploadAdapterPlugin]
+                            extraPlugins: [MyCustomUploadAdapterPlugin],
+                            contentsCss: ['./customStyles.css'], // Ensure this path is correct
                         }}
                     />
                 );
@@ -108,15 +111,21 @@ export default function EditorComponent({ setDescription, initialValue }) {
                 );
             case 'textbox':
                 return (
-                    <textarea
-                        value={content}
-                        onChange={(e) => {
-                            setContent(e.target.value);
-                            setDescription(e.target.value);
-                        }}
-                        rows={10}
-                        style={{ width: '100%', padding: '8px' }}
-                    />
+                    <div className='md:flex'>
+                        <textarea
+                            value={content}
+                            onChange={(e) => {
+                                setContent(e.target.value);
+                                setDescription(e.target.value);
+                            }}
+                            rows={10}
+                            style={{ width: '100%', padding: '8px' }}
+                        />
+                        <div>
+                            <h2 className='font-bold bg-slate-300 text-center'>Preview</h2>
+                            <p style={{ borderWidth: 1 }} className={`text-lg p-3`}><HtmlRenderer htmlContent={content || ""} /></p>
+                        </div>
+                    </div>
                 );
             default:
                 return null;
@@ -136,7 +145,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
                 >
                     <FormControlLabel value="ckeditor" control={<Radio />} label="CKEditor" />
                     <FormControlLabel value="tinymce" control={<Radio />} label="TinyMCE" />
-                    <FormControlLabel value="textbox" control={<Radio />} label="Plain Textbox" />
+                    <FormControlLabel value="textbox" control={<Radio />} label="Direct Html" />
                 </RadioGroup>
             </FormControl>
             <div>

@@ -15,7 +15,7 @@ export default function EditLecture() {
     title: '',
     subtitle: '',
     sections: [
-      { id: '', heading: '', content: '' },
+      { id: '1', heading: '', content: '' }, // Initialize the first section with ID '1'
     ],
   });
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
@@ -61,9 +61,12 @@ export default function EditLecture() {
   };
 
   const handleAddSection = () => {
+    // Get the next ID by incrementing the current number of sections
+    const nextId = formData.sections.length + 1;
+
     setFormData((prevData) => ({
       ...prevData,
-      sections: [...prevData.sections, { id: '', heading: '', content: '' }],
+      sections: [...prevData.sections, { id: nextId.toString(), heading: '', content: '' }],
     }));
   };
 
@@ -120,14 +123,6 @@ export default function EditLecture() {
         {formData.sections.map((section, index) => (
           <div key={index}>
             <TextField
-              id="id"
-              label={`Section ID ${index + 1}`}
-              fullWidth
-              value={section.id}
-              onChange={(e) => handleSectionChange(index, 'id', e.target.value)}
-              margin="normal"
-            />
-            <TextField
               id="heading"
               label={`Section Heading ${index + 1}`}
               fullWidth
@@ -135,7 +130,7 @@ export default function EditLecture() {
               onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
               margin="normal"
             />
-           {section && <Tinymce
+           {!loading && <Tinymce
               initialValue={section.content}
               setDescription={(value) => handleSectionChange(index, 'content', value)}
             />}

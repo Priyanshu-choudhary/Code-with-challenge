@@ -1,4 +1,4 @@
-import React, { useState, useRef ,useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Editor as TinyMCE } from '@tinymce/tinymce-react';
@@ -6,7 +6,7 @@ import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mu
 import axios from 'axios';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
 import beautify from 'js-beautify';
-
+import MonacoEditor from '@monaco-editor/react';
 export default function EditorComponent({ setDescription, initialValue }) {
     const [editorType, setEditorType] = useState('ckeditor');
     const [content, setContent] = useState(initialValue || "<p>Write your Description here.</p>");
@@ -14,6 +14,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
     const ckEditorRef = useRef(null);
     const tinyMceRef = useRef(null);
 
+    // Function to beautify the HTML content
     const formatHtml = (html) => {
         return beautify.html(html, {
             indent_size: 2,
@@ -23,12 +24,16 @@ export default function EditorComponent({ setDescription, initialValue }) {
         });
     };
 
+    // Automatically beautify content when the editor type changes
     const beautifyContent = () => {
         const beautified = formatHtml(content);
         setContent(beautified);
         setFormattedContent(beautified);
     };
-
+    const handleMonacoChange = (value) => {
+        setContent(value);
+        setDescription(value);
+    };
     const handleCKEditorChange = (event, editor) => {
         const data = editor.getData();
         setContent(data);
@@ -48,9 +53,10 @@ export default function EditorComponent({ setDescription, initialValue }) {
     const handleRadioChange = (event) => {
         setEditorType(event.target.value);
     };
-useEffect(() => {
-    beautifyContent()
-}, [editorType])
+
+    useEffect(() => {
+        beautifyContent();
+    }, [editorType]);
 
     const renderEditor = () => {
         switch (editorType) {
@@ -115,7 +121,7 @@ useEffect(() => {
             case 'tinymce':
                 return (
                     <TinyMCE
-                        apiKey="your-tinymce-api-key"
+                        apiKey="b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2"
                         value={content}
                         onEditorChange={handleTinyMceChange}
                         init={{
@@ -129,24 +135,41 @@ useEffect(() => {
                                 'importcss autosave save directionality visualchars link media codesample nonbreaking quickbars accordion'
                             ],
                             toolbar:
-                                'accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent | forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl'
+                                'accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | code | lineheight outdent indent | forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl'
                         }}
                     />
                 );
             case 'textbox':
                 return (
                     <div className='md:flex'>
-                        <div style={{ width: "80%", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
-                            <textarea
-                                value={content}
-                                onChange={handleContentChange}
-                                rows={10}
-                                style={{ width: '100%', padding: '8px', height:"150vh"}}
-                            />
-                           
+                        <div style={{ width: "100%", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
+                            <div style={{ width: "100%" }}>
+                                <h2 className='font-bold bg-slate-300 text-center'>Editor</h2>
+
+                                <MonacoEditor
+                                    height="150vh"
+                                    language="html"
+                                    theme="vs-dark"
+                                    value={content}
+                                    onChange={handleMonacoChange}
+
+                                    options={{
+                                        minimap: { enabled: false },
+                                        scrollbar: {
+                                            vertical: 'hidden',
+                                            horizontal: 'hidden',
+                                        },
+                                    }}
+                                />
+                            </div>
+
                         </div>
+                        
                         <div>
-                            <h2 className='font-bold bg-slate-300 text-center'>Preview</h2>
+                       <div className='flex'> 
+                        <div style={{width:1,backgroundColor:"black"}}></div>
+                            <h2 className='font-bold bg-slate-300 text-center w-full'>Preview</h2>
+                            </div>
                             <p style={{ borderWidth: 1 }} className={`text-lg p-3`}>
                                 <HtmlRenderer htmlContent={formattedContent || content} />
                             </p>
@@ -181,6 +204,7 @@ useEffect(() => {
     );
 }
 
+// Custom upload adapter for CKEditor
 function MyCustomUploadAdapterPlugin(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
         return new MyUploadAdapter(loader);

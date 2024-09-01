@@ -32,7 +32,9 @@
 
 .mce-content-body code {
   /* Add styles for <code> if needed */
-  /* */
+  background-color: black;
+  /* padding: 14px; */
+ 
 }
 
 /* Ensure unordered lists (ul) display bullets */

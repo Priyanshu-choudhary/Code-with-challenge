@@ -1,16 +1,33 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Editor as TinyMCE } from '@tinymce/tinymce-react';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import axios from 'axios';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
+import beautify from 'js-beautify';
 
 export default function EditorComponent({ setDescription, initialValue }) {
     const [editorType, setEditorType] = useState('ckeditor');
     const [content, setContent] = useState(initialValue || "<p>Write your Description here.</p>");
+    const [formattedContent, setFormattedContent] = useState('');
     const ckEditorRef = useRef(null);
     const tinyMceRef = useRef(null);
+
+    const formatHtml = (html) => {
+        return beautify.html(html, {
+            indent_size: 2,
+            wrap_line_length: 80,
+            preserve_newlines: true,
+            max_preserve_newlines: 2,
+        });
+    };
+
+    const beautifyContent = () => {
+        const beautified = formatHtml(content);
+        setContent(beautified);
+        setFormattedContent(beautified);
+    };
 
     const handleCKEditorChange = (event, editor) => {
         const data = editor.getData();
@@ -23,9 +40,17 @@ export default function EditorComponent({ setDescription, initialValue }) {
         setDescription(content);
     };
 
+    const handleContentChange = (e) => {
+        setContent(e.target.value);
+        setDescription(e.target.value);
+    };
+
     const handleRadioChange = (event) => {
         setEditorType(event.target.value);
     };
+useEffect(() => {
+    beautifyContent()
+}, [editorType])
 
     const renderEditor = () => {
         switch (editorType) {
@@ -36,7 +61,6 @@ export default function EditorComponent({ setDescription, initialValue }) {
                         data={content}
                         onReady={(editor) => {
                             ckEditorRef.current = editor;
-                            console.log(editor.config.get('contentsCss'));
                         }}
                         onChange={handleCKEditorChange}
                         config={{
@@ -84,14 +108,14 @@ export default function EditorComponent({ setDescription, initialValue }) {
                                 ]
                             },
                             extraPlugins: [MyCustomUploadAdapterPlugin],
-                            contentsCss: ['./customStyles.css'], // Ensure this path is correct
+                            contentsCss: ['./customStyles.css'],
                         }}
                     />
                 );
             case 'tinymce':
                 return (
                     <TinyMCE
-                        apiKey="b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2"
+                        apiKey="your-tinymce-api-key"
                         value={content}
                         onEditorChange={handleTinyMceChange}
                         init={{
@@ -112,18 +136,20 @@ export default function EditorComponent({ setDescription, initialValue }) {
             case 'textbox':
                 return (
                     <div className='md:flex'>
-                        <textarea
-                            value={content}
-                            onChange={(e) => {
-                                setContent(e.target.value);
-                                setDescription(e.target.value);
-                            }}
-                            rows={10}
-                            style={{ width: '100%', padding: '8px' }}
-                        />
+                        <div style={{ width: "80%", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
+                            <textarea
+                                value={content}
+                                onChange={handleContentChange}
+                                rows={10}
+                                style={{ width: '100%', padding: '8px', height:"150vh"}}
+                            />
+                           
+                        </div>
                         <div>
                             <h2 className='font-bold bg-slate-300 text-center'>Preview</h2>
-                            <p style={{ borderWidth: 1 }} className={`text-lg p-3`}><HtmlRenderer htmlContent={content || ""} /></p>
+                            <p style={{ borderWidth: 1 }} className={`text-lg p-3`}>
+                                <HtmlRenderer htmlContent={formattedContent || content} />
+                            </p>
                         </div>
                     </div>
                 );

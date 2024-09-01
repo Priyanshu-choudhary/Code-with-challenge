@@ -135,10 +135,10 @@ export default function EditLecture() {
               onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
               margin="normal"
             />
-            <Tinymce
+           {section && <Tinymce
               initialValue={section.content}
               setDescription={(value) => handleSectionChange(index, 'content', value)}
-            />
+            />}
           </div>
         ))}
 

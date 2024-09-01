@@ -100,7 +100,7 @@ function Lecture() {
                 </div>
             }
             <div className='md:flex'>
-                <div style={{ backgroundColor: dark }} className='pt-2 pl-2'>
+                <div style={{ backgroundColor: dark }} className='pt-2 pl-2 md:max-w-56'>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
                     <ul>
                         {lectureData.map((section, index) => (
@@ -116,13 +116,13 @@ function Lecture() {
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
                     <div key={lectureData[currentSectionIndex]?.id} id={lectureData[currentSectionIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                         <h2 className='text-2xl font-bold flex'>
-                            <div className='text-base font-normal border-1 bg-black text-white mr-2 px-2.5 pt-0.5' style={{ borderRadius: "50%" }}>
+                            <div className='text-base font-normal border-1 bg-black text-white mr-2 px-2.5 pt-0.5' style={{ borderRadius: "50%",maxHeight:30 }}>
                                 {currentSectionIndex + 1}
                             </div>
                             {lectureData[currentSectionIndex]?.heading}
                         </h2>
                         <hr />
-                        <p className={`text-lg p-3 ${ibg=="black"?"text-gray-600":"text-gray-300"}`}><HtmlRenderer htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
+                        <p className={`text-lg p-3`}><HtmlRenderer htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
                     </div>
                     <div className="flex justify-between mt-4">
                         <button

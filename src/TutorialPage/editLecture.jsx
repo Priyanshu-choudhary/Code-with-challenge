@@ -106,7 +106,7 @@ export default function EditLecture() {
           id="title"
           label="Lecture Title"
           fullWidth
-          value={formData.title}
+          value={formData.title}  
           onChange={handleChange}
           margin="normal"
         />

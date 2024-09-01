@@ -13,7 +13,7 @@ export default function LectureForm() {
     title: '',
     subtitle: '',
     sections: [
-      { id: '', heading: '', content: '' },
+      { id: '1', heading: '', content: '' },
     ],
   });
 
@@ -38,7 +38,10 @@ export default function LectureForm() {
   const handleAddSection = () => {
     setFormData((prevData) => ({
       ...prevData,
-      sections: [...prevData.sections, { id: '', heading: '', content: '' }],
+      sections: [
+        ...prevData.sections, 
+        { id: (prevData.sections.length + 1).toString(), heading: '', content: '' }
+      ],
     }));
   };
 
@@ -103,7 +106,7 @@ export default function LectureForm() {
               label={`Section ID ${index + 1}`}
               fullWidth
               value={section.id}
-              onChange={(e) => handleSectionChange(index, 'id', e.target.value)}
+              disabled // Disable input to ensure the ID is auto-generated and cannot be changed
               margin="normal"
               multiline
               rows={1} // Specify the number of rows for the section ID

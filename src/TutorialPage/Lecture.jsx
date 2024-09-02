@@ -115,7 +115,8 @@ function Lecture() {
                     position: 'sticky',        //    Change to sticky
                     top: '0px',              // Sticks at 110px from the top
                     height: 'fit-content',     // Height will be determined by content
-                    width: '100%',              // Fixed width for the sidebar
+                    width: '100%',
+                    maxWidth:200,              // Fixed width for the sidebar
                     overflowY: 'auto',         // Enable vertical scrolling
                     padding: '10px',
 
@@ -158,7 +159,7 @@ function Lecture() {
                 </div>
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>
-                    {/* <InPageEditor initialValue={"hello"}/> */}
+                   
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
                     <div key={lectureData[currentSectionIndex]?.id} id={lectureData[currentSectionIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                         <h2 className='text-2xl font-bold flex'>

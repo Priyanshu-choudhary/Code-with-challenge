@@ -11,6 +11,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import BoxLoader from '../Loader/BoxLoader';
+import InPageEditor from './InPageEditor';
 
 function Lecture() {
     const { title, LectureId } = useParams();
@@ -114,12 +115,12 @@ function Lecture() {
                     position: 'sticky',        //    Change to sticky
                     top: '0px',              // Sticks at 110px from the top
                     height: 'fit-content',     // Height will be determined by content
-                    width: '25%',              // Fixed width for the sidebar
+                    width: '100%',              // Fixed width for the sidebar
                     overflowY: 'auto',         // Enable vertical scrolling
                     padding: '10px',
 
                     zIndex: 1000               // Ensure it's on top of other elements
-                }} className='pt-2 pl-2 md:max-w-56 side-navbar'>
+                }} className='pt-2 pl-2 md:w-56 side-navbar'>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
                     <ul>
                         {lectureData.map((section, index) => (
@@ -157,6 +158,7 @@ function Lecture() {
                 </div>
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>
+                    {/* <InPageEditor initialValue={"hello"}/> */}
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
                     <div key={lectureData[currentSectionIndex]?.id} id={lectureData[currentSectionIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                         <h2 className='text-2xl font-bold flex'>

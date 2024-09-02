@@ -10,8 +10,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import TextField from '@mui/material/TextField';
 import { UserContext } from '../Context/UserContext';
 
-const EditorComponent = () => {
-    const [code, setCode] = useState('// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
+const EditorComponent = ({initialValue}) => {
+    const [code, setCode] = useState(initialValue || '// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
     const [output, setOutput] = useState('');
     const [iSubmit, setiSubmit] = useState(false);
     const [language, setLanguage] = useState('java');
@@ -62,7 +62,7 @@ const EditorComponent = () => {
 
     return (
         <div className='super'>
-            <Dashboard />
+           {!initialValue && <Dashboard />}
             <div className="editor-container">
                 <div className="editor-section">
                     <div className="editor-header" style={{ backgroundColor: dark, color: ibg }}>

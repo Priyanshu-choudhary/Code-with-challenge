@@ -10,6 +10,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
+import BoxLoader from '../Loader/BoxLoader';
 
 function Lecture() {
     const { title, LectureId } = useParams();
@@ -47,7 +48,10 @@ function Lecture() {
     }, [LectureId, title]);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <div>
+            <Dashboard />
+            <BoxLoader />
+        </div>;
     }
 
     if (error) {
@@ -84,6 +88,11 @@ function Lecture() {
         setCurrentSectionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     };
 
+    const handleSectionClick = (index) => {
+        setCurrentSectionIndex(index);
+        document.getElementById(lectureData[index].id).scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <div style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
@@ -100,23 +109,58 @@ function Lecture() {
                 </div>
             }
             <div className='md:flex'>
-                <div style={{ backgroundColor: dark }} className='pt-2 pl-2 md:max-w-56'>
+                <div style={{
+                    backgroundColor: dark,
+                    position: 'sticky',        //    Change to sticky
+                    top: '0px',              // Sticks at 110px from the top
+                    height: 'fit-content',     // Height will be determined by content
+                    width: '25%',              // Fixed width for the sidebar
+                    overflowY: 'auto',         // Enable vertical scrolling
+                    padding: '10px',
+
+                    zIndex: 1000               // Ensure it's on top of other elements
+                }} className='pt-2 pl-2 md:max-w-56 side-navbar'>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
                     <ul>
                         {lectureData.map((section, index) => (
-                            <li className='flex ml-3 hover:bg-blue-50 p-2 rounded-lg' key={section.id}>
-                                <RadioButtonCheckedIcon fontSize='small' className='mt-0.5 mr-1 text-blue-500' />
-                                <a href={`#${section.id}`} className='text-blue-500'>{section.heading}</a>
-                            </li>
+                            <div key={section.id}>
+                                <div style={{ backgroundColor: "black", width: "100%", height: 1 }}></div>
+                                <li
+                                    style={{
+                                        marginTop: 5,
+                                        backgroundColor: index === currentSectionIndex ? '#f0f8ff' : 'transparent', // Highlight the current section
+                                        color: index === currentSectionIndex ? '#000' : '#4a90e2', // Change text color for the current section
+                                    }}
+                                    className='py-1 flex pl-3 hover:bg-blue-50 p-2 rounded-lg'
+                                    onClick={() => handleSectionClick(index)} // Handle section click
+                                >
+                                    <div className="flex">
+                                        <div
+                                            className={`h-16 ${index === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${index === 0 ? 'w-1 ' : 'w-0.5'}`}
+                                        ></div>
+                                        <div className="pl-2">
+                                            <a
+                                                href={`#${section.id}`}
+                                                className={`text-blue-500 ${index === currentSectionIndex ? 'font-bold' : ''}`}
+                                            >
+                                                {section.heading}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </div>
                         ))}
+                        <div style={{ backgroundColor: "black", width: "100%", height: 1 }}></div>
                     </ul>
+
                 </div>
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
                     <div key={lectureData[currentSectionIndex]?.id} id={lectureData[currentSectionIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                         <h2 className='text-2xl font-bold flex'>
-                            <div className='text-base font-normal border-1 bg-black text-white mr-2 px-2.5 pt-0.5' style={{ borderRadius: "50%",maxHeight:30 }}>
+                            <div className='text-base font-normal border-1 bg-black text-white mr-2 px-2.5 pt-0.5' style={{ borderRadius: "50%", maxHeight: 30 }}>
                                 {currentSectionIndex + 1}
                             </div>
                             {lectureData[currentSectionIndex]?.heading}

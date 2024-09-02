@@ -1,11 +1,44 @@
-import React ,{useContext}from 'react';
+import React, { useContext } from 'react';
 import styles from '/src/HtmlContentCss.module.css'; // Import the CSS module
 import { UserContext } from '../Context/UserContext';
-const HtmlRenderer = ({ htmlContent }) => {
-  const { ibg,bg, light,dark } = useContext(UserContext);
+import parse, { domToReact } from 'html-react-parser';
+import InPageEditor from '../TutorialPage/InPageEditor';
+// import InPageEditor from './InPageEditor'; // Import your InPageEditor component
+
+const HtmlRenderer = ({ htmlContent, renderAsHtml = true }) => {
+  const { ibg } = useContext(UserContext);
+
+  const replacePlaceholderWithComponent = (domNode) => {
+    if (domNode.type === 'tag' && domNode.name === 'div' && domNode.attribs['data-placeholder'] === 'InPageEditor') {
+      // Replace the placeholder with the InPageEditor component
+      return <InPageEditor initialValue={"code"} />;
+    }
+  };
+
+  let renderedContent;
+
+  if (renderAsHtml) {
+    // Render as HTML using dangerouslySetInnerHTML
+    renderedContent = (
+      <div
+        className={styles['mce-content-body']}
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
+    );
+  } else {
+    // Parse the string into JSX elements and replace placeholders with React components
+    renderedContent = (
+      <div className={styles['mce-content-body']}>
+        {parse(htmlContent, {
+          replace: replacePlaceholderWithComponent
+        })}
+      </div>  
+    );
+  }
+
   return (
-    <div className={ibg=="white" ? 'dark-theme' : ''}>
-    <div className={styles['mce-content-body']} dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    <div className={ibg === "white" ? 'dark-theme' : ''}>
+      {renderedContent}
     </div>
   );
 };

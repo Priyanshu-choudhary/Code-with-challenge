@@ -126,14 +126,14 @@ function Lecture() {
                     <ul>
                         {lectureData.map((section, index) => (
                             <div key={section.id}>
-                                <div style={{ backgroundColor: "black", width: "100%", height: 1 }}></div>
+                                <div style={{ backgroundColor: "black", width: "100%", height: 1,marginTop:5 }}></div>
                                 <li
                                     style={{
                                         marginTop: 5,
                                         backgroundColor: index === currentSectionIndex ? '#f0f8ff' : 'transparent', // Highlight the current section
                                         color: index === currentSectionIndex ? '#000' : '#4a90e2', // Change text color for the current section
                                     }}
-                                    className='py-1 flex pl-3 hover:bg-blue-50 p-2 rounded-lg'
+                                    className='py-1 flex pl-1 hover:bg-blue-50 p-2 rounded-lg'
                                     onClick={() => handleSectionClick(index)} // Handle section click
                                 >
                                     <div className="flex">
@@ -153,7 +153,7 @@ function Lecture() {
                                 </li>
                             </div>
                         ))}
-                        <div style={{ backgroundColor: "black", width: "100%", height: 1 }}></div>
+                        <div style={{ backgroundColor: "black", width: "100%", height: 1 ,marginTop:5}}></div>
                     </ul>
 
                 </div>

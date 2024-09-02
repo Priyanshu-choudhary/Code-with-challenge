@@ -8,7 +8,7 @@ import HtmlRenderer from '../Leetcode/HtmlRenderer';
 import beautify from 'js-beautify';
 import MonacoEditor from '@monaco-editor/react';
 export default function EditorComponent({ setDescription, initialValue }) {
-    const [editorType, setEditorType] = useState('ckeditor');
+    const [editorType, setEditorType] = useState('textbox');
     const [content, setContent] = useState(initialValue || "<p>Write your Description here.</p>");
     const [formattedContent, setFormattedContent] = useState('');
     const ckEditorRef = useRef(null);
@@ -113,7 +113,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
                                     'imageTextAlternative'
                                 ]
                             },
-                            extraPlugins: [MyCustomUploadAdapterPlugin],
+                            extraPlugins: [MyCustomUploadAdapterPlugin,, CustomPlaceholderPlugin],
                             contentsCss: ['./customStyles.css'],
                         }}
                     />
@@ -121,23 +121,31 @@ export default function EditorComponent({ setDescription, initialValue }) {
             case 'tinymce':
                 return (
                     <TinyMCE
-                        apiKey="b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2"
-                        value={content}
-                        onEditorChange={handleTinyMceChange}
-                        init={{
-                            height: 500,
-                            menubar: true,
-                            plugins: [
-                                'advlist autolink lists link image charmap print preview anchor',
-                                'searchreplace visualblocks code fullscreen',
-                                'insertdatetime media table paste code help wordcount',
-                                'emoticons textcolor colorpicker textpattern',
-                                'importcss autosave save directionality visualchars link media codesample nonbreaking quickbars accordion'
-                            ],
-                            toolbar:
-                                'accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | code | lineheight outdent indent | forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | save print | pagebreak anchor codesample | ltr rtl'
-                        }}
-                    />
+            apiKey="b0jhzd6koxrs4kg17tsddbbfge2vxtw19f3tetxllvoshkc2"
+            value={content}
+            onEditorChange={handleTinyMceChange}
+            init={{
+                height: 500,
+                menubar: true,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'emoticons textcolor colorpicker textpattern',
+                    'importcss autosave save directionality visualchars link media codesample nonbreaking quickbars'
+                ],
+                toolbar: 'blocks fontfamily fontsize | bold italic underline | code | customPlaceholder',
+                setup: (editor) => {
+                    // Add a custom button to insert the placeholder
+                    editor.ui.registry.addButton('customPlaceholder', {
+                        text: 'Insert Editor',
+                        onAction: () => {
+                            editor.insertContent('<div data-placeholder="InPageEditor">[InPageEditor]</div>');
+                        },
+                    });
+                },
+            }}
+        />
                 );
             case 'textbox':
                 return (
@@ -210,7 +218,25 @@ function MyCustomUploadAdapterPlugin(editor) {
         return new MyUploadAdapter(loader);
     };
 }
+function CustomPlaceholderPlugin(editor) {
+    editor.ui.componentFactory.add('customPlaceholder', (locale) => {
+        const buttonView = new editor.ui.button.ButtonView(locale);
 
+        buttonView.set({
+            label: 'Insert Editor',
+            withText: true,
+            tooltip: true,
+        });
+
+        buttonView.on('execute', () => {
+            const viewFragment = editor.data.processor.toView('<div data-placeholder="InPageEditor">[InPageEditor]</div>');
+            const modelFragment = editor.data.toModel(viewFragment);
+            editor.model.insertContent(modelFragment);
+        });
+
+        return buttonView;
+    });
+}
 class MyUploadAdapter {
     constructor(loader) {
         this.loader = loader;

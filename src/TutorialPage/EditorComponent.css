@@ -17,13 +17,8 @@
     overflow: hidden;
 }
 
-.editor-section {
-    /* border-right: 1px solid #ccc; */
-}
 
-.left-button {
-    order: -2; /* Move left button to the beginning */
-}
+
 
 .editor-header {
     display: flex;

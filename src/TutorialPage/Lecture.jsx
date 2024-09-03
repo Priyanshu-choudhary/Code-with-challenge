@@ -13,7 +13,7 @@ import Dashboard from '../dashBoard/Dashboard';
 import BoxLoader from '../Loader/BoxLoader';
 import InPageEditor from './InPageEditor';
 // import DraggableTextComponent from './DragableComponent';
-import DraggableResizableText from './DragableComponent';
+import DraggableResizableText from './InLectureEditor';
 
 function Lecture() {
     const { title, LectureId } = useParams();

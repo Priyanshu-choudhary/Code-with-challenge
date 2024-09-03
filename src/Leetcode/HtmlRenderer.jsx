@@ -2,20 +2,22 @@ import React, { useContext } from 'react';
 import styles from '/src/HtmlContentCss.module.css'; // Import the CSS module
 import { UserContext } from '../Context/UserContext';
 import parse, { domToReact } from 'html-react-parser';
-import InPageEditor from '../TutorialPage/InPageEditor';
-import DraggableResizableText from '../TutorialPage/DragableComponent';
-import EditorComponent from '../onlineEditor/EditorComponent';
-// import InPageEditor from './InPageEditor'; // Import your InPageEditor component
+
+import InLectureEditor from '../TutorialPage/InLectureEditor';
 
 const HtmlRenderer = ({ htmlContent, renderAsHtml = false }) => {
   const { ibg } = useContext(UserContext);
 
   const replacePlaceholderWithComponent = (domNode) => {
     if (domNode.type === 'tag' && domNode.name === 'div' && domNode.attribs['data-placeholder'] === 'InPageEditor') {
-      // Replace the placeholder with the InPageEditor component
-      return <EditorComponent initialValue={"code"} />;
+      // Extract the content inside the placeholder
+      const placeholderContent = domNode.children ? domToReact(domNode.children) : `[InPageEditor] Your no content find content here`;
+  
+      // Replace the placeholder with the EditorComponent, passing the content
+      return <InLectureEditor initialValue={placeholderContent} />;
     }
   };
+  
 
   let renderedContent;
 
@@ -34,7 +36,7 @@ const HtmlRenderer = ({ htmlContent, renderAsHtml = false }) => {
         {parse(htmlContent, {
           replace: replacePlaceholderWithComponent
         })}
-      </div>  
+      </div>
     );
   }
 

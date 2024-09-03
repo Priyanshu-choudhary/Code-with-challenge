@@ -11,6 +11,7 @@
     import './EditorComponent.css';
     import CloseIcon from '@mui/icons-material/Close';
     import Split from 'react-split';
+import zIndex from '@mui/material/styles/zIndex';
     const EditorComponent = ({ initialValue }) => {
         const [code, setCode] = useState(initialValue || '// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
         const [output, setOutput] = useState('');
@@ -83,7 +84,7 @@
             : JSON.stringify(output, null, 2); // Display as JSON if output is not an object with 'output' property
 
         return (
-            <div>
+            <div >
                 <button
                     onClick={toggleVisibility}
                     style={{
@@ -118,6 +119,7 @@
                             border: '1px solid #ccc',
                             padding: '10px',
                             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+                            zIndex: 9999,
                         }}
                     >
                         
@@ -126,7 +128,7 @@
                             <div className="editor-section">
                                 <div className="editor-header" style={{ backgroundColor: dark, color: ibg }}>
                                     <span className="left-button">Main</span>
-                                    <div className="right-buttons">
+                                    <div className="right-buttons z-50">
                                         <Dropdown as={ButtonGroup} style={{ backgroundColor: bc, color: ibg }}>
                                             <Button variant="primary" style={{ backgroundColor: bc, color: ibg }}>{language}</Button>
                                             <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" style={{ backgroundColor: bc, color: ibg }} />
@@ -158,7 +160,7 @@
                                     language={editorLanguage}
                                     value={code}
                                     onChange={handleEditorChange}
-                                    theme={themes}
+                                    theme={"vs-dark"}
                                     options={{
                                         minimap: { enabled: false },
                                         scrollbar: {
@@ -166,6 +168,7 @@
                                             horizontal: 'hidden',
                                         },
                                     }}
+                                    style={{zIndex:9999999}}
                                 />
                             </div>
                             <div className="output-section"  

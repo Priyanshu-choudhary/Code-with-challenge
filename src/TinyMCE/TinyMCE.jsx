@@ -40,11 +40,13 @@ export default function EditorComponent({ setDescription, initialValue }) {
         const data = editor.getData();
         setContent(data);
         setDescription(data);
+        setlivePreview(data)
     };
 
     const handleTinyMceChange = (content, editor) => {
         setContent(content);
         setDescription(content);
+        setlivePreview(content)
     };
 
     const handleContentChange = (e) => {
@@ -142,7 +144,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
                                 editor.ui.registry.addButton('customPlaceholder', {
                                     text: 'Insert Editor',
                                     onAction: () => {
-                                        editor.insertContent('<div data-placeholder="InPageEditor">[InPageEditor]</div>');
+                                        editor.insertContent(`<div data-placeholder="InPageEditor">//Your initial content here</div>`);
                                     },
                                 });
                             },
@@ -155,7 +157,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
                         <div style={{ width: "100%", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
                             <div style={{ width: "100%" }}>
                                 <h2 className='font-bold bg-slate-300 text-center'>Editor</h2>
-
+                                <p className='text-blue-500'>{`<div data-placeholder="InPageEditor">  </div>`}</p>
                                 <MonacoEditor
                                     height="150vh"
                                     language="html"
@@ -253,3 +255,4 @@ class MyUploadAdapter {
         // Abort handling
     }
 }
+    

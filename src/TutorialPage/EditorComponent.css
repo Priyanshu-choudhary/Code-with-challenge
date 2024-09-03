@@ -1,0 +1,98 @@
+.editor-container {
+    display: flex;
+    /* border: 1px solid #ccc; */
+    border-radius: 4px;
+    /* height: 100vh; Full viewport height */
+    margin: 0; /* Remove any margin to ensure it uses full height */
+    overflow: hidden;
+}
+.super{
+    overflow: hidden;
+}
+.editor-section,
+.output-section {
+   
+    flex-direction: column;
+    /* height: 100%; Use full height */
+    overflow: hidden;
+}
+
+.editor-section {
+    /* border-right: 1px solid #ccc; */
+}
+
+.left-button {
+    order: -2; /* Move left button to the beginning */
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items to the center */
+    padding: 8px;
+    background-color: #f5f5f5;
+    /* border-bottom: 1px solid #ccc; */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items to the center */
+    padding: 8px;
+    background-color: #f5f5f5;
+    /* border-bottom: 1px solid #ccc; */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.editor-header span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.editor-header .right-buttons,
+.output-header {
+    display: flex;
+    align-items: center; /* Align items to the center */
+}
+
+.editor-header button,
+.editor-header .settings-icon,
+.output-header button {
+    background-color: #7d7e7e;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.editor-header button:hover,
+.editor-header .settings-icon:hover,
+.output-header button:hover {
+    background-color: #2e2e2e;
+}
+
+pre {
+    padding: 8px;
+    /* background-color: #ffffff; */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    flex: 1;
+    margin: 0;
+    overflow: auto;
+}
+
+.settings-icon {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+

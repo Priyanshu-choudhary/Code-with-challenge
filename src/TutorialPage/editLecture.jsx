@@ -4,6 +4,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
 import Dashboard from '../dashBoard/Dashboard';
 import { useParams } from 'react-router-dom';
@@ -20,6 +24,7 @@ export default function EditLecture() {
   });
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
   const [loading, setLoading] = useState(false);
+  const [activeSection, setActiveSection] = useState(null); // Track the active section for editing
 
   useEffect(() => {
     // Fetch existing lecture data to populate the form
@@ -54,7 +59,7 @@ export default function EditLecture() {
   };
 
   const handleSectionChange = (index, field, value) => {
-    const newSections = formData.sections.map((section, i) => 
+    const newSections = formData.sections.map((section, i) =>
       i === index ? { ...section, [field]: value } : section
     );
     setFormData({ ...formData, sections: newSections });
@@ -68,6 +73,10 @@ export default function EditLecture() {
       ...prevData,
       sections: [...prevData.sections, { id: nextId.toString(), heading: '', content: '' }],
     }));
+  };
+
+  const handleHeadingClick = (index) => {
+    setActiveSection(index === activeSection ? null : index);
   };
 
   const handleSubmit = async () => {
@@ -106,7 +115,7 @@ export default function EditLecture() {
           id="title"
           label="Lecture Title"
           fullWidth
-          value={formData.title}  
+          value={formData.title}
           onChange={handleChange}
           margin="normal"
         />
@@ -120,22 +129,33 @@ export default function EditLecture() {
           margin="normal"
         />
 
-        {formData.sections.map((section, index) => (
-          <div key={index}>
-            <TextField
-              id="heading"
-              label={`Section Heading ${index + 1}`}
-              fullWidth
-              value={section.heading}
-              onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
-              margin="normal"
-            />
-           {!loading && <Tinymce
-              initialValue={section.content}
-              setDescription={(value) => handleSectionChange(index, 'content', value)}
-            />}
-          </div>
-        ))}
+        <List>
+          {formData.sections.map((section, index) => (
+            <div key={index}>
+              <ListItem button onClick={() => handleHeadingClick(index)}>
+                <ListItemText primary={`Section Heading ${index + 1}`} />
+              </ListItem>
+              <Collapse in={activeSection === index} timeout="auto" unmountOnExit>
+                <div className='ml-5'>
+                  <TextField
+                    id="heading"
+                    label={`Section Heading ${index + 1}`}
+                    fullWidth
+                    value={section.heading}
+                    onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
+                    margin="normal"
+                  />
+                  {!loading && (
+                    <Tinymce
+                      initialValue={section.content}
+                      setDescription={(value) => handleSectionChange(index, 'content', value)}
+                    />
+                  )}
+                </div>
+              </Collapse>
+            </div>
+          ))}
+        </List>
 
         <Button variant="contained" color="primary" onClick={handleAddSection}>
           Add Section

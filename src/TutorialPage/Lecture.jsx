@@ -12,6 +12,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import BoxLoader from '../Loader/BoxLoader';
 import InPageEditor from './InPageEditor';
+// import DraggableTextComponent from './DragableComponent';
+import DraggableResizableText from './DragableComponent';
 
 function Lecture() {
     const { title, LectureId } = useParams();
@@ -99,6 +101,7 @@ function Lecture() {
             <Dashboard />
             <IconBreadcrumbs currentPage={"Tutorial"} title={"learn"} question={title || 'Default Title'} />
             <hr />
+            <InPageEditor/>
             {role === "ADMIN" &&
                 <div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 110, color: "black" }} >
@@ -168,7 +171,7 @@ function Lecture() {
                             </div>
                             {lectureData[currentSectionIndex]?.heading}
                         </h2>
-                        <hr />
+                        {/* <hr /> */}
                         <p className={`text-lg p-3`}><HtmlRenderer htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
                     </div>
                     <div className="flex justify-between mt-4">

@@ -172,7 +172,7 @@ function Lecture() {
                             {lectureData[currentSectionIndex]?.heading}
                         </h2>
                         {/* <hr /> */}
-                        <p className={`text-lg p-3`}><HtmlRenderer htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
+                        <p className={`text-lg p-3`}><HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
                     </div>
                     <div className="flex justify-between mt-4">
                         <button

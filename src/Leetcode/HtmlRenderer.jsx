@@ -3,15 +3,17 @@ import styles from '/src/HtmlContentCss.module.css'; // Import the CSS module
 import { UserContext } from '../Context/UserContext';
 import parse, { domToReact } from 'html-react-parser';
 import InPageEditor from '../TutorialPage/InPageEditor';
+import DraggableResizableText from '../TutorialPage/DragableComponent';
+import EditorComponent from '../onlineEditor/EditorComponent';
 // import InPageEditor from './InPageEditor'; // Import your InPageEditor component
 
-const HtmlRenderer = ({ htmlContent, renderAsHtml = true }) => {
+const HtmlRenderer = ({ htmlContent, renderAsHtml = false }) => {
   const { ibg } = useContext(UserContext);
 
   const replacePlaceholderWithComponent = (domNode) => {
     if (domNode.type === 'tag' && domNode.name === 'div' && domNode.attribs['data-placeholder'] === 'InPageEditor') {
       // Replace the placeholder with the InPageEditor component
-      return <InPageEditor initialValue={"code"} />;
+      return <EditorComponent initialValue={"code"} />;
     }
   };
 

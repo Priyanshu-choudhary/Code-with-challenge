@@ -10,6 +10,7 @@
     import JDoodleExample from '../JDoodle/JDoodleExample';
     import './EditorComponent.css';
     import CloseIcon from '@mui/icons-material/Close';
+    import Split from 'react-split';
     const EditorComponent = ({ initialValue }) => {
         const [code, setCode] = useState(initialValue || '// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
         const [output, setOutput] = useState('');
@@ -19,7 +20,7 @@
         const { ibg, bc, bg, light, dark } = useContext(UserContext);
         const [themes, setThemes] = useState('vs-dark');
         const [editorLanguage, setEditorLanguage] = useState(language);
-        const [isVisible, setIsVisible] = useState(true);
+        const [isVisible, setIsVisible] = useState(false);
         const [editorSize, setEditorSize] = useState({ width: 800, height: 400 });
         const [scrollY, setScrollY] = useState(0);
 
@@ -119,7 +120,9 @@
                             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
                         }}
                     >
+                        
                         <div className="editor-container">
+                        {/* <Split sizes={[50, 50]} direction="vertical" style={{ height: '100%' }}> */}
                             <div className="editor-section">
                                 <div className="editor-header" style={{ backgroundColor: dark, color: ibg }}>
                                     <span className="left-button">Main</span>
@@ -187,6 +190,7 @@
                                     onChange={handleInput}
                                 />
                             </div>
+                            {/* </Split> */}
                         </div>
                     </Rnd>
                 )}

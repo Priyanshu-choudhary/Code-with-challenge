@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Rnd } from 'react-rnd';
-import InPageEditor from './InPageEditor';
 
 export default function DraggableResizableText() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -26,7 +25,7 @@ export default function DraggableResizableText() {
           cursor: 'pointer',
         }}
       >
-        {isVisible ? 'close' : 'Editor'}
+        {isVisible ? 'Hide Text' : 'Show Text'}
       </button>
 
       {isVisible && (
@@ -34,8 +33,8 @@ export default function DraggableResizableText() {
           default={{
             x: 500,
             y: 100,
-            width: 500,
-        
+            width: 320,
+            height: 200,
           }}
           bounds="window"
           style={{
@@ -45,8 +44,8 @@ export default function DraggableResizableText() {
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
           }}
         >
-          <div >
-            <InPageEditor initialValue={""}/>
+          <div style={{ fontSize: '16px', fontFamily: 'Arial' }}>
+            This is a draggable and resizable text component.
           </div>
         </Rnd>
       )}

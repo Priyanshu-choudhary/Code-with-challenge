@@ -158,59 +158,61 @@ export default function EditLecture() {
           margin="normal"
         />
 
-        <List>
-          {formData.headings.map((heading, headingIndex) => (
-            <div key={headingIndex}>
-              <ListItem button onClick={() => handleHeadingClick(headingIndex)}>
-                <ListItemText primary={`Heading ${headingIndex + 1}`} />
+<List>
+  {formData.headings.map((heading, headingIndex) => (
+    <div key={headingIndex}>
+      <ListItem button onClick={() => handleHeadingClick(headingIndex)}>
+        {/* Use heading title instead of heading index */}
+        <ListItemText primary={heading.title || `Heading ${headingIndex + 1}`} />
+      </ListItem>
+      <Collapse in={activeHeading === headingIndex} timeout="auto" unmountOnExit>
+        <div className='ml-5'>
+          <TextField
+            id="heading"
+            label={`Heading ${headingIndex + 1} Title`}
+            fullWidth
+            value={heading.title}
+            onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
+            margin="normal"
+          />
+
+          {heading.subHeadings.map((subHeading, subHeadingIndex) => (
+            <div key={subHeadingIndex} className='ml-5'>
+              <ListItem button onClick={() => handleSubHeadingClick(subHeadingIndex)}>
+                {/* Use subheading title instead of subheading index */}
+                <ListItemText primary={subHeading.title || `Subheading ${subHeadingIndex + 1}`} />
               </ListItem>
-              <Collapse in={activeHeading === headingIndex} timeout="auto" unmountOnExit>
-                <div className='ml-5'>
-                  <TextField
-                    id="heading"
-                    label={`Heading ${headingIndex + 1} Title`}
-                    fullWidth
-                    value={heading.title}
-                    onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
-                    margin="normal"
+              <Collapse in={activeSubHeading === subHeadingIndex} timeout="auto" unmountOnExit>
+                <TextField
+                  id="subheading"
+                  label={`Subheading ${subHeadingIndex + 1} Title`}
+                  fullWidth
+                  value={subHeading.title}
+                  onChange={(e) =>
+                    handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)
+                  }
+                  margin="normal"
+                />
+                {!loading && (
+                  <Tinymce
+                    initialValue={subHeading.content}
+                    setDescription={(value) =>
+                      handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)
+                    }
                   />
-
-                  {heading.subHeadings.map((subHeading, subHeadingIndex) => (
-                    <div key={subHeadingIndex} className='ml-5'>
-                      <ListItem button onClick={() => handleSubHeadingClick(subHeadingIndex)}>
-                        <ListItemText primary={`Subheading ${subHeadingIndex + 1}`} />
-                      </ListItem>
-                      <Collapse in={activeSubHeading === subHeadingIndex} timeout="auto" unmountOnExit>
-                        <TextField
-                          id="subheading"
-                          label={`Subheading ${subHeadingIndex + 1} Title`}
-                          fullWidth
-                          value={subHeading.title}
-                          onChange={(e) =>
-                            handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)
-                          }
-                          margin="normal"
-                        />
-                        {!loading && (
-                          <Tinymce
-                            initialValue={subHeading.content}
-                            setDescription={(value) =>
-                              handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)
-                            }
-                          />
-                        )}
-                      </Collapse>
-                    </div>
-                  ))}
-
-                  <Button variant="contained" color="secondary" onClick={() => handleAddSubHeading(headingIndex)}>
-                    Add Subheading
-                  </Button>
-                </div>
+                )}
               </Collapse>
             </div>
           ))}
-        </List>
+
+          <Button variant="contained" color="secondary" onClick={() => handleAddSubHeading(headingIndex)}>
+            Add Subheading
+          </Button>
+        </div>
+      </Collapse>
+    </div>
+  ))}
+</List>
 
         <Button variant="contained" color="primary" onClick={handleAddHeading}>
           Add Heading

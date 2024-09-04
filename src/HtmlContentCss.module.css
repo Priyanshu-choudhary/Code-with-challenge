@@ -32,8 +32,9 @@
 
 .mce-content-body code {
   /* Add styles for <code> if needed */
-  background-color: black;
-  /* padding: 14px; */
+  background-color: rgb(221, 220, 220);
+padding: 0px 5px;
+border-radius: 3px;
  
 }
 

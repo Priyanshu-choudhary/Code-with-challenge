@@ -1,27 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import IconBreadcrumbs from '../dashBoard/BreadCrumb';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
 import { UserContext } from '../Context/UserContext';
-import DoneIcon from '@mui/icons-material/Done';
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import CreateIcon from '@mui/icons-material/Create';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useNavigate, useLocation } from 'react-router-dom';
 import Dashboard from '../dashBoard/Dashboard';
 import BoxLoader from '../Loader/BoxLoader';
 import InPageEditor from './InPageEditor';
-// import DraggableTextComponent from './DragableComponent';
-import DraggableResizableText from './InLectureEditor';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function Lecture() {
-    const { title, LectureId } = useParams();
+    const { title } = useParams();
     const [lectureData, setLectureData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [leactureId, setleactureId] = useState('')
     const [error, setError] = useState(null);
-    const [id, setId] = useState(null);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+    const [currentSubheadingIndex, setCurrentSubheadingIndex] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
     const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
@@ -38,8 +33,8 @@ function Lecture() {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
-                setId(data);
-                setLectureData(data.sections || []);
+                setleactureId(data.id)
+                setLectureData(data.headings || []);
                 setLoading(false);
             } catch (error) {
                 setError(error.message || 'An error occurred while fetching data');
@@ -48,7 +43,7 @@ function Lecture() {
         };
 
         fetchLectureData();
-    }, [LectureId, title]);
+    }, [title]);
 
     if (loading) {
         return <div>
@@ -61,11 +56,11 @@ function Lecture() {
         return <p>Error: {error}</p>;
     }
 
-    const handleDelete = async (courseId, courseName) => {
-        if (window.confirm(`Are you sure you want to delete the lecture "${id.title}"?`)) {
+    const handleDelete = async () => {
+        if (window.confirm(`Are you sure you want to delete the lecture "${title}"?`)) {
             try {
                 const basicAuth = 'Basic ' + btoa(`testleacture:testleacture`);
-                const response = await fetch(`https://hytechlabs.online:9090/Lecture/id/${id.id}`, {
+                const response = await fetch(`https://hytechlabs.online:9090/Lecture/id/${leactureId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -84,16 +79,27 @@ function Lecture() {
     };
 
     const handleNext = () => {
-        setCurrentSectionIndex((prevIndex) => Math.min(prevIndex + 1, lectureData.length - 1));
+        if (currentSubheadingIndex < lectureData[currentSectionIndex].subHeadings.length - 1) {
+            setCurrentSubheadingIndex((prevIndex) => prevIndex + 1);
+        } else if (currentSectionIndex < lectureData.length - 1) {
+            setCurrentSectionIndex((prevIndex) => prevIndex + 1);
+            setCurrentSubheadingIndex(0);
+        }
     };
 
     const handlePrevious = () => {
-        setCurrentSectionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+        if (currentSubheadingIndex > 0) {
+            setCurrentSubheadingIndex((prevIndex) => prevIndex - 1);
+        } else if (currentSectionIndex > 0) {
+            setCurrentSectionIndex((prevIndex) => prevIndex - 1);
+            setCurrentSubheadingIndex(lectureData[currentSectionIndex - 1].subHeadings.length - 1);
+        }
     };
 
-    const handleSectionClick = (index) => {
-        setCurrentSectionIndex(index);
-        document.getElementById(lectureData[index].id).scrollIntoView({ behavior: 'smooth' });
+    const handleSectionClick = (sectionIndex, subheadingIndex = 0) => {
+        setCurrentSectionIndex(sectionIndex);
+        setCurrentSubheadingIndex(subheadingIndex);
+        document.getElementById(lectureData[sectionIndex].subHeadings[subheadingIndex].id).scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -101,90 +107,101 @@ function Lecture() {
             <Dashboard />
             <IconBreadcrumbs currentPage={"Tutorial"} title={"learn"} question={title || 'Default Title'} />
             <hr />
-            <InPageEditor/>
+            <InPageEditor />
             {role === "ADMIN" &&
                 <div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 110, color: "black" }} >
-                        <CreateIcon fontSize='large' onClick={() => { navigate(`/EditLecture/${id.id}`); }} />
+                        <CreateIcon fontSize='large' onClick={() => { navigate(`/EditLecture/${leactureId}`); }} />
                     </div>
                     <div className="button-86" style={{ position: "absolute", right: 10, top: 180, color: "black" }} >
-                        <DeleteForeverIcon fontSize='large' onClick={() => { handleDelete(id.id, id.title); }} />
+                        <DeleteForeverIcon fontSize='large' onClick={handleDelete} />
                     </div>
                 </div>
             }
             <div className='md:flex'>
                 <div style={{
                     backgroundColor: dark,
-                    position: 'sticky',        //    Change to sticky
-                    top: '0px',              // Sticks at 110px from the top
-                    height: 'fit-content',     // Height will be determined by content
+                    position: 'sticky',
+                    top: '0px',
+                    height: 'fit-content',
                     width: '100%',
-                    maxWidth:200,              // Fixed width for the sidebar
-                    overflowY: 'auto',         // Enable vertical scrolling
+                    maxWidth: 200,
+                    overflowY: 'auto',
                     padding: '10px',
-
-                    zIndex: 1000               // Ensure it's on top of other elements
+                    zIndex: 1000
                 }} className='pt-2 pl-2 md:w-56 side-navbar'>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
+                  
                     <ul>
-                        {lectureData.map((section, index) => (
-                            <div key={section.id}>
-                                <div style={{ backgroundColor: "black", width: "100%", height: 1,marginTop:5 }}></div>
+                        {lectureData.map((section, sectionIndex) => (
+                            <div key={sectionIndex}>
+                                <div style={{ backgroundColor: "black", width: "100%", height: 1, marginTop: 5 }}></div>
                                 <li
                                     style={{
                                         marginTop: 5,
-                                        backgroundColor: index === currentSectionIndex ? '#f0f8ff' : 'transparent', // Highlight the current section
-                                        color: index === currentSectionIndex ? '#000' : '#4a90e2', // Change text color for the current section
+                                        backgroundColor: sectionIndex === currentSectionIndex ? '#f0f8ff' : 'transparent',
+                                        color: sectionIndex === currentSectionIndex ? '#000' : '#4a90e2',
                                     }}
                                     className='py-1 flex pl-1 hover:bg-blue-50 p-2 rounded-lg'
-                                    onClick={() => handleSectionClick(index)} // Handle section click
+                                    onClick={() => handleSectionClick(sectionIndex)}
                                 >
                                     <div className="flex">
                                         <div
-                                            className={`h-16 ${index === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${index === 0 ? 'w-1 ' : 'w-0.5'}`}
+                                            className={`h-16 ${sectionIndex === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${sectionIndex === 0 ? 'w-1 ' : 'w-0.5'}`}
                                         ></div>
                                         <div className="pl-2">
                                             <a
-                                                href={`#${section.id}`}
-                                                className={`text-blue-500 ${index === currentSectionIndex ? 'font-bold' : ''}`}
+                                                href={`#${sectionIndex}`}
+                                                className={`text-blue-500 ${sectionIndex === currentSectionIndex ? 'font-bold' : ''}`}
                                             >
-                                                {section.heading}
+                                                {section.title}
                                             </a>
                                         </div>
                                     </div>
-
                                 </li>
+                                <ul>
+                                    {section.subHeadings.map((subHeading, subHeadingIndex) => (
+                                        <li
+                                            key={subHeadingIndex}
+                                            className='pl-4 py-1 hover:bg-blue-50'
+                                            onClick={() => handleSectionClick(sectionIndex, subHeadingIndex)}
+                                            style={{
+                                                backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
+                                                color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#000' : '#4a90e2',
+                                            }}
+                                        >
+                                            {subHeading.title}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         ))}
-                        <div style={{ backgroundColor: "black", width: "100%", height: 1 ,marginTop:5}}></div>
+                        <div style={{ backgroundColor: "black", width: "100%", height: 1, marginTop: 5 }}></div>
                     </ul>
-
                 </div>
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>
-                   
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>
-                    <div key={lectureData[currentSectionIndex]?.id} id={lectureData[currentSectionIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
+                    <div key={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.id} id={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.id} className='ml-1 mt-5 md:ml-10 md:mt-20'>
                         <h2 className='text-2xl font-bold flex'>
                             <div className='text-base font-normal border-1 bg-black text-white mr-2 px-2.5 pt-0.5' style={{ borderRadius: "50%", maxHeight: 30 }}>
-                                {currentSectionIndex + 1}
+                                {currentSectionIndex + 1}.{currentSubheadingIndex + 1}
                             </div>
-                            {lectureData[currentSectionIndex]?.heading}
+                            {lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.title}
                         </h2>
-                        {/* <hr /> */}
-                        <p className={`text-lg p-3`}><HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.content || ""} /></p>
+                        <p className={`text-lg p-3`}><HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.content || ""} /></p>
                     </div>
                     <div className="flex justify-between mt-4">
                         <button
                             onClick={handlePrevious}
-                            disabled={currentSectionIndex === 0}
+                            disabled={currentSectionIndex === 0 && currentSubheadingIndex === 0}
                             className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded"
                         >
                             Previous
                         </button>
                         <button
                             onClick={handleNext}
-                            disabled={currentSectionIndex === lectureData.length - 1}
+                            disabled={currentSectionIndex === lectureData.length - 1 && currentSubheadingIndex === lectureData[currentSectionIndex].subHeadings.length - 1}
                             className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded"
                         >
                             Next

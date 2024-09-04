@@ -11,9 +11,9 @@ import Tinymce from '../TinyMCE/TinyMCE'; // Importing your TinyMCE component
 export default function LectureForm() {
   const [formData, setFormData] = useState({
     title: '',
-    subtitle: '',
-    sections: [
-      { id: '1', heading: '', content: '' },
+    author: '', // Added author field as per new structure
+    headings: [
+      { title: '', subHeadings: [{ title: '', content: '' }] },
     ],
   });
 
@@ -28,21 +28,43 @@ export default function LectureForm() {
     }));
   };
 
-  const handleSectionChange = (index, field, value) => {
-    const newSections = formData.sections.map((section, i) => 
-      i === index ? { ...section, [field]: value } : section
+  const handleHeadingChange = (index, field, value) => {
+    const newHeadings = formData.headings.map((heading, i) => 
+      i === index ? { ...heading, [field]: value } : heading
     );
-    setFormData({ ...formData, sections: newSections });
+    setFormData({ ...formData, headings: newHeadings });
   };
 
-  const handleAddSection = () => {
+  const handleSubHeadingChange = (headingIndex, subHeadingIndex, field, value) => {
+    const newSubHeadings = formData.headings[headingIndex].subHeadings.map((subHeading, i) => 
+      i === subHeadingIndex ? { ...subHeading, [field]: value } : subHeading
+    );
+
+    const newHeadings = formData.headings.map((heading, i) => 
+      i === headingIndex ? { ...heading, subHeadings: newSubHeadings } : heading
+    );
+
+    setFormData({ ...formData, headings: newHeadings });
+  };
+
+  const handleAddHeading = () => {
     setFormData((prevData) => ({
       ...prevData,
-      sections: [
-        ...prevData.sections, 
-        { id: (prevData.sections.length + 1).toString(), heading: '', content: '' }
+      headings: [
+        ...prevData.headings, 
+        { title: '', subHeadings: [{ title: '', content: '' }] },
       ],
     }));
+  };
+
+  const handleAddSubHeading = (headingIndex) => {
+    const newHeadings = formData.headings.map((heading, i) => 
+      i === headingIndex 
+        ? { ...heading, subHeadings: [...heading.subHeadings, { title: '', content: '' }] }
+        : heading
+    );
+
+    setFormData({ ...formData, headings: newHeadings });
   };
 
   const handleSubmit = async () => {
@@ -85,51 +107,64 @@ export default function LectureForm() {
           onChange={handleChange}
           margin="normal"
           multiline
-          rows={2} // Specify the number of rows for the title
+          rows={2} 
         />
 
         <TextField
-          id="subtitle"
-          label="Lecture Subtitle"
+          id="author"
+          label="Author"
           fullWidth
-          value={formData.subtitle}
+          value={formData.author}
           onChange={handleChange}
           margin="normal"
           multiline
-          rows={2} // Specify the number of rows for the subtitle
+          rows={2}
         />
 
-        {formData.sections.map((section, index) => (
-          <div key={index}>
+        {formData.headings.map((heading, headingIndex) => (
+          <div key={headingIndex}>
             <TextField
-              id="id"
-              label={`Section ID ${index + 1}`}
+              id={`heading-${headingIndex}`}
+              label={`Heading Title ${headingIndex + 1}`}
               fullWidth
-              value={section.id}
-              disabled // Disable input to ensure the ID is auto-generated and cannot be changed
+              value={heading.title}
+              onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
               margin="normal"
               multiline
-              rows={1} // Specify the number of rows for the section ID
+              rows={2}
             />
-            <TextField
-              id="heading"
-              label={`Section Heading ${index + 1}`}
-              fullWidth
-              value={section.heading}
-              onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
-              margin="normal"
-              multiline
-              rows={2} // Specify the number of rows for the section heading
-            />
-            <Tinymce
-              initialValue={section.content}
-              setDescription={(value) => handleSectionChange(index, 'content', value)}
-            />
+            {heading.subHeadings.map((subHeading, subHeadingIndex) => (
+              <div key={subHeadingIndex}>
+                <TextField
+                  id={`subHeading-title-${headingIndex}-${subHeadingIndex}`}
+                  label={`Subheading Title ${subHeadingIndex + 1}`}
+                  fullWidth
+                  value={subHeading.title}
+                  onChange={(e) => handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)}
+                  margin="normal"
+                  multiline
+                  rows={2}
+                />
+                <Tinymce
+                  initialValue={subHeading.content}
+                  setDescription={(value) => handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)}
+                />
+              </div>
+            ))}
+
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              onClick={() => handleAddSubHeading(headingIndex)}
+              style={{ marginTop: '10px', marginBottom: '20px' }}
+            >
+              Add Subheading
+            </Button>
           </div>
         ))}
 
-        <Button variant="contained" color="primary" onClick={handleAddSection}>
-          Add Section
+        <Button variant="outlined" color="primary" onClick={handleAddHeading}>
+          Add Heading
         </Button>
 
         <Button

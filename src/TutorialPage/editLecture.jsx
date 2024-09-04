@@ -11,23 +11,28 @@ import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
 import Dashboard from '../dashBoard/Dashboard';
 import { useParams } from 'react-router-dom';
-import Tinymce from '../TinyMCE/TinyMCE'; // Importing your TinyMCE component
+import Tinymce from '../TinyMCE/TinyMCE';
 
 export default function EditLecture() {
-  const { id } = useParams(); // Assuming the lecture ID is passed as a route parameter
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: '',
-    subtitle: '',
-    sections: [
-      { id: '1', heading: '', content: '' }, // Initialize the first section with ID '1'
-    ],
+    author: '',
+    headings: [
+      {
+        title: '',
+        subHeadings: [
+          { title: '', content: '' }
+        ]
+      }
+    ]
   });
   const [alert, setAlert] = useState({ show: false, message: '', severity: '' });
   const [loading, setLoading] = useState(false);
-  const [activeSection, setActiveSection] = useState(null); // Track the active section for editing
+  const [activeHeading, setActiveHeading] = useState(null);
+  const [activeSubHeading, setActiveSubHeading] = useState(null);
 
   useEffect(() => {
-    // Fetch existing lecture data to populate the form
     const fetchLectureData = async () => {
       setLoading(true);
       try {
@@ -38,7 +43,7 @@ export default function EditLecture() {
             password: 'testleacture'  // Replace with your actual password
           }
         });
-        setFormData(response.data); // Assuming the data format matches the form structure
+        setFormData(response.data);
       } catch (error) {
         console.error('Error fetching lecture:', error);
         setAlert({ show: true, message: `Failed to fetch lecture data`, severity: 'error' });
@@ -58,25 +63,49 @@ export default function EditLecture() {
     }));
   };
 
-  const handleSectionChange = (index, field, value) => {
-    const newSections = formData.sections.map((section, i) =>
-      i === index ? { ...section, [field]: value } : section
+  const handleHeadingChange = (headingIndex, field, value) => {
+    const newHeadings = formData.headings.map((heading, i) =>
+      i === headingIndex ? { ...heading, [field]: value } : heading
     );
-    setFormData({ ...formData, sections: newSections });
+    setFormData({ ...formData, headings: newHeadings });
   };
 
-  const handleAddSection = () => {
-    // Get the next ID by incrementing the current number of sections
-    const nextId = formData.sections.length + 1;
+  const handleSubHeadingChange = (headingIndex, subHeadingIndex, field, value) => {
+    const newHeadings = formData.headings.map((heading, i) => {
+      if (i === headingIndex) {
+        const newSubHeadings = heading.subHeadings.map((subHeading, j) =>
+          j === subHeadingIndex ? { ...subHeading, [field]: value } : subHeading
+        );
+        return { ...heading, subHeadings: newSubHeadings };
+      }
+      return heading;
+    });
+    setFormData({ ...formData, headings: newHeadings });
+  };
 
+  const handleAddHeading = () => {
     setFormData((prevData) => ({
       ...prevData,
-      sections: [...prevData.sections, { id: nextId.toString(), heading: '', content: '' }],
+      headings: [...prevData.headings, { title: '', subHeadings: [{ title: '', content: '' }] }],
     }));
   };
 
+  const handleAddSubHeading = (headingIndex) => {
+    const newHeadings = formData.headings.map((heading, i) =>
+      i === headingIndex
+        ? { ...heading, subHeadings: [...heading.subHeadings, { title: '', content: '' }] }
+        : heading
+    );
+    setFormData({ ...formData, headings: newHeadings });
+  };
+
   const handleHeadingClick = (index) => {
-    setActiveSection(index === activeSection ? null : index);
+    setActiveHeading(index === activeHeading ? null : index);
+    setActiveSubHeading(null);
+  };
+
+  const handleSubHeadingClick = (index) => {
+    setActiveSubHeading(index === activeSubHeading ? null : index);
   };
 
   const handleSubmit = async () => {
@@ -121,44 +150,70 @@ export default function EditLecture() {
         />
 
         <TextField
-          id="subtitle"
-          label="Lecture Subtitle"
+          id="author"
+          label="Author"
           fullWidth
-          value={formData.subtitle}
+          value={formData.author}
           onChange={handleChange}
           margin="normal"
         />
 
         <List>
-          {formData.sections.map((section, index) => (
-            <div key={index}>
-              <ListItem button onClick={() => handleHeadingClick(index)}>
-                <ListItemText primary={`Section Heading ${index + 1}`} />
+          {formData.headings.map((heading, headingIndex) => (
+            <div key={headingIndex}>
+              <ListItem button onClick={() => handleHeadingClick(headingIndex)}>
+                <ListItemText primary={`Heading ${headingIndex + 1}`} />
               </ListItem>
-              <Collapse in={activeSection === index} timeout="auto" unmountOnExit>
+              <Collapse in={activeHeading === headingIndex} timeout="auto" unmountOnExit>
                 <div className='ml-5'>
                   <TextField
                     id="heading"
-                    label={`Section Heading ${index + 1}`}
+                    label={`Heading ${headingIndex + 1} Title`}
                     fullWidth
-                    value={section.heading}
-                    onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
+                    value={heading.title}
+                    onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
                     margin="normal"
                   />
-                  {!loading && (
-                    <Tinymce
-                      initialValue={section.content}
-                      setDescription={(value) => handleSectionChange(index, 'content', value)}
-                    />
-                  )}
+
+                  {heading.subHeadings.map((subHeading, subHeadingIndex) => (
+                    <div key={subHeadingIndex} className='ml-5'>
+                      <ListItem button onClick={() => handleSubHeadingClick(subHeadingIndex)}>
+                        <ListItemText primary={`Subheading ${subHeadingIndex + 1}`} />
+                      </ListItem>
+                      <Collapse in={activeSubHeading === subHeadingIndex} timeout="auto" unmountOnExit>
+                        <TextField
+                          id="subheading"
+                          label={`Subheading ${subHeadingIndex + 1} Title`}
+                          fullWidth
+                          value={subHeading.title}
+                          onChange={(e) =>
+                            handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)
+                          }
+                          margin="normal"
+                        />
+                        {!loading && (
+                          <Tinymce
+                            initialValue={subHeading.content}
+                            setDescription={(value) =>
+                              handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)
+                            }
+                          />
+                        )}
+                      </Collapse>
+                    </div>
+                  ))}
+
+                  <Button variant="contained" color="secondary" onClick={() => handleAddSubHeading(headingIndex)}>
+                    Add Subheading
+                  </Button>
                 </div>
               </Collapse>
             </div>
           ))}
         </List>
 
-        <Button variant="contained" color="primary" onClick={handleAddSection}>
-          Add Section
+        <Button variant="contained" color="primary" onClick={handleAddHeading}>
+          Add Heading
         </Button>
 
         <Button

@@ -54,6 +54,8 @@ import ProblemForm from './Skill/CreateTopicWiseSkill copy.jsx';
 import NestedForm from './Form/NestedForm.jsx';
 import TestForm from './Form/TestForm.jsx';
 
+import CustomRoomForm from './Contest/CustomRoom/Form.jsx';
+
 
 function App() {
   const location = useLocation();
@@ -112,6 +114,7 @@ function App() {
                 <Route path="/TopicWiseSkill/CreateForm" element={<CreateTopicSkillForm />} />
                 <Route path="/Form" element={<NestedForm />} />
                 <Route path="/TestForm" element={<TestForm />} />
+                <Route path="/CustomRoom" element={<CustomRoomForm />} />
 
 
               </Routes>

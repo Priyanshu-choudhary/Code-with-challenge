@@ -1,0 +1,561 @@
+body{
+    background-color: #000;
+}
+
+.main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 1px;
+    width: 1px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: -42vw -4vh 0px 0px #fff,25vw -41vh 0px 0px #fff,-20vw 49vh 0px 1px #fff,5vw 40vh 1px 1px #fff,29vw 19vh 1px 0px #fff,-44vw -13vh 0px 0px #fff,46vw 41vh 0px 1px #fff,-3vw -45vh 0px 1px #fff,47vw 35vh 1px 0px #fff,12vw -8vh 1px 0px #fff,-34vw 48vh 1px 1px #fff,32vw 26vh 1px 1px #fff,32vw -41vh 1px 1px #fff,0vw 37vh 1px 1px #fff,34vw -26vh 1px 0px #fff,-14vw -49vh 1px 0px #fff,-12vw 45vh 0px 1px #fff,-44vw -33vh 0px 1px #fff,-13vw 41vh 0px 0px #fff,-36vw -11vh 0px 1px #fff,-23vw -24vh 1px 0px #fff,-38vw -27vh 0px 1px #fff,16vw -19vh 0px 0px #fff,28vw 33vh 1px 0px #fff,-49vw -4vh 0px 0px #fff,16vw 32vh 0px 1px #fff,36vw -18vh 1px 0px #fff,-25vw -30vh 1px 0px #fff,-23vw 24vh 0px 1px #fff,-2vw -35vh 1px 1px #fff,-25vw 9vh 0px 0px #fff,-15vw -34vh 0px 0px #fff,-8vw -19vh 1px 0px #fff,-20vw -20vh 1px 1px #fff,42vw 50vh 0px 1px #fff,-32vw 10vh 1px 0px #fff,-23vw -17vh 0px 0px #fff,44vw 15vh 1px 0px #fff,-40vw 33vh 1px 1px #fff,-43vw 8vh 0px 0px #fff,-48vw -15vh 1px 1px #fff,-24vw 17vh 0px 0px #fff,-31vw 50vh 1px 0px #fff,36vw -38vh 0px 1px #fff,-7vw 48vh 0px 0px #fff,15vw -32vh 0px 0px #fff,29vw -41vh 0px 0px #fff,2vw 37vh 1px 0px #fff,7vw -40vh 1px 1px #fff,15vw 18vh 0px 0px #fff,25vw -13vh 1px 1px #fff,-46vw -12vh 1px 1px #fff,-18vw 22vh 0px 0px #fff,23vw -9vh 1px 0px #fff,50vw 12vh 0px 1px #fff,45vw 2vh 0px 0px #fff,14vw -48vh 1px 0px #fff,23vw 43vh 0px 1px #fff,-40vw 16vh 1px 1px #fff,20vw -31vh 0px 1px #fff,-17vw 44vh 1px 1px #fff,18vw -45vh 0px 0px #fff,33vw -6vh 0px 0px #fff,0vw 7vh 0px 1px #fff,-10vw -18vh 0px 1px #fff,-19vw 5vh 1px 0px #fff,1vw 42vh 0px 0px #fff,22vw 48vh 0px 1px #fff,39vw -8vh 1px 1px #fff,-6vw -42vh 1px 0px #fff,-47vw 34vh 0px 0px #fff,-46vw 19vh 0px 1px #fff,-12vw -32vh 0px 0px #fff,-45vw -38vh 0px 1px #fff,-28vw 18vh 1px 0px #fff,-38vw -46vh 1px 1px #fff,49vw -6vh 1px 1px #fff,-28vw 18vh 1px 1px #fff,10vw -24vh 0px 1px #fff,-5vw -11vh 1px 1px #fff,33vw -8vh 1px 0px #fff,-16vw 17vh 0px 0px #fff,18vw 27vh 0px 1px #fff,-8vw -10vh 1px 1px #fff;
+  
+  /* stars were too big with the layers above but left the code in case no one cares  -- as in, if noone's just that  one other loner who actually cares    */
+  
+  box-shadow: 24vw 9vh 1px 0px #fff,12vw -24vh 0px 1px #fff,-45vw -22vh 0px 0px #fff,-37vw -40vh 0px 1px #fff,29vw 19vh 0px 1px #fff,4vw -8vh 0px 1px #fff,-5vw 21vh 1px 1px #fff,-27vw 26vh 1px 1px #fff,-47vw -3vh 1px 1px #fff,-28vw -30vh 0px 1px #fff,-43vw -27vh 0px 1px #fff,4vw 22vh 1px 1px #fff,36vw 23vh 0px 0px #fff,-21vw 24vh 1px 1px #fff,-16vw 2vh 1px 0px #fff,-16vw -6vh 0px 0px #fff,5vw 26vh 0px 0px #fff,-34vw 41vh 0px 0px #fff,1vw 42vh 1px 1px #fff,11vw -13vh 1px 1px #fff,48vw -8vh 1px 0px #fff,22vw -15vh 0px 0px #fff,45vw 49vh 0px 0px #fff,43vw -27vh 1px 1px #fff,20vw -2vh 0px 0px #fff,8vw 22vh 0px 1px #fff,39vw 48vh 1px 1px #fff,-21vw -11vh 0px 1px #fff,-40vw 45vh 0px 1px #fff,11vw -30vh 1px 0px #fff,26vw 30vh 1px 0px #fff,45vw -29vh 0px 1px #fff,-2vw 18vh 0px 0px #fff,-29vw -45vh 1px 0px #fff,-7vw -27vh 1px 1px #fff,42vw 24vh 0px 0px #fff,45vw -48vh 1px 0px #fff,-36vw -18vh 0px 0px #fff,-44vw 13vh 0px 1px #fff,36vw 16vh 0px 1px #fff,40vw 24vh 0px 0px #fff,18vw 11vh 0px 0px #fff,-15vw -23vh 1px 0px #fff,-24vw 48vh 0px 1px #fff,27vw -45vh 1px 0px #fff,-2vw -24vh 0px 1px #fff,-15vw -28vh 0px 0px #fff,-43vw 13vh 1px 0px #fff,7vw 27vh 1px 0px #fff,47vw 5vh 0px 0px #fff,-45vw 15vh 1px 1px #fff,-5vw -28vh 0px 1px #fff,38vw 25vh 1px 1px #fff,-39vw -1vh 1px 0px #fff,5vw 0vh 1px 0px #fff,49vw 13vh 0px 0px #fff,48vw 10vh 0px 1px #fff,19vw -28vh 0px 0px #fff,4vw 7vh 0px 0px #fff,21vw 21vh 1px 1px #fff,-15vw -15vh 0px 1px #fff,-6vw -42vh 1px 0px #fff,-15vw 48vh 1px 1px #fff,-23vw 25vh 1px 1px #fff,-48vw 25vh 0px 1px #fff,-31vw -19vh 0px 1px #fff,4vw 37vh 1px 1px #fff,-43vw 28vh 0px 0px #fff,3vw -25vh 0px 1px #fff,-39vw 14vh 0px 1px #fff,-40vw 31vh 0px 1px #fff,35vw -36vh 1px 1px #fff,16vw 49vh 0px 0px #fff,6vw 39vh 0px 0px #fff,3vw -35vh 0px 1px #fff,-44vw -2vh 1px 0px #fff,-6vw 21vh 1px 0px #fff,48vw 9vh 1px 1px #fff,-43vw 30vh 1px 1px #fff,29vw -12vh 1px 1px #fff,-48vw 13vh 1px 0px #fff,-42vw 32vh 1px 1px #fff,34vw 15vh 1px 1px #fff,29vw -37vh 1px 1px #fff,28vw 2vh 0px 0px #fff;
+  animation: zoom 16s alternate infinite; 
+}
+
+@keyframes zoom {
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.5);
+    }
+}
+
+
+
+
+
+@keyframes animate {
+
+    0%{
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+
+    100%{
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+
+}
+
+
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+}
+.animation{
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  background: #3586ff;
+  overflow: hidden;
+}
+.animation .air{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
+  background-size: 1000px 100px
+}
+.animation .air.air1{
+  animation: wave 30s linear infinite;
+  z-index: 1000;
+  opacity: 1;
+  animation-delay: 0s;
+  bottom: 0;
+}
+.animation .air.air2{
+  animation: wave2 15s linear infinite;
+  z-index: 999;
+  opacity: 0.5;
+  animation-delay: -5s;
+  bottom: 10px;
+}
+.animation .air.air3{
+  animation: wave 30s linear infinite;
+  z-index: 998;
+  opacity: 0.2;
+  animation-delay: -2s;
+  bottom: 15px;
+}
+.animation .air.air4{
+  animation: wave2 5s linear infinite;
+  z-index: 997;
+  opacity: 0.7;
+  animation-delay: -5s;
+  bottom: 20px;
+}
+@keyframes wave{
+  0%{
+    background-position-x: 0px; 
+  }
+  100%{
+    background-position-x: 1000px; 
+  }
+}
+@keyframes wave2{
+  0%{
+    background-position-x: 0px; 
+  }
+  100%{
+    background-position-x: -1000px; 
+  }
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    font-family: 'Exo', sans-serif;
+}
+
+
+.context {
+    width: 100%;
+    position: absolute;
+    top:50vh;
+    
+}
+
+.context h1{
+    text-align: center;
+    color: #fff;
+    font-size: 50px;
+}
+
+
+.area{
+    
+    
+   
+}
+
+.circles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circles li{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 7s linear infinite;
+    bottom: -150px;
+    
+}
+
+.circles li:nth-child(1){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+}
+
+
+.circles li:nth-child(2){
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.circles li:nth-child(3){
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 4s;
+}
+
+.circles li:nth-child(4){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+}
+
+.circles li:nth-child(5){
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+}
+
+.circles li:nth-child(6){
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3s;
+}
+
+.circles li:nth-child(7){
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+}
+
+.circles li:nth-child(8){
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+}
+
+.circles li:nth-child(9){
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+}
+
+.circles li:nth-child(10){
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 11s;
+}
+
+.form {
+    position: relative;
+    display: block;
+    padding: 2.2rem;
+    max-width: 350px;
+    background: linear-gradient(
+        14deg,
+        rgba(2, 0, 36, 0.8) 0%,
+        rgba(24, 24, 65, 0.7) 66%,
+        rgb(20, 76, 99) 100%
+      ),
+      radial-gradient(
+        circle,
+        rgba(2, 0, 36, 0.5) 0%,
+        rgba(32, 15, 53, 0.2) 65%,
+        rgba(14, 29, 28, 0.9) 100%
+      );
+    border: 2px solid #fff;
+    -webkit-box-shadow: rgba(0, 212, 255) 0px 0px 50px -15px;
+    box-shadow: rgba(0, 212, 255) 0px 0px 50px -15px;
+    overflow: hidden;
+    z-index: +1;
+    border-radius: 8px;
+  }
+  
+  /*------input and submit section-------*/
+  
+  .input-container {
+    position: relative;
+  }
+  
+  .input-container input,
+  .form button {
+    outline: none;
+    border: 2px solid #ffffff;
+    margin: 8px 0;
+    font-family: monospace;
+    border-radius: 4px;
+  }
+  
+  .input-container input {
+    background-color: #fff;
+    padding: 6px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    width: 250px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .input-mail:focus::placeholder {
+    opacity: 0;
+    transition: opacity 0.9s;
+  }
+  
+  .input-pwd:focus::placeholder {
+    opacity: 0;
+    transition: opacity 0.9s;
+  }
+  
+  .submit {
+    position: relative;
+    display: block;
+    padding: 8px;
+    background: linear-gradient(90deg, #243949 0%, #517fa4 100%);
+    color: #ffffff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    width: 100%;
+    text-transform: uppercase;
+    overflow: hidden;
+  }
+  
+  .submit:hover {
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    box-shadow: 4px 5px 17px -4px #ffffff;
+    cursor: pointer;
+  }
+  
+  .submit:hover::before {
+    -webkit-animation: sh02 0.5s 0s linear;
+    -moz-animation: sh02 0.5s 0s linear;
+    animation: sh02 0.5s 0s linear;
+  }
+  
+  .submit::before {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 85%;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    opacity: 0;
+    background: #fff;
+    box-shadow: 0 0 50px 30px #fff;
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -ms-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+  }
+  
+  @keyframes sh02 {
+    from {
+      opacity: 0;
+      left: 0%;
+    }
+  
+    50% {
+      opacity: 1;
+    }
+  
+    to {
+      opacity: 0;
+      left: 100%;
+    }
+  }
+  
+  /*--------signup section---------*/
+  
+  .signup-link {
+    color: #c0c0c0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    text-align: center;
+    font-family: monospace;
+  }
+  
+  .signup-link a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .up:hover {
+    text-decoration: underline;
+  }
+  
+  /*--------header section-----------*/
+  
+  .form-title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-family: monospace;
+    font-weight: 600;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    animation-duration: 1.5s;
+    overflow: hidden;
+    transition: 0.12s;
+  }
+  
+  .form-title span {
+    animation: flickering 2s linear infinite both;
+  }
+  
+  .title-2 {
+    display: block;
+    margin-top: -0.5rem;
+    font-size: 2.1rem;
+    font-weight: 800;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    -webkit-text-stroke: #fff 0.1rem;
+    letter-spacing: 0.2rem;
+    color: transparent;
+    position: relative;
+    text-shadow: 0px 0px 16px #cecece;
+  }
+  
+  .title-2 span::before,
+  .title-2 span::after {
+    content: "—";
+  }
+  
+  @keyframes flickering {
+    0%,
+    100% {
+      opacity: 1;
+    }
+  
+    41.99% {
+      opacity: 1;
+    }
+  
+    42% {
+      opacity: 0;
+    }
+  
+    43% {
+      opacity: 0;
+    }
+  
+    43.01% {
+      opacity: 1;
+    }
+  
+    47.99% {
+      opacity: 1;
+    }
+  
+    48% {
+      opacity: 0;
+    }
+  
+    49% {
+      opacity: 0;
+    }
+  
+    49.01% {
+      opacity: 1;
+    }
+  }
+  
+  /*---------shooting stars-----------*/
+  
+  .bg-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-size: cover;
+    animation: animateBg 50s linear infinite;
+  }
+  
+  @keyframes animateBg {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+  
+    50% {
+      transform: scale(1.2);
+    }
+  }
+  
+  .star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+      0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.1);
+    animation: animate 3s linear infinite;
+  }
+  
+  .star::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 1px;
+    background: linear-gradient(90deg, #fff, transparent);
+  }
+  
+  @keyframes animate {
+    0% {
+      transform: rotate(315deg) translateX(0);
+      opacity: 1;
+    }
+  
+    70% {
+      opacity: 1;
+    }
+  
+    100% {
+      transform: rotate(315deg) translateX(-1000px);
+      opacity: 0;
+    }
+  }
+  
+  .star:nth-child(1) {
+    top: 0;
+    right: 0;
+    left: initial;
+    animation-delay: 0s;
+    animation-duration: 1s;
+  }
+  
+  .star:nth-child(2) {
+    top: 0;
+    right: 100px;
+    left: initial;
+    animation-delay: 0.2s;
+    animation-duration: 3s;
+  }
+  
+  .star:nth-child(3) {
+    top: 0;
+    right: 220px;
+    left: initial;
+    animation-delay: 2.75s;
+    animation-duration: 2.75s;
+  }
+  
+  .star:nth-child(4) {
+    top: 0;
+    right: -220px;
+    left: initial;
+    animation-delay: 1.6s;
+    animation-duration: 1.6s;
+  }
+  

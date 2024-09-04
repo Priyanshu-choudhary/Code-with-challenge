@@ -9,7 +9,6 @@ import "/src/App.css";
 import CreateButton from '../../Buttons/CreateButton';
 import BoxLoader from '/src/Loader/BoxLoader'; // Import BoxLoader
 import ContestCard from './ContestCard';
-
 function Firstpage() {
   const [contests, setContests] = useState([]);
   const { bg, light, dark, ibg } = useContext(UserContext);
@@ -52,7 +51,7 @@ function Firstpage() {
   };
 
   const handleCreateContestClick = () => {
-    console.log("click");
+    
     navigate(`/create-contest`);
   };
 
@@ -77,7 +76,7 @@ function Firstpage() {
         <p className="separator"></p>
         <img src="bannerImageContest.png" alt="CFC Contest page" />
         <div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
-          <p style={{ paddingTop: 30, fontSize: "20px" }}>Launch your tailored competition or quiz effortlessly <strong> create </strong> your own custom challenge now.</p>
+          <p style={{ paddingTop: 30, fontSize: "20px" }}>Launch your tailored competition or quiz effortlessly create your own custom challenge now.</p>
           <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={handleCreateContestClick} value={"Host Contest"} /></div>
         </div>
 
@@ -97,7 +96,11 @@ function Firstpage() {
             </div>
           )}
         </div>
-
+{/* <Notification/> */}
+<div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
+          <p style={{ paddingTop: 30, fontSize: "20px" }}>create  your own custom Space now.</p>
+          <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={()=>{navigate(`/CustomRoom`);}} value={"Register"} /></div>
+        </div>
         <div className="heading">
           <h2>Featured Opportunities from Leading Organizations</h2>
           <p style={{ color: "grey" }}><i>Explore through carefully selected opportunities from leading organizations.</i></p>

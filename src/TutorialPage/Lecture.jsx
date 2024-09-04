@@ -9,6 +9,8 @@ import InPageEditor from './InPageEditor';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 function Lecture() {
     const { title } = useParams();
     const [lectureData, setLectureData] = useState([]);
@@ -20,6 +22,7 @@ function Lecture() {
     const navigate = useNavigate();
     const location = useLocation();
     const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
+    const [NavHide, setNavHide] = useState(true);
 
     useEffect(() => {
         const fetchLectureData = async () => {
@@ -119,7 +122,14 @@ function Lecture() {
                 </div>
             }
             <div className='md:flex min-h-dvh'>
-                <div style={{
+                {!NavHide &&
+                    <div style={{backgroundColor:dark}}>
+                        
+                        <div className='border-1 border-black rounded-md h-fit w-fit px-1 m-1 mt-3 '><DoubleArrowIcon  onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div>
+                        <div style={{ borderLeft: "1px solid #000" }}></div>
+                    </div>
+                }
+                {NavHide && <div style={{
                     backgroundColor: dark,
                     position: 'sticky',
                     top: '0px',
@@ -130,7 +140,7 @@ function Lecture() {
                     padding: '10px',
                     zIndex: 1000
                 }} className='pt-2 pl-2 md:w-56 side-navbar min-h-dvh'>
-                    <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
+                    <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='mr-3 text-gray-400'>[{lectureData.length}]</span><div className='border-1 border-black rounded-md h-fit w-fit px-1 '><CloseFullscreenIcon fontSize='sm ' onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div></p>
 
                     <ul>
                         {lectureData.map((section, sectionIndex) => (
@@ -169,10 +179,10 @@ function Lecture() {
                                                             style={{
                                                                 backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
                                                                 color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? 'darkorange' : '#4a90e2',
-                                                                cursor:"pointer",
+                                                                cursor: "pointer",
                                                             }}
                                                         >
-                                                           <SubdirectoryArrowRightIcon fontSize='sm'/>{subHeading.title}
+                                                            <SubdirectoryArrowRightIcon fontSize='sm' />{subHeading.title}
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -185,7 +195,7 @@ function Lecture() {
                         <div style={{ backgroundColor: "black", width: "100%", height: 1, marginTop: 5 }}></div>
                     </ul>
 
-                </div>
+                </div>}
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>
                     <div style={{ backgroundColor: bc, width: "fit-content" }} className='uppercase rounded ml-5 md:mx-5 mt-5 md:mt-20 font-bold text-3xl px-3'>{title}</div>

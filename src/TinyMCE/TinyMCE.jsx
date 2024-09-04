@@ -40,7 +40,7 @@ export default function EditorComponent({ setDescription, initialValue }) {
         const data = editor.getData();
         setContent(data);
         setDescription(data);
-        setlivePreview(data)
+        //setlivePreview(data);
     };
 
     const handleTinyMceChange = (content, editor) => {

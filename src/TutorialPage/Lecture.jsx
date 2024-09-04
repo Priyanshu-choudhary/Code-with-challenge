@@ -8,7 +8,7 @@ import BoxLoader from '../Loader/BoxLoader';
 import InPageEditor from './InPageEditor';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 function Lecture() {
     const { title } = useParams();
     const [lectureData, setLectureData] = useState([]);
@@ -103,7 +103,7 @@ function Lecture() {
     };
 
     return (
-        <div style={{ backgroundColor: bg, color: ibg }}>
+        <div className='min-h-dvh' style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
             <IconBreadcrumbs currentPage={"Tutorial"} title={"learn"} question={title || 'Default Title'} />
             <hr />
@@ -118,7 +118,7 @@ function Lecture() {
                     </div>
                 </div>
             }
-            <div className='md:flex'>
+            <div className='md:flex min-h-dvh'>
                 <div style={{
                     backgroundColor: dark,
                     position: 'sticky',
@@ -129,9 +129,9 @@ function Lecture() {
                     overflowY: 'auto',
                     padding: '10px',
                     zIndex: 1000
-                }} className='pt-2 pl-2 md:w-56 side-navbar'>
+                }} className='pt-2 pl-2 md:w-56 side-navbar min-h-dvh'>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='ml-3 text-gray-400'>[{lectureData.length}]</span></p>
-                  
+
                     <ul>
                         {lectureData.map((section, sectionIndex) => (
                             <div key={sectionIndex}>
@@ -142,42 +142,49 @@ function Lecture() {
                                         backgroundColor: sectionIndex === currentSectionIndex ? '#f0f8ff' : 'transparent',
                                         color: sectionIndex === currentSectionIndex ? '#000' : '#4a90e2',
                                     }}
-                                    className='py-1 flex pl-1 hover:bg-blue-50 p-2 rounded-lg'
+                                    className='py-0 flex  hover:bg-blue-50 p-0 rounded-lg'
                                     onClick={() => handleSectionClick(sectionIndex)}
                                 >
-                                    <div className="flex">
+                                    <div className="flex" >
                                         <div
-                                            className={`h-16 ${sectionIndex === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${sectionIndex === 0 ? 'w-1 ' : 'w-0.5'}`}
+                                            className={`max-h-fit ${sectionIndex === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${sectionIndex === 0 ? 'w-0.5 ' : 'w-0.5'}`}
                                         ></div>
-                                        <div className="pl-2">
+                                        <div className="pl-1">
                                             <a
                                                 href={`#${sectionIndex}`}
-                                                className={`text-blue-500 ${sectionIndex === currentSectionIndex ? 'font-bold' : ''}`}
+                                                className={`text-blue-500 text-sm ${sectionIndex === currentSectionIndex ? 'font-bold' : ''}`}
                                             >
                                                 {section.title}
                                             </a>
+                                            {sectionIndex === currentSectionIndex && (
+                                                <ul className='mt-1'>
+                                                    {section.subHeadings.map((subHeading, subHeadingIndex) => (
+                                                        <li
+                                                            key={subHeadingIndex}
+                                                            className='pl-5 py-1 hover:bg-blue-50 text-sm truncate max-w-40 '
+                                                            onClick={(event) => {
+                                                                event.stopPropagation(); // Prevent event bubbling
+                                                                handleSectionClick(sectionIndex, subHeadingIndex);
+                                                            }}
+                                                            style={{
+                                                                backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
+                                                                color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? 'darkorange' : '#4a90e2',
+                                                                cursor:"pointer",
+                                                            }}
+                                                        >
+                                                           <SubdirectoryArrowRightIcon fontSize='sm'/>{subHeading.title}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
                                         </div>
                                     </div>
                                 </li>
-                                <ul>
-                                    {section.subHeadings.map((subHeading, subHeadingIndex) => (
-                                        <li
-                                            key={subHeadingIndex}
-                                            className='pl-4 py-1 hover:bg-blue-50'
-                                            onClick={() => handleSectionClick(sectionIndex, subHeadingIndex)}
-                                            style={{
-                                                backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
-                                                color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#000' : '#4a90e2',
-                                            }}
-                                        >
-                                            {subHeading.title}
-                                        </li>
-                                    ))}
-                                </ul>
                             </div>
                         ))}
                         <div style={{ backgroundColor: "black", width: "100%", height: 1, marginTop: 5 }}></div>
                     </ul>
+
                 </div>
                 <div style={{ borderLeft: "1px solid #000" }}></div>
                 <div>

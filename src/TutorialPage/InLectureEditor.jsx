@@ -58,7 +58,7 @@ const InLectureEditor = ({ initialValue }) => {
         <div className='super'>
             {!initialValue && <Dashboard />}
             <div className="-z-0">
-                <div className="editor-section ml-20">
+                <div style={{width:"80%"}} className="editor-section ml-20 ">
                     <div className="  editor-header border-x-2 border-black border-t-2 rounded-t-xl" style={{ backgroundColor: "#1f202a", color: "white" }}>
                         <span className='left-button'>CFC Editor</span>
                         <div className="right-buttons">
@@ -89,7 +89,7 @@ const InLectureEditor = ({ initialValue }) => {
                     <div className='border-x-2 border-black '>
                         <Editor
                             height="calc(50vh - 40px)" // Adjust height considering header size
-                            width={700}
+                            
                             language={editorLanguage}
                             value={code}
                             onChange={handleEditorChange}

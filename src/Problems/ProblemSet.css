@@ -1,0 +1,39 @@
+/* styles.css */
+.custom-input {
+    width: 300px;
+    /* Full width */
+    border-radius: 30px;
+    border: 2px solid #ccc;
+    /* Border color and thickness */
+    max-height: 40px;
+    font-size: 16px;
+    padding-left: 10px;
+    /* Font size */
+    color: #333;
+    /* Text color */
+    background-color: #ffffff;
+    /* Background color */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth transition for interactions */
+}
+
+/* Focus state */
+.custom-input:focus {
+    border-color: #007bff;
+    /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    /* Add shadow on focus */
+    outline: none;
+    /* Remove default outline */
+}
+
+/* Placeholder styling */
+.custom-input::placeholder {
+    color: #888;
+    /* Placeholder text color */
+    font-style: italic;
+    /* Italicize placeholder text */
+    font-family: monospace;
+    font-weight: lighter;
+
+}

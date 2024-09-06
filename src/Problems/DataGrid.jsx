@@ -61,7 +61,7 @@ export default function StripedGrid() {
         const selectedProblem = problems.find(p => p.id === params.row.id);
         settitleBreadCumb(selectedProblem);
         if (selectedProblem) {
-            navigate(`/question/${selectedProblem.id}`, {
+            navigate(`/question/${selectedProblem.id}/course`, {
                 state: {
                     problems,
                     currentIndex: params.row.index - 1, // Adjusted for 0-based index
@@ -78,8 +78,9 @@ export default function StripedGrid() {
         setIsLoading(true);
 
         try {
-            const basicAuth = 'Basic ' + btoa('ProblemSet:ProblemSet');
-            let API_URL = 'https://hytechlabs.online:9090/Posts/username/ProblemSet';
+            const basicAuth = 'Basic ' + btoa('OfficialCources:OfficialCources');
+            let API_URL = 'https://hytechlabs.online:9090/Posts/username/OfficialCources';
+    
 
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');

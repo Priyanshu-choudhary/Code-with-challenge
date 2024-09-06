@@ -56,6 +56,7 @@ import NestedForm from './Form/NestedForm.jsx';
 import TestForm from './Form/TestForm.jsx';
 
 import CustomRoomForm from './Contest/CustomRoom/Form.jsx';
+import ProblemSet from './Problems/ProblemSet.jsx';
 
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
                 <Route path="/loginOld" element={<LoginUser />} />
                 <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
                 <Route path="/Data" element={<MyDataGrid />} />
+                <Route path="/ProblemSet" element={<ProblemSet />} />
                 <Route path="/Leaderboard2" element={<LeaderBoard />} />
                 <Route path="/learn" element={<LearningPage />} />
                 <Route path="/publicProfile" element={<PublicProfile />} />

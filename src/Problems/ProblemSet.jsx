@@ -25,9 +25,9 @@ function ProblemSet() {
             </div>
 
             <div className='mt-2' style={{ display: "flex", justifyContent: "center" }}>
-                <div className='bg-blue-50 rounded-t-lg flex gap-20 space-x-4 py-3 px-2'>
-                    <span className='w-32'>Title</span>
-                    <span>Difficulty</span>
+                <div className='bg-blue-50 rounded-t-lg flex gap-5 space-x-4 py-3 px-2'>
+                    <span style={{minWidth:225}}>Title</span>
+                    <span >Difficulty</span>
                     <span>Accuracy </span>
                     <span>Action</span>
                 </div>

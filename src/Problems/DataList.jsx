@@ -1,39 +1,57 @@
-import React from 'react'
+import React from 'react';
 
-function DataList({ title, Difficulty, Accuracy,tags }) {
+function DataList({ title, Difficulty, Accuracy, tags }) {
     return (
-        <div >
-            <div className='hover:bg-slate-100  flex gap-6 space-x-4 py-2 px-2 cursor-pointer'>
-                <span className='max-w-52'>{title}
-                    <div className='text-sm text-gray-500'>
-                        {tags}
-                    </div>
-                </span>
-                <span className={`text-sm ${Difficulty === "Easy"
-                        ? "text-green-400"
-                        : Difficulty === "Medium"
-                            ? "text-orange-400"
-                            : Difficulty === "Hard"
-                                ? "text-red-400"
-                                : ""
-                    }`}>
-                    {Difficulty}
-                </span>
+        <div className="flex flex-col">
+            <div className="hover:bg-slate-100 flex items-center py-2 px-2 cursor-pointer space-x-4">
+                {/* Title and Tags */}
+                <div className="flex flex-col text-left" style={{ minWidth: `${Difficulty=="Medium"?"305px":"320px"}` }}>
+                    <span className="font-medium">{title}</span>
+                    <div className="text-sm text-gray-500">{tags}</div>
+                </div>
 
-                <span className='text-sm pl-14'>{Accuracy}%</span>
-                <div >
-                    <button style={{ borderRadius: 20 }} className='border-1 text-sm border-gray-300 px-2 '>
+                {/* Difficulty */}
+                <div className="flex-grow">
+                    <span
+                        className={`text-sm ${Difficulty === "Easy"
+                            ? "text-green-400"
+                            : Difficulty === "Medium"
+                                ? "text-orange-400"
+                                : Difficulty === "Hard"
+                                    ? "text-red-400"
+                                    : ""
+                            }`}
+                    >
+                        {Difficulty}
+                    </span>
+                </div>
+
+                {/* Accuracy */}
+                <div className="flex justify-center" style={{ minWidth: "80px" }}>
+                    <span className="text-sm">{Accuracy}%</span>
+                </div>
+
+                {/* Actions */}
+                <div className="flex space-x-2">
+                    <button
+                        style={{ borderRadius: 20 }}
+                        className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
+                    >
                         Delete
                     </button>
-                    <button style={{ borderRadius: 20 }} className='ml-2 border-1 text-sm border-gray-300 px-2 '>
+                    <button
+                        style={{ borderRadius: 20 }}
+                        className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
+                    >
                         Edit
                     </button>
                 </div>
-
             </div>
-            <p style={{ width: 600, height: 1 }} className='bg-gray-400  '></p>
+
+            {/* Separator Line */}
+            <p className="bg-gray-400" style={{ height: "1px", width: "100%" }}></p>
         </div>
-    )
+    );
 }
 
-export default DataList
+export default DataList;

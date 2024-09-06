@@ -11,6 +11,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+// import { Editor } from '@monaco-editor/react';
+import * as monaco from 'monaco-editor';
+import './Leacture.css'
 function Lecture() {
     const { title } = useParams();
     const [lectureData, setLectureData] = useState([]);
@@ -133,13 +136,15 @@ function Lecture() {
                     backgroundColor: dark,
                     position: 'sticky',
                     top: '0px',
-                    height: 'fit-content',
+                    height: '100vh',
                     width: '100%',
                     maxWidth: 200,
-                    overflowY: 'auto',
+                
                     padding: '10px',
-                    zIndex: 1000
-                }} className='pt-2 pl-2 md:w-56 side-navbar min-h-dvh'>
+                    zIndex: 1000,
+                    overflowY: 'scroll',
+                    
+                }} className='pt-2 pl-2 md:w-56 side-navbar '>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='mr-3 text-gray-400'>[{lectureData.length}]</span><div className='border-1 border-black rounded-md h-fit w-fit px-1 '><CloseFullscreenIcon fontSize='sm ' onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div></p>
 
                     <ul>

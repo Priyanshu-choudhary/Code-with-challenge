@@ -9,10 +9,14 @@ import BoxLoader from '../Loader/BoxLoader';
 import Skeleton from './Skeleton';
 import Card from './Ads/CourseAds';
 import ContestAds from './Ads/ContestAds';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+
 
 function ProblemSet() {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [PODindex, setPODindex] = useState(0);
+    const navigate = useNavigate(); // Initialize useNavigate hook
 
     // Fetch data from the API
     useEffect(() => {
@@ -21,7 +25,7 @@ function ProblemSet() {
                 const response = await fetch("https://hytechlabs.online:9090/Posts/username/ProblemSet");
                 const data = await response.json();
                 setQuestions(data); // Assume the data is an array of questions
-                console.log(data);
+                
                 
             } catch (error) {
                 console.error("Error fetching questions:", error);
@@ -32,7 +36,45 @@ function ProblemSet() {
 
         fetchQuestions();
     }, []);
+    const handleRandomClick = () => {
+        // Find the index of the problem with the current id
+      let  min = Math.ceil(0);
+      let  max = Math.floor(questions.length);
+        
+        // Generate a random integer between min (inclusive) and max (inclusive)
+        let index= Math.floor(Math.random() * (max - min + 1)) + min;
 
+        navigate(`/question/${questions[index].id}/ProblemSet`, {
+            state: {
+                problems:[questions[index]],
+                currentIndex: 0,
+                navHistory: "no def",
+                currentPage: "no current page",
+                CourseDescription: "description",
+                totalProblems: 0, // Pass the total number of problems
+                language: ["java"]
+            }
+        });
+    };
+
+
+    const handlePODClick = () => {
+  
+    
+        navigate(`/question/${questions[PODindex].id}/ProblemSet`, {
+            state: {
+                problems:[questions[PODindex]],
+                currentIndex: 0,
+                navHistory: "no def",
+                currentPage: "no current page",
+                CourseDescription: "description",
+                totalProblems: 0, // Pass the total number of problems
+                language: ["java"]
+            }
+        });
+    };
+
+    
     return (
         <div>
             <Dashboard />
@@ -44,15 +86,15 @@ function ProblemSet() {
                 </div>
                 <div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <ProblemOfTheDay Accuracy={80.4} Diffculity={"Medium"} />
+                        <ProblemOfTheDay  handlePODClick={handlePODClick}length={questions.length} setPODindex={setPODindex} Accuracy={80.4} Diffculity={"Medium"} />
                     </div>
 
-                    <div className='pt-4 flex  md:gap-44' style={{ display: "flex", justifyContent: "center" }}>
+                    <div className='pt-4 flex  md:gap-48' style={{ display: "flex", justifyContent: "center" }}>
                         <div>
                             <input type="text" className="custom-input" placeholder="Search Question" />
                         </div>
                         <div>
-                            <button style={{ borderRadius: 20 }} className='flex gap-2 border-2 border-gray-300 px-2 py-1.5 font-bold'>
+                            <button onClick={()=>{handleRandomClick();}} style={{ borderRadius: 20 }} className='flex gap-2 border-2 border-gray-300 px-2 py-1.5 font-bold hover:bg-blue-200'>
                                 <ShuffleIcon /> Random
                             </button>
                         </div>

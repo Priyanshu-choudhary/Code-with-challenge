@@ -1,6 +1,24 @@
 import React from 'react'
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
-function ProblemOfTheDay({ Question, Accuracy, Diffculity }) {
+function ProblemOfTheDay({ Question, Accuracy, Diffculity ,setPODindex ,length,handlePODClick}) {
+    function problemOfTheDay() {
+        // Get the current date
+        const currentDate = new Date();
+        
+        // Calculate a "day number" by converting the date to YYYYMMDD format
+        const dayNumber = currentDate.getFullYear() * 10000 + 
+                          (currentDate.getMonth() + 1) * 100 + 
+                          currentDate.getDate();
+        
+        // Use the day number to select a thought (ensure the same thought for a day)
+        const thoughtIndex = dayNumber % length;
+        
+   
+        setPODindex(thoughtIndex)
+
+        handlePODClick();
+        // return thoughts[thoughtIndex];
+    }
     return (
         <div >
             <div style={{ background: "linear-gradient(to right, #8e2de2, #4a00e0)" }} className='flex gap-36 shine-effect Box  h-24 pt-6 px-3  mt-2 rounded-lg'>
@@ -22,7 +40,7 @@ function ProblemOfTheDay({ Question, Accuracy, Diffculity }) {
                         <p className='text-sm text-gray-400'>Diffculity</p>
                         <p className='text-sm text-gray-400'>Accuracy</p>
                         <div className='pl-5'>
-                            <button style={{borderRadius:20}} className='bg-blue-50 px-4 py-1 font-bold'>
+                            <button onClick={()=>{problemOfTheDay();}} style={{borderRadius:20}} className='bg-blue-50 px-4 py-1 font-bold hover:bg-blue-200'>
                                 solve
                             </button>
                         </div>

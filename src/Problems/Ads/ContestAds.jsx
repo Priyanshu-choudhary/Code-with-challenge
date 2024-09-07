@@ -64,7 +64,7 @@ function ContestAds() {
                         </div>
                     </div>
 
-                    <button className="ContestAds-card__btn">view</button>
+                    <button className="ContestAds-card__btn hover:bg-white hover:text-black hover:border-2 hover:border-black">view</button>
                 </footer>
             </article>
 

@@ -39,7 +39,7 @@ const Card = () => {
                     <span>Onilne Editor</span>
                 </li>
             </ul>
-            <button type="button" className="action" onClick={()=>{ navigate(`/learn`);}}>JAVA Course</button>
+            <button type="button" className="action  hover:text-black" onClick={()=>{ navigate(`/learn`);}}>JAVA Course</button>
         </div>
     );
 };

@@ -13,6 +13,7 @@ import CourseForm from '/src/UploadSection/newCourse.jsx';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TopicsWiseSkill from '../Skill/TopicsWiseSkill';
 import PromoBanner from '../Banners/Banner';
+import Skeleton from './skeleton';
 const PageContainer = styled.div`
   background-color: ${({ bg }) => bg};
   height: 100vh;
@@ -96,7 +97,7 @@ function LearningPage() {
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        {loading && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}><BoxLoader/></p>}
+        {/* { && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}><BoxLoader/></p>} */}
        
         <PromoBanner 
         message="Create your own Courses now." 
@@ -138,19 +139,22 @@ function LearningPage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (
               <div onClick={() => handleCardClick(course)}>
-                <ImgMediaCard
+                {loading ?<Skeleton/>:<ImgMediaCard
                   key={index}
                   title={course.title}
                   description={course.description}
                   image={course.image}
                   permission={course.permission}
                   totalQuestions={course.totalQuestions}
-
                   role={role}
-                />
+                />}
               </div>
             ))}
-            {officialCourses.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>No official courses available.</p>}
+            {loading &&<div className='flex gap-10'>
+              <Skeleton/>
+              <Skeleton/>
+              <Skeleton/>
+            </div>}
           </div>
         </div>
         <TopicsWiseSkill />

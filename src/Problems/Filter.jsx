@@ -50,6 +50,7 @@ const Companies = [
     difficulty: [],
     status: []
   });
+console.log(selectedFilters);
 
   // State for toggling categories
   const [openCategories, setOpenCategories] = useState({

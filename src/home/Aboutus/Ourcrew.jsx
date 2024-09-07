@@ -4,10 +4,10 @@ import './Ourcrew.css'; // Import the CSS file for styling
 import { Description } from '@headlessui/react';
 
 const crewMembers = [
-     { name: 'Yadi Chaudhary', photo: './myDroneMakingPhotoEDITED.jpg' , Description: 'Founder' ,mail:"broyadi23@gmail.com",Number:"+91-7818071134" },
-     { name: 'Prince Gupta', photo: 'path/to/prince-photo.jpg',Description:'Co-Founder',mail:"princegupta0132004@gmail.com" ,Number:"+91-7618871414"},
-     { name: 'Hem Chandra Jha', photo: 'path/to/hem-photo.jpg',Description:'Co-Founder',mail:"",Number:"" },
-     { name: 'Pranjali Jaiswal', photo: 'path/to/pranjali-photo.jpg',Description:'---',mail:"",Number:"" },
+     { name: 'Yadi Chaudhary', photo: './Yadi-2.jpeg' , Description: 'Founder' ,mail:"broyadi23@gmail.com",Number:"+91-7818071134" },
+     { name: 'Prince Gupta', photo: './prince.jpg',Description:'Co-Founder',mail:"princegupta0132004@gmail.com" ,Number:"+91-7618871414"},
+     { name: 'Hem Chandra Jha', photo: './Hem.jpg',Description:'Co-Founder',mail:"hcjha05@gmail.com",Number:"+91-9818096872" },
+     { name: 'Pranjali Jaiswal', photo: './pranjali.jpg',Description:'---',mail:"zaisjaiswal86@gmail.com",Number:"" },
     //  { name: 'Rimjhim Singh', photo: 'path/to/pranjali-photo.jpg',Description:'---' },
 ];
 

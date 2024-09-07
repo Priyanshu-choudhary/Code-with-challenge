@@ -96,7 +96,7 @@ function LearningPage() {
     <PageContainer bg={bg}>
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
-        {loading && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}>loading</p>}
+        {loading && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}><BoxLoader/></p>}
        
         <PromoBanner 
         message="Create your own Courses now." 

@@ -108,6 +108,7 @@ function QuestionApi() {
 
   };
 
+
   const openMiniProblemDrswer = () => {
     if (state2 == true) {
       setState2(false);
@@ -520,9 +521,9 @@ function QuestionApi() {
               <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
             </div>
 
-            <div style={{ marginTop: 15 }}>
+           {detailsType == "Contest" && detailsType == "Course" && <div style={{ marginTop: 15 }}>
               <MiniProblemDrawerComponent setsubmitProblemTitle={setsubmitProblemTitle} setsubmitProblem={setsubmitProblem} contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
-            </div>
+            </div>}
           </div>
 
           {detailsType == "Contest" &&

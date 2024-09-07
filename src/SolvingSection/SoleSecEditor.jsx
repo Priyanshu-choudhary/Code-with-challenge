@@ -44,8 +44,9 @@ const MyEditor = forwardRef(
     const [themes, setThemes] = useState('vs-dark');
     const [showConfetti, setShowConfetti] = useState(false);
     const [isCorrect, setisCorrect] = useState(false);
-    const [boilerCode, setboilerCode] = useState(problem.codeTemplates[language].boilerCode);
-    const [templateCode, settemplateCode] = useState(problem.codeTemplates[language].templateCode);
+    const [boilerCode, setboilerCode] = useState(problem?.codeTemplates?.[language]?.boilerCode || "");
+    const [templateCode, settemplateCode] = useState(problem?.codeTemplates?.[language]?.templateCode || "");
+    
     const editorRef = useRef(null);
 
 
@@ -64,13 +65,17 @@ const MyEditor = forwardRef(
     const createCourse = useCreateCourse(); // Call the custom hook
 
     useEffect(() => {
-      setLanguage(CourseLanguage);
-      settemplateCode(problem.codeTemplates[CourseLanguage].templateCode);
-    }, [CourseLanguage, problem.codeTemplates]);
-
+      if (problem?.codeTemplates?.[CourseLanguage]) {
+        settemplateCode(problem.codeTemplates[CourseLanguage].templateCode || "");
+      }
+    }, [CourseLanguage, problem]);
+    
     useEffect(() => {
-      setboilerCode(problem.codeTemplates[language].boilerCode);
-    }, [language, templateCode, problem.codeTemplates]);
+      if (problem?.codeTemplates?.[language]) {
+        setboilerCode(problem.codeTemplates[language].boilerCode || "");
+      }
+    }, [language, templateCode, problem]);
+    
 
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;

@@ -7,6 +7,7 @@ import DataList from './DataList';
 import Filter from './Filter';
 import BoxLoader from '../Loader/BoxLoader';
 import Skeleton from './Skeleton';
+import Card from './Ads/CourseAds';
 
 function ProblemSet() {
     const [questions, setQuestions] = useState([]);
@@ -38,6 +39,7 @@ function ProblemSet() {
             <div className='md:flex'>
                 <div>
                    <Filter />
+                   
                 </div>
                 <div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -97,8 +99,9 @@ function ProblemSet() {
                     </div>
                     
                 </div>
-                <div>
+                <div className='ml-6 my-2'>
                     {/* leaderBoard */}
+                    <Card/>
                 </div>
             </div>
         </div>

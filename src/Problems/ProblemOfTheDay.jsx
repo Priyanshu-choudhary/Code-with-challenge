@@ -7,7 +7,7 @@ function ProblemOfTheDay({ Question, Accuracy, Diffculity }) {
 
 
                 <div>
-                    <div className=" flex flex-col md:flex-row   text-black  w-48 "
+                    <div className=" flex flex-col md:flex-row   text-black  w-56 "
                         style={{ clipPath: "polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%)", backgroundColor: "gold" }}>
                         <p className="text-sm flex py-1 pl-3">    <p className='pr-2'><TipsAndUpdatesIcon fontSize='sm' /></p>Problem of the day</p>
 

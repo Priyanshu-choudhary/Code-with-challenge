@@ -30,7 +30,7 @@ const navigation = [
     { name: 'Learn', href: '/Tutorials', current: false },
     { name: 'Courses', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
-    { name: 'Problems', href: '/data', current: false },
+    { name: 'Problems', href: '/ProblemSet', current: false },
     { name: 'Contest', href: '/contest', current: false },
    
 ]

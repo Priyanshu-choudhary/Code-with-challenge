@@ -12,7 +12,7 @@ import YourProfile from './Profile/YourProfile';
 import EditorComponent from './onlineEditor/EditorComponent';
 import QuestionApi from './SolvingSection/ReceiveQuestion';
 import LeetCodeClone from './Leetcode/ProblemSet';
-import MyDataGrid from './Problems/DataGrid';
+
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import MyStepper from './UploadSection/Stepper';
 import LearningPage from './learnPath/learningPage';
@@ -84,7 +84,7 @@ function App() {
                 <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
                 <Route path="/loginOld" element={<LoginUser />} />
                 <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
-                <Route path="/Data" element={<MyDataGrid />} />
+             
                 <Route path="/ProblemSet" element={<ProblemSet />} />
                 <Route path="/Leaderboard2" element={<LeaderBoard />} />
                 <Route path="/learn" element={<LearningPage />} />

@@ -8,6 +8,7 @@ import Filter from './Filter';
 import BoxLoader from '../Loader/BoxLoader';
 import Skeleton from './Skeleton';
 import Card from './Ads/CourseAds';
+import ContestAds from './Ads/ContestAds';
 
 function ProblemSet() {
     const [questions, setQuestions] = useState([]);
@@ -39,7 +40,7 @@ function ProblemSet() {
             <div className='md:flex'>
                 <div>
                    <Filter />
-                   
+                   <ContestAds/>
                 </div>
                 <div>
                     <div style={{ display: "flex", justifyContent: "center" }}>

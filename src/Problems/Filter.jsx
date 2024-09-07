@@ -3,7 +3,7 @@ import React from 'react'
 function Filter() {
     return (
         <div className='min-w-64'>
-            <div className=' m-4 border-1 border-gray-500 rounded-t-2xl '>
+            <div className=' m-1 mt-4 mb-4 border-1 border-gray-600 rounded-2xl '>
                 <p  className=' rounded-t-2xl py-2  w-full text-center font-bold text-gray-500 bg-blue-50 hover:bg-gray-100'>
                     Filters
                 </p>

@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import './CourseAds.css'
+
 function ContestAds() {
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
     return (
         <div>
             <article className="ContestAds-card border-1 border-gray-500">
@@ -64,7 +68,7 @@ function ContestAds() {
                         </div>
                     </div>
 
-                    <button className="ContestAds-card__btn hover:bg-white hover:text-black hover:border-2 hover:border-black">view</button>
+                    <button className="ContestAds-card__btn hover:bg-white hover:text-black hover:border-2 hover:border-black" onClick={()=>{ navigate(`/ContestDetail/669f6b185d3e6a661c57dbad`)}}>view</button>
                 </footer>
             </article>
 

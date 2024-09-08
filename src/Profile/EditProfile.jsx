@@ -5,9 +5,10 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 import { UserContext } from '../Context/UserContext';
+import axios from 'axios';
 
 const ValidationTextFields = () => {
-    const { bg, bc, ibg, dark, light, user, password } = useContext(UserContext);
+    const { user, password } = useContext(UserContext);
     const [existingData, setExistingData] = useState({});
     const [formData, setFormData] = useState({
         email: '',
@@ -18,17 +19,14 @@ const ValidationTextFields = () => {
         skills: '',
         name: user,
         password: password,
-        profileImg: '', // Add profileImg to form data
+        profileImg: '', // URL for the uploaded profile image
     });
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
             try {
-                const response = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`, {
-                    method: 'GET',
-                });
+                const response = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`);
                 const data = await response.json();
                 setExistingData(data);
                 setFormData(data); // Initialize form data with existing data
@@ -40,7 +38,7 @@ const ValidationTextFields = () => {
         };
 
         fetchUserData();
-    }, [user, password]);
+    }, [user]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -50,51 +48,57 @@ const ValidationTextFields = () => {
         }));
     };
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
                 setFormData((prevData) => ({
                     ...prevData,
-                    profileImg: reader.result, // Update profileImg with base64 string
+                    profileImg: response.data.fileUrl, // Set the uploaded image URL
                 }));
-                
-            };
-            reader.readAsDataURL(file);
+                console.log("Uploaded image URL: ", response.data.fileUrl);
+                alert('Image uploaded successfully!');
+            } catch (error) {
+                console.error('Error uploading image:', error.response ? error.response.data : error.message);
+                alert('Error uploading image!');
+            }
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Merge existing data with form data, excluding user and password
-        const updatedData = {
-            ...formData,
-        };
-
         try {
-            const url = 'https://hytechlabs.online:9090/users';
-            updatedData.password = password;
-            console.log("user>>>> " + user + " password " + password);
-            const headers = new Headers();
-            headers.set('Content-Type', 'application/json');
-            headers.set('Authorization', 'Basic ' + btoa(user + ":" + password));
+            const updatedData = { ...formData, password };
 
-            const response = await fetch(url, {
+            const response = await fetch('https://hytechlabs.online:9090/users', {
                 method: 'PUT',
-                headers: headers,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + btoa(`${user}:${password}`),
+                },
                 body: JSON.stringify(updatedData),
             });
 
             if (response.ok) {
-                console.log('User updated successfully:');
-                alert("Successfully updated!");
+                console.log('User updated successfully.');
+                alert('Successfully updated!');
                 location.reload();
+            } else {
+                throw new Error('Failed to update user.');
             }
         } catch (error) {
-            console.log('Error updating user:', error);
-            alert("Unsuccessful update!");
+            console.error('Error updating user:', error);
+            alert('Unsuccessful update!');
         }
     };
 
@@ -174,20 +178,26 @@ const ValidationTextFields = () => {
                         value={formData.skills}
                         onChange={handleChange}
                     />
-                    <input
-                        accept="image/*"
-                        type="file"
-                        onChange={handleFileChange}
+                    <Button
+                        variant="contained"
+                        component="label"
                         style={{ margin: '1em 0' }}
-                    />
+                    >
+                        Choose File
+                        <input
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            onChange={handleFileChange}
+                        />
+                    </Button>
                     {formData.profileImg &&
-                        <div style={{position:"absolute",right:0,top:"50%"}}>
-                            <img src={`${formData.profileImg}`} alt="profile_img" />
+                        <div style={{ }}>
+                            <img src={formData.profileImg} alt="profile_img" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                         </div>
                     }
                     <Button style={{ marginTop: "18%" }} variant="contained" endIcon={<SendIcon />} type="submit">
                         Save
-
                     </Button>
                 </div>
             </Box>

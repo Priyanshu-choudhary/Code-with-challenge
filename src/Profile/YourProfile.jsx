@@ -11,6 +11,7 @@ import BoxLoader from '/src/Loader/BoxLoader';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
+import YourProgressCard from '../learnPath/YourProgressCard';
 
 const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
 
@@ -27,49 +28,10 @@ const YourProfile = () => {
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
 
-  console.log("profile rerender");
-  console.log(role);
+
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const localProblems = JSON.parse(localStorage.getItem('problems'));
-        const localLastModified = localStorage.getItem('lastModified');
-        const localUserData = JSON.parse(localStorage.getItem('userData'));
-        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        console.log(user + " " + password);
-        if (localProblems && localUserData) {
-          setProblems(localProblems);
-          setNoOfQuestion(localProblems.length);
-          setUserData(localUserData);
-          setAvatarName(localUserData.name ? localUserData.name[0] : '');
-          setIsLoading(false);
-        }
-
-        // Fetch problems
-        const problemsResponse = await fetch("https://hytechlabs.online:9090/Posts", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': basicAuth,
-            ...(localLastModified && { 'If-Modified-Since': localLastModified }) // Include the If-Modified-Since header if available
-          }
-        });
-
-        if (problemsResponse.status === 200) {
-          const problemsData = await problemsResponse.json();
-          setProblems(problemsData);
-          setNoOfQuestion(problemsData.length);
-          const lastModifiedHeader = problemsResponse.headers.get('Last-Modified');
-          if (lastModifiedHeader) {
-            setLastModified(lastModifiedHeader);
-            localStorage.setItem('lastModified', lastModifiedHeader);
-          }
-          localStorage.setItem('problems', JSON.stringify(problemsData));
-        }
-      } catch (error) {
-        console.error("Error fetching user posts:", error);
-      }
 
       try {
         // Fetch user data
@@ -79,7 +41,8 @@ const YourProfile = () => {
 
         if (userResponse.status === 200) {
           const userData = await userResponse.json();
-          console.log("userdata>>>>" + JSON.stringify(userData));
+          console.log(userData);
+
           setUserData(userData);
 
           // Set avatar name (e.g., first letter of the user's name)
@@ -107,7 +70,7 @@ const YourProfile = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log("userdata " + userData.profileImg);
+
   return (
     <div style={{ backgroundColor: bg }}>
       <Dashboard />
@@ -165,9 +128,30 @@ const YourProfile = () => {
                 <p>{userData.skills}</p>
               </div>
             </div>
-            <div className="skill" style={{ backgroundColor: dark, color: ibg, marginTop: "20px" }}>
-              <p style={{ fontSize: "large", fontWeight: "bold" }}>Badge :</p>
-              <div className='skillinside' style={{ backgroundColor: light, color: ibg }}>{userData.badages}</div>
+            
+            <div className=' ml-3 mt-3 side-navbar ' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
+            <div className='rounded-lg' style={{ backgroundColor: dark }}>
+                    <div className='flex '>
+                      <p className='font-bold pt-2 pl-2'>Courses:</p>
+                      <p className=' pr-5 text-lg pt-2 pl-60 font-bold'>{userData?.courses?.length}</p>
+                    </div>
+              {!isLoading && userData?.courses?.map((course, index) => (
+                <div className='p-3 ml-4' style={{ minWidth: 1000 }}>
+                  <YourProgressCard
+                    key={index}
+                    title={course.title}
+                    progress={course.progress}
+                    totalQuestions={course.totalQuestions}
+                    rating={course.rating}
+                    completeQuestions={course.completeQuestions}
+                    course={course}
+
+                  />
+                </div>
+              ))}
+              {userData.courses?.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
+
+            </div>
             </div>
           </Grid>
           <Grid xs>
@@ -179,11 +163,11 @@ const YourProfile = () => {
                 <div className='Profileheading' style={{ backgroundColor: dark, color: ibg }}>
                   <Grid container spacing={2}>
                     <Grid xs={10}>Problem Solved:</Grid>
-                    <Grid>{noOfQuestion}</Grid>
+                    <Grid>{userData.postCount}</Grid>
                   </Grid>
                 </div>
                 <div className="Profileproblem-list" style={{ backgroundColor: light, color: ibg }}  >
-                  {problems.length > 0 ? problems.map((problem, index) => (
+                  {userData.posts?.length > 0 ? userData.posts.map((problem, index) => (
                     <div key={problem.id} className="Profileproblem" style={{
                       backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
                       transition: 'background-color 0.3s', // Smooth transition for background color change
@@ -197,9 +181,38 @@ const YourProfile = () => {
                     </div>
                   )) : <p>Solve Your First Problems...</p>}
                 </div>
+
+              </div>
+              <div className='mt-5  side-navbar' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
+              <div className='rounded-lg' style={{ backgroundColor: dark }}>
+                    <div style={{ justifyContent: "space-between" }} className='flex '>
+                      <p className='font-bold pt-2 pl-2'>Contests:</p>
+                      <p className='text-right pr-5 text-lg pt-1 pl-2 font-bold'>{userData?.userContestDetails?.length}</p>
+
+                    </div>
+                {userData?.userContestDetails?.map((Contest, index) => (
+                  
+                    <div className='m-2 mt-2 p-2 rounded-xl' style={{ backgroundColor: light }}>
+
+                      <div className='flex '>
+                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 60 }} className='flex gap-2'>Contest:</p><p className='font-bold'>{Contest.nameOfContest}</p>
+                      </div>
+                      {/* <p>{Contest.posts?.length}</p> */}
+                      <div className='flex gap-2 mt-3'>
+                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 52 }}>By:</p ><p className='font-bold'>{Contest.nameOfOrganization}</p>
+                      </div>
+                      <div className='flex gap-2 mt-3'>
+                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 52 }}>Date:</p ><p className='font-bold'>{Contest.date}</p>
+                      </div>
+
+                    </div>
+                
+                ))}
+                  </div>
               </div>
             </div>
           </Grid>
+
         </Grid>
       )}
       {showForm && (

@@ -502,7 +502,51 @@ function QuestionApi() {
   const handleEditProblem = (problemId) => {
     navigate(`/edit/${problemId}/OfficialCources`);
   };
+  const buttonStyle = {
+    margin: "4px",
+    backgroundColor: bc,
+    color: ibg
+  };
+  const renderButton = (onClick, text) => (
+    <Button onClick={onClick} style={buttonStyle}>
+      {text}
+      {loading && <CircularProgress size={24} style={{ marginLeft: 10 }} />}
+    </Button>
+  );
 
+  const handleSubmitNormaltQuestion = async () => {
+    if (!currentans.id) {
+      alert('Correctly Run the code First.');
+    } else {
+      try {
+        // Create a copy of the problem object without the 'id' property
+        const { id, ...problemWithoutId } = problem;
+  
+        // Convert the modified object to a JSON string
+        let dataupload = JSON.stringify(problemWithoutId);
+        console.log(dataupload);
+  
+        // Send the data to the server
+        const response = await axios.post(
+          `https://hytechlabs.online:9090/Posts/username/${user}`,
+          dataupload,
+          {
+            headers: {
+              'Content-Type': 'application/json', // explicitly set content type
+            },
+           
+          }
+        );
+  
+        if (response.status === 200) {
+          console.log("Submit successfully.");
+        }
+      } catch (error) {
+        console.error("Error in Submitting", error);
+      }
+    }
+  }
+  
   return (
     <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
 
@@ -521,7 +565,7 @@ function QuestionApi() {
               <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
             </div>
 
-           {detailsType == "Contest" && detailsType == "Course" && <div style={{ marginTop: 15 }}>
+            {detailsType == "Contest" && detailsType == "Course" && <div style={{ marginTop: 15 }}>
               <MiniProblemDrawerComponent setsubmitProblemTitle={setsubmitProblemTitle} setsubmitProblem={setsubmitProblem} contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
             </div>}
           </div>
@@ -634,7 +678,7 @@ function QuestionApi() {
                   {problem.videoUrl && <YouTubePlayer url={problem.videoUrl} />}
                   {problem.solution[selectedOption2] ?
                     <Grid className='subtitle' xs={8}>
-                      <div style={{ marginTop: 10 }}>                   
+                      <div style={{ marginTop: 10 }}>
                         <br />
                         {problem.solution[selectedOption2].solution && <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2} />}
                       </div>
@@ -687,30 +731,21 @@ function QuestionApi() {
             {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
           </Button>}
 
-          {detailsType == "Course" ?
-            <div>
-              {optionA ?
-                <Button onClick={checkAnswer} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-                  Submit mcq
-                  {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
-                </Button>
-                :
-                <Button onClick={handleSubmit} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-                  Submit code
-                  {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
-                </Button>
-              }
-            </div>
-            :
-            <Button onClick={handleSubmitContestQuestion} style={{ margin: "4px", backgroundColor: bc, color: ibg }}>
-
-              {btnTitle}
-
-              {loading && <CircularProgress size={24} style={{ marginRight: 10 }} />}
-            </Button>
-
-          }
-
+          <div>
+            {detailsType === "Course" ? (
+              <div>
+                {optionA ? (
+                  renderButton(checkAnswer, "Submit mcq")
+                ) : (
+                  renderButton(handleSubmit, "Submit code")
+                )}
+              </div>
+            ) : detailsType === "Contest" ? (
+              renderButton(handleSubmitContestQuestion, btnTitle)
+            ) : (
+              renderButton(handleSubmitNormaltQuestion, "Normal Question")
+            )}
+          </div>
           <Button
             endIcon={<SkipNextIcon />}
             style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: light, color: ibg }}

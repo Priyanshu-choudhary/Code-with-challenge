@@ -1,6 +1,6 @@
 import React from 'react'
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
-function ProblemOfTheDay({ Question, Accuracy, Diffculity ,setPODindex ,length,handlePODClick}) {
+function ProblemOfTheDay({ Question, Accuracy, Difficulty ,setPODindex ,length,handlePODClick}) {
     function problemOfTheDay() {
         // Get the current date
         const currentDate = new Date();
@@ -37,7 +37,7 @@ function ProblemOfTheDay({ Question, Accuracy, Diffculity ,setPODindex ,length,h
 
                     <div className='flex gap-2'>
 
-                        <p className='text-sm text-gray-400'>Diffculity</p>
+                        <p className='text-sm text-gray-400'>Difficulty</p>
                         <p className='text-sm text-gray-400'>Accuracy</p>
                         <div className='pl-5'>
                             <button onClick={()=>{problemOfTheDay();}} style={{borderRadius:20}} className='bg-blue-50 px-4 py-1 font-bold hover:bg-blue-200'>
@@ -48,9 +48,9 @@ function ProblemOfTheDay({ Question, Accuracy, Diffculity ,setPODindex ,length,h
 
                     <div className='flex gap-3'>
 
-                        <p className='text-sm text-white'>{Diffculity}</p>
+                        <p className='text-sm text-white'>{Difficulty}</p>
                         <p className='text-sm text-white pl-2.5'>{Accuracy}%</p>
-                       
+ 
                     </div>
 
                 </div>

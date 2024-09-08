@@ -26,13 +26,13 @@ function Lecture() {
     const location = useLocation();
     const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
     const [NavHide, setNavHide] = useState(true);
-   
-   useEffect(() => {
-    scrollToTop();
-   }, [currentSectionIndex,currentSubheadingIndex])
-   
+
+    useEffect(() => {
+        scrollToTop();
+    }, [currentSectionIndex, currentSubheadingIndex])
+
     function scrollToTop() {
-        const scrollStep = -window.scrollY ;
+        const scrollStep = -window.scrollY;
         const scrollInterval = setInterval(() => {
             if (window.scrollY === 0) {
                 clearInterval(scrollInterval);
@@ -41,7 +41,7 @@ function Lecture() {
             }
         }, 10);
     }
-    
+
     useEffect(() => {
         const fetchLectureData = async () => {
             try {
@@ -141,9 +141,9 @@ function Lecture() {
             }
             <div className='md:flex min-h-dvh'>
                 {!NavHide &&
-                    <div style={{backgroundColor:dark}}>
-                        
-                        <div className='border-1 border-black rounded-md h-fit w-fit px-1 m-1 mt-3 '><DoubleArrowIcon  onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div>
+                    <div style={{ backgroundColor: dark }}>
+
+                        <div className='border-1 border-black rounded-md h-fit w-fit px-1 m-1 mt-3 '><DoubleArrowIcon onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div>
                         <div style={{ borderLeft: "1px solid #000" }}></div>
                     </div>
                 }
@@ -153,13 +153,12 @@ function Lecture() {
                     top: '0px',
                     height: '100vh',
                     width: '100%',
-                    maxWidth: 200,
-                
+                    
                     padding: '10px',
                     zIndex: 1000,
-                    overflowY: 'scroll',
-                    
-                }} className='pt-2 pl-2 md:w-56 side-navbar '>
+                    overflow: 'scroll',
+
+                }} className='pt-2 pl-2  side-navbar max-w-40 min-w-40 md:max-w-72 md:min-w-72 '>
                     <p className='font-bold mb-3 text-lg flex'>Topics in this Lecture <span className='mr-3 text-gray-400'>[{lectureData.length}]</span><div className='border-1 border-black rounded-md h-fit w-fit px-1 '><CloseFullscreenIcon fontSize='sm ' onClick={() => { NavHide ? setNavHide(false) : setNavHide(true) }} /></div></p>
 
                     <ul>
@@ -176,9 +175,10 @@ function Lecture() {
                                     onClick={() => handleSectionClick(sectionIndex)}
                                 >
                                     <div className="flex" >
-                                        <div
-                                            className={`max-h-fit ${sectionIndex === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${sectionIndex === 0 ? 'w-0.5 ' : 'w-0.5'}`}
-                                        ></div>
+                                        {/*-------- Blue-Line -------------*/}
+                                        <div className={`max-h-fit ${sectionIndex === currentSectionIndex ? 'bg-orange-500 ' : 'bg-blue-500'} ${sectionIndex === 0 ? 'w-0.5 ' : 'w-0.5'}`}>
+                                        </div>
+                                        {/*-------- Headings -------------*/}
                                         <div className="pl-1">
                                             <a
                                                 href={`#${sectionIndex}`}
@@ -186,32 +186,37 @@ function Lecture() {
                                             >
                                                 {section.title}
                                             </a>
-                                            {sectionIndex === currentSectionIndex && (
-                                                <ul className='mt-1'>
-                                                    {section.subHeadings.map((subHeading, subHeadingIndex) => (
-                                                        <li
-                                                            key={subHeadingIndex}
-                                                            className='pl-5 py-1 hover:bg-blue-50 text-sm truncate max-w-40 '
-                                                            onClick={(event) => {
-                                                                event.stopPropagation(); // Prevent event bubbling
-                                                                handleSectionClick(sectionIndex, subHeadingIndex);
-                                                            }}
-                                                            style={{
-                                                                backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
-                                                                color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? 'darkorange' : '#4a90e2',
-                                                                cursor: "pointer",
-                                                            }}
-                                                        >
-                                                            <SubdirectoryArrowRightIcon fontSize='sm' />{subHeading.title}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
+
+                                            {/*-------- sub-headings -------------*/}
+                                            <div className='min-w-fit'>
+                                                {sectionIndex === currentSectionIndex && (
+                                                    <ul className='mt-1'>
+                                                        {section.subHeadings.map((subHeading, subHeadingIndex) => (
+                                                            <li
+                                                                key={subHeadingIndex}
+                                                                className='pl-5 py-1 hover:bg-blue-50 text-sm truncate  max-w-64'   //truncate max-w-56
+                                                                onClick={(event) => {
+                                                                    event.stopPropagation(); // Prevent event bubbling
+                                                                    handleSectionClick(sectionIndex, subHeadingIndex);
+                                                                }}
+                                                                style={{
+                                                                    backgroundColor: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? '#f0f8ff' : 'transparent',
+                                                                    color: sectionIndex === currentSectionIndex && subHeadingIndex === currentSubheadingIndex ? 'darkorange' : '#4a90e2',
+                                                                    cursor: "pointer",
+                                                                }}
+                                                            >
+                                                                <SubdirectoryArrowRightIcon fontSize='sm' />{subHeading.title}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                             </div>
                         ))}
+
                         <div style={{ backgroundColor: "black", width: "100%", height: 1, marginTop: 5 }}></div>
                     </ul>
 

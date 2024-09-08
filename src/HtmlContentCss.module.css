@@ -47,6 +47,7 @@ border-radius: 3px;
   color: var(--text-color);
   padding: 10px !important;
   background-color: var(--list-background-color) !important; /* Use variable for background color */
+  border-radius: 10px !important;
 }
 
 /* Ensure ordered lists (ol) display numbers */
@@ -60,6 +61,7 @@ border-radius: 3px;
   line-height: 1.6;
   background-color: var(--list-background-color) !important; /* Use variable for background color */
   border-radius: 20px;
+  border-radius: 10px !important;
 }
 
 /* Styles for nested lists */
@@ -69,6 +71,7 @@ border-radius: 3px;
   margin-left: 1.5rem;
   padding-left: 1rem;
   color: var(--text-color);
+  
 }
 
 .mce-content-body ol ol {

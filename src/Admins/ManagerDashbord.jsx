@@ -6,6 +6,7 @@ import Todo from '../TodoHeadings/Todo';
 
 import FundsManagement from '../FundsManagements/FundsManagement';
 import DocumentPage from '../Document/DocumentPage';
+import FileTreeSnapShot from './Doc/FileTreeSnapShot';
     
 
 
@@ -23,8 +24,9 @@ function ManagerDashbord() {
                 return <Document />;
             case 'component4':
                 return <FundsManagement />;
+
             default:
-                return <Todo />;
+                return <FileTreeSnapShot />;
         }
     };
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import { UserContext } from '../Context/UserContext';
 
 
-function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems }) {
+function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems, companies }) {
     const [percentage, setPercentage] = useState(0);
     const navigate = useNavigate(); // Initialize useNavigate hook
     const { role } = useContext(UserContext);
@@ -91,10 +91,39 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
         <div className="flex flex-col">
             <div className="hover:bg-slate-100 flex items-center py-2 px-2 cursor-pointer space-x-4" onClick={handleProblemClick}>
                 {/* Title and Tags */}
-                <div className="flex flex-col text-left" style={{ minWidth: `${Difficulty === "Medium" ? "305px" : "320px"}` }}>
+                <div
+                    className="flex flex-col text-left"
+                    style={{ minWidth: `${Difficulty === "Medium" ? "305px" : "320px"}` }}
+                >
                     <span className="font-medium">{title}</span>
-                    <div style={{ fontSize: 12 }} className="text-gray-500">{tags}</div>
+
+                    <div style={{ fontSize: 12 }} className="text-gray-500">
+                        {problems.tags.length > 3 ? (
+                            <>
+                                {problems.tags.slice(0, 3).join(", ")}{" "}
+                                <span className='text-blue-400 font-bold text-sm'>
+                                    +{problems.tags.length - 3}
+                                </span>
+                            </>
+                        ) : (
+                            problems.tags.join(", ")
+                        )}
+                    </div>
+
+                    <div style={{ fontSize: 12 }} className="text-gray-500">
+                        {problems.companies.length > 3 ? (
+                            <>
+                                {problems.companies.slice(0, 3).join(", ")}{" "}
+                                <span className='text-blue-400 font-bold text-sm'>
+                                    +{problems.companies.length - 3}
+                                </span>
+                            </>
+                        ) : (
+                            problems.companies.join(", ")
+                        )}
+                    </div>
                 </div>
+
 
                 {/* Difficulty */}
                 <div className="flex-grow">

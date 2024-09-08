@@ -1,44 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Checkbox, FormControlLabel, FormGroup, Collapse } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function Filter() {
+function Filter({ setfilterObject }) {
   // Arrays for categories
   const Topics = [
-    "Arrays",
-    "Linked Lists",
-    "Stacks",
-    "Queues",
-    "Hash Tables",
-    "Trees",
-    "Graphs",
-    "Heaps",
-    "Sorting Algorithms",
-    "Searching Algorithms",
-    "Dynamic Programming",
-    "Greedy Algorithms",
-    "Recursion",
-    "Backtracking",
-    "Divide and Conquer"
-];
-const Companies = [
-    "Google",
-    "Amazon",
-    "Microsoft",
-    "Apple",
-    "Facebook",
-    "IBM",
-    "Intel",
-    "Oracle",
-    "Netflix",
-    "Adobe",
-    "Salesforce",
-    "Alibaba",
-    "Tencent",
-    "SAP",
-    "Spotify"
-];
+    "Basic", "String", "Arrays", "Linked Lists", "Stacks", "Queues", 
+    "Hash Tables", "Trees", "Graphs", "Heaps", "Sorting Algorithms", 
+    "Searching Algorithms", "Dynamic Programming", "Greedy Algorithms", 
+    "Recursion", "Backtracking", "Divide and Conquer", "Bit Manipulation", 
+    "Trie", "Graph Algorithms", "Number Theory", "Geometry", "Network Flow", 
+    "Segment Trees", "Fenwick Trees", "Matrix Operations", "Randomized Algorithms", 
+    "Approximation Algorithms", "Computational Geometry", "String Matching", 
+    "Game Theory", "Parallel Algorithms", "Computational Complexity", 
+    "Advanced Data Structures", "Amortized Analysis", "Suffix Arrays", 
+    "Interval Trees", "B-Trees", "Suffix Trees", "Dynamic Connectivity", 
+    "Flow Networks", "K-Nearest Neighbors", "PageRank", "String Algorithms", 
+    "Data Compression", "Cryptography", "Numerical Methods", "Monte Carlo Methods", 
+    "Machine Learning Algorithms", "Artificial Intelligence"
+  ];
+  
+  const Companies = [
+    "Google", "Amazon", "Microsoft", "Apple", "Facebook", "IBM", "Intel", 
+    "Oracle", "Netflix", "Adobe", "Salesforce", "Alibaba", "Tencent", 
+    "SAP", "Spotify", "Twitter", "Uber", "LinkedIn", "PayPal", "Snapchat", 
+    "Zoom", "Stripe", "Slack", "Dropbox", "Reddit", "Square", "GitHub", 
+    "Twitch", "Shopify", "NVIDIA", "Samsung"
+  ];
 
   const Difficulty = ["Hard", "Medium", "Easy"];
   const Status = ["Attempt", "UnAttempt", "Done"];
@@ -50,7 +39,10 @@ const Companies = [
     difficulty: [],
     status: []
   });
-console.log(selectedFilters);
+
+  useEffect(() => {
+    setfilterObject(selectedFilters);
+  }, [selectedFilters])
 
   // State for toggling categories
   const [openCategories, setOpenCategories] = useState({
@@ -190,7 +182,7 @@ console.log(selectedFilters);
             <span>Status</span>
             {openCategories.status ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </p>
-          
+
           <Collapse in={openCategories.status} className='ml-5 '>
             <FormGroup>
               {Status.map(stat => (

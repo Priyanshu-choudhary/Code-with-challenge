@@ -16,10 +16,17 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
     const [iSubmit, setISubmit] = useState(false);
     const [newUrl, setnewUrl] = useState('https://hytechlabs.online:9090/Posts')
     const [auth, setauth] = useState(URL)
+    const [SelectedCompaniesTags, setSelectedCompaniesTags] = useState([])
+    const [SelectTags, setSelectTags] = useState([])
 
-    const handleTagsChange = useCallback((tags) => {
-        updateFormData({ tags });
-    }, [updateFormData]);
+
+    useEffect(() => {
+  console.log(JSON.stringify(SelectedCompaniesTags)+" "+JSON.stringify(SelectTags));
+  
+    }, [SelectedCompaniesTags,SelectTags])
+    
+
+
 
     const handleInputChange = (e) => {
         updateFormData({ [e.target.name]: e.target.value });
@@ -51,13 +58,17 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
         console.log(JSON.stringify(formData));
         event.preventDefault();
         try {
-
+            // Create a new formData object that includes SelectedCompaniesTags and SelectTags
+            const updatedFormData = {
+                ...formData,
+                boilerCode: formData.code,
+                companies: SelectedCompaniesTags, // Include SelectedCompaniesTags in "companies" field
+                tags: SelectTags, // Include SelectTags in "tags" field
+            };
+    
             const response = await axios.post(
                 newUrl,
-                {
-                    ...formData,
-                    boilerCode: formData.code,
-                },
+                updatedFormData,
                 {
                     headers: {
                         // Authorization: `Basic ${btoa(`${auth}:${auth}`)}`, // Encode credentials
@@ -76,7 +87,7 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
             setISubmit(false);
         }
     };
-
+    
 
     return (
         <>
@@ -151,7 +162,11 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
                     </div>
 
                     <div style={{ borderWidth: "2px" }}>
+                        {
+                            
+                        }
                         {/* <Tags onTagsChange={handleTagsChange} /> */}
+                        <Tags setSelectedCompaniesTags={setSelectedCompaniesTags} setSelectTags={setSelectTags} />
                     </div>
                 </div>
             </div>

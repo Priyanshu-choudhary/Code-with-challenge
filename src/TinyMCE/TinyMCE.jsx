@@ -119,7 +119,7 @@ const MemoizedMonacoEditor = memo(function MonacoEditorComponent({ content, hand
 });
 
 function EditorComponent({ setDescription, initialValue }) {
-  const [editorType, setEditorType] = useState('textbox');
+  const [editorType, setEditorType] = useState('ckeditor');
   const [content, setContent] = useState(initialValue || "<p>Write your Description here.</p>");
   const [formattedContent, setFormattedContent] = useState('');
 
@@ -197,7 +197,7 @@ function EditorComponent({ setDescription, initialValue }) {
       <div>
         {renderEditor()}
       </div>
-      <div style={{ maxWidth: "50%", marginTop: '20px' }}>
+      <div style={{ maxWidth: "100%", marginTop: '20px' }}>
         <div className='flex'>
           <div style={{ width: 1, backgroundColor: "black" }}></div>
           <h2 className='font-bold bg-slate-300 text-center w-full'>Preview</h2>

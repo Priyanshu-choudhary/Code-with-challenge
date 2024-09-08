@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import Collapse from '@mui/material/Collapse';
@@ -39,8 +41,8 @@ export default function EditLecture() {
         const response = await axios.get(`https://hytechlabs.online:9090/Lecture/id/${id}`, {
           headers: { 'Content-Type': 'application/json' },
           auth: {
-            username: 'testleacture', // Replace with your actual username
-            password: 'testleacture'  // Replace with your actual password
+            username: 'testleacture',
+            password: 'testleacture'
           }
         });
         setFormData(response.data);
@@ -108,27 +110,108 @@ export default function EditLecture() {
     setActiveSubHeading(index === activeSubHeading ? null : index);
   };
 
-  const handleSubmit = async () => {
-    setLoading(true);
+  const handleDelete = async (headingTitle, subHeadingTitle) => {
+    const confirmation = window.confirm(
+      `Are you sure you want to delete ${subHeadingTitle ? `subheading "${subHeadingTitle}"` : `heading "${headingTitle}"`
+      }?`
+    );
+    if (!confirmation) return;
 
+    setLoading(true);
     try {
-      const response = await axios.put(
+      const data = {
+        headingsToRemove: headingTitle ? [headingTitle] : [],
+        subHeadingsToRemove: subHeadingTitle ? [subHeadingTitle] : []
+      };
+
+      // console.log(`https://hytechlabs.online:9090/Lecture/removeHeadings/id/${id}`+"  >> "+JSON.stringify(data));
+
+      await axios.put(
+        `https://hytechlabs.online:9090/Lecture/removeHeadings/id/${id}`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          auth: {
+            username: 'testleacture',
+            password: 'testleacture'
+          }
+        }
+      );
+      setAlert({ show: true, message: 'Deleted successfully!', severity: 'success' });
+
+      // Remove heading or subheading from formData
+      if (headingTitle) {
+        setFormData((prevData) => ({
+          ...prevData,
+          headings: prevData.headings.filter((heading) => heading.title !== headingTitle)
+        }));
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          headings: prevData.headings.map((heading) => ({
+            ...heading,
+            subHeadings: heading.subHeadings.filter(
+              (subHeading) => subHeading.title !== subHeadingTitle
+            )
+          }))
+        }));
+      }
+    } catch (error) {
+      console.error('Error deleting:', error);
+      setAlert({ show: true, message: 'Failed to delete', severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const handleSubmit = async () => {
+    let validationError = false;
+
+    // Validate all headings and subheadings (only title, skip content)
+    for (let i = 0; i < formData.headings.length; i++) {
+      const heading = formData.headings[i];
+
+      if (!heading.title || heading.title.trim() === '') {
+        setAlert({ show: true, message: `Heading ${i + 1} title cannot be empty.`, severity: 'error' });
+        validationError = true;
+        break;
+      }
+
+      for (let j = 0; j < heading.subHeadings.length; j++) {
+        const subHeading = heading.subHeadings[j];
+
+        if (!subHeading.title || subHeading.title.trim() === '') {
+          setAlert({ show: true, message: `Subheading ${j + 1} of Heading ${i + 1} title cannot be empty.`, severity: 'error' });
+          validationError = true;
+          break;
+        }
+
+        // Skip content validation for subHeadings
+      }
+
+      if (validationError) break; // Stop validation if any error is found
+    }
+
+    if (validationError) return; // Prevent form submission if validation fails
+
+    setLoading(true);
+    try {
+      await axios.put(
         `https://hytechlabs.online:9090/Lecture/id/${id}`,
         formData,
         {
           headers: { 'Content-Type': 'application/json' },
           auth: {
-            username: 'testleacture', // Replace with your actual username
-            password: 'testleacture'  // Replace with your actual password
+            username: 'testleacture',
+            password: 'testleacture'
           }
         }
       );
-
-      console.log('Response:', response.data);
-      setAlert({ show: true, message: `Lecture updated successfully!`, severity: 'success' });
+      setAlert({ show: true, message: 'Lecture updated successfully!', severity: 'success' });
     } catch (error) {
       console.error('Error updating lecture:', error);
-      setAlert({ show: true, message: `Failed to update lecture`, severity: 'error' });
+      setAlert({ show: true, message: 'Failed to update lecture', severity: 'error' });
     } finally {
       setLoading(false);
     }
@@ -158,74 +241,91 @@ export default function EditLecture() {
           margin="normal"
         />
 
-<List>
-  {formData.headings.map((heading, headingIndex) => (
-    <div key={headingIndex}>
-      <ListItem button onClick={() => handleHeadingClick(headingIndex)}>
-        {/* Use heading title instead of heading index */}
-        <ListItemText primary={heading.title || `Heading ${headingIndex + 1}`} />
-      </ListItem>
-      <Collapse in={activeHeading === headingIndex} timeout="auto" unmountOnExit>
-        <div className='ml-5'>
-          <TextField
-            id="heading"
-            label={`Heading ${headingIndex + 1} Title`}
-            fullWidth
-            value={heading.title}
-            onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
-            margin="normal"
-          />
-
-          {heading.subHeadings.map((subHeading, subHeadingIndex) => (
-            <div key={subHeadingIndex} className='ml-5'>
-              <ListItem button onClick={() => handleSubHeadingClick(subHeadingIndex)}>
-                {/* Use subheading title instead of subheading index */}
-                <ListItemText primary={subHeading.title || `Subheading ${subHeadingIndex + 1}`} />
-              </ListItem>
-              <Collapse in={activeSubHeading === subHeadingIndex} timeout="auto" unmountOnExit>
-                <TextField
-                  id="subheading"
-                  label={`Subheading ${subHeadingIndex + 1} Title`}
-                  fullWidth
-                  value={subHeading.title}
-                  onChange={(e) =>
-                    handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)
-                  }
-                  margin="normal"
-                />
-                {!loading && (
-                  <Tinymce
-                    initialValue={subHeading.content}
-                    setDescription={(value) =>
-                      handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)
-                    }
+        <List>
+          {formData.headings.map((heading, headingIndex) => (
+            <div key={headingIndex}>
+              <div className='flex border-2 m-2 px-2 rounded-lg border-black bg-blue-50'>
+                <p className='text-md mt-3 text-gray-600'>
+                  H{headingIndex + 1}-
+                </p>
+                <ListItem button onClick={() => handleHeadingClick(headingIndex)}>
+                  <ListItemText primary={heading.title || `Heading ${headingIndex + 1}`} />
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDelete(heading.title, null)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+              </div>
+              <Collapse in={activeHeading === headingIndex} timeout="auto" unmountOnExit>
+                <div className="ml-5">
+                  <TextField
+                    id="heading"
+                    label={`Heading ${headingIndex + 1} Title`}
+                    fullWidth
+                    value={heading.title}
+                    onChange={(e) => handleHeadingChange(headingIndex, 'title', e.target.value)}
+                    margin="normal"
                   />
-                )}
+
+                  {heading.subHeadings.map((subHeading, subHeadingIndex) => (
+                    <div key={subHeadingIndex} className="ml-5 border-2 m-2 px-2 rounded-lg bg-yellow-50">
+                      <div className='flex'>
+                        <p className='text-xl mt-3 text-gray-600'>{subHeadingIndex + 1}</p>
+                        <ListItem button onClick={() => handleSubHeadingClick(subHeadingIndex)}>
+                          <ListItemText
+                            primary={subHeading.title || `Subheading ${subHeadingIndex + 1}`}
+                          />
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => handleDelete(null, subHeading.title)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItem>
+                      </div>
+                      <Collapse in={activeSubHeading === subHeadingIndex} timeout="auto" unmountOnExit>
+                        <div className='flex'>
+
+                          <TextField
+                            id="subheading"
+                            label={`Subheading Topics ${subHeadingIndex + 1} Title`}
+                            fullWidth
+                            value={subHeading.title}
+                            onChange={(e) =>
+                              handleSubHeadingChange(headingIndex, subHeadingIndex, 'title', e.target.value)
+                            }
+                            margin="normal"
+                          />
+                        </div>
+                        <Tinymce
+                          initialValue={subHeading.content}
+                          setDescription={(value) =>
+                            handleSubHeadingChange(headingIndex, subHeadingIndex, 'content', value)
+                          }
+                        />
+                      </Collapse>
+                    </div>
+                  ))}
+
+                  <Button variant="outlined" onClick={() => handleAddSubHeading(headingIndex)}>
+                    Add Subheading
+                  </Button>
+                </div>
               </Collapse>
             </div>
           ))}
+        </List>
 
-          <Button variant="contained" color="secondary" onClick={() => handleAddSubHeading(headingIndex)}>
-            Add Subheading
-          </Button>
-        </div>
-      </Collapse>
-    </div>
-  ))}
-</List>
-
-        <Button variant="contained" color="primary" onClick={handleAddHeading}>
+        <Button variant="outlined" onClick={handleAddHeading}>
           Add Heading
         </Button>
 
-        <Button
-          style={{ width: "100%", marginTop: "20px" }}
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Update Lecture'}
+        <Button variant="contained" onClick={handleSubmit} disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Submit'}
         </Button>
       </Box>
     </>

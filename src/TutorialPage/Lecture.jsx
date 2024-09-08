@@ -26,7 +26,22 @@ function Lecture() {
     const location = useLocation();
     const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
     const [NavHide, setNavHide] = useState(true);
-
+   
+   useEffect(() => {
+    scrollToTop();
+   }, [currentSectionIndex,currentSubheadingIndex])
+   
+    function scrollToTop() {
+        const scrollStep = -window.scrollY ;
+        const scrollInterval = setInterval(() => {
+            if (window.scrollY === 0) {
+                clearInterval(scrollInterval);
+            } else {
+                window.scrollBy(0, scrollStep);
+            }
+        }, 10);
+    }
+    
     useEffect(() => {
         const fetchLectureData = async () => {
             try {

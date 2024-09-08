@@ -60,7 +60,18 @@ const YourProfile = () => {
   }, [user, password]);
 
   const handleProblemClick = (problem) => {
-    navigate(`/question/${problem.id}`, { state: problem });
+    // navigate(`/question/${problem.id}`, { state: problem });
+    navigate(`/question/${problem.id}/ProblemSet`, {
+      state: {
+          problems: [problem],
+          currentIndex: 0,
+          navHistory: "no def",
+          currentPage: "no current page",
+          CourseDescription: "description",
+          totalProblems: 0,
+          language: [problem.language?problem.language:"java"]
+      }
+  });
   };
 
   const toggleForm = () => {

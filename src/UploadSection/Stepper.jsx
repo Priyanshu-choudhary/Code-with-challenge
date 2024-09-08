@@ -67,9 +67,7 @@ export default function MyStepper({ uploadUrl }) {
     setActiveStep(0);
     setCompleted({});
   };
-useEffect(() => {
-console.log("contestName "+contestName);
-}, [contestName])
+
 
   return (
     <>

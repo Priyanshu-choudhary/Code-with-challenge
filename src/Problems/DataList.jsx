@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { UserContext } from '../Context/UserContext';
 
 
 function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems }) {
     const [percentage, setPercentage] = useState(0);
     const navigate = useNavigate(); // Initialize useNavigate hook
-
+    const { role } = useContext(UserContext);
     const getRandomPercentage = (Difficulty) => {
         let min, max;
 
@@ -47,10 +48,10 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
 
     const handleProblemClick = () => {
         // Find the index of the problem with the current id
-      
+
         navigate(`/question/${id}/ProblemSet`, {
             state: {
-                problems:[problems],
+                problems: [problems],
                 currentIndex: 0,
                 navHistory: "no def",
                 currentPage: "no current page",
@@ -73,9 +74,9 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
                     }
                 });
                 if (response.ok) {
-                    setProblems(problems.filter(problem => problem.id !== id));
+                    // setProblems(problems?.filter(problem => problem.id !== id));
                     alert("Problem deleted successfully.");
-                    // window.location.reload(); // Optional, if you want to refresh the page
+                    window.location.reload(); // Optional, if you want to refresh the page
                 } else {
                     alert("Failed to delete the problem.");
                 }
@@ -124,28 +125,38 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
                 </div>
 
                 {/* Actions */}
-                <div className="flex space-x-2">
-                    <button
-                        style={{ borderRadius: 20 }}
-                        className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
-                        onClick={handleDeleteProblem}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        style={{ borderRadius: 20 }}
-                        className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
-                        onClick={handleEdit}
-                    >
-                        Edit
-                    </button>
-                </div>
+                {role === "ADMIN" ? (
+                    <div className="flex space-x-2">
+                        <button
+                            style={{ borderRadius: 20 }}
+                            className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                handleDeleteProblem();
+                            }}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            style={{ borderRadius: 20 }}
+                            className="border border-gray-300 px-2 text-sm hover:bg-blue-300"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                handleEdit();
+                            }}
+                        >
+                            Edit
+                        </button>
+                    </div>
+                ) : (
+                    <div className="min-w-24"></div>
+                )}
             </div>
 
             {/* Separator Line */}
             <p className="bg-gray-400" style={{ height: "1px", width: "100%" }}></p>
-           
         </div>
+
     );
 }
 

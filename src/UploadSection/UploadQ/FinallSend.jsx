@@ -10,7 +10,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Tags from '../Tags';
 import { FormContext } from '../../Context/FormContext';
 
-const FinalSend = ({ step, uploadUrl,contestName }) => {
+const FinalSend = ({ step, uploadUrl, contestName }) => {
     const { formData, updateFormData } = useContext(FormContext);
     const { user, password, role, URL, setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
@@ -27,24 +27,24 @@ const FinalSend = ({ step, uploadUrl,contestName }) => {
     const checkUrl = () => {
 
     }
-useEffect(() => {
- console.log("contest name"+contestName);
- console.log("courseUrl "+uploadUrl);
-}, [contestName,uploadUrl])
+    useEffect(() => {
+
+    }, [contestName, uploadUrl])
 
     useEffect(() => {
-        if (contestName) {
+        if (contestName!='ProblemSet' && contestName) {
             setnewUrl(`https://hytechlabs.online:9090/Contest/${contestName}/username/Contest`);
-        } else {
+        } else if (contestName == 'ProblemSet') {
+            setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
+        }
+        else {
             if (uploadUrl != 'ProblemSet') {
                 setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`);
                 setauth("OfficialCources");
-            } else {
-                setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
             }
         }
 
-    }, [URL,contestName]); // Add URL to the dependency array to run this effect whenever URL changes
+    }, [URL, contestName]); // Add URL to the dependency array to run this effect whenever URL changes
 
     const handleSubmit = async (event) => {
         setISubmit(true);
@@ -67,11 +67,11 @@ useEffect(() => {
             );
             console.log('Post created:', response.data);
             setISubmit(false);
-            alert('Question Uploaded To ' + URL);
+            alert('Question Uploaded To ' + newUrl);
         } catch (error) {
             console.error('Error creating post:', error);
             setISubmit(false);
-            alert('Failed to Upload To ' + URL);
+            alert('Failed to Upload To ' + newUrl);
         } finally {
             setISubmit(false);
         }

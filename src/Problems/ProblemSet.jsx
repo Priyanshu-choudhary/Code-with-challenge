@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Dashboard from '../dashBoard/Dashboard';
 import ProblemOfTheDay from './ProblemOfTheDay';
 import './ProblemSet.css';
@@ -10,6 +10,7 @@ import Skeleton from './Skeleton';
 import Card from './Ads/CourseAds';
 import ContestAds from './Ads/ContestAds';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { UserContext } from '../Context/UserContext';
 
 function ProblemSet() {
     const [questions, setQuestions] = useState([]);
@@ -18,6 +19,8 @@ function ProblemSet() {
     const [loading, setLoading] = useState(true);
     const [PODindex, setPODindex] = useState(0);
     const navigate = useNavigate(); // Initialize useNavigate hook
+    const { role } = useContext(UserContext);
+
 
     // Fetch data from the API
     useEffect(() => {
@@ -101,7 +104,7 @@ function ProblemSet() {
                         <ProblemOfTheDay handlePODClick={handlePODClick} length={questions.length} setPODindex={setPODindex} Accuracy={80.4} Difficulty={"Medium"} />
                     </div>
 
-                    <div className='pt-4 flex md:gap-48' style={{ display: "flex", justifyContent: "center" }}>
+                    <div className='pt-4 flex md:gap-14' style={{ display: "flex", justifyContent: "center" }}>
                         <div>
                             <input
                                 type="text"
@@ -111,7 +114,38 @@ function ProblemSet() {
                                 onChange={handleSearchChange} // Trigger search logic on change
                             />
                         </div>
-                        <div>
+                        <div className='flex gap-4'>
+                            {role =="ADMIN" ?<button onClick={()=>{navigate(`/UploadQuestion/ProblemSet`)}}
+                                class="rounded-3xl relative w-32 h-10 cursor-pointer flex items-center border border-green-400 bg-green-400 group hover:bg-green-400 active:bg-green-400 active:border-green-400"
+                            >
+                                <span
+                                    class="text-white  font-semibold ml-8 transform group-hover:translate-x-1 transition-all duration-300"
+                                >Add
+                                </span>
+                                <span
+                                    class="absolute right-0 h-full w-10 rounded-lg bg-green-500 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300 rounded-3xl"
+                                >
+                                    <svg
+                                        class="svg w-8 text-white"
+                                        fill="none"
+                                        height="24"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        viewBox="0 0 24 24"
+                                        width="24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <line x1="12" x2="12" y1="5" y2="19"></line>
+                                        <line x1="5" x2="19" y1="12" y2="12"></line>
+                                    </svg>
+                                </span>
+                            </button>:
+                            <div className=' min-w-32 '>
+
+                            </div>
+}
                             <button onClick={handleRandomClick} style={{ borderRadius: 20 }} className='flex gap-2 border-2 border-gray-300 px-2 py-1.5 font-bold hover:bg-blue-200'>
                                 <ShuffleIcon /> Random
                             </button>
@@ -144,6 +178,7 @@ function ProblemSet() {
                                     Accuracy={question.accuracy}
                                     tags={question.tags.join(', ')}
                                     problems={question}
+                                  
                                 />
                             ))
                         )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-
+import TermsAndServise from '../TermsAndService/TermsAndServise';
 export default function Footer2() {
   return (
     <MDBFooter  className='text-center text-lg-start text-muted' style={{backgroundImage:"linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)",marginTop:50}}>
@@ -87,10 +87,13 @@ export default function Footer2() {
         </MDBContainer>
       </section>
 
-      <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+      <div className='flex space-x-56 pl-44' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
         © 2024 Copyright:
-        <a className='text-reset fw-bold' href='#'>
-          CodeForChallenge.com
+        <a className='text-reset fw-bold' href='./'>
+          CodeForChallenge.online
+        </a>
+        <a className='text-reset fw-bold' href='./TermsAndServise'>
+        TermsAndServise
         </a>
       </div>
     </MDBFooter>

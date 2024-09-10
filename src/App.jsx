@@ -57,6 +57,7 @@ import TestForm from './Form/TestForm.jsx';
 
 import CustomRoomForm from './Contest/CustomRoom/Form.jsx';
 import ProblemSet from './Problems/ProblemSet.jsx';
+import TermsAndServise from './TermsAndService/TermsAndServise.jsx';
 
 
 function App() {
@@ -118,6 +119,7 @@ function App() {
                 <Route path="/Form" element={<NestedForm />} />
                 <Route path="/TestForm" element={<TestForm />} />
                 <Route path="/CustomRoom" element={<CustomRoomForm />} />
+                <Route path="/TermsAndServise" element={<TermsAndServise />} />
 
 
               </Routes>

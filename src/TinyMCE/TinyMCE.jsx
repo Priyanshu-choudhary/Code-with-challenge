@@ -71,7 +71,7 @@ const MemoizedTinyMCE = memo(function TinyMCEComponent({ content, handleTinyMceC
 
           // Add a custom button to open a dialog
           editor.ui.registry.addButton('customPlaceholder', {
-            text: 'Insert Custom Data',
+            text: 'Insert Code',
             onAction: () => {
               openCustomDialog(editor);
             },

@@ -324,10 +324,12 @@ export default function EditLecture() {
           Add Heading
         </Button>
 
+      </Box>
+      <div style={{ position: 'sticky', bottom: 0, right: 10, zIndex: 10000 }}>
         <Button variant="contained" onClick={handleSubmit} disabled={loading}>
           {loading ? <CircularProgress size={24} /> : 'Submit'}
         </Button>
-      </Box>
+      </div>
     </>
   );
 }

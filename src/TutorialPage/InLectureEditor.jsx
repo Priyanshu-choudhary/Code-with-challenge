@@ -55,8 +55,14 @@ const InLectureEditor = ({ initialValue }) => {
     };
 
  
-// Function to decode Base64 back to string and revert angle bracket placeholders
-
+    function cleanCode(code) {
+        // Regular expression to match non-breaking space and other invisible characters
+        const specialCharsRegex = /[\u00A0\u200B\u00C2]/g;
+    
+        // Replace with regular space
+        return code.replace(specialCharsRegex, ' ');
+    }
+    
     return (
         <div className='super'>
             {!initialValue && <Dashboard />}
@@ -94,7 +100,7 @@ const InLectureEditor = ({ initialValue }) => {
                             height="calc(50vh - 40px)" // Adjust height considering header size
                             width={"100%"}
                             language={editorLanguage}
-                            value={code} // Apply the unescapeHtml function here
+                            value={cleanCode(code)} // Apply the unescapeHtml function here
                             onChange={handleEditorChange}
                             theme={themes}
                             options={{

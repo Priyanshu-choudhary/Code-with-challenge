@@ -194,11 +194,18 @@ function EditorComponent({ setDescription, initialValue }) {
     setCurrentEditor(editor);
     setIsModalOpen(true);
   };
+  function cleanCode(code) {
+    // Regular expression to match non-breaking space and other invisible characters
+    const specialCharsRegex = /[\u00A0\u200B\u00C2]/g;
 
+    // Replace with regular space
+    return code.replace(specialCharsRegex, ' ');
+}
   const handleModalSave = (customData) => {
     if (currentEditor) {
       // Encode the custom data if necessary
-      let encodedData = encodeURIComponent(customData);
+      
+      let encodedData = encodeURIComponent(cleanCode(customData));
       encodedData = btoa(encodedData);
       // Insert or replace content in the placeholder
       const placeholderContent = `<div data-placeholder="InPageEditor">${encodedData}</div>`;
@@ -239,7 +246,7 @@ function EditorComponent({ setDescription, initialValue }) {
         {isLoading && <CircularProgress style={{ position: 'fixed', top: '50%', left: '50%' }} />}
       </ErrorBoundary>
 
-      <HtmlRenderer htmlContent={formattedContent || content} />
+      {/* <HtmlRenderer htmlContent={formattedContent || content} /> */}
       <CustomDataModal open={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleModalSave} />
     </div>
   );

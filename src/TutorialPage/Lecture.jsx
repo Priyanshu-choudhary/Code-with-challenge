@@ -14,6 +14,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 // import { Editor } from '@monaco-editor/react';
 import * as monaco from 'monaco-editor';
 import './Leacture.css'
+import ErrorBoundary from '../ERROR/ErrorBoundary';
 function Lecture() {
     const { title } = useParams();
     const [lectureData, setLectureData] = useState([]);
@@ -231,7 +232,11 @@ function Lecture() {
                             </div>
                             {lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.title}
                         </h2>
-                        <p className={`text-lg p-3`}><HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.content || ""} /></p>
+                        <p className={`text-lg p-3`}>
+                        <ErrorBoundary>
+                        <HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.content || ""} />
+                        </ErrorBoundary>
+                        </p>
                     </div>
                     <div className="flex justify-between mt-4">
                         <button

@@ -16,11 +16,11 @@ const InLectureEditor = ({ initialValue }) => {
     const [iSubmit, setiSubmit] = useState(false);
     const [language, setLanguage] = useState('java');
     const [input, setInput] = useState('');
-    const {  bg, light,  } = useContext(UserContext);
+    const { bg, light, } = useContext(UserContext);
     const [themes, setThemes] = useState('vs-dark');
     const [editorLanguage, setEditorLanguage] = useState(language);
 
-  
+
 
     useEffect(() => {
         if (language === "python3" || language === "python2") {
@@ -54,11 +54,14 @@ const InLectureEditor = ({ initialValue }) => {
         setInput(e.target.value);
     };
 
+ 
+// Function to decode Base64 back to string and revert angle bracket placeholders
+
     return (
         <div className='super'>
             {!initialValue && <Dashboard />}
             <div className="-z-0">
-                <div style={{width:"80%"}} className="editor-section ml-20 ">
+                <div style={{ width: "80%" }} className="editor-section ml-20 ">
                     <div className="  editor-header border-x-2 border-black border-t-2 rounded-t-xl" style={{ backgroundColor: "#1f202a", color: "white" }}>
                         <span className='left-button'>CFC Editor</span>
                         <div className="right-buttons">
@@ -86,23 +89,23 @@ const InLectureEditor = ({ initialValue }) => {
                             </Button>
                         </div>
                     </div>
-                    <div className='border-x-2 border-black '>
+                    <div style={{ minWidth: 800 }} className='border-x-2 border-black '>
                         <Editor
                             height="calc(50vh - 40px)" // Adjust height considering header size
-                            
+                            width={"100%"}
                             language={editorLanguage}
-                            value={code}
+                            value={code} // Apply the unescapeHtml function here
                             onChange={handleEditorChange}
                             theme={themes}
                             options={{
-                                minimap: { enabled: false },  // Disable minimap
+                                minimap: { enabled: false },
                                 scrollbar: {
-                                    vertical: 'hidden',  // Hide vertical scrollbar
-                                    horizontal: 'hidden'  // Hide horizontal scrollbar
+                                    vertical: 'hidden',
+                                    horizontal: 'hidden'
                                 }
                             }}
-                            
                         />
+
                     </div>
 
                     <div className="output-section border-t-0 border-x-2 border-b-2 rounded-t-none rounded-b-xl border-black" >

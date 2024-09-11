@@ -65,7 +65,7 @@ const InLectureEditor = ({ initialValue }) => {
     
     return (
         <div className='super'>
-            {!initialValue && <Dashboard />}
+         
             <div className="-z-0">
                 <div style={{ width: "80%" }} className="editor-section ml-20 ">
                     <div className="  editor-header border-x-2 border-black border-t-2 rounded-t-xl" style={{ backgroundColor: "#1f202a", color: "white" }}>

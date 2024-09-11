@@ -15,6 +15,7 @@ import "./home.css"
 import { useNavigate } from 'react-router-dom';
 import TermsAndServise from '../TermsAndService/TermsAndServise';
 
+
 function Home() {
   const [typedInstance, setTypedInstance] = useState(null);
 
@@ -97,6 +98,7 @@ function Home() {
     <div>
       <Dashboard />
       <div style={{}}>
+      
           <section style={divStyle}>
           <div className="container" >
             <div className="row align-items-center">

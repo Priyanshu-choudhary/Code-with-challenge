@@ -26,7 +26,7 @@ const myuser = {
 
 // Navigation items
 const navigation = [
-    { name: 'Home', href: '/', current: false },
+
     { name: 'Learn', href: '/Tutorials', current: false },
     { name: 'Courses', href: '/learn', current: false },
     { name: 'Editor', href: '/EditorComponent', current: false },
@@ -124,7 +124,7 @@ function Dashboard() {
     return (
         <>
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-gray-800">
+                <Disclosure as="nav" className="bg-black">
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-2">
@@ -179,7 +179,7 @@ function Dashboard() {
 
                                             <button
                                                 type="button"
-                                                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                                className="relative rounded-full bg-black p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                             >
                                                 <span className="sr-only">View notifications</span>
 

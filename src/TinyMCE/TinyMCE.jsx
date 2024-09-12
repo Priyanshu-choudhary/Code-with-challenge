@@ -129,9 +129,12 @@ function CustomDataModal({ open, onClose, onSave }) {
         <h3>Enter Custom Data</h3>
         <TextareaAutosize
           minRows={5}
-          style={{ width: '100%', paddingLeft: 5 }}
+          maxRows={20}
+          style={{ width: '100%', paddingLeft: 5,maxHeight:600 }}
           value={customData}
           onChange={(e) => setCustomData(e.target.value)}
+          defaultValue="Your code will be output as an encoded string."
+          
         />
         <Button
           variant="contained"

@@ -58,6 +58,8 @@ import TestForm from './Form/TestForm.jsx';
 import CustomRoomForm from './Contest/CustomRoom/Form.jsx';
 import ProblemSet from './Problems/ProblemSet.jsx';
 import TermsAndServise from './TermsAndService/TermsAndServise.jsx';
+import ParallaxBanner from './Parallax/Parallax-Provider.jsx';
+
 
 
 
@@ -122,6 +124,7 @@ function App() {
                 <Route path="/TestForm" element={<TestForm />} />
                 <Route path="/CustomRoom" element={<CustomRoomForm />} />
                 <Route path="/TermsAndServise" element={<TermsAndServise />} />
+                <Route path="/Parallax" element={<ParallaxBanner />} />
 
 
               </Routes>

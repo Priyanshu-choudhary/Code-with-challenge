@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import { UserContext } from '../Context/UserContext';
 
 const InLectureEditor = ({ initialValue }) => {
-    const [code, setCode] = useState(initialValue || '// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
+    const [code, setCode] = useState(initialValue );
     const [output, setOutput] = useState('');
     const [iSubmit, setiSubmit] = useState(false);
     const [language, setLanguage] = useState('java');
@@ -64,9 +64,9 @@ const InLectureEditor = ({ initialValue }) => {
     }
     
     return (
-        <div className='super'>
+<div className='super'>
          
-            <div className="-z-0">
+{initialValue &&  <div className="-z-0">
                 <div style={{ width: "80%" }} className="editor-section ml-20 ">
                     <div className="  editor-header border-x-2 border-black border-t-2 rounded-t-xl" style={{ backgroundColor: "#1f202a", color: "white" }}>
                         <span className='left-button'>CFC Editor</span>
@@ -139,7 +139,7 @@ const InLectureEditor = ({ initialValue }) => {
                     </div>
                 </div>
 
-            </div>
+            </div>}
         </div>
     );
 };

@@ -23,11 +23,67 @@
 }
 
 .mce-content-body p {
-  padding-left: 30px;
+ 
   padding-top: 10px;
   padding-bottom: 10px;
   
  
+}
+
+.mce-content-body h6 {
+  min-width: 100%;
+  position: relative;
+  padding: 10px 30px 10px 80px; /* Adjusted for spacing */
+  background: #d2e2fa;
+  border-radius: 10px;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-left-color: #406df5;
+  border-right-width: 0px;
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  
+}
+
+
+
+.mce-content-body h6::after {
+  content: 'NOTE:';
+  position: absolute;
+  left: 10px; /* Gap between the vertical line and the NOTE text */
+  font-weight: bold;
+  color: #406df5;
+}
+
+.mce-content-body h5 {
+  min-width: 100%;
+  position: relative;
+  padding: 10px 30px 10px 100px; /* Adjusted for spacing */
+  background: #fbd7d7;
+  border-radius: 10px;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-left-color: #ba0a0a;
+  border-right-width: 0px;
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  
+}
+
+
+
+.mce-content-body h5::after {
+  content: 'Warning:';
+  position: absolute;
+  left: 10px; /* Gap between the vertical line and the NOTE text */
+  font-weight: bold;
+  color: #b20707;
 }
 
 .mce-content-body code {

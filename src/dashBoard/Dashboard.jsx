@@ -16,6 +16,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+
+import { Tooltip, IconButton } from '@mui/material';
+import NotificationButton from './Notification';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 // Dummy user data
 const myuser = {
@@ -32,7 +35,7 @@ const navigation = [
     { name: 'Editor', href: '/EditorComponent', current: false },
     { name: 'Problems', href: '/ProblemSet', current: false },
     { name: 'Contest', href: '/contest', current: false },
-   
+
 ]
 
 // User menu items
@@ -54,7 +57,7 @@ function classNames(...classes) {
 function Dashboard() {
     const navigate = useNavigate();
     console.log("Dashboard rerender");
-    const { user, setcurrentthemes, currentthemes,profileImage,role } = useContext(UserContext);
+    const { user, setcurrentthemes, currentthemes, profileImage, role } = useContext(UserContext);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('currentthemes');
@@ -133,13 +136,13 @@ function Dashboard() {
                                         <div className="flex-shrink-0">
                                             <a href="/">
                                                 <img
-                                                   width={60}
-                                                   height={70}
+                                                    width={60}
+                                                    height={70}
                                                     src={logo}
                                                     alt="CFC"
                                                 />
                                             </a>
-                                           
+
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
@@ -174,17 +177,10 @@ function Dashboard() {
                                                 control={<MaterialUISwitch checked={currentthemes} />}
                                                 onChange={handleSwitchChange}
                                             />
-                                            
-                                            <img style={{ height: "30px", marginRight: "10px" }} src={award} alt="leaderboard" onClick={() => handleClick()} />
 
-                                            <button
-                                                type="button"
-                                                className="relative rounded-full bg-black p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                            >
-                                                <span className="sr-only">View notifications</span>
+                                            <EmojiEventsIcon className='text-gray-400 mt-0 mr-2' onClick={() => handleClick()} />
 
-                                                <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                            </button>
+                                          {role=="ADMIN" &&<div><NotificationButton/></div> }
 
                                             {user ? <Menu as="div" className="relative ml-3">
                                                 <div>
@@ -274,22 +270,21 @@ function Dashboard() {
 
                                         {user ? <Avatar style={{ fontSize: "18px" }} sx={{ marginRight: "100px", bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
                                             : <></>}
-                                        <img style={{ height: "30px", marginRight: "10px" }} src={award} alt="leaderboard" onClick={handleClick} />
+                                        <EmojiEventsIcon  className='text-gray-400' onClick={() => handleClick()} />
 
 
 
-                                        <button
-                                            type="button"
-                                            className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                        >
-                                            <span className="sr-only">View notifications</span>
-                                            <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                        </button>
+                                        {/* bell icon */}
+                                        <NotificationButton/>
+
+
+
+
                                     </div>
                                     <div className="mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
                                             <Disclosure.Button
-                                                key={`${role!="ADMIN" &&item.name}`}
+                                                key={`${role != "ADMIN" && item.name}`}
                                                 as="a"
                                                 href={item.href}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"

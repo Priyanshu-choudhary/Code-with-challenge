@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import TermsAndServise from '../TermsAndService/TermsAndServise';
 
 
+
 function Home() {
   const [typedInstance, setTypedInstance] = useState(null);
 
@@ -110,6 +111,7 @@ function Home() {
                   <div className="col-12 col-md-auto">
                     <a style={{maxWidth:150,fontSize:20,fontWeight:"bolder",borderWidth:5,borderColor:bc,backgroundColor:bc,display:"flex",alignItems:"center",borderRadius:100,paddingLeft:30,paddingRight:30,height:50}} className="btn btn-primary w-100" href="/login">Sign Up</a>
                   </div>
+                  
                 </div>
               </div>
               <div className=" col-12 col-md-6 ">

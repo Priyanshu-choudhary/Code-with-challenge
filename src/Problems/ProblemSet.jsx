@@ -9,11 +9,15 @@ import BoxLoader from '../Loader/BoxLoader';
 import Skeleton from './Skeleton';
 import Card from './Ads/CourseAds';
 import ContestAds from './Ads/ContestAds';
+import Pagination from '@mui/material/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 
 function ProblemSet() {
     const [questions, setQuestions] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+    const [totalPages, settotalPages] = useState(10)
     const [filteredQuestions, setFilteredQuestions] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
@@ -31,10 +35,12 @@ function ProblemSet() {
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
-                const response = await fetch("https://hytechlabs.online:9090/Posts/username/ProblemSet");
+                const response = await fetch(`https://hytechlabs.online:9090/Posts/username/ProblemSet/posts?page=${page }&size=${size}`);
                 const data = await response.json();
-                setQuestions(data);
-                setFilteredQuestions(data);
+                let data2 = data.content;
+                settotalPages(data.totalPages)
+                setQuestions(data2);
+                setFilteredQuestions(data2);
             } catch (error) {
                 console.error("Error fetching questions:", error);
             } finally {
@@ -43,7 +49,7 @@ function ProblemSet() {
         };
 
         fetchQuestions();
-    }, []);
+    }, [page]);
 
     // Apply search and filter whenever search query or filter object changes
     useEffect(() => {
@@ -53,12 +59,12 @@ function ProblemSet() {
             // Apply filters based on filterObject
             if (filterObject.topics.length > 0) {
                 filtered = filtered.filter((question) =>
-                    question.tags?.some((topic) => filterObject.topics.includes(topic)) // Use optional chaining and array check
+                    question.tags?.some((topic) => filterObject.topics.includes(topic)) 
                 );
             }
             if (filterObject.companies.length > 0) {
                 filtered = filtered.filter((question) =>
-                    question.companies?.some((company) => filterObject.companies.includes(company)) // Use optional chaining and array check
+                    question.companies?.some((company) => filterObject.companies.includes(company)) 
                 );
             }
             if (filterObject.difficulty.length > 0) {
@@ -126,6 +132,13 @@ function ProblemSet() {
         });
     };
 
+    const handlePageChange = (event, value) => {
+        setPage(value);
+        
+        console.log("P "+page+" S "+size);
+        
+    };
+
     return (
         <div>
             <Dashboard />
@@ -151,7 +164,7 @@ function ProblemSet() {
                         </div>
                         <div className='flex gap-4'>
                             {role === "ADMIN" ? (
-                                <button onClick={() => { navigate(`/UploadQuestion/ProblemSet`) }}
+                                <button onClick={() => { navigate('/UploadQuestion/ProblemSet') }}
                                     className="rounded-3xl relative w-32 h-10 cursor-pointer flex items-center border border-green-400 bg-green-400 group hover:bg-green-400 active:bg-green-400 active:border-green-400"
                                 >
                                     <span className="text-white font-semibold ml-8 transform group-hover:translate-x-1 transition-all duration-300">Add</span>
@@ -200,8 +213,19 @@ function ProblemSet() {
                             ))
                         )}
                     </div>
+
+                    {/* Pagination */}
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <Pagination
+                            count={totalPages-1}
+                            page={page}
+                            onChange={handlePageChange}
+                            shape="rounded"
+                            color="primary"
+                        />
+                    </div>
                 </div>
-                <div className='ml-6 my-2'>
+                <div >
                     <Card />
                 </div>
             </div>

@@ -9,7 +9,9 @@ const Card = () => {
 
     return (
         <div className="card " style={{backgroundColor: "#b577e1",
-            backgroundImage: "linear-gradient(90deg, #b577e1 0%, #5041dd 100%)"
+            backgroundImage: "linear-gradient(90deg, #b577e1 0%, #5041dd 100%)",
+            maxWidth:300,
+            marginLeft:5
             }}>
             <div className="header">
                 <TipsAndUpdatesIcon fontSize={"large"} style={{color:"gold"}}/>

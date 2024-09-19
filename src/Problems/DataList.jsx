@@ -8,39 +8,39 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
     const [percentage, setPercentage] = useState(0);
     const navigate = useNavigate(); // Initialize useNavigate hook
     const { role } = useContext(UserContext);
-    const getRandomPercentage = (Difficulty) => {
-        let min, max;
+    // const getRandomPercentage = (Difficulty) => {
+    //     let min, max;
 
-        switch (Difficulty) {
-            case 'Easy':
-                min = 80;
-                max = 100;
-                break;
-            case 'Medium':
-                min = 60;
-                max = 80;
-                break;
-            case 'Hard':
-                min = 30;
-                max = 60;
-                break;
-            default:
-                throw new Error('Invalid Difficulty level');
-        }
+    //     switch (Difficulty) {
+    //         case 'Easy':
+    //             min = 80;
+    //             max = 100;
+    //             break;
+    //         case 'Medium':
+    //             min = 60;
+    //             max = 80;
+    //             break;
+    //         case 'Hard':
+    //             min = 30;
+    //             max = 60;
+    //             break;
+    //         default:
+    //             throw new Error('Invalid Difficulty level');
+    //     }
 
-        // Generate a random float number between min and max, with up to 2 decimal places
-        const random = Math.random() * (max - min) + min;
-        return parseFloat(random.toFixed(2));
-    };
+    //     // Generate a random float number between min and max, with up to 2 decimal places
+    //     const random = Math.random() * (max - min) + min;
+    //     return parseFloat(random.toFixed(2));
+    // };
 
-    const handleGenerate = () => {
-        const result = getRandomPercentage(Difficulty);
-        setPercentage(result);
-    };
+    // const handleGenerate = () => {
+    //     const result = getRandomPercentage(Difficulty);
+    //     setPercentage(result);
+    // };
 
-    useEffect(() => {
-        handleGenerate();
-    }, [Difficulty]);
+    // useEffect(() => {
+    //     handleGenerate();
+    // }, [Difficulty]);
 
     const handleEdit = () => {
         navigate(`/edit/${id}/ProblemSet`);

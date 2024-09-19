@@ -127,7 +127,7 @@ function Dashboard() {
     return (
         <>
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-black">
+                <Disclosure as="nav" className="  bg-opacity-900">
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-2">
@@ -151,8 +151,8 @@ function Dashboard() {
                                                         key={item.name}
                                                         href={item.href}
                                                         className={classNames(
-                                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                            'rounded-md px-3 py-2 text-sm font-medium'
+                                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-700  hover:border-b-2 hover:border-blue-600' ,
+                                                            ' px-3 py-2 text-sm font-medium'
                                                         )}
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
@@ -161,7 +161,6 @@ function Dashboard() {
                                                     </a>
 
                                                 ))}
-
                                             </div>
 
                                         </div>
@@ -178,7 +177,7 @@ function Dashboard() {
                                                 onChange={handleSwitchChange}
                                             />
 
-                                            <EmojiEventsIcon className='text-gray-400 mt-0 mr-2' onClick={() => handleClick()} />
+                                            <EmojiEventsIcon className='text-gray-400 mt-0 mr-2 hover:text-white' onClick={() => handleClick()} />
 
                                           {role=="ADMIN" &&<div><NotificationButton/></div> }
 

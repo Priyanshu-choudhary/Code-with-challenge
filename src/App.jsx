@@ -31,8 +31,6 @@ import ContestResult from './Contest/Results/ContestResult';
 import NewLeaderboard from './LeaderBoard/NewLeaderboard';
 import CourseForm from './UploadSection/newCourse';
 import { CourseProvider } from './Context/CourseContex';
-import ImageUpload from './fileUpload/FileUpload';
-import FileDownload from './fileUpload/DowloadFile';
 import ContinueLearing from './Leetcode/continueLearning';
 import TopicsWiseSkill from './Skill/TreeViewQuestion';
 import ManagerDashbord from './Admins/ManagerDashbord';
@@ -87,8 +85,6 @@ function App() {
               <Route path="/CourseForm" element={<CourseForm />} />
               <Route path="/LectureForm" element={<LectureForm />} />
               <Route path="/QuestionTypeSelector/:uploadURL" element={<QuestionTypeSelector />} />
-              <Route path="/ImageUpload" element={<ImageUpload />} />
-              <Route path="/FileDownload" element={<FileDownload />} />
               <Route path="/TreeView" element={<TopicsWiseSkill />} />
               <Route path="/Doc" element={<ManagerDashbord />} />
               <Route path="/Document" element={<DocumentPage />} />

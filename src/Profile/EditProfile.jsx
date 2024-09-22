@@ -63,9 +63,9 @@ const ValidationTextFields = () => {
 
                 setFormData((prevData) => ({
                     ...prevData,
-                    profileImg: response.data.fileUrl, // Set the uploaded image URL
+                    profileImg: response.data.location, // Set the uploaded image URL
                 }));
-                console.log("Uploaded image URL: ", response.data.fileUrl);
+                console.log("Uploaded image URL: ", response.data.location);
                 alert('Image uploaded successfully!');
             } catch (error) {
                 console.error('Error uploading image:', error.response ? error.response.data : error.message);

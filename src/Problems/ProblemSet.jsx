@@ -141,95 +141,102 @@ function ProblemSet() {
 
     return (
         <div>
-            <Dashboard />
-            <div className='md:flex'>
-                <div>
-                    <Filter setfilterObject={setFilterObject} />
-                    <ContestAds />
-                </div>
-                <div>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <ProblemOfTheDay handlePODClick={handlePODClick} length={questions.length} setPODindex={setPODindex} Accuracy={80.4} Difficulty={"Medium"} />
-                    </div>
+  <Dashboard />
+  <div className="md:flex">
+    {/* Sticky Section for Filters and Ads */}
+    <div style={{ height: "100vh", position: "sticky", top: 0, overflowY: "auto" }}>
+      <Filter setfilterObject={setFilterObject} />
+      <ContestAds />
+    </div>
 
-                    <div className='pt-4 flex md:gap-14' style={{ display: "flex", justifyContent: "center" }}>
-                        <div>
-                            <input
-                                type="text"
-                                className="custom-input"
-                                placeholder="Search Question"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                        <div className='flex gap-4'>
-                            {role === "ADMIN" ? (
-                                <button onClick={() => { navigate('/UploadQuestion/ProblemSet') }}
-                                    className="rounded-3xl relative w-32 h-10 cursor-pointer flex items-center border border-green-400 bg-green-400 group hover:bg-green-400 active:bg-green-400 active:border-green-400"
-                                >
-                                    <span className="text-white font-semibold ml-8 transform group-hover:translate-x-1 transition-all duration-300">Add</span>
-                                    <span className="absolute right-0 h-full w-10 bg-green-500 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300 rounded-3xl">
-                                        <svg className="svg w-8 text-white" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                                            <line x1="12" x2="12" y1="5" y2="19"></line>
-                                            <line x1="5" x2="19" y1="12" y2="12"></line>
-                                        </svg>
-                                    </span>
-                                </button>
-                            ) : (
-                                <div className='min-w-32'></div>
-                            )}
-                            <button onClick={handleRandomClick} style={{ borderRadius: 20 }} className='flex gap-2 border-2 border-gray-300 px-2 py-1.5 font-bold hover:bg-blue-200'>
-                                <ShuffleIcon /> Random
-                            </button>
-                        </div>
-                    </div>
+    {/* Main Content */}
+    <div style={{ flexGrow: 1 }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ProblemOfTheDay handlePODClick={handlePODClick} length={questions.length} setPODindex={setPODindex} Accuracy={80.4} Difficulty={"Medium"} />
+      </div>
 
-                    <div className='mt-2' style={{ display: "flex", justifyContent: "center" }}>
-                        <div className='bg-blue-50 rounded-t-lg flex gap-5 space-x-4 py-3 px-2'>
-                            <span style={{ minWidth: 250 }}>Title</span>
-                            <span>Difficulty</span>
-                            <span>Accuracy</span>
-                            <span>Action</span>
-                        </div>
-                    </div>
-
-                    <div className="" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-                        {loading ? (
-                            <div className='w-full'>
-                                <Skeleton />
-                                <Skeleton />
-                                <Skeleton />
-                            </div>
-                        ) : (
-                            filteredQuestions.map((question) => (
-                                <DataList
-                                    key={question.id}
-                                    id={question.id}
-                                    title={question.title}
-                                    Difficulty={question.difficulty || "Unknown"}
-                                    Accuracy={question.accuracy}
-                                    problems={question}
-                                />
-                            ))
-                        )}
-                    </div>
-
-                    {/* Pagination */}
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                        <Pagination
-                            count={totalPages-1}
-                            page={page}
-                            onChange={handlePageChange}
-                            shape="rounded"
-                            color="primary"
-                        />
-                    </div>
-                </div>
-                <div >
-                    <Card />
-                </div>
-            </div>
+      <div className="pt-4 flex md:gap-14" style={{ display: "flex", justifyContent: "center" }}>
+        <div>
+          <input
+            type="text"
+            className="custom-input"
+            placeholder="Search Question"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
+
+        <div className="flex gap-4">
+          {role === "ADMIN" ? (
+            <button onClick={() => { navigate('/UploadQuestion/ProblemSet') }}
+              className="rounded-3xl relative w-32 h-10 cursor-pointer flex items-center border border-green-400 bg-green-400 group hover:bg-green-400 active:bg-green-400 active:border-green-400"
+            >
+              <span className="text-white font-semibold ml-8 transform group-hover:translate-x-1 transition-all duration-300">Add</span>
+              <span className="absolute right-0 h-full w-10 bg-green-500 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300 rounded-3xl">
+                <svg className="svg w-8 text-white" fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="12" x2="12" y1="5" y2="19"></line>
+                  <line x1="5" x2="19" y1="12" y2="12"></line>
+                </svg>
+              </span>
+            </button>
+          ) : (
+            <div className="min-w-32"></div>
+          )}
+          <button onClick={handleRandomClick} style={{ borderRadius: 20 }} className="flex gap-2 border-2 border-gray-300 px-2 py-1.5 font-bold hover:bg-blue-200">
+            <ShuffleIcon /> Random
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-2" style={{ display: "flex", justifyContent: "center" }}>
+        <div className="bg-blue-50 rounded-t-lg flex gap-5 space-x-4 py-3 px-2">
+          <span style={{ minWidth: 250 }}>Title</span>
+          <span>Difficulty</span>
+          <span>Accuracy</span>
+          <span>Action</span>
+        </div>
+      </div>
+
+      <div className="" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
+        {loading ? (
+          <div className="w-full">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        ) : (
+          filteredQuestions.map((question) => (
+            <DataList
+              key={question.id}
+              id={question.id}
+              title={question.title}
+              Difficulty={question.difficulty || "Unknown"}
+              Accuracy={question.accuracy}
+              problems={question}
+            />
+          ))
+        )}
+      </div>
+
+      {/* Pagination */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+        <Pagination
+          count={totalPages - 1}
+          page={page}
+          onChange={handlePageChange}
+          shape="rounded"
+          color="primary"
+        />
+      </div>
+    </div>
+
+    {/* Sticky Section for the Card */}
+    <div style={{ height: "100vh", position: "sticky", top: 0, overflowY: "auto" }}>
+      <Card />
+    </div>
+  </div>
+</div>
+
     );
 }
 

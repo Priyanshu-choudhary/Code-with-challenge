@@ -93,7 +93,7 @@ export default function CourseEdit({ course }) {
                     }
                 });
 
-                const uploadedImageUrl = response.data.fileUrl; // Adjust according to your server's response structure
+                const uploadedImageUrl = response.data.location; // Adjust according to your server's response structure
                 setImageUrl(uploadedImageUrl);
                 setAlert({ show: true, message: 'Image uploaded successfully!', severity: 'success' });
             } catch (error) {

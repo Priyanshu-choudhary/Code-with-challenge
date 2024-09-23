@@ -40,7 +40,7 @@ function NewLeaderboard() {
         }
 
         setLoader(true);
-        fetch(`https://localhost:9090/Public/user/id/${id}`, { method: 'DELETE' })
+        fetch(`https://hytechlabs.online:9090/Public/user/id/${id}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     const updatedUsers = users.filter(user => user.id !== id);

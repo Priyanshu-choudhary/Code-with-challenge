@@ -49,17 +49,20 @@ function LearningPage() {
 
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`https://hytechlabs.online:9090/Course/${user}/0/20`, { //700ms
+        const response = await fetch(`https://hytechlabs.online:9090/Course/user?userName=${user}&page=0&size=10`, { //700ms
           method: 'GET',
         });
         if (response.ok) {
-          const data = await response.json();
+          const page = await response.json();
+          const data=page.content;
+         
+          
           if (Array.isArray(data)) {
             // localStorage.clear("");
             localStorage.setItem('userCourses', JSON.stringify(data));
             userCoursesRef.current = data;
-            setUserCourses(data[0].courses);
-            updateMaxCardWidth(data[0].courses);
+            setUserCourses(data);
+            updateMaxCardWidth(data);
           } else {
             console.error('Fetched user data is not an array:', data);
             setUserCourses([]);

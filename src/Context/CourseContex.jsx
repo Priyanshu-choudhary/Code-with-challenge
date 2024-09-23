@@ -10,14 +10,14 @@ export const CourseProvider = ({ children }) => {
   const fetchOfficialCourses = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://hytechlabs.online:9090/Course/OfficialCources/0/10', {
+      const response = await fetch('https://hytechlabs.online:9090/Course/user?userName=OfficialCources&page=0&size=10', {
         method: 'GET',
       });
       if (response.ok) {
         const data = await response.json();
-        if (Array.isArray(data)) {
+        if (Array.isArray(data.content)) {
           // console.log("> "+JSON.stringify(data[0].courses[0]));
-          setOfficialCourses(data[0].courses);
+          setOfficialCourses(data.content);
         } else {
           console.error('Fetched official data is not an array:', data);
           setOfficialCourses([]);

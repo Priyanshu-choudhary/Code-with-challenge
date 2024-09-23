@@ -8,7 +8,7 @@ import { UserContext } from '../Context/UserContext';
 import "./css.css"
 import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
@@ -45,7 +45,7 @@ const userNavigation = [
     { name: 'Admins Management', href: '/Doc' },
     { name: 'Documentation', href: '/Document' },
     { name: 'About us', href: '/AboutUs' },
-    { name: 'Sign out', href: '/logout' },
+    { name: 'Sign out', href: '/' },
 
 ]
 
@@ -134,33 +134,32 @@ function Dashboard() {
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
-                                            <a href="/">
+                                            <Link to="/">
                                                 <img
                                                     width={60}
                                                     height={70}
                                                     src={logo}
                                                     alt="CFC"
                                                 />
-                                            </a>
+                                            </Link>
 
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
-                                                    <a
+                                                    <Link
                                                         key={item.name}
-                                                        href={item.href}
+                                                        to={item.href} // Use to instead of href
                                                         className={classNames(
-                                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-700  hover:border-b-2 hover:border-blue-600' ,
-                                                            ' px-3 py-2 text-sm font-medium'
+                                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-700 hover:border-b-2 hover:border-blue-600',
+                                                            'px-3 py-2 text-sm font-medium'
                                                         )}
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
                                                         {item.name}
-
-                                                    </a>
-
+                                                    </Link>
                                                 ))}
+
                                             </div>
 
                                         </div>
@@ -179,7 +178,7 @@ function Dashboard() {
 
                                             <EmojiEventsIcon className='text-gray-400 mt-0 mr-2 hover:text-white' onClick={() => handleClick()} />
 
-                                          {role=="ADMIN" &&<div><NotificationButton/></div> }
+                                            {role == "ADMIN" && <div><NotificationButton /></div>}
 
                                             {user ? <Menu as="div" className="relative ml-3">
                                                 <div>
@@ -203,22 +202,23 @@ function Dashboard() {
                                                     leaveFrom="transform opacity-100 scale-100"
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
-                                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 bg-white shadow-lg">
                                                         {userNavigation.map((item) => (
                                                             <Menu.Item key={item.name}>
                                                                 {({ active }) => (
-                                                                    <a
-                                                                        href={item.href}
+                                                                    <Link
+                                                                        to={item.href} // Use to instead of href
                                                                         className={classNames(
                                                                             active ? 'bg-gray-100' : '',
                                                                             'block px-4 py-2 text-sm text-gray-700'
                                                                         )}
                                                                     >
                                                                         {item.name}
-                                                                    </a>
+                                                                    </Link>
                                                                 )}
                                                             </Menu.Item>
                                                         ))}
+
                                                     </Menu.Items>
                                                 </Transition>
                                             </Menu> : <button className="button-85" role="button">
@@ -269,12 +269,12 @@ function Dashboard() {
 
                                         {user ? <Avatar style={{ fontSize: "18px" }} sx={{ marginRight: "100px", bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
                                             : <></>}
-                                        <EmojiEventsIcon  className='text-gray-400' onClick={() => handleClick()} />
+                                        <EmojiEventsIcon className='text-gray-400' onClick={() => handleClick()} />
 
 
 
                                         {/* bell icon */}
-                                        <NotificationButton/>
+                                        <NotificationButton />
 
 
 

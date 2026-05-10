@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function CourseEdit({ course }) {
     const location = useLocation();
-    const { courseDetail,auth } = location.state || {};
+    const { courseDetail, auth } = location.state || {};
     const [formData, setFormData] = useState({
         title: courseDetail.title,
         description: courseDetail.description,
@@ -87,7 +87,7 @@ export default function CourseEdit({ course }) {
             formData.append('file', file);
 
             try {
-                const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+                const response = await axios.post('http://localhost:9090/Files/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -120,15 +120,15 @@ export default function CourseEdit({ course }) {
         console.log(postData);
         try {
             const response = await axios.put(
-                `https://hytechlabs.online:9090/Course/id/${courseDetail.id}`,
+                `http://localhost:9090/Course/id/${courseDetail.id}`,
                 postData,
                 {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     auth: {
-                        username: `${auth?auth:"OfficialCources"}`,
-                        password: `${auth?auth:"OfficialCources"}`,
+                        username: `${auth ? auth : "OfficialCources"}`,
+                        password: `${auth ? auth : "OfficialCources"}`,
                     },
                 }
             );
@@ -242,3 +242,4 @@ export default function CourseEdit({ course }) {
         </>
     );
 }
+

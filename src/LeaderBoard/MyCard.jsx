@@ -64,7 +64,7 @@ function UserCard({ userId, index }) {
     let isMounted = true;
 
     if (userId) {
-      fetch(`https://hytechlabs.online:9090/Public/${userId}`)
+      fetch(`http://localhost:9090/Public/${userId}`)
         .then(response => response.json())
         .then(data => {
           if (isMounted) {
@@ -81,7 +81,7 @@ function UserCard({ userId, index }) {
 
   if (!user) {
     return (
-      <div style={{backgroundColor:"black"}}>
+      <div style={{ backgroundColor: "black" }}>
         <BoxLoader />
       </div>);
   }
@@ -125,3 +125,4 @@ function MyCard({ userId, index }) {
 }
 
 export default MyCard;
+

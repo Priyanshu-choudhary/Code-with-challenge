@@ -43,7 +43,7 @@ const TestScreen = ({ onAgree }) => {
     window.addEventListener('contextmenu', (e) => e.preventDefault());
 
     const fetchProblems = async () => {
-      const API_URL = `https://hytechlabs.online:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
+      const API_URL = `http://localhost:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
       setLoading(true);
 
       try {
@@ -99,8 +99,8 @@ const TestScreen = ({ onAgree }) => {
           currentIndex: 0,
           totalProblems: problems.length,
           language: contest.language,
-          timeLeft:contest.timeDuration,
-          contest:contest,
+          timeLeft: contest.timeDuration,
+          contest: contest,
         },
       });
     } else {
@@ -151,3 +151,4 @@ const TestScreen = ({ onAgree }) => {
 };
 
 export default TestScreen;
+

@@ -58,10 +58,10 @@ export default function LeaderBoard() {
     const navigate = useNavigate();
 
     // Define an array of usernames to exclude
-    const excludeUsers = ["OfficialCources", "ProblemSet","Contest"];
+    const excludeUsers = ["OfficialCources", "ProblemSet", "Contest"];
 
     useEffect(() => {
-        fetch('https://hytechlabs.online:9090/Public/getAllUser')
+        fetch('http://localhost:9090/Public/getAllUser')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -70,7 +70,7 @@ export default function LeaderBoard() {
             })
             .then(data => {
                 console.log('Fetched data:', data);
-// console.log("user image data "+user.profileImg);
+                // console.log("user image data "+user.profileImg);
                 if (Array.isArray(data)) {
                     const filteredData = data.filter(user => !excludeUsers.includes(user.name));
 
@@ -115,7 +115,7 @@ export default function LeaderBoard() {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
-            fetch(`https://hytechlabs.online:9090/Public/user/id/${id}`, {
+            fetch(`http://localhost:9090/Public/user/id/${id}`, {
                 method: 'DELETE',
             })
                 .then(response => {
@@ -171,7 +171,7 @@ export default function LeaderBoard() {
         <div style={{ backgroundColor: bg, color: ibg }}>
             <Dashboard />
             <p style={{ fontSize: '40px', fontFamily: 'revert-layer', marginLeft: '50px', fontWeight: 'bold' }}>LeaderBoard</p>
-            {loading ?<BoxLoader/>:<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {loading ? <BoxLoader /> : <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ width: '67%', backgroundColor: 'white' }}>
                     {loading ? (
                         <p>Loading...</p>
@@ -201,3 +201,4 @@ export default function LeaderBoard() {
         </div>
     );
 }
+

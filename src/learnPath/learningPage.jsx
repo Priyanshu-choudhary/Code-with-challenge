@@ -49,14 +49,14 @@ function LearningPage() {
 
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`https://hytechlabs.online:9090/Course/user?userName=${user}&page=0&size=10`, { //700ms
+        const response = await fetch(`http://localhost:9090/Course/user?userName=${user}&page=0&size=10`, { //700ms
           method: 'GET',
         });
         if (response.ok) {
           const page = await response.json();
-          const data=page.content;
-         
-          
+          const data = page.content;
+
+
           if (Array.isArray(data)) {
             // localStorage.clear("");
             localStorage.setItem('userCourses', JSON.stringify(data));
@@ -101,11 +101,11 @@ function LearningPage() {
       <div style={{ backgroundColor: bg, color: ibg }}>
         <Dashboard />
         {/* { && <p style={{ color: ibg, position: "absolute", left: 350, bottom: 20 }}><BoxLoader/></p>} */}
-       
-        <PromoBanner 
-        message="Create your own Courses now." 
-        onButtonClick={handleCreateContestClick} 
-        buttonText="Create New"/>
+
+        <PromoBanner
+          message="Create your own Courses now."
+          onButtonClick={handleCreateContestClick}
+          buttonText="Create New" />
 
         <p style={{ marginLeft: 10, color: ibg, fontSize: '40px', fontFamily: 'revert-layer', fontWeight: 'bold' }}>
           Learn Skills
@@ -142,7 +142,7 @@ function LearningPage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '90px' }}>
             {officialCourses.map((course, index) => (
               <div onClick={() => handleCardClick(course)}>
-                {loading ?<Skeleton/>:<ImgMediaCard
+                {loading ? <Skeleton /> : <ImgMediaCard
                   key={index}
                   title={course.title}
                   description={course.description}
@@ -153,10 +153,10 @@ function LearningPage() {
                 />}
               </div>
             ))}
-            {loading &&<div className='flex gap-10'>
-              <Skeleton/>
-              <Skeleton/>
-              <Skeleton/>
+            {loading && <div className='flex gap-10'>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
             </div>}
           </div>
         </div>
@@ -167,3 +167,4 @@ function LearningPage() {
 }
 
 export default LearningPage;
+

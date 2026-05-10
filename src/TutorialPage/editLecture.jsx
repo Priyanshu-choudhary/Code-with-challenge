@@ -38,7 +38,7 @@ export default function EditLecture() {
     const fetchLectureData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://hytechlabs.online:9090/Lecture/id/${id}`, {
+        const response = await axios.get(`http://localhost:9090/Lecture/id/${id}`, {
           headers: { 'Content-Type': 'application/json' },
           auth: {
             username: 'testleacture',
@@ -124,10 +124,10 @@ export default function EditLecture() {
         subHeadingsToRemove: subHeadingTitle ? [subHeadingTitle] : []
       };
 
-      // console.log(`https://hytechlabs.online:9090/Lecture/removeHeadings/id/${id}`+"  >> "+JSON.stringify(data));
+      // console.log(`http://localhost:9090/Lecture/removeHeadings/id/${id}`+"  >> "+JSON.stringify(data));
 
       await axios.put(
-        `https://hytechlabs.online:9090/Lecture/removeHeadings/id/${id}`,
+        `http://localhost:9090/Lecture/removeHeadings/id/${id}`,
         data,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -198,7 +198,7 @@ export default function EditLecture() {
     setLoading(true);
     try {
       await axios.put(
-        `https://hytechlabs.online:9090/Lecture/id/${id}`,
+        `http://localhost:9090/Lecture/id/${id}`,
         formData,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -333,3 +333,4 @@ export default function EditLecture() {
     </>
   );
 }
+

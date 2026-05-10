@@ -66,8 +66,8 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
         const confirmed = window.confirm("Are you sure you want to delete this problem?");
         if (confirmed) {
             try {
-                const basicAuth = 'Basic ' + btoa(`ProblemSet:ProblemSet`);
-                const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${id}`, {
+                const basicAuth = 'Bearer ' + localStorage.getItem('token');
+                const response = await fetch(`http://localhost:9090/Posts/id/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': basicAuth,
@@ -190,3 +190,4 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
 }
 
 export default DataList;
+

@@ -7,7 +7,7 @@
     import Spinner from 'react-bootstrap/Spinner';
     import TextField from '@mui/material/TextField';
     import { UserContext } from '../Context/UserContext';
-    import JDoodleExample from '../JDoodle/JDoodleExample';
+    import { runCode as judge0Run } from '../judge0/judge0Service';
     import './EditorComponent.css';
     import CloseIcon from '@mui/icons-material/Close';
     import Split from 'react-split';
@@ -39,9 +39,14 @@ import zIndex from '@mui/material/styles/zIndex';
 
         const runCode = async () => {
             setiSubmit(true);
-            const result = await JDoodleExample(code, language, input);
-            setiSubmit(false);
-            setOutput(result);  // Assume result is an object with an output property
+            try {
+                const result = await judge0Run(code, language, input);
+                setOutput(result);
+            } catch (e) {
+                setOutput({ stderr: e.message });
+            } finally {
+                setiSubmit(false);
+            }
         };
 
         const handleLanguageChange = useCallback((lang) => {
@@ -78,10 +83,11 @@ import zIndex from '@mui/material/styles/zIndex';
             };
         }, []);
     
-        // Extracting text from output object, defaulting to empty string if not available
-        const outputText = output && typeof output === 'object' && 'output' in output
-            ? output.output
-            : JSON.stringify(output, null, 2); // Display as JSON if output is not an object with 'output' property
+        const outputText = output
+            ? (output.compile_output || output.stderr
+                ? (output.compile_output || '') + (output.stderr || '')
+                : (output.stdout || ''))
+            : '';
 
         return (
             <div >
@@ -202,3 +208,4 @@ import zIndex from '@mui/material/styles/zIndex';
     };
 
     export default React.memo(EditorComponent);
+

@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { UserContext } from '../Context/UserContext';
 
 const ValidationTextFields = () => {
-    const { bg,bc,ibg,dark,light,user, password } = useContext(UserContext);
+    const { bg, bc, ibg, dark, light, user, password } = useContext(UserContext);
     const [existingData, setExistingData] = useState({});
     const [formData, setFormData] = useState({
         email: '',
@@ -23,9 +23,9 @@ const ValidationTextFields = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+            const basicAuth = 'Bearer ' + localStorage.getItem('token');
             try {
-                const response = await fetch('https://hytechlabs.online:9090/Public/showUser/${username}}', {
+                const response = await fetch('http://localhost:9090/Public/showUser/${username}}', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,12 +63,12 @@ const ValidationTextFields = () => {
         };
 
         try {
-            const url = `https://hytechlabs.online:9090/Public/showUser/${user}}`;
+            const url = `http://localhost:9090/Public/showUser/${user}}`;
             updatedData.password = password;
 
             const headers = new Headers();
             headers.set('Content-Type', 'application/json');
-           
+
 
             const response = await fetch(url, {
                 method: 'PUT',
@@ -173,3 +173,4 @@ const ValidationTextFields = () => {
 };
 
 export default ValidationTextFields;
+

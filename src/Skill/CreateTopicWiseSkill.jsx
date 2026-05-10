@@ -19,11 +19,11 @@ const CreateTopicSkillForm = () => {
       const user = 'yourUsername'; // Replace with actual credentials or secure method
       const password = 'yourPassword';
 
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
 
       console.log('TopicSkill detail:', JSON.stringify(topicSkillData));
 
-      const response = await fetch('https://hytechlabs.online:9090/TopicWiseSkills', {
+      const response = await fetch('http://localhost:9090/TopicWiseSkills', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,39 +67,40 @@ const CreateTopicSkillForm = () => {
 
   return (
     <div >
-        <Dashboard/>
-    <Box className='mt-5' component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, margin: 'auto' }}>
-      <TextField
-        label="Topic Skill Name"
-        variant="outlined"
-        name="name"
-        value={formData.name}
-        onChange={handleInputChange}
-        required
-      />
-      
-      <TextField
-        label="Children"
-        variant="outlined"
-        name="children"
-        value={formData.children}
-        onChange={handleInputChange}
-      />
+      <Dashboard />
+      <Box className='mt-5' component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, margin: 'auto' }}>
+        <TextField
+          label="Topic Skill Name"
+          variant="outlined"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+        />
 
-      <TextField
-        label="Problem"
-        variant="outlined"
-        name="problem"
-        value={formData.problem}
-        onChange={handleInputChange}
-      />
+        <TextField
+          label="Children"
+          variant="outlined"
+          name="children"
+          value={formData.children}
+          onChange={handleInputChange}
+        />
 
-      <Button type="submit" variant="contained" color="primary">
-        Create Topic Skill
-      </Button>
-    </Box>
+        <TextField
+          label="Problem"
+          variant="outlined"
+          name="problem"
+          value={formData.problem}
+          onChange={handleInputChange}
+        />
+
+        <Button type="submit" variant="contained" color="primary">
+          Create Topic Skill
+        </Button>
+      </Box>
     </div>
   );
 };
 
 export default CreateTopicSkillForm;
+

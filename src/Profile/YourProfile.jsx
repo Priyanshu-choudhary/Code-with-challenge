@@ -35,7 +35,7 @@ const YourProfile = () => {
 
       try {
         // Fetch user data
-        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`, {
+        const userResponse = await fetch(`http://localhost:9090/Public/showUser/${user}`, {
           method: 'GET',
         });
 
@@ -63,15 +63,15 @@ const YourProfile = () => {
     // navigate(`/question/${problem.id}`, { state: problem });
     navigate(`/question/${problem.id}/ProblemSet`, {
       state: {
-          problems: [problem],
-          currentIndex: 0,
-          navHistory: "no def",
-          currentPage: "no current page",
-          CourseDescription: "description",
-          totalProblems: 0,
-          language: [problem.language?problem.language:"java"]
+        problems: [problem],
+        currentIndex: 0,
+        navHistory: "no def",
+        currentPage: "no current page",
+        CourseDescription: "description",
+        totalProblems: 0,
+        language: [problem.language ? problem.language : "java"]
       }
-  });
+    });
   };
 
   const toggleForm = () => {
@@ -139,30 +139,30 @@ const YourProfile = () => {
                 <p>{userData.skills}</p>
               </div>
             </div>
-            
+
             <div className=' ml-3 mt-3 side-navbar ' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
-            <div className='rounded-lg' style={{ backgroundColor: dark }}>
-                    <div className='flex '>
-                      <p className='font-bold pt-2 pl-2'>Courses:</p>
-                      <p className=' pr-5 text-lg pt-2 pl-60 font-bold'>{userData?.courses?.length}</p>
-                    </div>
-              {!isLoading && userData?.courses?.map((course, index) => (
-                <div className='p-3 ml-4' style={{ minWidth: 1000 }}>
-                  <YourProgressCard
-                    key={index}
-                    title={course.title}
-                    progress={course.progress}
-                    totalQuestions={course.totalQuestions}
-                    rating={course.rating}
-                    completeQuestions={course.completeQuestions}
-                    course={course}
-
-                  />
+              <div className='rounded-lg' style={{ backgroundColor: dark }}>
+                <div className='flex '>
+                  <p className='font-bold pt-2 pl-2'>Courses:</p>
+                  <p className=' pr-5 text-lg pt-2 pl-60 font-bold'>{userData?.courses?.length}</p>
                 </div>
-              ))}
-              {userData.courses?.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
+                {!isLoading && userData?.courses?.map((course, index) => (
+                  <div className='p-3 ml-4' style={{ minWidth: 1000 }}>
+                    <YourProgressCard
+                      key={index}
+                      title={course.title}
+                      progress={course.progress}
+                      totalQuestions={course.totalQuestions}
+                      rating={course.rating}
+                      completeQuestions={course.completeQuestions}
+                      course={course}
 
-            </div>
+                    />
+                  </div>
+                ))}
+                {userData.courses?.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
+
+              </div>
             </div>
           </Grid>
           <Grid xs>
@@ -195,14 +195,14 @@ const YourProfile = () => {
 
               </div>
               <div className='mt-5  side-navbar' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
-              <div className='rounded-lg' style={{ backgroundColor: dark }}>
-                    <div style={{ justifyContent: "space-between" }} className='flex '>
-                      <p className='font-bold pt-2 pl-2'>Contests:</p>
-                      <p className='text-right pr-5 text-lg pt-1 pl-2 font-bold'>{userData?.userContestDetails?.length}</p>
+                <div className='rounded-lg' style={{ backgroundColor: dark }}>
+                  <div style={{ justifyContent: "space-between" }} className='flex '>
+                    <p className='font-bold pt-2 pl-2'>Contests:</p>
+                    <p className='text-right pr-5 text-lg pt-1 pl-2 font-bold'>{userData?.userContestDetails?.length}</p>
 
-                    </div>
-                {userData?.userContestDetails?.map((Contest, index) => (
-                  
+                  </div>
+                  {userData?.userContestDetails?.map((Contest, index) => (
+
                     <div className='m-2 mt-2 p-2 rounded-xl' style={{ backgroundColor: light }}>
 
                       <div className='flex '>
@@ -217,9 +217,9 @@ const YourProfile = () => {
                       </div>
 
                     </div>
-                
-                ))}
-                  </div>
+
+                  ))}
+                </div>
               </div>
             </div>
           </Grid>
@@ -269,3 +269,4 @@ const YourProfile = () => {
 };
 
 export default YourProfile;
+

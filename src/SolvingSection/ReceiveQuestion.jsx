@@ -312,10 +312,10 @@ function QuestionApi() {
 
       };
 
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
       console.log("contest detail " + JSON.stringify(newContest));
 
-      const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest`, {
+      const response = await fetch(`http://localhost:9090/UserDetailsContest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -404,7 +404,7 @@ function QuestionApi() {
         // };
         // console.log("current ans "+currentans);
         const response = await axios.post(
-          `https://hytechlabs.online:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+          `http://localhost:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
           currentans,
           {
 
@@ -437,7 +437,7 @@ function QuestionApi() {
         }
         const response2 = await update();
         const response = await axios.post(
-          'https://hytechlabs.online:9090/Posts',
+          'http://localhost:9090/Posts',
           currentans,
           {
             auth: {
@@ -480,7 +480,7 @@ function QuestionApi() {
     try {
       const endTime = new Date().toISOString();;
       const response = await axios.put(
-        `https://hytechlabs.online:9090/UserDetailsContest/id/${UserDetailsContestId.id}`,
+        `http://localhost:9090/UserDetailsContest/id/${UserDetailsContestId.id}`,
         { endTime },
         {
           auth: {
@@ -521,23 +521,23 @@ function QuestionApi() {
       try {
         // Create a copy of the problem object without the 'id' property
         const { id, ...problemWithoutId } = problem;
-  
+
         // Convert the modified object to a JSON string
         let dataupload = JSON.stringify(problemWithoutId);
         console.log(dataupload);
-  
+
         // Send the data to the server
         const response = await axios.post(
-          `https://hytechlabs.online:9090/Posts/username/${user}`,
+          `http://localhost:9090/Posts/username/${user}`,
           dataupload,
           {
             headers: {
               'Content-Type': 'application/json', // explicitly set content type
             },
-           
+
           }
         );
-  
+
         if (response.status === 200) {
           console.log("Submit successfully.");
         }
@@ -546,7 +546,7 @@ function QuestionApi() {
       }
     }
   }
-  
+
   return (
     <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
 
@@ -771,3 +771,4 @@ function QuestionApi() {
 }
 
 export default QuestionApi;
+

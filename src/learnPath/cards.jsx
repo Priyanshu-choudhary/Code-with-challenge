@@ -59,3 +59,4 @@ export default function ImgMediaCard({ id,permission, title, image, description,
 
   );
 }
+

@@ -29,18 +29,18 @@ export default function LectureForm() {
   };
 
   const handleHeadingChange = (index, field, value) => {
-    const newHeadings = formData.headings.map((heading, i) => 
+    const newHeadings = formData.headings.map((heading, i) =>
       i === index ? { ...heading, [field]: value } : heading
     );
     setFormData({ ...formData, headings: newHeadings });
   };
 
   const handleSubHeadingChange = (headingIndex, subHeadingIndex, field, value) => {
-    const newSubHeadings = formData.headings[headingIndex].subHeadings.map((subHeading, i) => 
+    const newSubHeadings = formData.headings[headingIndex].subHeadings.map((subHeading, i) =>
       i === subHeadingIndex ? { ...subHeading, [field]: value } : subHeading
     );
 
-    const newHeadings = formData.headings.map((heading, i) => 
+    const newHeadings = formData.headings.map((heading, i) =>
       i === headingIndex ? { ...heading, subHeadings: newSubHeadings } : heading
     );
 
@@ -51,15 +51,15 @@ export default function LectureForm() {
     setFormData((prevData) => ({
       ...prevData,
       headings: [
-        ...prevData.headings, 
+        ...prevData.headings,
         { title: '', subHeadings: [{ title: '', content: '' }] },
       ],
     }));
   };
 
   const handleAddSubHeading = (headingIndex) => {
-    const newHeadings = formData.headings.map((heading, i) => 
-      i === headingIndex 
+    const newHeadings = formData.headings.map((heading, i) =>
+      i === headingIndex
         ? { ...heading, subHeadings: [...heading.subHeadings, { title: '', content: '' }] }
         : heading
     );
@@ -72,13 +72,13 @@ export default function LectureForm() {
 
     try {
       const response = await axios.post(
-        'https://hytechlabs.online:9090/Lecture',
+        'http://localhost:9090/Lecture',
         formData,
         {
           headers: { 'Content-Type': 'application/json' },
           auth: {
-            username: 'testleacture', 
-            password: 'testleacture'  
+            username: 'testleacture',
+            password: 'testleacture'
           }
         }
       );
@@ -107,7 +107,7 @@ export default function LectureForm() {
           onChange={handleChange}
           margin="normal"
           multiline
-          rows={2} 
+          rows={2}
         />
 
         <TextField
@@ -152,9 +152,9 @@ export default function LectureForm() {
               </div>
             ))}
 
-            <Button 
-              variant="outlined" 
-              color="primary" 
+            <Button
+              variant="outlined"
+              color="primary"
               onClick={() => handleAddSubHeading(headingIndex)}
               style={{ marginTop: '10px', marginBottom: '20px' }}
             >
@@ -180,3 +180,4 @@ export default function LectureForm() {
     </>
   );
 }
+

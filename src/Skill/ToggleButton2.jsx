@@ -8,3 +8,4 @@ const ToggleButton2 = ({ onClick, isOpen }) => (
 );
 
 export default ToggleButton2;
+

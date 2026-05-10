@@ -4,7 +4,7 @@ import { UserContext } from '../Context/UserContext';
 const useCreateCourse = () => {
   const { user, password } = useContext(UserContext);
 
-  const createCourse = async (courseTitle,description) => {
+  const createCourse = async (courseTitle, description) => {
     // Check if the course title already exists in local storage
     const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
     if (existingCourses.some(course => course.title === courseTitle)) {
@@ -20,14 +20,14 @@ const useCreateCourse = () => {
     try {
       // Make API call to create the course
       console.log(user + " " + password);
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
       console.log("course detail " + JSON.stringify(newCourse));
 
-      const response = await fetch('https://hytechlabs.online:9090/Course', {
+      const response = await fetch('http://localhost:9090/Course', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',   
-         'Authorization': basicAuth,
+          'Content-Type': 'application/json',
+          'Authorization': basicAuth,
         },
         body: JSON.stringify(newCourse)
       });
@@ -63,3 +63,4 @@ const useCreateCourse = () => {
 };
 
 export default useCreateCourse;
+

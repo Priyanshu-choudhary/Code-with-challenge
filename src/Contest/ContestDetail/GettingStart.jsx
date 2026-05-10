@@ -39,3 +39,4 @@ function GettingStart({ days, hours, minutes, isRegistered, contest }) {
 }
 
 export default GettingStart;
+

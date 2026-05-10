@@ -44,7 +44,7 @@ function TopicsWiseSkill() {
     const fetchTopics = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://hytechlabs.online:9090/TopicWiseSkills/OfficialTopics', {
+            const response = await fetch('http://localhost:9090/TopicWiseSkills/OfficialTopics', {
                 method: 'GET',
             });
             if (response.ok) {
@@ -89,7 +89,7 @@ function TopicsWiseSkill() {
                 buttonText="Create New" />
 
             <div style={{ borderRadius: "15px", margin: '20px', padding: "10px", backgroundColor: dark }}>
-               
+
                 <p style={{ fontSize: '20px', fontFamily: 'revert-layer', fontWeight: 'bold', marginBottom: "20px" }}>
                     Topic wise Skills
                 </p>
@@ -113,3 +113,4 @@ function TopicsWiseSkill() {
 }
 
 export default TopicsWiseSkill
+

@@ -21,3 +21,4 @@ function Entries({ date, expend, income, heading ,by,to,purpose}) {
 }
 
 export default Entries
+

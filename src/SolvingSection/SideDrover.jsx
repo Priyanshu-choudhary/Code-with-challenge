@@ -182,3 +182,4 @@ export default function SwipeableTemporaryDrawer({ open }) {
 SwipeableTemporaryDrawer.propTypes = {
   open: PropTypes.bool.isRequired,
 };
+

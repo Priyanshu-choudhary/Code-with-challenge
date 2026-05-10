@@ -26,3 +26,4 @@ const YouTubePlayer = ({ url }) => {
 };
 
 export default YouTubePlayer;
+

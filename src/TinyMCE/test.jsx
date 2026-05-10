@@ -90,7 +90,7 @@ function EditorComponent({ setDescription, initialValue }) {
 
       try {
         setIsLoading(true); // Start loading
-        const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+        const response = await axios.post('http://localhost:9090/Files/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -197,3 +197,4 @@ function EditorComponent({ setDescription, initialValue }) {
 }
 
 export default EditorComponent;
+

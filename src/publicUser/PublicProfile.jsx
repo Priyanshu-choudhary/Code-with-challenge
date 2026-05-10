@@ -31,7 +31,7 @@ const PublicProfile = () => {
     const fetchData = async () => {
       try {
         // Fetch user data
-        const userResponse = await fetch(`https://hytechlabs.online:9090/Public/${userId}`, {
+        const userResponse = await fetch(`http://localhost:9090/Public/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ const PublicProfile = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '40%', 
+            width: '40%',
             backgroundColor: 'white',
             // boxShadow: 24,
             // padding: 'px',
@@ -193,3 +193,4 @@ const PublicProfile = () => {
 };
 
 export default PublicProfile;
+

@@ -64,3 +64,4 @@ const QueryParamsExample = () => {
 };
 
 export default QueryParamsExample;
+

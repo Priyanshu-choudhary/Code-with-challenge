@@ -14,17 +14,17 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
     const { formData, updateFormData } = useContext(FormContext);
     const { user, password, role, URL, setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
-    const [newUrl, setnewUrl] = useState('https://hytechlabs.online:9090/Posts')
+    const [newUrl, setnewUrl] = useState('http://localhost:9090/Posts')
     const [auth, setauth] = useState(URL)
     const [SelectedCompaniesTags, setSelectedCompaniesTags] = useState([])
     const [SelectTags, setSelectTags] = useState([])
 
 
     useEffect(() => {
-  console.log(JSON.stringify(SelectedCompaniesTags)+" "+JSON.stringify(SelectTags));
-  
-    }, [SelectedCompaniesTags,SelectTags])
-    
+        console.log(JSON.stringify(SelectedCompaniesTags) + " " + JSON.stringify(SelectTags));
+
+    }, [SelectedCompaniesTags, SelectTags])
+
 
 
 
@@ -39,14 +39,14 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
     }, [contestName, uploadUrl])
 
     useEffect(() => {
-        if (contestName!='ProblemSet' && contestName) {
-            setnewUrl(`https://hytechlabs.online:9090/Contest/${contestName}/username/Contest`);
+        if (contestName != 'ProblemSet' && contestName) {
+            setnewUrl(`http://localhost:9090/Contest/${contestName}/username/Contest`);
         } else if (contestName == 'ProblemSet') {
-            setnewUrl('https://hytechlabs.online:9090/Posts/username/ProblemSet');
+            setnewUrl('http://localhost:9090/Posts/username/ProblemSet');
         }
         else {
             if (uploadUrl != 'ProblemSet') {
-                setnewUrl(`https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`);
+                setnewUrl(`http://localhost:9090/Posts/Course/${uploadUrl}/username/OfficialCources`);
                 setauth("OfficialCources");
             }
         }
@@ -65,7 +65,7 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
                 companies: SelectedCompaniesTags, // Include SelectedCompaniesTags in "companies" field
                 tags: SelectTags, // Include SelectTags in "tags" field
             };
-    
+
             const response = await axios.post(
                 newUrl,
                 updatedFormData,
@@ -87,7 +87,7 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
             setISubmit(false);
         }
     };
-    
+
 
     return (
         <>
@@ -163,7 +163,7 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
 
                     <div style={{ borderWidth: "2px" }}>
                         {
-                            
+
                         }
                         {/* <Tags onTagsChange={handleTagsChange} /> */}
                         <Tags setSelectedCompaniesTags={setSelectedCompaniesTags} setSelectTags={setSelectTags} />
@@ -175,3 +175,4 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
 };
 
 export default FinalSend;
+

@@ -18,7 +18,7 @@ import Tinymce from '../TinyMCE/TinyMCE';
 export default function McqForm({ uploadUrl }) {
   const [formData, setFormData] = useState({
     title: '',
-    sequence:'',
+    sequence: '',
     description: '',
     example: '',
     optionA: '',
@@ -58,7 +58,7 @@ export default function McqForm({ uploadUrl }) {
     try {
       console.log(postData);
       const response = await axios.post(
-        `https://hytechlabs.online:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
+        `http://localhost:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
         postData,
         {
 
@@ -230,3 +230,4 @@ export default function McqForm({ uploadUrl }) {
     </>
   );
 }
+

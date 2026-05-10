@@ -74,7 +74,7 @@ const ContinueLearing = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/${course.title}/username/OfficialCources`;
+    let API_URL = tags.length > 0 ? "http://localhost:9090/Posts/filter" : `http://localhost:9090/Posts/Course/${course.title}/username/OfficialCources`;
     setLoading(true); // Start loading indicator
 
     try {
@@ -87,7 +87,7 @@ const ContinueLearing = () => {
       const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
       const lastModified = cachedData.lastModified || null;
 
-      const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -126,8 +126,8 @@ const ContinueLearing = () => {
 
   const fetchUserData = async () => {
     try {
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      const response = await fetch(`https://hytechlabs.online:9090/Course/${user}/0/10`, {
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      const response = await fetch(`http://localhost:9090/Course/${user}/0/10`, {
         method: 'GET',
         headers: {
           'Authorization': basicAuth,
@@ -202,8 +202,8 @@ const ContinueLearing = () => {
     const confirmed = window.confirm("Are you sure you want to delete this problem?");
     if (confirmed) {
       try {
-        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-        const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
+        const basicAuth = 'Bearer ' + localStorage.getItem('token');
+        const response = await fetch(`http://localhost:9090/Posts/id/${problemId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': basicAuth,
@@ -240,18 +240,18 @@ const ContinueLearing = () => {
         {user ? (
           <div className="leetcode-clone-container">
             <div className="content" >
-            <YourProgressCard
-             title={course.title}
-             progress={course.progress}
-             totalQuestions={course.totalQuestions}
-             rating={course.rating}
-             completeQuestions={course.completeQuestions}
-             course={course}
-             place="continue Learning"
-            width={95}
-            />
-<br />
-<br />
+              <YourProgressCard
+                title={course.title}
+                progress={course.progress}
+                totalQuestions={course.totalQuestions}
+                rating={course.rating}
+                completeQuestions={course.completeQuestions}
+                course={course}
+                place="continue Learning"
+                width={95}
+              />
+              <br />
+              <br />
               <div ref={scrollToRef} className='Description' style={{ marginLeft: 20, marginRight: 20, background: dark, padding: 20, borderRadius: 20, marginBottom: 30 }}>
                 <p className='Profileheading' style={{ color: ibg }}>Questions:</p>
                 <hr />
@@ -279,7 +279,7 @@ const ContinueLearing = () => {
                           >
                             <div className="problem-title">
                               {index + 1}. {problem.title}
-                              {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green',position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
+                              {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green', position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
                             </div>
                             <div className="problem-details">
                               {problem.type === "MCQ" ? (
@@ -315,7 +315,7 @@ const ContinueLearing = () => {
                       >
                         <div className="problem-title">
                           {index + 1}. {problem.title}
-                          {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green',position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
+                          {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green', position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
                         </div>
                         {role === "ADMIN" && <div style={{ color: ibg, position: 'absolute', right: '150px' }}>{problem.sequence}</div>}
                         <div className="problem-details">
@@ -343,3 +343,4 @@ const ContinueLearing = () => {
 };
 
 export default ContinueLearing;
+

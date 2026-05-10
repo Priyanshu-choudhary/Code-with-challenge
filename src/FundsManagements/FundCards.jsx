@@ -12,3 +12,4 @@ function FundCards({ color,data,title }) {
 }
 
 export default FundCards
+

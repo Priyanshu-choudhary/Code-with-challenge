@@ -10,7 +10,7 @@ export const CourseProvider = ({ children }) => {
   const fetchOfficialCourses = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://hytechlabs.online:9090/Course/user?userName=OfficialCources&page=0&size=10', {
+      const response = await fetch('http://localhost:9090/Course/user?userName=OfficialCources&page=0&size=10', {
         method: 'GET',
       });
       if (response.ok) {
@@ -46,3 +46,4 @@ export const CourseProvider = ({ children }) => {
     </CourseContext.Provider>
   );
 };
+

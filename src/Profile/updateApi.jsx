@@ -1,5 +1,5 @@
 async function createUser() {
-    const url = 'https://hytechlabs.online:9090/users';
+    const url = 'http://localhost:9090/users';
     const name = 'x';  // Replace with your username
     const password = 'x';  // Replace with your password
 
@@ -17,7 +17,7 @@ async function createUser() {
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    headers.set('Authorization', 'Basic ' + btoa(name + ":" + password));
+    headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
     const response = await fetch(url, {
         method: 'PUT',
@@ -34,3 +34,4 @@ async function createUser() {
 }
 
 createUser();
+

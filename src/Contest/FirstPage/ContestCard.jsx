@@ -26,3 +26,4 @@ function ContestCard({ contest }) {
 }
 
 export default ContestCard;
+

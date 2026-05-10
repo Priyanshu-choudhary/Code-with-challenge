@@ -27,3 +27,4 @@ function SkillsCard({title}) {
 }
 
 export default SkillsCard
+

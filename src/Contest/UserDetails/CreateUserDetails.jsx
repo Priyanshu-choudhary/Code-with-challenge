@@ -15,16 +15,16 @@ const useCreateUserContestDetail = () => {
             nameOfContest: nameOfContest,
             nameOfOrganization: nameOfOrganization,
             date: new Date(),
-           
+
         };
 
         try {
             // Make API call to create the contest
             // console.log(user + " " + password);
-            const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
+            const basicAuth = 'Bearer ' + localStorage.getItem('token');
             console.log("contest detail " + JSON.stringify(newContest));
 
-            const response = await fetch(`https://hytechlabs.online:9090/UserDetailsContest/${nameOfContest}/username/${user}`, {
+            const response = await fetch(`http://localhost:9090/UserDetailsContest/${nameOfContest}/username/${user}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,3 +64,4 @@ const useCreateUserContestDetail = () => {
 };
 
 export default useCreateUserContestDetail;
+

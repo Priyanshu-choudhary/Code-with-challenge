@@ -3,18 +3,18 @@ import { useContext } from 'react';
 import { UserContext } from '../Context/UserContext'; // Adjust the import path as necessary
 
 export const useUpdateCourse = () => {
-  const { user,password } = useContext(UserContext);
+  const { user, password } = useContext(UserContext);
 
-  const updateCourse = async (courseId, progress, completeQuestions, rating,totalProblems) => {
+  const updateCourse = async (courseId, progress, completeQuestions, rating, totalProblems) => {
     try {
-        // console.log("tp "+totalProblems);
-        const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-        // console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
-      const response = await axios.put(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
+      // console.log("tp "+totalProblems);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      // console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
+      const response = await axios.put(`http://localhost:9090/Course/id/${courseId}`, {
         progress,
         completeQuestions,
         rating,
-        totalQuestions:totalProblems
+        totalQuestions: totalProblems
       }, {
         headers: {
           'Authorization': basicAuth,
@@ -30,3 +30,4 @@ export const useUpdateCourse = () => {
 
   return updateCourse;
 };
+

@@ -20,7 +20,7 @@ function NewLeaderboard() {
         const fetchData = async () => {
             setLoader(true);
             try {
-                const response = await fetch(`https://hytechlabs.online:9090/Public/getAllUsers?page=${page-1}&size=20`);
+                const response = await fetch(`http://localhost:9090/Public/getAllUsers?page=${page - 1}&size=20`);
                 const data = await response.json();
                 setUsers(data.content);
                 setTotalPages(data.totalPages); // Update total pages from API response
@@ -40,7 +40,7 @@ function NewLeaderboard() {
         }
 
         setLoader(true);
-        fetch(`https://hytechlabs.online:9090/Public/user/id/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:9090/Public/user/id/${id}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     const updatedUsers = users.filter(user => user.id !== id);
@@ -133,3 +133,4 @@ function NewLeaderboard() {
 }
 
 export default NewLeaderboard;
+

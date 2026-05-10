@@ -39,3 +39,4 @@ function YourProgressCard({ title, progress, rating, completeQuestions, totalQue
 }
 
 export default YourProgressCard;
+

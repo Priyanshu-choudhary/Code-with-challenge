@@ -43,3 +43,4 @@ function Table({ data }) {
 }
 
 export default Table;
+

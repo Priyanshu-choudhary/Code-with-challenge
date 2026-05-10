@@ -1,37 +1,20 @@
-
 async function login(username, password) {
-    const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
-  
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:9090';
+    const response = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+    });
 
-    try {
-      
-        const response = await fetch('https://hytechlabs.online:9090/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': basicAuth
-            },
-            body: JSON.stringify({ name: username, password: password }),
-        });
-
-        if (response.ok) {
-            const userData = await response.json();  // Parse the response as JSON
-            const roles = userData.roles; 
-            const img=userData.profileImg;
-            localStorage.setItem('profileImage', img);
-          
-            console.log('Roles:', roles);
-            console.log("++++++++++++++++++++++++++++++++++++++++++++++");
-            return roles; 
-        } else {
-            console.log('Login failed');
-            alert("Wrong Username/Password");
-            throw new Error('Wrong Username/Password');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
+    if (!response.ok) {
+        alert("Wrong Username/Password");
+        throw new Error('Login failed');
     }
+
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('roles', JSON.stringify(data.roles));
+    return data.roles;
 }
 
 export default login;

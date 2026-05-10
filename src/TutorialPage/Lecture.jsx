@@ -46,7 +46,7 @@ function Lecture() {
     useEffect(() => {
         const fetchLectureData = async () => {
             try {
-                const response = await fetch(`https://hytechlabs.online:9090/Lecture/Findby/testleacture/${title}`, {
+                const response = await fetch(`http://localhost:9090/Lecture/Findby/testleacture/${title}`, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
@@ -81,8 +81,8 @@ function Lecture() {
     const handleDelete = async () => {
         if (window.confirm(`Are you sure you want to delete the lecture "${title}"?`)) {
             try {
-                const basicAuth = 'Basic ' + btoa(`testleacture:testleacture`);
-                const response = await fetch(`https://hytechlabs.online:9090/Lecture/id/${leactureId}`, {
+                const basicAuth = 'Bearer ' + localStorage.getItem('token');
+                const response = await fetch(`http://localhost:9090/Lecture/id/${leactureId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ function Lecture() {
                     top: '0px',
                     height: '100vh',
                     width: '100%',
-                    
+
                     padding: '10px',
                     zIndex: 1000,
                     overflow: 'scroll',
@@ -233,9 +233,9 @@ function Lecture() {
                             {lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.title}
                         </h2>
                         <p className={`text-lg p-3`}>
-                        <ErrorBoundary>
-                        <HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.content || ""} />
-                        </ErrorBoundary>
+                            <ErrorBoundary>
+                                <HtmlRenderer renderAsHtml={false} htmlContent={lectureData[currentSectionIndex]?.subHeadings[currentSubheadingIndex]?.content || ""} />
+                            </ErrorBoundary>
                         </p>
                     </div>
                     <div className="flex justify-between mt-4">
@@ -261,3 +261,4 @@ function Lecture() {
 }
 
 export default Lecture;
+

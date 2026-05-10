@@ -7,14 +7,14 @@ import '/src/ProblemList.css'; // Import your CSS file for styling
 import { UserContext } from '../Context/UserContext';
 import axios from 'axios';
 
-const MiniProblemDrawerComponent = ({setsubmitProblemTitle,setsubmitProblem, open, onClose, problems, setIndex, contestName, user }) => {
+const MiniProblemDrawerComponent = ({ setsubmitProblemTitle, setsubmitProblem, open, onClose, problems, setIndex, contestName, user }) => {
   const { bg, light, dark, ibg } = useContext(UserContext);
   const [completedProblems, setCompletedProblems] = useState([]);
   // const [problems, setProblems] = useState([]);
   useEffect(() => {
     const fetchCompletedProblems = async () => {
       try {
-        const response = await axios.get(`https://hytechlabs.online:9090/UserDetailsContest/${user}/${contestName}`);
+        const response = await axios.get(`http://localhost:9090/UserDetailsContest/${user}/${contestName}`);
         //  const postTitles = response.data.posts.map(post => post.title);
         setCompletedProblems(JSON.stringify(response.data[0].posts || []));
         const newProblems = response.data[0].posts.map((problem) => ({
@@ -47,14 +47,14 @@ const MiniProblemDrawerComponent = ({setsubmitProblemTitle,setsubmitProblem, ope
           </div>
           <div className="ProblemList-items-body">
             {problems.map((problem, index) => (
-              <div 
-                key={index} 
-                className='miniProblem' 
-                style={{ display: "flex", alignItems: "center", marginTop: 15, cursor: "pointer" }} 
+              <div
+                key={index}
+                className='miniProblem'
+                style={{ display: "flex", alignItems: "center", marginTop: 15, cursor: "pointer" }}
                 onClick={() => { setIndex(index); }}>
                 <div className="ProblemList-item-title">{index + 1}. {problem.title}</div>
                 {completedProblems.includes(problem.title) && (
-                  <FontAwesomeIcon icon={faCheck} style={{ color: "green", marginLeft: 'auto',background:"#E0F7D8",padding:5,borderRadius:5 }} />
+                  <FontAwesomeIcon icon={faCheck} style={{ color: "green", marginLeft: 'auto', background: "#E0F7D8", padding: 5, borderRadius: 5 }} />
                 )}
                 <FontAwesomeIcon icon={faAngleRight} style={{ marginLeft: 10 }} />
               </div>
@@ -67,3 +67,4 @@ const MiniProblemDrawerComponent = ({setsubmitProblemTitle,setsubmitProblem, ope
 };
 
 export default MiniProblemDrawerComponent;
+

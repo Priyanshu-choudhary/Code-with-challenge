@@ -112,3 +112,4 @@ setContentHeight(value)
 }
 
 export default Rules
+

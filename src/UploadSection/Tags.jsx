@@ -116,3 +116,4 @@ const Tags = ({ setSelectedCompaniesTags, setSelectTags }) => {
 };
 
 export default Tags;
+

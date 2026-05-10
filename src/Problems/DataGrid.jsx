@@ -18,7 +18,7 @@ const darkTheme = createTheme({
         mode: 'dark',
     },
 });
-   
+
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 }));
 
@@ -78,12 +78,12 @@ export default function StripedGrid() {
         setIsLoading(true);
 
         try {
-            const basicAuth = 'Basic ' + btoa('ProblemSet:ProblemSet');
-            let API_URL = 'https://hytechlabs.online:9090/Posts/username/ProblemSet';
+            const basicAuth = 'Bearer ' + localStorage.getItem('token');
+            let API_URL = 'http://localhost:9090/Posts/username/ProblemSet';
 
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
-                API_URL = `https://hytechlabs.online:9090/Posts/filter?${tagsQuery}&exactMatch=true`;
+                API_URL = `http://localhost:9090/Posts/filter?${tagsQuery}&exactMatch=true`;
             }
 
             // Check if there is cached data in local storage
@@ -91,7 +91,7 @@ export default function StripedGrid() {
             const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
             const headers = {
                 'Content-Type': 'application/json',
-               
+
             };
 
             // Add If-Modified-Since header conditionally
@@ -168,11 +168,11 @@ export default function StripedGrid() {
         const confirmed = window.confirm('Are you sure you want to delete this problem?');
         if (confirmed) {
             try {
-                const basicAuth = 'Basic ' + btoa(`${"ProblemSet"}:${"ProblemSet"}`);
-                const response = await axios.delete(`https://hytechlabs.online:9090/Posts/id/${id}`, {
+                const basicAuth = 'Bearer ' + localStorage.getItem('token');
+                const response = await axios.delete(`http://localhost:9090/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                      
+
                     }
                 });
                 console.log('Problem deleted:', response.data);
@@ -269,7 +269,7 @@ export default function StripedGrid() {
                     </Grid>
                 </Grid>
                 {isLoading ? (
-                   <BoxLoader/>
+                    <BoxLoader />
                 ) : (
                     <ThemeProvider theme={darkTheme}>
                         <StripedDataGrid
@@ -288,3 +288,4 @@ export default function StripedGrid() {
 
     );
 }
+

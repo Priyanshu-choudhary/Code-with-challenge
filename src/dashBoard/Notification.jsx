@@ -21,7 +21,7 @@ function NotificationButton() {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get('https://hytechlabs.online:9090/Public/HealthCheck');
+            const response = await axios.get('http://localhost:9090/Public/HealthCheck');
             setHealthData(response.data);
         } catch (err) {
             setError('Failed to fetch health data');
@@ -102,3 +102,4 @@ function NotificationButton() {
 }
 
 export default NotificationButton;
+

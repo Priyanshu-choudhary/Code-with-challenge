@@ -347,12 +347,12 @@ const sectionContent = {
       <div className="api-documentation">
         <h2>9. API Documentation</h2>
         <p>
-          The base URL for accessing the APIs is: <code>https://hytechlabs.online/</code>
+          The base URL for accessing the APIs is: <code>http://localhost/</code>
         </p>
         <h3>Api Mini Map</h3>
         <img src="./Screenshot 2024-08-31 105646.png" alt="APi MAP" />
         <h3>Endpoints</h3>
-<br />
+        <br />
         <h4>1. HealthCheck</h4>
         <p>
           <strong>URL:</strong> <code>/HealthCheck</code><br />
@@ -365,7 +365,7 @@ const sectionContent = {
           </ul> */}
           <strong>Request Example:</strong>
           <code>
-            curl -X GET "https://hytechlabs.online/HealthCheck"
+            curl -X GET "http://localhost/HealthCheck"
           </code>
           <br />
           <strong>Response Example:</strong>
@@ -687,3 +687,4 @@ const sectionContent = {
 };
 
 export default sectionContent;
+

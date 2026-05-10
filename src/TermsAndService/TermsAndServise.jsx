@@ -44,3 +44,4 @@ function TermsAndServise() {
 }
 
 export default TermsAndServise
+

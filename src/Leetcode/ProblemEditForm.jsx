@@ -47,9 +47,9 @@ const ProblemEditForm = () => {
   useEffect(() => {
     const fetchProblemDetails = async () => {
       try {
-        const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
+        const response = await fetch(`http://localhost:9090/Posts/id/${problemId}`, {
           headers: {
-            'Authorization': 'Basic ' + btoa(`${username}:${username}`)
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         });
 
@@ -164,7 +164,7 @@ const ProblemEditForm = () => {
     setSubmitting(true);
     try {
       const updatedDetails = { ...problemDetails, description: descriptionRef.current };
-      const response = await fetch(`https://hytechlabs.online:9090/Posts/username/${username}/id/${problemId}`, {
+      const response = await fetch(`http://localhost:9090/Posts/username/${username}/id/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ const ProblemEditForm = () => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-         <Tinymce
+        <Tinymce
           initialValue={descriptionRef.current}
           setDescription={setDescription}
         />
@@ -298,7 +298,7 @@ const ProblemEditForm = () => {
             <div key={language}>
               <h3 style={{ margin: "15px" }}>{language}</h3>
               <TextField
-              className='my-4'
+                className='my-4'
                 label="Boiler Code"
                 variant="outlined"
                 multiline
@@ -319,7 +319,7 @@ const ProblemEditForm = () => {
               <TextField
                 label="Solution"
                 variant="outlined"
-                 className='my-4'
+                className='my-4'
                 multiline
                 // rows={4}
                 fullWidth
@@ -330,7 +330,7 @@ const ProblemEditForm = () => {
           ))}
         </div>
 
-       
+
 
         <Button type="submit" variant="contained" color="primary" disabled={submitting}>
           {submitting ? <CircularProgress size={24} /> : 'Submit'}
@@ -341,3 +341,4 @@ const ProblemEditForm = () => {
 };
 
 export default ProblemEditForm;
+

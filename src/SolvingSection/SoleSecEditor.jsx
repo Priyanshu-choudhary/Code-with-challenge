@@ -9,14 +9,9 @@ import React, {
 } from 'react';
 import Editor from '@monaco-editor/react';
 import "./editor.css";
-import JDoodleExample from '../JDoodle/JDoodleExample';
-import OutputSec from '../outputSec/OutputSec';
+import { runCode as judge0Run, submitCode as judge0Submit } from '../judge0/judge0Service';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 
 const MyEditor = forwardRef(
@@ -40,15 +35,15 @@ const MyEditor = forwardRef(
 
     const [language, setLanguage] = useState(CourseLanguage);
     const [iSubmit, setiSubmit] = useState(false);
-    const [output, setOutput] = useState('');
+    const [runResult, setRunResult] = useState(null);
+    const [verdictResult, setVerdictResult] = useState(null);
     const [themes, setThemes] = useState('vs-dark');
     const [showConfetti, setShowConfetti] = useState(false);
     const [isCorrect, setisCorrect] = useState(false);
     const [boilerCode, setboilerCode] = useState(problem?.codeTemplates?.[language]?.boilerCode || "");
     const [templateCode, settemplateCode] = useState(problem?.codeTemplates?.[language]?.templateCode || "");
-    
-    const editorRef = useRef(null);
 
+    const editorRef = useRef(null);
 
     const {
       fontSize,
@@ -57,25 +52,22 @@ const MyEditor = forwardRef(
       bc,
       dark,
       light,
-      user,
-      password,
       currentthemes,
     } = useContext(UserContext);
     const [bgColor, setbgColor] = useState(light);
-    const createCourse = useCreateCourse(); // Call the custom hook
+    const createCourse = useCreateCourse();
 
     useEffect(() => {
       if (problem?.codeTemplates?.[CourseLanguage]) {
         settemplateCode(problem.codeTemplates[CourseLanguage].templateCode || "");
       }
     }, [CourseLanguage, problem]);
-    
+
     useEffect(() => {
       if (problem?.codeTemplates?.[language]) {
         setboilerCode(problem.codeTemplates[language].boilerCode || "");
       }
     }, [language, templateCode, problem]);
-    
 
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;
@@ -92,73 +84,89 @@ const MyEditor = forwardRef(
     useEffect(() => {
       if (editorRef.current) {
         editorRef.current.setValue(templateCode);
-
       }
     }, [templateCode]);
 
     const resetEditorState = () => {
-      setOutput('');
+      setRunResult(null);
+      setVerdictResult(null);
       setShowConfetti(false);
-      // setisCorrect(false);
-      // Add any other state resets if needed
-    };
-
-
-    const downloadFile = () => {
-      const code = editorRef.current.getValue();
-      const blobCode = createFileFromString(code, 'mycode.java');
-      const url = URL.createObjectURL(blobCode);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = blobCode.name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    };
-
-    const createFileFromString = (str, fileName) => {
-      const blob = new Blob([str], { type: 'text/plain' });
-      return new File([blob], fileName, { type: 'text/plain' });
     };
 
     const getCode = useCallback(async (currentBoilerCode, currentTemplateCode) => {
-      if (editorRef.current) {
-        let code = editorRef.current.getValue();
-        getSolution(code); 
-      
-        
-        if (language=="python") {
-          code =   code+currentBoilerCode;
-        }else{
-        code = currentBoilerCode + code;
+      if (!editorRef.current) return;
+
+      let code = editorRef.current.getValue();
+      getSolution(code);
+
+      const hasTestCases = problem?.testcase && Object.keys(problem.testcase).length > 0;
+
+      setiSubmit(true);
+      spin(true);
+      setRunResult(null);
+      setVerdictResult(null);
+
+      try {
+        if (hasTestCases) {
+          // Judge0 batch: each testcase entry is stdin → expectedOutput
+          const result = await judge0Submit(
+            code,
+            language,
+            problem.testcase,
+            problem.timeLimitSeconds || null,
+            problem.memoryLimitKb || null
+          );
+          setVerdictResult(result);
+        } else {
+          // Playground run: prepend boilerCode (legacy answer-check mode)
+          let fullCode = code;
+          if (language === "python") {
+            fullCode = code + currentBoilerCode;
+          } else {
+            fullCode = currentBoilerCode + code;
+          }
+          const result = await judge0Run(fullCode, language, input);
+          setRunResult(result);
         }
-        setiSubmit(true);
-        spin(true);
-   
-        const output = await JDoodleExample(code, language, input);
+      } catch (e) {
+        setRunResult({ stderr: 'Execution error: ' + e.message });
+      } finally {
         setiSubmit(false);
         spin(false);
-        setOutput(output);
-
-        if (output === answer) {
-          setShowConfetti(true);
-          setTimeout(() => {
-            setShowConfetti(false);
-          }, 4000);
-        }
       }
-    }, [answer, courseTitle, language, input, spin]);
+    }, [problem, language, input, spin, getSolution]);
 
-    // Expose getCode to parent component using useImperativeHandle
     useImperativeHandle(ref, () => ({
       getCode: () => getCode(boilerCode, templateCode),
       resetEditorState,
     }));
 
-    const handleLanguageChange = (lang) => {
-      setLanguage(lang);
-    };
+    // Answer checking effect
+    useEffect(() => {
+      if (verdictResult) {
+        const passed = verdictResult.allPassed === true;
+        setisCorrect(passed);
+        if (passed) {
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 4000);
+          saveToDatabase(problem);
+        }
+      } else if (runResult) {
+        if (answer && answer[0]) {
+          const stdout = (runResult.stdout || '').trim();
+          const expected = answer[0].trim();
+          const passed = stdout === expected;
+          setisCorrect(passed);
+          if (passed) {
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 4000);
+            saveToDatabase(problem);
+          } else {
+            setbgColor('lightcoral');
+          }
+        }
+      }
+    }, [verdictResult, runResult]);
 
     const options = {
       autoIndent: 'full',
@@ -169,110 +177,14 @@ const MyEditor = forwardRef(
       hideCursorInOverviewRuler: true,
       matchBrackets: 'always',
       suggestOnTriggerCharacters: true,
-      defaultLanguage: { language },
-      minimap: {
-        enabled: false,
-      },
-      scrollbar: {
-        horizontal: 'hidden',
-        vertical: 'hidden',
-      },
+      minimap: { enabled: false },
+      scrollbar: { horizontal: 'hidden', vertical: 'hidden' },
       selectOnLineNumbers: true,
       roundedSelection: false,
       readOnly: false,
       cursorStyle: 'line',
       automaticLayout: true,
     };
-
-    const parseOutput = (outputString) => {
-      if (!outputString) return [];
-
-      const testCaseGroups = outputString
-        .split('Test Case ')
-        .slice(1)
-        .map((testCase, index) => {
-          const [testCaseNumber, ...rest] = testCase.split(':');
-
-          const restString = rest.join(':');
-          const lines = restString
-            .trim()
-            .split('\n')
-            .map((line) => line.trim())
-            .filter((line) => line);
-
-          let input = '';
-          let expectedOutput = '';
-          let output = '';
-          let status = '';
-
-          lines.forEach((line) => {
-            if (line.startsWith('Input:')) {
-              input = line.replace('Input: ', '');
-            } else if (line.startsWith('Expected Output:')) {
-              expectedOutput = line.replace('Expected Output: ', '');
-            } else if (line.startsWith('Output:')) {
-              output = line.replace('Output: ', '');
-            } else if (line.startsWith('Status:')) {
-              status = line.replace('Status: ', '');
-            } else {
-              if (output === '') {
-                output = line;
-              } else {
-                output += '\n' + line;
-              }
-            }
-          });
-
-          return { testCaseNumber, input, expectedOutput, output, status };
-        });
-
-      return testCaseGroups;
-    };
-
-    const testCaseGroups = parseOutput(output.output);
-
-    const checkTestcaseAnswer = useCallback(() => {
-    
-      let allPass = true;
-      for (let i = 0; i < testCaseGroups.length; i++) {
-        if (testCaseGroups[i].status === 'Pass' || testCaseGroups[i].status == null) {
-          setisCorrect(true);
-        } else {
-          setisCorrect(false);
-          break;
-        }
-      }
-    }, [testCaseGroups]);
-
-    const checkAnswer = useCallback(() => {
-      console.log("only ans check "+answer);
-      let allPass = false;
-      if (output.output == answer) {
-        allPass = true;
-        setbgColor('lightgreen');
-      } else {
-        setbgColor('lightcoral');
-      }
-
-      setisCorrect(allPass);
-    }, [answer, output.output]);
-
-
-    
-    useEffect(() => {
-       console.log("ans= "+answer);
-       console.log("is correct "+isCorrect);
-      if (answer[0]) {
-        checkAnswer();
-      } else {
-        checkTestcaseAnswer();
-      }
-
-      if (isCorrect) {
-   
-        saveToDatabase(problem);
-      }
-    }, [output, isCorrect, checkTestcaseAnswer, checkAnswer, problem, saveToDatabase]);
 
     return (
       <>
@@ -287,70 +199,57 @@ const MyEditor = forwardRef(
             onMount={handleEditorDidMount}
             options={options}
           />
-          <div>
-            {testCaseGroups.map((testCase, index) => (
-              <div
-                key={index}
-                style={{
-                  color: 'black',
-                  backgroundColor: testCase.status === 'Pass' ? 'lightgreen' : 'lightcoral',
-                  margin: '10px',
-                  padding: '10px',
-                  borderRadius: '5px',
-                }}
-              >
-                <p>
-                  <strong style={{ fontSize: '18px', color: '#413F3F' }}>
-                    Test Case {testCase.testCaseNumber}
-                  </strong>
-                </p>
 
-                <p>
-                  <strong style={{ fontSize: '18px', color: '#413F3F' }}>
-                    Input:
-                  </strong>{' '}
-                  {testCase.input}
-                </p>
-                <p>
-                  <strong style={{ fontSize: '18px', color: '#413F3F' }}>
-                    Expected Output:
-                  </strong>{' '}
-                  {testCase.expectedOutput}
-                </p>
-                <p>
-                  <strong style={{ fontSize: '18px', color: '#413F3F' }}>
-                    Output:
-                  </strong>{' '}
-                  {testCase.output}
-                </p>
-                <p>
-                  <strong style={{ fontSize: '18px', color: '#413F3F' }}>
-                    Status:
-                  </strong>{' '}
-                  {testCase.status}
-                </p>
-              </div>
-            ))}
-          </div>
-          {!testCaseGroups[0] && (
-            <pre
+          {/* Judge0 batch submit results */}
+          {verdictResult && verdictResult.results && verdictResult.results.map((tc, i) => (
+            <div
+              key={i}
               style={{
-                backgroundColor: isCorrect === true ? bgColor : dark,
-                color: ibg,
+                color: 'black',
+                backgroundColor: tc.passed ? 'lightgreen' : 'lightcoral',
                 margin: '10px',
                 padding: '10px',
                 borderRadius: '5px',
               }}
             >
-              {typeof output.output === 'string' ? output.output : JSON.stringify(output.output, null, 2)}
+              <p><strong style={{ fontSize: '18px', color: '#413F3F' }}>Test Case {tc.testCaseNumber}</strong></p>
+              <p><strong style={{ fontSize: '18px', color: '#413F3F' }}>Input:</strong> {tc.input}</p>
+              <p><strong style={{ fontSize: '18px', color: '#413F3F' }}>Expected:</strong> {tc.expectedOutput}</p>
+              <p><strong style={{ fontSize: '18px', color: '#413F3F' }}>Got:</strong> {tc.actualOutput}</p>
+              <p><strong style={{ fontSize: '18px', color: '#413F3F' }}>Status:</strong> {tc.status}</p>
+              {tc.time && <p><strong>Time:</strong> {tc.time}s | <strong>Memory:</strong> {tc.memory} KB</p>}
+              {tc.compileError && <pre style={{ color: '#b00' }}>{tc.compileError}</pre>}
+              {tc.stderr && <pre style={{ color: '#b00' }}>{tc.stderr}</pre>}
+            </div>
+          ))}
+
+          {/* Playground run result */}
+          {runResult && !verdictResult && (
+            <pre
+              style={{
+                backgroundColor: isCorrect ? 'lightgreen' : (runResult.compile_output || runResult.stderr ? '#fff3cd' : dark),
+                color: isCorrect ? 'black' : ibg,
+                margin: '10px',
+                padding: '10px',
+                borderRadius: '5px',
+              }}
+            >
+              {runResult.compile_output
+                ? '// Compilation Error:\n' + runResult.compile_output
+                : runResult.stderr
+                  ? '// Runtime Error:\n' + runResult.stderr
+                  : runResult.stdout || '(no output)'}
+              {runResult.time && (
+                <small style={{ display: 'block', marginTop: 4, opacity: 0.7 }}>
+                  Time: {runResult.time}s | Memory: {runResult.memory} KB
+                </small>
+              )}
             </pre>
           )}
 
           {isCorrect && (
             <div className='confetti-container'>
-              <div className='confetti'>
-                {/* Confetti elements */}
-              </div>
+              <div className='confetti'></div>
             </div>
           )}
         </div>
@@ -360,4 +259,3 @@ const MyEditor = forwardRef(
 );
 
 export default React.memo(MyEditor);
-

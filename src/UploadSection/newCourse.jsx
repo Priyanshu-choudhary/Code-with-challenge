@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function CourseForm({ uploadUrl2 }) {
   const location = useLocation();
-  const { uploadUrl} = location.state || {};
+  const { uploadUrl } = location.state || {};
   // const [uploadUrl, setuploadUrl] = useState("OfficialCources")
   const [formData, setFormData] = useState({
     title: '',
@@ -94,7 +94,7 @@ export default function CourseForm({ uploadUrl2 }) {
     console.log(postData);
     try {
       const response = await axios.post(
-        'https://hytechlabs.online:9090/Course',
+        'http://localhost:9090/Course',
         postData,
         {
           headers: {
@@ -176,18 +176,18 @@ export default function CourseForm({ uploadUrl2 }) {
         <br />
         <div>
           {/* Custom Choose button */}
-          <div style={{borderWidth:3,marginTop:10, marginBottom:10,}}>
+          <div style={{ borderWidth: 3, marginTop: 10, marginBottom: 10, }}>
             <p style={{ margin: 5, color: "#636161" }}> Select Course Template Image</p>
-          <label htmlFor="file-upload" style={{padding:30,display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <CloudUploadIcon style={{ marginRight: '5px' }} /> Upload Image
-          </label>
-          <input
-            id="file-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
+            <label htmlFor="file-upload" style={{ padding: 30, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+              <CloudUploadIcon style={{ marginRight: '5px' }} /> Upload Image
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
           </div>
           {imageDataUrl && (
             <div>
@@ -199,7 +199,7 @@ export default function CourseForm({ uploadUrl2 }) {
           )}
         </div>
         <hr />
-        
+
 
         <div style={{ marginBottom: '15px', borderWidth: 2, borderRadius: 10 }}>
           <RadioGroup
@@ -229,3 +229,4 @@ export default function CourseForm({ uploadUrl2 }) {
     </>
   );
 }
+

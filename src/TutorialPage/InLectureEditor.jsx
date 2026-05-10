@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import Editor from '@monaco-editor/react';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
-import JDoodleExample from '../JDoodle/JDoodleExample';
+import { runCode as judge0Run } from '../judge0/judge0Service';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -36,9 +36,14 @@ const InLectureEditor = ({ initialValue }) => {
 
     const runCode = async () => {
         setiSubmit(true);
-        const output = await JDoodleExample(code, language, input);
-        setiSubmit(false);
-        setOutput(output);
+        try {
+            const result = await judge0Run(code, language, input);
+            setOutput(result);
+        } catch (e) {
+            setOutput({ stderr: e.message });
+        } finally {
+            setiSubmit(false);
+        }
     };
 
     const handleLanguageChange = useCallback((lang) => {
@@ -145,3 +150,4 @@ const InLectureEditor = ({ initialValue }) => {
 };
 
 export default React.memo(InLectureEditor);
+

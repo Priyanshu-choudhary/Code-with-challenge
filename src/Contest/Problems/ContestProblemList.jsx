@@ -16,7 +16,7 @@ function ContestProblemList() {
     // navigate(`/UploadQuestion/${contest.nameOfContest}`)
     useEffect(() => {
         const fetchProblems = async () => {
-            const API_URL = `https://hytechlabs.online:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
+            const API_URL = `http://localhost:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
             setLoading(true);
 
             try {
@@ -77,7 +77,7 @@ function ContestProblemList() {
                         ))}
                     </div>
                 </div>
-                <button style={{color:ibg,fontWeight:"bold",margin:20,borderWidth:1,borderColor:ibg,borderRadius:5,padding:5}} onClick={()=>{navigate(`/UploadQuestion/${contest.nameOfContest}`)}}>
+                <button style={{ color: ibg, fontWeight: "bold", margin: 20, borderWidth: 1, borderColor: ibg, borderRadius: 5, padding: 5 }} onClick={() => { navigate(`/UploadQuestion/${contest.nameOfContest}`) }}>
                     + Add question
                 </button>
             </div>
@@ -86,3 +86,4 @@ function ContestProblemList() {
 }
 
 export default ContestProblemList
+

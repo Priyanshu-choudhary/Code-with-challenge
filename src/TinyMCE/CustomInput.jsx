@@ -105,3 +105,4 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
 };
 
 export default Modal;
+

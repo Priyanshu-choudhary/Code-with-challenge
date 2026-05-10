@@ -23,7 +23,7 @@ const handleImageUpload = (editor, setIsLoading) => {
 
     try {
       setIsLoading(true); // Start loading
-      const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+      const response = await axios.post('http://localhost:9090/Files/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -130,11 +130,11 @@ function CustomDataModal({ open, onClose, onSave }) {
         <TextareaAutosize
           minRows={5}
           maxRows={20}
-          style={{ width: '100%', paddingLeft: 5,maxHeight:600 }}
+          style={{ width: '100%', paddingLeft: 5, maxHeight: 600 }}
           value={customData}
           onChange={(e) => setCustomData(e.target.value)}
           defaultValue="Your code will be output as an encoded string."
-          
+
         />
         <Button
           variant="contained"
@@ -203,11 +203,11 @@ function EditorComponent({ setDescription, initialValue }) {
 
     // Replace with regular space
     return code.replace(specialCharsRegex, ' ');
-}
+  }
   const handleModalSave = (customData) => {
     if (currentEditor) {
       // Encode the custom data if necessary
-      
+
       let encodedData = encodeURIComponent(cleanCode(customData));
       encodedData = btoa(encodedData);
       // Insert or replace content in the placeholder
@@ -256,3 +256,4 @@ function EditorComponent({ setDescription, initialValue }) {
 }
 
 export default EditorComponent;
+

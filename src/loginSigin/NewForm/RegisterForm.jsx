@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {account} from '../Appwrite/Config/Config.jsx'
+import { account } from '../Appwrite/Config/Config.jsx'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -31,7 +31,7 @@ const RegisterForm = () => {
     setLoading(true);
     try {
       await appwriteSignUp(data);
-      const response = await fetch('https://hytechlabs.online:9090/register/temp', {
+      const response = await fetch('http://localhost:9090/register/temp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const RegisterForm = () => {
       );
 
       // Send email verification request
-      
+
 
 
       console.log('Appwrite registration successful', response);
@@ -99,7 +99,7 @@ const RegisterForm = () => {
       }}
     >
       <Typography variant="h5" component="div" sx={{ mb: 2, textAlign: 'center' }}>
-        <p className="shine-effect" style={{color:"white",backgroundColor:"#9d5cfa",padding:5,borderRadius:5}}>Form</p>
+        <p className="shine-effect" style={{ color: "white", backgroundColor: "#9d5cfa", padding: 5, borderRadius: 5 }}>Form</p>
       </Typography>
       <TextField
         fullWidth
@@ -185,10 +185,11 @@ const RegisterForm = () => {
         <Link href="/login" variant="body2">
           Already have an account? Login
         </Link>
-      <GoogleAuth/>
+        <GoogleAuth />
       </Box>
     </Box>
   );
 };
 
 export default RegisterForm;
+

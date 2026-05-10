@@ -20,3 +20,4 @@ PromoBanner.propTypes = {
 };
 
 export default PromoBanner;
+

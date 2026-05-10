@@ -88,8 +88,8 @@ export default function ContestEdit() {
     const handleSubmit = async () => {
         setLoading(true);
         const apiUrl = isEditMode
-            ? `https://hytechlabs.online:9090/Contest/id/${contestDetail.id}`
-            : 'https://hytechlabs.online:9090/Contest';
+            ? `http://localhost:9090/Contest/id/${contestDetail.id}`
+            : 'http://localhost:9090/Contest';
 
         const method = isEditMode ? 'put' : 'post';
 
@@ -329,3 +329,4 @@ export default function ContestEdit() {
         </>
     );
 }
+

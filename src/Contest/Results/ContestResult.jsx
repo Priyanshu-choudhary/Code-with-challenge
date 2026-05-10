@@ -21,7 +21,7 @@ function ContestResult() {
 
   useEffect(() => {
     const fetchUserBasedOnContestName = async () => {
-      const API_URL = `https://hytechlabs.online:9090/UserDetailsContest/findby/${contest.nameOfContest}`;
+      const API_URL = `http://localhost:9090/UserDetailsContest/findby/${contest.nameOfContest}`;
       setLoading(true);
 
       try {
@@ -71,7 +71,7 @@ function ContestResult() {
   }, [contest.nameOfContest, user]);
 
   const fetchParticipantDetails = async (selectedParticipant) => {
-    const API_URL = `https://hytechlabs.online:9090/UserDetailsContest/${selectedParticipant}/${contest.nameOfContest}`;
+    const API_URL = `http://localhost:9090/UserDetailsContest/${selectedParticipant}/${contest.nameOfContest}`;
     setDetailsLoading(true);
 
     try {
@@ -85,7 +85,7 @@ function ContestResult() {
       if (response.ok) {
         const data = await response.json();
         setParticipantDetails(data);
-        console.log("user "+selectedParticipant+" "+JSON.stringify(data));
+        console.log("user " + selectedParticipant + " " + JSON.stringify(data));
       } else {
         setParticipantDetails(null);
       }
@@ -137,7 +137,7 @@ function ContestResult() {
       <Dashboard />
       <div className="ProblemList-container" style={{ backgroundColor: light, color: ibg, width: "100%", height: "140vh" }}>
         <div className="ProblemList-items" style={{ backgroundColor: light, color: ibg }}>
-         {participants[0] && <div style={{ display: "flex", position: "absolute", right: 10, top: 120, backgroundColor: "white", borderRadius: 10 }}>
+          {participants[0] && <div style={{ display: "flex", position: "absolute", right: 10, top: 120, backgroundColor: "white", borderRadius: 10 }}>
             <UserOwnResult totalParticipants={participants.length} yourRank={userRank + 1} />
           </div>}
           <div className="ProblemList-items-head">
@@ -163,7 +163,7 @@ function ContestResult() {
               <div className='' style={{ marginTop: 15 }}>
                 {participants.map((participant, index) => (
                   <div
-                  className='miniProblem2'
+                    className='miniProblem2'
                     key={index}
                     style={{
                       display: "flex",
@@ -191,7 +191,7 @@ function ContestResult() {
                 <p>Loading details...</p>
               ) : (
                 participantDetails ? (
-                  <div style={{marginLeft:10}}>
+                  <div style={{ marginLeft: 10 }}>
                     {/* Render the participant details here */}
                     <p>Solution:</p>
                     {/* {participantDetails[0].posts.length && <pre style={{ borderWidth: 1, borderRadius: 10, width: "fit-content", marginTop: 20 }}> {participantDetails[0].posts[0].codeTemplates["java"].templateCode}</pre>} */}
@@ -215,3 +215,4 @@ function ContestResult() {
 }
 
 export default ContestResult;
+

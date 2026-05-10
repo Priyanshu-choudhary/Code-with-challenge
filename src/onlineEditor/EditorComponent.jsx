@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import Editor from '@monaco-editor/react';
 import './EditorComponent.css';
 import Dashboard from '../dashBoard/Dashboard';
-import JDoodleExample from '../JDoodle/JDoodleExample';
+import { runCode as judge0Run } from '../judge0/judge0Service';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -42,9 +42,14 @@ const EditorComponent = ({initialValue}) => {
 
     const runCode = async () => {
         setiSubmit(true);
-        const output = await JDoodleExample(code, language, input);
-        setiSubmit(false);
-        setOutput(output);
+        try {
+            const result = await judge0Run(code, language, input);
+            setOutput(result);
+        } catch (e) {
+            setOutput({ stderr: e.message });
+        } finally {
+            setiSubmit(false);
+        }
     };
 
     const handleLanguageChange = useCallback((lang) => {
@@ -114,7 +119,12 @@ const EditorComponent = ({initialValue}) => {
                             Clear
                         </Button>
                     </div>
-                    <pre style={{ backgroundColor: bg, color: ibg }}>{output.output}</pre>
+                    <pre style={{ backgroundColor: bg, color: ibg }}>
+                        {output.compile_output || output.stderr
+                            ? (output.compile_output || '') + (output.stderr || '')
+                            : (output.stdout || '')}
+                    </pre>
+                    {output.time && <small style={{ color: ibg, opacity: 0.6 }}>Time: {output.time}s | Memory: {output.memory} KB</small>}
                     <TextField
                         style={{ color: ibg }}
                         id="outlined-multiline-flexible"
@@ -132,3 +142,4 @@ const EditorComponent = ({initialValue}) => {
 };
 
 export default React.memo(EditorComponent);
+

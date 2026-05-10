@@ -26,7 +26,7 @@ const ValidationTextFields = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`https://hytechlabs.online:9090/Public/showUser/${user}`);
+                const response = await fetch(`http://localhost:9090/Public/showUser/${user}`);
                 const data = await response.json();
                 setExistingData(data);
                 setFormData(data); // Initialize form data with existing data
@@ -55,7 +55,7 @@ const ValidationTextFields = () => {
             formData.append('file', file);
 
             try {
-                const response = await axios.post('https://hytechlabs.online:9090/Files/upload', formData, {
+                const response = await axios.post('http://localhost:9090/Files/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -80,11 +80,11 @@ const ValidationTextFields = () => {
         try {
             const updatedData = { ...formData, password };
 
-            const response = await fetch('https://hytechlabs.online:9090/users', {
+            const response = await fetch('http://localhost:9090/users', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + btoa(`${user}:${password}`),
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 },
                 body: JSON.stringify(updatedData),
             });
@@ -192,7 +192,7 @@ const ValidationTextFields = () => {
                         />
                     </Button>
                     {formData.profileImg &&
-                        <div style={{ }}>
+                        <div style={{}}>
                             <img src={formData.profileImg} alt="profile_img" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                         </div>
                     }
@@ -206,3 +206,4 @@ const ValidationTextFields = () => {
 };
 
 export default ValidationTextFields;
+

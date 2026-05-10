@@ -32,7 +32,7 @@ function Firstpage() {
   }, [navbar]);
 
   useEffect(() => {
-    axios.get('https://hytechlabs.online:9090/Contest')
+    axios.get('http://localhost:9090/Contest')
       .then(response => {
         setContests(response.data);
       })
@@ -51,7 +51,7 @@ function Firstpage() {
   };
 
   const handleCreateContestClick = () => {
-    
+
     navigate(`/create-contest`);
   };
 
@@ -96,10 +96,10 @@ function Firstpage() {
             </div>
           )}
         </div>
-{/* <Notification/> */}
-<div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
+        {/* <Notification/> */}
+        <div style={{ display: "flex", textAlign: "center", justifyContent: "center", alignContent: "center", width: "100%", height: 90, backgroundColor: "gold", clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)", marginTop: 20 }}>
           <p style={{ paddingTop: 30, fontSize: "20px" }}>create  your own custom Space now.</p>
-          <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={()=>{navigate(`/CustomRoom`);}} value={"Register"} /></div>
+          <div style={{ paddingTop: 10, paddingLeft: 50 }}> <CreateButton onClick={() => { navigate(`/CustomRoom`); }} value={"Register"} /></div>
         </div>
         <div className="heading">
           <h2>Featured Opportunities from Leading Organizations</h2>
@@ -120,3 +120,4 @@ function Firstpage() {
 }
 
 export default Firstpage;
+

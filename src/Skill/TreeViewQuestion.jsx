@@ -113,8 +113,8 @@ const TopicsWiseSkill = () => {
     const handleDelete = async (courseId, courseName) => {
         if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
             try {
-                const basicAuth = 'Basic ' + btoa(`Skills:Skills`);
-                const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
+                const basicAuth = 'Bearer ' + localStorage.getItem('token');
+                const response = await fetch(`http://localhost:9090/Course/id/${courseId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,3 +172,4 @@ const TopicsWiseSkill = () => {
 };
 
 export default TopicsWiseSkill;
+

@@ -73,7 +73,7 @@ const LeetCodeClone = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "https://hytechlabs.online:9090/Posts/filter" : `https://hytechlabs.online:9090/Posts/Course/${course.title}/username/OfficialCources`;
+    let API_URL = tags.length > 0 ? "http://localhost:9090/Posts/filter" : `http://localhost:9090/Posts/Course/${course.title}/username/OfficialCources`;
     setLoading(true); // Start loading indicator
 
     try {
@@ -86,7 +86,7 @@ const LeetCodeClone = () => {
       const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
       const lastModified = cachedData.lastModified || null;
 
-      const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -125,8 +125,8 @@ const LeetCodeClone = () => {
 
   const fetchUserData = async () => {
     try {
-      const basicAuth = 'Basic ' + btoa(`${user}:${password}`);
-      const response = await fetch(`https://hytechlabs.online:9090/Course/${user}`, {
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      const response = await fetch(`http://localhost:9090/Course/${user}`, {
 
       });
 
@@ -188,8 +188,8 @@ const LeetCodeClone = () => {
     const confirmed = window.confirm("Are you sure you want to delete this problem?");
     if (confirmed) {
       try {
-        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-        const response = await fetch(`https://hytechlabs.online:9090/Posts/id/${problemId}`, {
+        const basicAuth = 'Bearer ' + localStorage.getItem('token');
+        const response = await fetch(`http://localhost:9090/Posts/id/${problemId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': basicAuth,
@@ -222,8 +222,8 @@ const LeetCodeClone = () => {
   const handleDelete = async (courseId, courseName) => {
     if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
       try {
-        const basicAuth = 'Basic ' + btoa(`OfficialCources:OfficialCources`);
-        const response = await fetch(`https://hytechlabs.online:9090/Course/id/${courseId}`, {
+        const basicAuth = 'Bearer ' + localStorage.getItem('token');
+        const response = await fetch(`http://localhost:9090/Course/id/${courseId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -362,7 +362,7 @@ const LeetCodeClone = () => {
                             </div>
                             {role === "ADMIN" && (
                               <Button
-                              className="hidden md:block" 
+                                className="hidden md:block"
                                 variant="contained"
                                 color="secondary"
                                 style={{ background: "darkred", color: ibg, position: 'absolute', right: '200px' }}
@@ -377,7 +377,7 @@ const LeetCodeClone = () => {
                             )}
                             {role === "ADMIN" && (
                               <Button
-                              className="hidden md:block"
+                                className="hidden md:block"
                                 style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
                                 onClick={(e) => {
                                   e.stopPropagation(); // Prevent navigating to the problem detail page
@@ -451,7 +451,7 @@ const LeetCodeClone = () => {
                         )}
                         {role === "ADMIN" && (
                           <Button
-                           className="hidden md:block"
+                            className="hidden md:block"
                             style={{ background: bc, color: ibg, position: 'absolute', right: '100px' }}
                             onClick={(e) => {
                               e.stopPropagation(); // Prevent navigating to the problem detail page
@@ -479,3 +479,4 @@ const LeetCodeClone = () => {
 };
 
 export default LeetCodeClone;
+

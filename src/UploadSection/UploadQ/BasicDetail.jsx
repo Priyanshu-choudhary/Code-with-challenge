@@ -126,3 +126,4 @@ const BasicDetail = ({ step, uploadUrl }) => {
 };
 
 export default BasicDetail;
+

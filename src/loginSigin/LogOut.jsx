@@ -1,32 +1,17 @@
-
-import Dashboard from '../dashBoard/Dashboard';
-import React, { useContext,useEffect } from 'react';
-
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 
-
 function LogOut() {
-    const { user, setUser, logout } = useContext(UserContext);
-  
- 
-    useEffect(() => {
-        logout();
-      
-        console.log(localStorage.getItem("username"));
-        console.log(user);
-      }, []);
+  const { logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    logout();
+    navigate('/', { replace: true });
+  }, []);
 
-     
-  return (
-    <><Dashboard/>
-   <div className="flex justify-center items-center h-screen">
-    <b>You are Logout...</b>
-   </div>
-   </>
-  );
-  
+  return null; // redirects immediately, no UI needed
 }
 
-export default LogOut
-
+export default LogOut;

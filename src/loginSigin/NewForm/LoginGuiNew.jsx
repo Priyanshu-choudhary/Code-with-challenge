@@ -1,122 +1,239 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
-import Spinner from 'react-bootstrap/Spinner';
+import React, { useContext, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import login from './LoginApi';
 import Dashboard from '../../dashBoard/Dashboard';
-import GoogleAuth from '../Google/Google';
 
 function LoginGuiNew() {
-  console.log("LoginGuiNew rerender");
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setUser,setRole, setPassword: setContextPassword ,setprofileImage,profileImage} = useContext(UserContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, setUser, setRole, setToken, setprofileImage } = useContext(UserContext);
 
+  const successMessage = location.state?.message;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm();
+
+  // If already logged in, redirect away from login page
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const storedPassword = localStorage.getItem('password');
-    const storedRole = localStorage.getItem('role');
-    const storedImg= localStorage.getItem('profileImage');
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setContextPassword(storedPassword);
-      setRole(storedRole);
-      setprofileImage(storedImg);
-      setIsLoggedIn(true);
+    if (user) {
+      navigate('/yourProfile', { replace: true });
     }
-  }, [navigate, setUser, setContextPassword]);
+  }, [user, navigate]);
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
+  const onSubmit = async ({ username, password }) => {
     try {
-      const userRole = await login(username, password);
-      setIsLoggedIn(true);
-      setUser(username);
-      setContextPassword(password);
-      setRole(userRole);
-      
+      const { token, roles, user: fullUser } = await login(username, password);
 
-      localStorage.setItem('user', JSON.stringify(username));
-      localStorage.setItem('password', password);
-      localStorage.setItem('role', userRole);
-      
+      // Wire everything into context state (not just localStorage)
+      setToken(token);
+      setUser(fullUser);
+      setRole(roles);
+      if (fullUser.profileImg) setprofileImage(fullUser.profileImg);
 
-      navigate('/yourProfile'); // Navigate only if login is successful
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setIsSubmitting(false);
-      setIsLoggedIn(false); // Reset isLoggedIn state on failed login
-      // No need to alert here, it's already handled in the login function
+      navigate('/yourProfile');
+    } catch (err) {
+      setError('root', { message: err.message || 'Login failed. Please try again.' });
     }
-  }, [navigate, username, password, setUser, setContextPassword]);
-useEffect(() => {
- console.log(">>>>>>>>>>>>>>>>"+profileImage);
-}, [])
+  };
+
+  const inputStyle = (hasError) => ({
+    width: '100%',
+    padding: '10px 14px',
+    background: '#27293a',
+    border: `1px solid ${hasError ? '#dc2626' : '#334155'}`,
+    borderRadius: '8px',
+    color: '#f1f5f9',
+    fontSize: '14px',
+    outline: 'none',
+    boxSizing: 'border-box',
+  });
 
   return (
-    <div>
+    <div style={{ background: '#0f1117', minHeight: '100vh' }}>
       <Dashboard />
-      <MDBContainer fluid className="p-3 my-5">
-        <MDBRow>
-          <MDBCol col='10' md='6'>
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid" alt="Phone image" />
-          </MDBCol>
-          <MDBCol col='4' md='6'>
-            <form onSubmit={handleSubmit}>
-              <MDBInput 
-                wrapperClass='mb-4' 
-                label='username' 
-                id='formControlLg' 
-                type='username' 
-                size="lg" 
-                value={username}
-                onChange={handleUsernameChange}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 'calc(100vh - 64px)',
+          padding: '24px',
+        }}
+      >
+        <div
+          style={{
+            background: '#1f202a',
+            border: '1px solid #27293a',
+            borderRadius: '16px',
+            padding: '40px',
+            width: '100%',
+            maxWidth: '420px',
+          }}
+        >
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <h1 style={{ color: '#f1f5f9', fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>
+              Welcome back
+            </h1>
+            <p style={{ color: '#64748b', fontSize: '14px' }}>Sign in to your CFC account</p>
+          </div>
+
+          {/* Success banner (shown after registration redirect) */}
+          {successMessage && (
+            <div
+              style={{
+                background: '#0f2d1a',
+                border: '1px solid #16a34a',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                color: '#86efac',
+                fontSize: '13px',
+                marginBottom: '20px',
+              }}
+            >
+              ✅ {successMessage}
+            </div>
+          )}
+
+          {/* Global error */}
+          {errors.root && (
+            <div
+              style={{
+                background: '#1a0808',
+                border: '1px solid #dc2626',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                color: '#fca5a5',
+                fontSize: '13px',
+                marginBottom: '20px',
+              }}
+            >
+              {errors.root.message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Username */}
+            <div style={{ marginBottom: '16px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  color: '#94a3b8',
+                  fontSize: '13px',
+                  marginBottom: '6px',
+                  fontWeight: 500,
+                }}
+              >
+                Username
+              </label>
+              <input
+                {...register('username', { required: 'Username is required' })}
+                placeholder="Enter your username"
+                autoComplete="username"
+                style={inputStyle(errors.username)}
               />
-              <MDBInput 
-                wrapperClass='mb-4' 
-                label='Password' 
-                id='formControlLg' 
-                type='password' 
-                size="lg" 
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              <div className="d-flex justify-content-between mx-4 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
-                <a href="!#">Forgot password?</a>
+              {errors.username && (
+                <p style={{ color: '#f87171', fontSize: '12px', marginTop: '4px' }}>
+                  {errors.username.message}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div style={{ marginBottom: '24px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '6px',
+                }}
+              >
+                <label style={{ color: '#94a3b8', fontSize: '13px', fontWeight: 500 }}>
+                  Password
+                </label>
               </div>
-              <MDBBtn className="mb-4 w-100" size="lg" type="submit">
-                Sign in {isSubmitting && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
-              </MDBBtn>
-            </form>
-            <div className="divider d-flex align-items-center my-4">
-              <p className="text-center fw-bold mx-3 mb-0">OR</p>
+              <input
+                {...register('password', { required: 'Password is required' })}
+                type="password"
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                style={inputStyle(errors.password)}
+              />
+              {errors.password && (
+                <p style={{ color: '#f87171', fontSize: '12px', marginTop: '4px' }}>
+                  {errors.password.message}
+                </p>
+              )}
             </div>
-            <GoogleAuth />
-            <div className="text-center">
-              <Link to="/register">or Sign-up</Link>
-            </div>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: isSubmitting ? '#4c1d95' : '#5D12A8',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 600,
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              {isSubmitting ? (
+                <>
+                  <span
+                    style={{
+                      width: 16,
+                      height: 16,
+                      border: '2px solid #fff',
+                      borderTopColor: 'transparent',
+                      borderRadius: '50%',
+                      display: 'inline-block',
+                      animation: 'spin 0.7s linear infinite',
+                    }}
+                  />
+                  Signing in...
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </form>
+
+          <p
+            style={{
+              textAlign: 'center',
+              color: '#64748b',
+              fontSize: '13px',
+              marginTop: '24px',
+            }}
+          >
+            Don't have an account?{' '}
+            <Link
+              to="/register"
+              style={{ color: '#5D12A8', fontWeight: 600, textDecoration: 'none' }}
+            >
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
 
 export default React.memo(LoginGuiNew);
-

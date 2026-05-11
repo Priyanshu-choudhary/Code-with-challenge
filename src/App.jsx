@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginUser from './loginSigin/NewForm/LoginUserGUI';
 import Home from './home/Home';
 import { UserProvider } from './Context/UserContext';
 import { logPageView } from './Analytics/AnalyticsGoogle';
@@ -17,7 +16,6 @@ import QuestionTypeSelector from './UploadSection/QuestionTypeSelector';
 import ProblemEditForm from './Leetcode/ProblemEditForm';
 import PublicProfile from './publicUser/PublicProfile';
 import Testing from './loginSigin/NewForm/testing';
-import QueryParamsExample from './loginSigin/NewForm/QuearyParamsExample';
 import LoginGuiNew from './loginSigin/NewForm/LoginGuiNew';
 import Tinymce from './TinyMCE/TinyMCE';
 import CourseEdit from './Leetcode/CourseEdit';
@@ -61,14 +59,12 @@ function App() {
               <Route path="/QuestionApi" element={<LeetCodeClone />} />
               <Route path="/ContinueLearing" element={<ContinueLearing />} />
               <Route path="/question/:id/:detailsType" element={<QuestionApi />} />
-              <Route path="/loginOld" element={<LoginUser />} />
               <Route path="/edit/:problemId/:username" element={<ProblemEditForm />} />
               <Route path="/ProblemSet" element={<ProblemSet />} />
               <Route path="/Leaderboard2" element={<LeaderBoard />} />
               <Route path="/learn" element={<LearningPage />} />
               <Route path="/publicProfile" element={<PublicProfile />} />
               <Route path="/register" element={<Testing />} />
-              <Route path="/verify-email" element={<QueryParamsExample />} />
               <Route path="/login" element={<LoginGuiNew />} />
               <Route path="/TextEditor" element={<Tinymce />} />
               <Route path="/CourseEdit" element={<CourseEdit />} />

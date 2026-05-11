@@ -1,29 +1,36 @@
-import React from 'react'
-import Dashboard from '../../dashBoard/Dashboard'
-// import LoginForm from './LoginForm'
-import RegisterForm from './RegisterForm'
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../Context/UserContext';
+import Dashboard from '../../dashBoard/Dashboard';
+import RegisterForm from './RegisterForm';
 
-function Testing() {
+function RegisterPage() {
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+
+  // If already logged in, redirect away from register page
+  useEffect(() => {
+    if (user) {
+      navigate('/yourProfile', { replace: true });
+    }
+  }, [user, navigate]);
+
   return (
-    <div>
-      <Dashboard/>
-      <div style={{display: "flex"}}>
-        <img className="responsive-image" width={560} src="Login.png" alt="" />
-        <RegisterForm/>
+    <div style={{ background: '#0f1117', minHeight: '100vh' }}>
+      <Dashboard />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 'calc(100vh - 64px)',
+          padding: '24px',
+        }}
+      >
+        <RegisterForm />
       </div>
-      <style jsx>{`
-        .responsive-image {
-          display: block;
-        }
-        @media (max-width: 768px) {
-          .responsive-image {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
-  )
+  );
 }
 
-export default Testing
-
+export default RegisterPage;

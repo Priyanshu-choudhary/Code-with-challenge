@@ -66,7 +66,12 @@ function QuestionApi() {
   const [btn1BG, set1btnBG] = useState(light);
   const [btn2BG, set2btnBG] = useState(light);
   const [btn3BG, set3btnBG] = useState(light);
-  const [selectedOption2, setSelectedOption2] = useState(language[0] == "java" ? language[0] : language[language.length - 1]);
+  const normalizedLanguages = Array.isArray(language) && language.length > 0 ? language : ["java"];
+  const [selectedOption2, setSelectedOption2] = useState(
+    normalizedLanguages[0] === "java"
+      ? normalizedLanguages[0]
+      : normalizedLanguages[normalizedLanguages.length - 1]
+  );
   const [dropdownToggle, setdropdownToggle] = useState(false)
   const [resetMcq, setResetMcq] = useState(false);
   const [contestStartDate, setcontestStartDate] = useState("")
@@ -428,30 +433,25 @@ function QuestionApi() {
     if (!currentans.id) {
       alert('Correctly Run the code First.');
     } else {
-      console.log(currentans.id);
       try {
         setLoading(true);
-        try { const response1 = await createCourse(navHistory, description); }
-        catch (error) {
-          const response2 = await update();
+        try {
+          await createCourse(navHistory, CourseDescription || description, normalizedLanguages);
+        } catch (error) {
+          console.log('Course already exists or could not be created, continuing with progress update.');
         }
-        const response2 = await update();
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/Posts`,
-          currentans,
-          {
-            auth: {
-              username: user,
-              password: password,
-            },
-          }
-        );
-        console.log('Post created:', response.data);
+
+        const updateResult = await update();
+        if (updateResult?.success === false) {
+          throw new Error(updateResult.error || 'Failed to update progress');
+        }
+
+        setSnackbarOpen(true);
         setLoading(false);
-        // setSnackbarOpen(true);
         setcurrentans('');
       } catch (error) {
-        console.error('Error upload post:', error);
+        console.error('Error submitting solved problem:', error);
+        alert('Solved code passed, but progress could not be saved.');
         setLoading(false);
         setcurrentans('');
       }
@@ -464,7 +464,6 @@ function QuestionApi() {
   const handleRunCode = () => {
     if (editorRef.current) {
       editorRef.current.getCode();
-      console.log("code" + editorRef.current.getValue());
     }
   };
 
@@ -578,27 +577,27 @@ function QuestionApi() {
 
           {!optionA &&
             <div>
-              {language[0] && <div className='dropdown'>
+              {normalizedLanguages[0] && <div className='dropdown'>
                 <button style={{ marginTop: 10, padding: 5, borderWidth: 1, borderRadius: 5, borderColor: ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
                   {selectedOption2}
 
                 </button>
                 {dropdownToggle &&
                   <div className='overlay' style={{ borderRadius: 5, marginTop: 5, background: light, color: ibg, borderRadius: 5, borderColor: bg }}>
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[0]); setdropdownToggle(false) }}>
-                      {language[0]}
+                      <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[0]); setdropdownToggle(false) }}>
+                      {normalizedLanguages[0]}
                     </button>
 
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[1]); setdropdownToggle(false) }}>
-                      {language[1]}
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[1]); setdropdownToggle(false) }}>
+                      {normalizedLanguages[1]}
                     </button>
 
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[2]); setdropdownToggle(false) }}>
-                      {language[2]}
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[2]); setdropdownToggle(false) }}>
+                      {normalizedLanguages[2]}
                     </button>
 
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(language[3]); setdropdownToggle(false) }}>
-                      {language[3]}
+                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[3]); setdropdownToggle(false) }}>
+                      {normalizedLanguages[3]}
                     </button>
 
                   </div>}

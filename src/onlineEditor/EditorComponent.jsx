@@ -11,7 +11,15 @@ import TextField from '@mui/material/TextField';
 import { UserContext } from '../Context/UserContext';
 
 const EditorComponent = ({initialValue}) => {
-    const [code, setCode] = useState(initialValue || '// Online Java Compiler\n// Use this editor to write, compile and run your Java code online\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Made by Yadi!");\n    }\n}');
+   const [code, setCode] = useState(initialValue || 
+`// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Made by Yadi!");
+    }
+}`);
     const [output, setOutput] = useState('');
     const [iSubmit, setiSubmit] = useState(false);
     const [language, setLanguage] = useState('java');

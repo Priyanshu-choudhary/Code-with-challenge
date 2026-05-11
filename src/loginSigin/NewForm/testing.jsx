@@ -6,14 +6,14 @@ import RegisterForm from './RegisterForm';
 
 function RegisterPage() {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { authReady, token } = useContext(UserContext);
 
   // If already logged in, redirect away from register page
   useEffect(() => {
-    if (user) {
+    if (authReady && token) {
       navigate('/yourProfile', { replace: true });
     }
-  }, [user, navigate]);
+  }, [authReady, token, navigate]);
 
   return (
     <div style={{ background: '#0f1117', minHeight: '100vh' }}>

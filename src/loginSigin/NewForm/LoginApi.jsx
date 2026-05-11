@@ -33,6 +33,7 @@ async function login(username, password) {
   // Step 3: Persist to localStorage — NO password stored
   localStorage.setItem('token', token);
   localStorage.setItem('roles', JSON.stringify(roles));
+  localStorage.setItem('role', Array.isArray(roles) ? (roles[0] || '') : roles);
   localStorage.setItem('user', JSON.stringify(user));
   if (user.profileImg) {
     localStorage.setItem('profileImage', user.profileImg);

@@ -84,12 +84,12 @@ const LeetCodeClone = () => {
 
       const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
       const lastModified = cachedData.lastModified || null;
-
-      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
           ...(lastModified && { 'If-Modified-Since': lastModified })
         }
       });
@@ -124,14 +124,16 @@ const LeetCodeClone = () => {
 
   const fetchUserData = async () => {
     try {
-      const basicAuth = 'Bearer ' + localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/${user}`, {
-
+      const userName = typeof user === 'string' ? user : user?.name;
+      if (!userName) return;
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/user?userName=${userName}&page=0&size=50`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
       if (response.ok) {
         const data = await response.json();
-        const matchedCourse = data.find(course => course.title === title);
+        const matchedCourse = data.content?.find(course => course.title === title);
         if (matchedCourse) {
           setCompleteQuestions(matchedCourse.completeQuestions || []);
           console.log(matchedCourse.completeQuestions);

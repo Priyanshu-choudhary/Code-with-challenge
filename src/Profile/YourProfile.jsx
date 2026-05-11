@@ -27,6 +27,7 @@ const YourProfile = () => {
   const [userData, setUserData] = useState({});
   const [noOfQuestion, setNoOfQuestion] = useState(0);
   const [avatarName, setAvatarName] = useState('');
+  const username = typeof user === 'string' ? user : user?.name;
 
 
 
@@ -35,7 +36,12 @@ const YourProfile = () => {
 
       try {
         // Fetch user data
-        const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${user}`, {
+        if (!username) {
+          setIsLoading(false);
+          return;
+        }
+
+        const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${username}`, {
           method: 'GET',
         });
 
@@ -57,7 +63,7 @@ const YourProfile = () => {
     };
 
     fetchData();
-  }, [user, password]);
+  }, [username, password]);
 
   const handleProblemClick = (problem) => {
     // navigate(`/question/${problem.id}`, { state: problem });

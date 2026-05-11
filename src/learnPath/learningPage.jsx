@@ -49,8 +49,12 @@ function LearningPage() {
 
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/user?userName=${user}&page=0&size=10`, { //700ms
+        const userName = typeof user === 'string' ? user : user?.name;
+        if (!userName) return;
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/user?userName=${userName}&page=0&size=10`, { //700ms
           method: 'GET',
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         if (response.ok) {
           const page = await response.json();

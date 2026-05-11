@@ -35,7 +35,10 @@ function ProblemSet() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/username/ProblemSet/posts?page=${page}&size=${size}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/username/ProblemSet/posts?page=${page}&size=${size}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
         const data = await response.json();
         let data2 = data.content;
         settotalPages(data.totalPages)

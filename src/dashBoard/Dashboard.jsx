@@ -45,7 +45,7 @@ const userNavigation = [
     { name: 'Admins Management', href: '/Doc' },
     { name: 'Documentation', href: '/Document' },
     { name: 'About us', href: '/AboutUs' },
-    { name: 'Sign out', href: '/' },
+    { name: 'Sign out', href: '/logout' },
 
 ]
 
@@ -58,6 +58,8 @@ function Dashboard() {
     const navigate = useNavigate();
     console.log("Dashboard rerender");
     const { user, setcurrentthemes, currentthemes, profileImage, role } = useContext(UserContext);
+    const displayName = typeof user === 'string' ? user : user?.name || '';
+    const primaryRole = Array.isArray(role) ? role[0] : role;
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('currentthemes');
@@ -178,7 +180,7 @@ function Dashboard() {
 
                                             <EmojiEventsIcon className='text-gray-400 mt-0 mr-2 hover:text-white' onClick={() => handleClick()} />
 
-                                            {role == "ADMIN" && <div><NotificationButton /></div>}
+                                            {primaryRole == "ADMIN" && <div><NotificationButton /></div>}
 
                                             {user ? <Menu as="div" className="relative ml-3">
                                                 <div>
@@ -187,9 +189,9 @@ function Dashboard() {
 
                                                         {/* <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar> */}
                                                         {profileImage ? (
-                                                            <Avatar alt={user[0]} src={profileImage} sx={{ width: 40, height: 40 }} />
+                                                            <Avatar alt={displayName} src={profileImage} sx={{ width: 40, height: 40 }} />
                                                         ) : (
-                                                            <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+                                                            <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{displayName[0]}</Avatar>
                                                         )}
                                                     </Menu.Button>
                                                 </div>
@@ -267,7 +269,7 @@ function Dashboard() {
                                     <div className="flex items-center px-5">
 
 
-                                        {user ? <Avatar style={{ fontSize: "18px" }} sx={{ marginRight: "100px", bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar>
+                                        {user ? <Avatar style={{ fontSize: "18px" }} sx={{ marginRight: "100px", bgcolor: deepPurple[500], width: 40, height: 40 }}>{displayName[0]}</Avatar>
                                             : <></>}
                                         <EmojiEventsIcon className='text-gray-400' onClick={() => handleClick()} />
 
@@ -283,7 +285,7 @@ function Dashboard() {
                                     <div className="mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
                                             <Disclosure.Button
-                                                key={`${role != "ADMIN" && item.name}`}
+                                                key={`${primaryRole != "ADMIN" && item.name}`}
                                                 as="a"
                                                 href={item.href}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"

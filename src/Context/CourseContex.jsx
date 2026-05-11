@@ -10,8 +10,10 @@ export const CourseProvider = ({ children }) => {
   const fetchOfficialCourses = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/user?userName=OfficialCources&page=0&size=10`, {
         method: 'GET',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (response.ok) {
         const data = await response.json();

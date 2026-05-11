@@ -8,7 +8,7 @@ import Dashboard from '../../dashBoard/Dashboard';
 function LoginGuiNew() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, setUser, setRole, setToken, setprofileImage } = useContext(UserContext);
+  const { authReady, token, setUser, setRole, setToken, setprofileImage } = useContext(UserContext);
 
   const successMessage = location.state?.message;
 
@@ -21,10 +21,10 @@ function LoginGuiNew() {
 
   // If already logged in, redirect away from login page
   useEffect(() => {
-    if (user) {
+    if (authReady && token) {
       navigate('/yourProfile', { replace: true });
     }
-  }, [user, navigate]);
+  }, [authReady, token, navigate]);
 
   const onSubmit = async ({ username, password }) => {
     try {
@@ -33,10 +33,10 @@ function LoginGuiNew() {
       // Wire everything into context state (not just localStorage)
       setToken(token);
       setUser(fullUser);
-      setRole(roles);
+      setRole(Array.isArray(roles) ? (roles[0] || null) : roles);
       if (fullUser.profileImg) setprofileImage(fullUser.profileImg);
 
-      navigate('/yourProfile');
+      navigate('/yourProfile', { replace: true });
     } catch (err) {
       setError('root', { message: err.message || 'Login failed. Please try again.' });
     }

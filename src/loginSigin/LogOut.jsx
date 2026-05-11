@@ -8,8 +8,8 @@ function LogOut() {
 
   useEffect(() => {
     logout();
-    navigate('/', { replace: true });
-  }, []);
+    navigate('/login', { replace: true });
+  }, [logout, navigate]);
 
   return null; // redirects immediately, no UI needed
 }

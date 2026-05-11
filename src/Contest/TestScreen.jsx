@@ -43,7 +43,7 @@ const TestScreen = ({ onAgree }) => {
     window.addEventListener('contextmenu', (e) => e.preventDefault());
 
     const fetchProblems = async () => {
-      const API_URL = `http://localhost:9090/Posts/Contest/${contest.nameOfContest}/username/Contest`;
+      const API_URL = `${import.meta.env.VITE_API_URL}/Posts/Contest/${contest.nameOfContest}/username/Contest`;
       setLoading(true);
 
       try {

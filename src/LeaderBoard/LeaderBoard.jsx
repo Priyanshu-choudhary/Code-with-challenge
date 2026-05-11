@@ -61,7 +61,7 @@ export default function LeaderBoard() {
     const excludeUsers = ["OfficialCources", "ProblemSet", "Contest"];
 
     useEffect(() => {
-        fetch('http://localhost:9090/Public/getAllUser')
+        fetch(`${import.meta.env.VITE_API_URL}/Public/getAllUser`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -115,7 +115,7 @@ export default function LeaderBoard() {
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
-            fetch(`http://localhost:9090/Public/user/id/${id}`, {
+            fetch(`${import.meta.env.VITE_API_URL}/Public/user/id/${id}`, {
                 method: 'DELETE',
             })
                 .then(response => {

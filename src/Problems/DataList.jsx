@@ -67,7 +67,7 @@ function DataList({ id, title, Difficulty, Accuracy, tags, setProblems, problems
         if (confirmed) {
             try {
                 const basicAuth = 'Bearer ' + localStorage.getItem('token');
-                const response = await fetch(`http://localhost:9090/Posts/id/${id}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/id/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': basicAuth,

@@ -88,8 +88,8 @@ export default function ContestEdit() {
     const handleSubmit = async () => {
         setLoading(true);
         const apiUrl = isEditMode
-            ? `http://localhost:9090/Contest/id/${contestDetail.id}`
-            : 'http://localhost:9090/Contest';
+            ? `${import.meta.env.VITE_API_URL}/Contest/id/${contestDetail.id}`
+            : `${import.meta.env.VITE_API_URL}/Contest`;
 
         const method = isEditMode ? 'put' : 'post';
 

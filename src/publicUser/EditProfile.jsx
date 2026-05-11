@@ -25,7 +25,7 @@ const ValidationTextFields = () => {
         const fetchUserData = async () => {
             const basicAuth = 'Bearer ' + localStorage.getItem('token');
             try {
-                const response = await fetch('http://localhost:9090/Public/showUser/${username}}', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${username}}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const ValidationTextFields = () => {
         };
 
         try {
-            const url = `http://localhost:9090/Public/showUser/${user}}`;
+            const url = `${import.meta.env.VITE_API_URL}/Public/showUser/${user}}`;
             updatedData.password = password;
 
             const headers = new Headers();

@@ -23,7 +23,7 @@ const CreateTopicSkillForm = () => {
 
       console.log('TopicSkill detail:', JSON.stringify(topicSkillData));
 
-      const response = await fetch('http://localhost:9090/TopicWiseSkills', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/TopicWiseSkills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

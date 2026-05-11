@@ -46,7 +46,7 @@ function Lecture() {
     useEffect(() => {
         const fetchLectureData = async () => {
             try {
-                const response = await fetch(`http://localhost:9090/Lecture/Findby/testleacture/${title}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Lecture/Findby/testleacture/${title}`, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
@@ -82,7 +82,7 @@ function Lecture() {
         if (window.confirm(`Are you sure you want to delete the lecture "${title}"?`)) {
             try {
                 const basicAuth = 'Bearer ' + localStorage.getItem('token');
-                const response = await fetch(`http://localhost:9090/Lecture/id/${leactureId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Lecture/id/${leactureId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

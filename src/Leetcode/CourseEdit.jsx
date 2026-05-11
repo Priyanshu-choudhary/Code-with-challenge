@@ -87,7 +87,7 @@ export default function CourseEdit({ course }) {
             formData.append('file', file);
 
             try {
-                const response = await axios.post('http://localhost:9090/Files/upload', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/Files/upload`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -120,7 +120,7 @@ export default function CourseEdit({ course }) {
         console.log(postData);
         try {
             const response = await axios.put(
-                `http://localhost:9090/Course/id/${courseDetail.id}`,
+                `${import.meta.env.VITE_API_URL}/Course/id/${courseDetail.id}`,
                 postData,
                 {
                     headers: {

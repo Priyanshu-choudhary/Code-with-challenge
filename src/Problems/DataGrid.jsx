@@ -40,21 +40,26 @@ const stringToColor = (string) => {
     return color;
 };
 
+const PAGE_SIZE = 50;
+
 export default function StripedGrid() {
     const [isLoading, setIsLoading] = useState(true);
     const [problems, setProblems] = useState([]);
+    const [rowCount, setRowCount] = useState(0);
+    const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: PAGE_SIZE });
     const [searchValue, setSearchValue] = useState('');
     const [tagsVisible, setTagsVisible] = useState(false);
-    const navigate = useNavigate();
     const [tags, setTags] = useState([]);
+    const navigate = useNavigate();
     const { bg, bc, ibg, dark, light, user, password, role } = useContext(UserContext);
     const [titleBreadCumb, settitleBreadCumb] = useState('');
     const [currentPage, setcurrentPage] = useState("Problem Set");
-    const [navHistory, setNavHistory] = useState([]); // Assuming you have this state to track navigation history
-    const [description, setDescription] = useState(''); // Assuming you have this state for course description
+    const [navHistory, setNavHistory] = useState([]);
+    const [description, setDescription] = useState('');
 
     const handleTagsChange = useCallback((selectedTags) => {
         setTags(selectedTags);
+        setPaginationModel(m => ({ ...m, page: 0 }));
     }, []);
 
     const handleRowClick = (params) => {
@@ -64,112 +69,57 @@ export default function StripedGrid() {
             navigate(`/question/${selectedProblem.id}`, {
                 state: {
                     problems,
-                    currentIndex: params.row.index - 1, // Adjusted for 0-based index
+                    currentIndex: params.row.index - 1,
                     navHistory,
                     currentPage,
                     CourseDescription: description,
-                    totalProblems: problems.length // Pass the total number of problems
+                    totalProblems: rowCount
                 }
             });
         }
     };
 
-    const fetchProblems = async (selectedTags = []) => {
+    const fetchProblems = async (selectedTags = [], pageModel = paginationModel) => {
         setIsLoading(true);
-
         try {
-            const basicAuth = 'Bearer ' + localStorage.getItem('token');
-            let API_URL = 'http://localhost:9090/Posts/username/ProblemSet';
-
+            let data, total;
             if (selectedTags.length > 0) {
                 const tagsQuery = selectedTags.map(tag => `tags=${encodeURIComponent(tag)}`).join('&');
-                API_URL = `http://localhost:9090/Posts/filter?${tagsQuery}&exactMatch=true`;
-            }
-
-            // Check if there is cached data in local storage
-            const cachedData = localStorage.getItem('cachedProblems');
-            const cachedLastModified = localStorage.getItem('cachedProblemsLastModified');
-            const headers = {
-                'Content-Type': 'application/json',
-
-            };
-
-            // Add If-Modified-Since header conditionally
-            if (cachedLastModified && cachedLastModified !== 'null') {
-                headers['If-Modified-Since'] = cachedLastModified;
-            }
-
-            console.log('API_URL:', API_URL); // Log the URL
-            console.log('Headers:', headers); // Log the headers
-
-            const response = await fetch(API_URL, {
-                method: 'GET',
-                headers: headers
-            });
-
-            console.log('Response status:', response.status);
-
-            if (response.status == 204) {
-                setProblems([]);
-            } else if (response.status === 304 && cachedData) {
-                // Server indicates data has not been modified
-                const parsedCachedData = JSON.parse(cachedData);
-                setProblems(parsedCachedData);
-            } else if (response.ok) {
-                // Data has been modified or first fetch
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    setProblems(data);
-                    // Cache the fetched data and last modified date
-                    localStorage.setItem('cachedProblems', JSON.stringify(data));
-                    localStorage.setItem('cachedProblemsLastModified', response.headers.get('Last-Modified'));
-                } else {
-                    console.error("Fetched data is not an array:", data);
-                    setProblems([]);
-                }
+                const url = `${import.meta.env.VITE_API_URL}/Posts/filter?${tagsQuery}&exactMatch=true&username=ProblemSet`;
+                const res = await fetch(url);
+                if (res.status === 204) { setProblems([]); setRowCount(0); setIsLoading(false); return; }
+                if (!res.ok) { setProblems([]); setIsLoading(false); return; }
+                data = await res.json();
+                total = Array.isArray(data) ? data.length : 0;
             } else {
-                console.error('Error fetching problems:', response.statusText);
-                setProblems([]);
+                const url = `${import.meta.env.VITE_API_URL}/Posts/username/ProblemSet/posts?page=${pageModel.page}&size=${pageModel.pageSize}`;
+                const res = await fetch(url);
+                if (res.status === 204) { setProblems([]); setRowCount(0); setIsLoading(false); return; }
+                if (!res.ok) { setProblems([]); setIsLoading(false); return; }
+                const pageData = await res.json();
+                data = pageData.content ?? [];
+                total = pageData.totalElements ?? 0;
             }
-
-            setIsLoading(false);
+            setProblems(Array.isArray(data) ? data : []);
+            setRowCount(typeof total === 'number' ? total : 0);
         } catch (error) {
             console.error("Error fetching problems:", error);
+            setProblems([]);
+        } finally {
             setIsLoading(false);
         }
     };
 
-
-
     useEffect(() => {
-        fetchProblems(tags);
-    }, [tags]);
-
-    useEffect(() => {
-        fetchProblems();
-    }, []);
-
-    useEffect(() => {
-        // Attempt to fetch problems
-        fetchProblems(tags)
-            .catch(error => {
-                console.error("Error fetching problems:", error);
-            });
-
-        // Use cached data immediately if available
-        const cachedData = localStorage.getItem('cachedProblems');
-        if (cachedData) {
-            setProblems(JSON.parse(cachedData));
-            setIsLoading(false);
-        }
-    }, [tags]);
+        fetchProblems(tags, paginationModel);
+    }, [tags, paginationModel.page, paginationModel.pageSize]);
 
     const handleDelete = async (id) => {
         const confirmed = window.confirm('Are you sure you want to delete this problem?');
         if (confirmed) {
             try {
                 const basicAuth = 'Bearer ' + localStorage.getItem('token');
-                const response = await axios.delete(`http://localhost:9090/Posts/id/${id}`, {
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/Posts/id/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
 
@@ -188,8 +138,9 @@ export default function StripedGrid() {
         problem.title.toLowerCase().includes(searchValue.toLowerCase())
     );
 
+    const pageOffset = tags.length > 0 ? 0 : paginationModel.page * paginationModel.pageSize;
     const rows = filteredRows.map((problem, index) => ({
-        index: index + 1,
+        index: pageOffset + index + 1,
         name: problem.title,
         id: problem.id,
         col1: problem.title,
@@ -276,6 +227,11 @@ export default function StripedGrid() {
                             style={{ backgroundColor: light, color: ibg }}
                             rows={rows}
                             columns={columns}
+                            rowCount={rowCount}
+                            paginationMode={tags.length > 0 ? 'client' : 'server'}
+                            paginationModel={paginationModel}
+                            onPaginationModelChange={setPaginationModel}
+                            pageSizeOptions={[25, 50, 100]}
                             getRowClassName={(params) =>
                                 params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
                             }

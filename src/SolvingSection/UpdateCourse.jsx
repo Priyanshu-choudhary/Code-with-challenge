@@ -10,7 +10,7 @@ export const useUpdateCourse = () => {
       // console.log("tp "+totalProblems);
       const basicAuth = 'Bearer ' + localStorage.getItem('token');
       // console.log("id",courseId," progress",progress," cq ",completeQuestions," rating",rating);
-      const response = await axios.put(`http://localhost:9090/Course/id/${courseId}`, {
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/Course/id/${courseId}`, {
         progress,
         completeQuestions,
         rating,

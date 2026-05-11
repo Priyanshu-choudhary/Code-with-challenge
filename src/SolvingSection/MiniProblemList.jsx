@@ -14,7 +14,7 @@ const MiniProblemDrawerComponent = ({ setsubmitProblemTitle, setsubmitProblem, o
   useEffect(() => {
     const fetchCompletedProblems = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/UserDetailsContest/${user}/${contestName}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/UserDetailsContest/${user}/${contestName}`);
         //  const postTitles = response.data.posts.map(post => post.title);
         setCompletedProblems(JSON.stringify(response.data[0].posts || []));
         const newProblems = response.data[0].posts.map((problem) => ({

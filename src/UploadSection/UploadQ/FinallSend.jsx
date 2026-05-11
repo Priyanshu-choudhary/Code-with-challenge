@@ -14,7 +14,7 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
     const { formData, updateFormData } = useContext(FormContext);
     const { user, password, role, URL, setURL } = useContext(UserContext);
     const [iSubmit, setISubmit] = useState(false);
-    const [newUrl, setnewUrl] = useState('http://localhost:9090/Posts')
+    const [newUrl, setnewUrl] = useState(`${import.meta.env.VITE_API_URL}/Posts`)
     const [auth, setauth] = useState(URL)
     const [SelectedCompaniesTags, setSelectedCompaniesTags] = useState([])
     const [SelectTags, setSelectTags] = useState([])
@@ -40,13 +40,13 @@ const FinalSend = ({ step, uploadUrl, contestName }) => {
 
     useEffect(() => {
         if (contestName != 'ProblemSet' && contestName) {
-            setnewUrl(`http://localhost:9090/Contest/${contestName}/username/Contest`);
+            setnewUrl(`${import.meta.env.VITE_API_URL}/Contest/${contestName}/username/Contest`);
         } else if (contestName == 'ProblemSet') {
-            setnewUrl('http://localhost:9090/Posts/username/ProblemSet');
+            setnewUrl(`${import.meta.env.VITE_API_URL}/Posts/username/ProblemSet`);
         }
         else {
             if (uploadUrl != 'ProblemSet') {
-                setnewUrl(`http://localhost:9090/Posts/Course/${uploadUrl}/username/OfficialCources`);
+                setnewUrl(`${import.meta.env.VITE_API_URL}/Posts/Course/${uploadUrl}/username/OfficialCources`);
                 setauth("OfficialCources");
             }
         }

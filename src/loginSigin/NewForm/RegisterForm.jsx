@@ -31,7 +31,7 @@ const RegisterForm = () => {
     setLoading(true);
     try {
       await appwriteSignUp(data);
-      const response = await fetch('http://localhost:9090/register/temp', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/register/temp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

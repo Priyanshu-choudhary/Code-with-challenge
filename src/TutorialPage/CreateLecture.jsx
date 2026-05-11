@@ -72,7 +72,7 @@ export default function LectureForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:9090/Lecture',
+        `${import.meta.env.VITE_API_URL}/Lecture`,
         formData,
         {
           headers: { 'Content-Type': 'application/json' },

@@ -47,7 +47,7 @@ const ProblemEditForm = () => {
   useEffect(() => {
     const fetchProblemDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:9090/Posts/id/${problemId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/id/${problemId}`, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
@@ -164,7 +164,7 @@ const ProblemEditForm = () => {
     setSubmitting(true);
     try {
       const updatedDetails = { ...problemDetails, description: descriptionRef.current };
-      const response = await fetch(`http://localhost:9090/Posts/username/${username}/id/${problemId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/username/${username}/id/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

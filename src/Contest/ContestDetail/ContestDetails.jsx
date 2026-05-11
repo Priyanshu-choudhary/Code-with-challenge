@@ -62,7 +62,7 @@ function ContestDetails() {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:9090/Contest/id/${id}`)
+        axios.get(`${import.meta.env.VITE_API_URL}/Contest/id/${id}`)
             .then(response => {
                 setContest(response.data);
                 if (response.data.registeredUser.includes(user)) {
@@ -124,7 +124,7 @@ function ContestDetails() {
             registeredUser: [...registeredUser, user]
         };
 
-        axios.put(`http://localhost:9090/Contest/id/${id}`, updatedContest, {
+        axios.put(`${import.meta.env.VITE_API_URL}/Contest/id/${id}`, updatedContest, {
             auth: {
                 username: 'Contest',
                 password: 'Contest'
@@ -164,7 +164,7 @@ function ContestDetails() {
         const basicAuth = 'Bearer ' + localStorage.getItem('token');
 
         try {
-            const response = await axios.delete(`http://localhost:9090/Contest/id/${id}`, {
+            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/Contest/id/${id}`, {
                 headers: {
                     'Authorization': basicAuth
                 }

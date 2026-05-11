@@ -315,7 +315,7 @@ function QuestionApi() {
       const basicAuth = 'Bearer ' + localStorage.getItem('token');
       console.log("contest detail " + JSON.stringify(newContest));
 
-      const response = await fetch(`http://localhost:9090/UserDetailsContest`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/UserDetailsContest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -404,7 +404,7 @@ function QuestionApi() {
         // };
         // console.log("current ans "+currentans);
         const response = await axios.post(
-          `http://localhost:9090/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+          `${import.meta.env.VITE_API_URL}/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
           currentans,
           {
 
@@ -437,7 +437,7 @@ function QuestionApi() {
         }
         const response2 = await update();
         const response = await axios.post(
-          'http://localhost:9090/Posts',
+          `${import.meta.env.VITE_API_URL}/Posts`,
           currentans,
           {
             auth: {
@@ -480,7 +480,7 @@ function QuestionApi() {
     try {
       const endTime = new Date().toISOString();;
       const response = await axios.put(
-        `http://localhost:9090/UserDetailsContest/id/${UserDetailsContestId.id}`,
+        `${import.meta.env.VITE_API_URL}/UserDetailsContest/id/${UserDetailsContestId.id}`,
         { endTime },
         {
           auth: {
@@ -528,7 +528,7 @@ function QuestionApi() {
 
         // Send the data to the server
         const response = await axios.post(
-          `http://localhost:9090/Posts/username/${user}`,
+          `${import.meta.env.VITE_API_URL}/Posts/username/${user}`,
           dataupload,
           {
             headers: {

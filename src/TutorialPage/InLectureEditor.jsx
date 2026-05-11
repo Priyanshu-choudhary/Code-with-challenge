@@ -138,7 +138,13 @@ const InLectureEditor = ({ initialValue }) => {
                                 Clear
                             </Button>
                         </div>
-                        <pre style={{ backgroundColor: bg, color: "#5D12A8" }}>{output.output}</pre>
+                        <pre style={{ backgroundColor: bg, color: "#5D12A8" }}>
+                            {output
+                                ? (output.compile_output || output.stderr
+                                    ? (output.compile_output || '') + (output.stderr || '')
+                                    : (output.stdout || ''))
+                                : ''}
+                        </pre>
 
 
                     </div>

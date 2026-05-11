@@ -44,7 +44,7 @@ function TopicsWiseSkill() {
     const fetchTopics = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:9090/TopicWiseSkills/OfficialTopics', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/TopicWiseSkills/OfficialTopics`, {
                 method: 'GET',
             });
             if (response.ok) {

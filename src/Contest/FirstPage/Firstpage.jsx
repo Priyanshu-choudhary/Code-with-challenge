@@ -32,7 +32,7 @@ function Firstpage() {
   }, [navbar]);
 
   useEffect(() => {
-    axios.get('http://localhost:9090/Contest')
+    axios.get(`${import.meta.env.VITE_API_URL}/Contest`)
       .then(response => {
         setContests(response.data);
       })

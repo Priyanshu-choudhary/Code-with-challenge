@@ -49,7 +49,7 @@ function LearningPage() {
 
     const fetchUserCourses = async () => {
       try {
-        const response = await fetch(`http://localhost:9090/Course/user?userName=${user}&page=0&size=10`, { //700ms
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/user?userName=${user}&page=0&size=10`, { //700ms
           method: 'GET',
         });
         if (response.ok) {

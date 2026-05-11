@@ -58,7 +58,7 @@ export default function McqForm({ uploadUrl }) {
     try {
       console.log(postData);
       const response = await axios.post(
-        `http://localhost:9090/Posts/Course/${uploadUrl}/username/OfficialCources`,
+        `${import.meta.env.VITE_API_URL}/Posts/Course/${uploadUrl}/username/OfficialCources`,
         postData,
         {
 

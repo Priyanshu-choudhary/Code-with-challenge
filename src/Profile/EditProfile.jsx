@@ -26,7 +26,7 @@ const ValidationTextFields = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:9090/Public/showUser/${user}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${user}`);
                 const data = await response.json();
                 setExistingData(data);
                 setFormData(data); // Initialize form data with existing data
@@ -55,7 +55,7 @@ const ValidationTextFields = () => {
             formData.append('file', file);
 
             try {
-                const response = await axios.post('http://localhost:9090/Files/upload', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/Files/upload`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -80,7 +80,7 @@ const ValidationTextFields = () => {
         try {
             const updatedData = { ...formData, password };
 
-            const response = await fetch('http://localhost:9090/users', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

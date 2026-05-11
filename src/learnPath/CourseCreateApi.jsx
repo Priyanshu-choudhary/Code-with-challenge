@@ -23,7 +23,7 @@ const useCreateCourse = () => {
       const basicAuth = 'Bearer ' + localStorage.getItem('token');
       console.log("course detail " + JSON.stringify(newCourse));
 
-      const response = await fetch('http://localhost:9090/Course', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/Course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

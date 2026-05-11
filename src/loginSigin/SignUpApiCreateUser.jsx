@@ -2,7 +2,7 @@ async function signUp(username, password, email, profileImg) {
   try {
     const roles = ["USER"]; // Assuming you want every user to have the role "USER"
 
-    const response = await fetch('http://localhost:9090/Public/Create-User', {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/Public/Create-User`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -64,7 +64,7 @@ function UserCard({ userId, index }) {
     let isMounted = true;
 
     if (userId) {
-      fetch(`http://localhost:9090/Public/${userId}`)
+      fetch(`${import.meta.env.VITE_API_URL}/Public/${userId}`)
         .then(response => response.json())
         .then(data => {
           if (isMounted) {

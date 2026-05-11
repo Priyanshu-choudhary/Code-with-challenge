@@ -24,7 +24,7 @@ const useCreateUserContestDetail = () => {
             const basicAuth = 'Bearer ' + localStorage.getItem('token');
             console.log("contest detail " + JSON.stringify(newContest));
 
-            const response = await fetch(`http://localhost:9090/UserDetailsContest/${nameOfContest}/username/${user}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/UserDetailsContest/${nameOfContest}/username/${user}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

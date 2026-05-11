@@ -21,7 +21,7 @@ function ContestResult() {
 
   useEffect(() => {
     const fetchUserBasedOnContestName = async () => {
-      const API_URL = `http://localhost:9090/UserDetailsContest/findby/${contest.nameOfContest}`;
+      const API_URL = `${import.meta.env.VITE_API_URL}/UserDetailsContest/findby/${contest.nameOfContest}`;
       setLoading(true);
 
       try {
@@ -71,7 +71,7 @@ function ContestResult() {
   }, [contest.nameOfContest, user]);
 
   const fetchParticipantDetails = async (selectedParticipant) => {
-    const API_URL = `http://localhost:9090/UserDetailsContest/${selectedParticipant}/${contest.nameOfContest}`;
+    const API_URL = `${import.meta.env.VITE_API_URL}/UserDetailsContest/${selectedParticipant}/${contest.nameOfContest}`;
     setDetailsLoading(true);
 
     try {

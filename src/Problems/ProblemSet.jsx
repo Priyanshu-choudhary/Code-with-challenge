@@ -35,7 +35,7 @@ function ProblemSet() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(`http://localhost:9090/Posts/username/ProblemSet/posts?page=${page}&size=${size}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/username/ProblemSet/posts?page=${page}&size=${size}`);
         const data = await response.json();
         let data2 = data.content;
         settotalPages(data.totalPages)

@@ -114,7 +114,7 @@ const TopicsWiseSkill = () => {
         if (window.confirm(`Are you sure you want to delete the course "${courseName}"?`)) {
             try {
                 const basicAuth = 'Bearer ' + localStorage.getItem('token');
-                const response = await fetch(`http://localhost:9090/Course/id/${courseId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/id/${courseId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

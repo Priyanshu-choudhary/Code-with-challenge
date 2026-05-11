@@ -6,7 +6,7 @@ function UserOwnResult({ totalParticipants, yourRank, username, nameOfContest })
     const [participantDetails, setParticipantDetails] = useState(null);
     const [detailsLoading, setDetailsLoading] = useState(false);
 
-    const API_URL = `http://localhost:9090/UserDetailsContest/${username}/${nameOfContest}`;
+    const API_URL = `${import.meta.env.VITE_API_URL}/UserDetailsContest/${username}/${nameOfContest}`;
     setDetailsLoading(true);
 
     try {

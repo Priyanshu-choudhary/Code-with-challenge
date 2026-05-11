@@ -35,7 +35,7 @@ const YourProfile = () => {
 
       try {
         // Fetch user data
-        const userResponse = await fetch(`http://localhost:9090/Public/showUser/${user}`, {
+        const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${user}`, {
           method: 'GET',
         });
 

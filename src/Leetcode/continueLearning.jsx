@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import DoneIcon from '@mui/icons-material/Done'; // Import done icon
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import remarkGfm from 'remark-gfm';
-import Test from './test';
 import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -74,14 +73,14 @@ const ContinueLearing = () => {
   }, []);
 
   const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? "http://localhost:9090/Posts/filter" : `http://localhost:9090/Posts/Course/${course.title}/username/OfficialCources`;
+    let API_URL = tags.length > 0 ? `${import.meta.env.VITE_API_URL}/Posts/filter` : `${import.meta.env.VITE_API_URL}/Posts/Course/${course.title}/username/OfficialCources`;
     setLoading(true); // Start loading indicator
 
     try {
       let url = API_URL;
       if (selectedTags.length > 0) {
-        const tagsQuery = selectedTags.join(',');
-        url += `?tags=${tagsQuery}&exactMatch=true`;
+        const tagsQuery = selectedTags.map(t => `tags=${encodeURIComponent(t)}`).join('&');
+        url += `?${tagsQuery}&exactMatch=true&username=OfficialCources`;
       }
 
       const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
@@ -127,7 +126,7 @@ const ContinueLearing = () => {
   const fetchUserData = async () => {
     try {
       const basicAuth = 'Bearer ' + localStorage.getItem('token');
-      const response = await fetch(`http://localhost:9090/Course/${user}/0/10`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/${user}/0/10`, {
         method: 'GET',
         headers: {
           'Authorization': basicAuth,
@@ -203,7 +202,7 @@ const ContinueLearing = () => {
     if (confirmed) {
       try {
         const basicAuth = 'Bearer ' + localStorage.getItem('token');
-        const response = await fetch(`http://localhost:9090/Posts/id/${problemId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/id/${problemId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': basicAuth,

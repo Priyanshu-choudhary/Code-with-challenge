@@ -94,7 +94,7 @@ export default function CourseForm({ uploadUrl2 }) {
     console.log(postData);
     try {
       const response = await axios.post(
-        'http://localhost:9090/Course',
+        `${import.meta.env.VITE_API_URL}/Course`,
         postData,
         {
           headers: {

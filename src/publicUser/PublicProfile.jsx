@@ -31,7 +31,7 @@ const PublicProfile = () => {
     const fetchData = async () => {
       try {
         // Fetch user data
-        const userResponse = await fetch(`http://localhost:9090/Public/${userId}`, {
+        const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/Public/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

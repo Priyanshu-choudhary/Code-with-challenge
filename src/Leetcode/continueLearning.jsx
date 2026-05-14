@@ -1,345 +1,372 @@
-import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '/src/LeetcodeClone.css';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
-import Tags from '../UploadSection/Tags';
-import { CircularProgress, Button } from '@mui/material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import PleaseLogin from '../PageNotFound/PleaseLogin';
-import styled from 'styled-components';
-import DoneIcon from '@mui/icons-material/Done'; // Import done icon
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import remarkGfm from 'remark-gfm';
-import HtmlRenderer from './HtmlRenderer'; // Adjust path as per your project structure
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import CreateIcon from '@mui/icons-material/Create';
-import BoxLoader from '../Loader/BoxLoader';
-import YourProgressCard from '../learnPath/YourProgressCard';
+import Footer2 from '../home/Footer2';
 
+// ─── SVG Icons ────────────────────────────────────────────────────────────────
+const CheckIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+);
+const LockIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+);
+const ChevronDown = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+const ChevronUp = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+);
+const EditIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+);
+const TrashIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+  </svg>
+);
+const BackIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+  </svg>
+);
+const CodeIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+  </svg>
+);
+
+// ─── Difficulty badge ─────────────────────────────────────────────────────────
+const DIFF_STYLE = {
+  easy:   { color: '#16a34a', background: '#f0fdf4', border: '#bbf7d0' },
+  medium: { color: '#d97706', background: '#fffbeb', border: '#fde68a' },
+  hard:   { color: '#dc2626', background: '#fef2f2', border: '#fecaca' },
+};
+function DiffBadge({ value }) {
+  const key = (value || '').toLowerCase();
+  const s = DIFF_STYLE[key] || { color: '#6b7280', background: '#f3f4f6', border: '#e5e7eb' };
+  return (
+    <span style={{ fontSize: 11, fontWeight: 600, color: s.color, background: s.background, border: `1px solid ${s.border}`, padding: '2px 8px', borderRadius: 999 }}>
+      {value}
+    </span>
+  );
+}
+
+// ─── Skeleton row ─────────────────────────────────────────────────────────────
+function SkeletonRow() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', borderBottom: '1px solid #f3f4f6' }}>
+      <div style={{ width: 28, height: 14, borderRadius: 4, background: '#f3f4f6' }} />
+      <div style={{ flex: 1, height: 14, borderRadius: 4, background: '#f3f4f6' }} />
+      <div style={{ width: 56, height: 20, borderRadius: 999, background: '#f3f4f6' }} />
+      <div style={{ width: 56, height: 20, borderRadius: 999, background: '#f3f4f6' }} />
+    </div>
+  );
+}
+
+// ─── Problem row ──────────────────────────────────────────────────────────────
+function ProblemRow({ problem, index, done, role, onEdit, onDelete, onClick }) {
+  const [hovered, setHovered] = useState(false);
+  const isMcq = problem.type === 'MCQ';
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '13px 20px', borderBottom: '1px solid #f3f4f6',
+        cursor: 'pointer', background: hovered ? '#f9fafb' : '#fff',
+        transition: 'background 0.1s',
+      }}
+    >
+      {/* Index */}
+      <span style={{ fontSize: 13, color: '#9ca3af', fontWeight: 500, width: 28, flexShrink: 0 }}>
+        {index + 1}
+      </span>
+
+      {/* Done indicator */}
+      <div style={{ width: 20, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {done ? <CheckIcon /> : <span style={{ width: 14, height: 14, display: 'block' }} />}
+      </div>
+
+      {/* Title */}
+      <span style={{ flex: 1, fontSize: 14, color: hovered ? '#2563eb' : '#111827', fontWeight: 500, transition: 'color 0.1s' }}>
+        {problem.title}
+      </span>
+
+      {/* Sequence (admin) */}
+      {role === 'ADMIN' && (
+        <span style={{ fontSize: 11, color: '#9ca3af', width: 40, textAlign: 'center' }}>
+          #{problem.sequence}
+        </span>
+      )}
+
+      {/* Type badge */}
+      {isMcq ? (
+        <span style={{ fontSize: 11, fontWeight: 600, color: '#7c3aed', background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '2px 8px', borderRadius: 999 }}>
+          MCQ
+        </span>
+      ) : (
+        <span style={{ fontSize: 11, fontWeight: 600, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: 999, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <CodeIcon /> Code
+        </span>
+      )}
+
+      {/* Difficulty */}
+      {!isMcq && problem.difficulty && <DiffBadge value={problem.difficulty} />}
+
+      {/* Admin actions */}
+      {role === 'ADMIN' && (
+        <div style={{ display: 'flex', gap: 6 }}>
+          <button
+            onClick={(e) => { e.stopPropagation(); onEdit(problem.id); }}
+            style={{ padding: '4px 8px', borderRadius: 6, fontSize: 12, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+          >
+            <EditIcon /> Edit
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(problem.id); }}
+            style={{ padding: '4px 8px', borderRadius: 6, fontSize: 12, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+          >
+            <TrashIcon /> Del
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
 const ContinueLearing = () => {
-  const [problems, setProblems] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [responseOk, setResponseOk] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const [navHistory, setNavHistory] = useState('');
-  const [view, setView] = useState('stats');
-  const [currentPage, setCurrentPage] = useState('Learn Skills');
-  const [hoverIndex, setHoverIndex] = useState(null);
+  const [problems, setProblems]             = useState([]);
+  const [loading, setLoading]               = useState(true);
+  const [responseOk, setResponseOk]         = useState(true);
   const [completeQuestions, setCompleteQuestions] = useState([]);
-  const [currentCourse, setcurrentCourse] = useState();
+  const [descExpanded, setDescExpanded]     = useState(false);
 
-  const navigate = useNavigate();
-  const { bc, ibg, bg, light, dark, user, password, role } = useContext(UserContext);
-  const location = useLocation();
+  const navigate  = useNavigate();
+  const { user, role } = useContext(UserContext);
+  const location  = useLocation();
   const { language, totalQuestions, title, description, progress, courseId, course } = location.state || {};
-  const PageContainer = styled.div`
-    background-color: ${bg};
-    height: 100vh;
-  `;
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [contentHeight, setContentHeight] = useState(520);
-  const contentRef = useRef(null);
+  const pct = (course?.totalQuestions > 0)
+    ? Math.round(((course?.progress || 0) / course.totalQuestions) * 100)
+    : 0;
 
+  const solvedCount = completeQuestions.length;
 
-  useEffect(() => {
-    if (contentRef.current) {
-      // const fullHeight = contentRef.current.scrollHeight;
-      setContentHeight(520); // Set initial height to 70% of full content
-    }
-
-  }, []);
-  const scrollToRef = useRef(null);
-
-  // Step 3: Define the scroll functionality in the event handler
-  const handleClick = () => {
-    // Scroll to the element
-    scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-  const toggleReadMore = () => {
-    setIsExpanded(!isExpanded);
-  };
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-
-  }, []);
-
-  const fetchProblems = async (selectedTags = []) => {
-    let API_URL = tags.length > 0 ? `${import.meta.env.VITE_API_URL}/Posts/filter` : `${import.meta.env.VITE_API_URL}/Posts/Course/${course.title}/username/OfficialCources`;
-    setLoading(true); // Start loading indicator
-
+  // ── Fetch problems ──────────────────────────────────────────────────────────
+  const fetchProblems = useCallback(async () => {
+    setLoading(true);
     try {
-      let url = API_URL;
-      if (selectedTags.length > 0) {
-        const tagsQuery = selectedTags.map(t => `tags=${encodeURIComponent(t)}`).join('&');
-        url += `?${tagsQuery}&exactMatch=true&username=OfficialCources`;
-      }
+      const cachedData    = JSON.parse(localStorage.getItem(course.title)) || {};
+      const lastModified  = cachedData.lastModified || null;
+      const url = `${import.meta.env.VITE_API_URL}/Posts/Course/${course.title}/username/OfficialCources`;
 
-      const cachedData = JSON.parse(localStorage.getItem(course.title)) || {};
-      const lastModified = cachedData.lastModified || null;
-
-      const basicAuth = 'Bearer ' + localStorage.getItem('token');
       const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(lastModified && { 'If-Modified-Since': lastModified })
-        }
+        headers: { 'Content-Type': 'application/json', ...(lastModified && { 'If-Modified-Since': lastModified }) },
       });
 
-      if (response.status === 204) {
-        setProblems([]);
-      } else if (response.status === 304) {
-        const sortedProblems = cachedData.problems.sort((a, b) => a.sequence - b.sequence);
-        setProblems(sortedProblems);
-        setResponseOk(true);
+      if (response.status === 304 && cachedData.problems) {
+        setProblems(cachedData.problems.sort((a, b) => a.sequence - b.sequence));
       } else if (response.ok) {
         const data = await response.json();
-        const sortedProblems = data.sort((a, b) => a.sequence - b.sequence);
-        setProblems(sortedProblems);
-        setResponseOk(true);
-
+        const sorted = data.sort((a, b) => a.sequence - b.sequence);
+        setProblems(sorted);
         const newLastModified = response.headers.get('Last-Modified');
-        localStorage.setItem(course.title, JSON.stringify({
-          problems: sortedProblems,
-          lastModified: newLastModified
-        }));
+        localStorage.setItem(course.title, JSON.stringify({ problems: sorted, lastModified: newLastModified }));
+      } else if (response.status === 204) {
+        setProblems([]);
       } else {
         setResponseOk(false);
       }
-    } catch (error) {
-      console.error("Error fetching problems:", error);
+    } catch {
       setResponseOk(false);
     } finally {
       setLoading(false);
     }
-  };
+  }, [course?.title]);
 
-  const fetchUserData = async () => {
+  // ── Fetch user progress ─────────────────────────────────────────────────────
+  const fetchUserData = useCallback(async () => {
+    if (!user) return;
     try {
       const basicAuth = 'Bearer ' + localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/Course/${user}/0/10`, {
-        method: 'GET',
-        headers: {
-          'Authorization': basicAuth,
-          'Content-Type': 'application/json'
-        }
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/Course/${user}/0/10`, {
+        headers: { Authorization: basicAuth, 'Content-Type': 'application/json' },
       });
-
-      if (response.ok) {
-        const data = await response.json();
-
+      if (res.ok) {
+        const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
           const courses = data[0].courses || [];
-          const matchedCourse = courses.find(course => course.title === title);
-
-          if (matchedCourse) {
-            setCompleteQuestions(matchedCourse.completeQuestions || []);
-            console.log(matchedCourse.completeQuestions);
-          } else {
-            setCompleteQuestions([]);
-          }
-
-          console.log(data);
-        } else {
-          console.error('No data found.');
-          setCompleteQuestions([]);
+          const matched = courses.find((c) => c.title === title);
+          setCompleteQuestions(matched?.completeQuestions || []);
         }
-      } else {
-        console.error('Failed to fetch user data.');
       }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
-  const handleTagsChange = useCallback((selectedTags) => {
-    setTags(selectedTags);
-  }, []);
+    } catch { /* silent */ }
+  }, [user, title]);
 
   useEffect(() => {
-    const cachedData = JSON.parse(localStorage.getItem(course.title));
-    if (cachedData && cachedData.problems) {
-      setProblems(cachedData.problems);
-      setLoading(false); // Set loading to false immediately if we have cached data
-    } else {
-      fetchProblems(tags);
+    const cached = JSON.parse(localStorage.getItem(course?.title));
+    if (cached?.problems) {
+      setProblems(cached.problems);
+      setLoading(false);
     }
-  }, [tags]);
-
-  useEffect(() => {
     fetchProblems();
     fetchUserData();
-    if (title) {
-      setNavHistory(`${title}`);
-    }
-  }, [title]);
+  }, []);
 
   const handleProblemClick = (problem, index) => {
     navigate(`/question/${problem.id}/Course`, {
       state: {
         problems,
         currentIndex: index,
-        navHistory,
-        currentPage,
+        navHistory: title,
+        currentPage: 'Learn Skills',
         CourseDescription: description,
-        totalProblems: problems.length,// Pass the total number of problems
-        language
-      }
+        totalProblems: problems.length,
+        language,
+      },
     });
   };
 
-  const handleDeleteProblem = async (problemId) => {
-    const confirmed = window.confirm("Are you sure you want to delete this problem?");
-    if (confirmed) {
-      try {
-        const basicAuth = 'Bearer ' + localStorage.getItem('token');
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/Posts/id/${problemId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': basicAuth,
-          }
-        });
-        if (response.ok) {
-          setProblems(problems.filter(problem => problem.id !== problemId));
-          alert("Problem deleted successfully.");
-        } else {
-          alert("Failed to delete the problem.");
-        }
-      } catch (error) {
-        console.error("Error deleting problem:", error);
-        alert("An error occurred while deleting the problem.");
-      }
-    }
+  const handleDelete = async (problemId) => {
+    if (!window.confirm('Delete this problem?')) return;
+    try {
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/Posts/id/${problemId}`, {
+        method: 'DELETE', headers: { Authorization: basicAuth },
+      });
+      if (res.ok) setProblems((prev) => prev.filter((p) => p.id !== problemId));
+    } catch { /* silent */ }
   };
 
-  const handleToggleView = (view) => {
-    setView(view);
-  };
+  const handleEdit = (problemId) => navigate(`/edit/${problemId}/OfficialCources`);
 
-  const handleEditProblem = (problemId) => {
-    navigate(`/edit/${problemId}/OfficialCources`);
-  };
-
-
-
+  const easyCount   = problems.filter((p) => p.difficulty?.toLowerCase() === 'easy').length;
+  const mediumCount = problems.filter((p) => p.difficulty?.toLowerCase() === 'medium').length;
+  const hardCount   = problems.filter((p) => p.difficulty?.toLowerCase() === 'hard').length;
 
   return (
-    <PageContainer>
-      <div style={{ backgroundColor: bg, color: ibg }}>
-        <Dashboard />
-        {user ? (
-          <div className="leetcode-clone-container">
-            <div className="content" >
-              <YourProgressCard
-                title={course.title}
-                progress={course.progress}
-                totalQuestions={course.totalQuestions}
-                rating={course.rating}
-                completeQuestions={course.completeQuestions}
-                course={course}
-                place="continue Learning"
-                width={95}
-              />
-              <br />
-              <br />
-              <div ref={scrollToRef} className='Description' style={{ marginLeft: 20, marginRight: 20, background: dark, padding: 20, borderRadius: 20, marginBottom: 30 }}>
-                <p className='Profileheading' style={{ color: ibg }}>Questions:</p>
-                <hr />
-                <br />
+    <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
+      <Dashboard />
 
-                {loading ? (
-                  <div >
-                    {problems.length > 0 ? (
-                      <div className="problem-list" style={{ color: ibg }}>
-                        {problems.map((problem, index) => (
-                          <div
-                            key={problem.id}
-                            className="problem"
-                            onClick={() => handleProblemClick(problem, index)}
-                            style={{
-                              backgroundColor: hoverIndex === index ? bc : light,
-                              transition: 'background-color 0.3s',
-                              cursor: 'pointer',
-                              color: ibg,
-                              borderRadius: "5px",
-                              position: 'relative'
-                            }}
-                            onMouseEnter={() => setHoverIndex(index)}
-                            onMouseLeave={() => setHoverIndex(null)}
-                          >
-                            <div className="problem-title">
-                              {index + 1}. {problem.title}
-                              {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green', position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
-                            </div>
-                            <div className="problem-details">
-                              {problem.type === "MCQ" ? (
-                                <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "2px 5px 0px", borderColor: "blueviolet" }}>MCQ</p>
-                              ) : (
-                                <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
-                              )}
-                            </div>
+      {/* ── Course header ── */}
+      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 24px 20px', boxSizing: 'border-box' }}>
+          {/* Back + title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+            <button
+              onClick={() => navigate(-1)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 7, fontSize: 13, color: '#374151', background: '#f3f4f6', border: '1px solid #e5e7eb', cursor: 'pointer' }}
+            >
+              <BackIcon /> Back
+            </button>
+            <h1 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>{title}</h1>
+          </div>
 
-                          </div>
-
-                        ))}
-                      </div>
-                    ) : <BoxLoader />}
-                  </div>
-                ) : responseOk ? (
-                  <div className="problem-list" style={{ color: ibg }}>
-                    {problems.length > 0 ? problems.map((problem, index) => (
-                      <div
-                        key={problem.id}
-                        className="problem"
-                        onClick={() => handleProblemClick(problem, index)}
-                        style={{
-                          backgroundColor: hoverIndex === index ? bc : light,
-                          transition: 'background-color 0.3s',
-                          cursor: 'pointer',
-                          color: ibg,
-                          borderRadius: "5px",
-                          position: 'relative'
-                        }}
-                        onMouseEnter={() => setHoverIndex(index)}
-                        onMouseLeave={() => setHoverIndex(null)}
-                      >
-                        <div className="problem-title">
-                          {index + 1}. {problem.title}
-                          {completeQuestions.includes(problem.id) && <DoneIcon style={{ backgroundColor: "#C0F5AB", borderRadius: "10px", marginLeft: "10px", color: 'green', position: 'absolute', left: '400px' }} />} {/* Show done icon for completed questions */}
-                        </div>
-                        {role === "ADMIN" && <div style={{ color: ibg, position: 'absolute', right: '150px' }}>{problem.sequence}</div>}
-                        <div className="problem-details">
-                          {problem.type === "MCQ" ? (
-                            <p style={{ borderWidth: "1.5px", borderRadius: "5px", padding: "10px 1px,10px,15px", borderColor: "blueviolet" }}>MCQ</p>
-                          ) : (
-                            <span className={`problem-difficulty ${problem.difficulty.toLowerCase()}`} style={{ color: ibg }}>{problem.difficulty}</span>
-                          )}
-                        </div>
-
-
-                      </div>
-                    )) : <p>No problems found.</p>}
-                  </div>
-                ) : (
-                  <p>Failed to load problems. Please try again later.</p>
-                )}
-              </div>
+          {/* Progress bar */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#6b7280', marginBottom: 6 }}>
+              <span style={{ fontWeight: 500, color: '#374151' }}>{pct}% complete</span>
+              <span>{course?.progress ?? 0} / {course?.totalQuestions ?? 0} problems</span>
+            </div>
+            <div style={{ height: 8, borderRadius: 8, background: '#f3f4f6', overflow: 'hidden' }}>
+              <div style={{ width: `${pct}%`, height: '100%', background: '#2563eb', borderRadius: 8, transition: 'width 0.4s' }} />
             </div>
           </div>
-        ) : <PleaseLogin />}
+
+          {/* Stats row */}
+          <div style={{ display: 'flex', gap: 20, fontSize: 12, color: '#6b7280' }}>
+            <span style={{ color: '#16a34a', fontWeight: 600 }}>{easyCount} Easy</span>
+            <span style={{ color: '#d97706', fontWeight: 600 }}>{mediumCount} Medium</span>
+            <span style={{ color: '#dc2626', fontWeight: 600 }}>{hardCount} Hard</span>
+            <span>·</span>
+            <span>{solvedCount} solved</span>
+          </div>
+
+          {/* Description (collapsible) */}
+          {description && (
+            <div style={{ marginTop: 14 }}>
+              <div style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.6, overflow: 'hidden', maxHeight: descExpanded ? 'none' : 56 }}>
+                {description}
+              </div>
+              <button
+                onClick={() => setDescExpanded((v) => !v)}
+                style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: '#2563eb', padding: 0 }}
+              >
+                {descExpanded ? <><ChevronUp /> Show less</> : <><ChevronDown /> Read more</>}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </PageContainer>
+
+      {/* ── Problem list ── */}
+      <div style={{ flex: 1, maxWidth: 900, margin: '24px auto', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
+        <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden' }}>
+
+          {/* Table header */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 20px', background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+            <span style={{ width: 28, fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>#</span>
+            <span style={{ width: 20 }} />
+            <span style={{ flex: 1, fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Title</span>
+            {role === 'ADMIN' && <span style={{ width: 40, fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Seq</span>}
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Type</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Difficulty</span>
+            {role === 'ADMIN' && <span style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Actions</span>}
+          </div>
+
+          {/* Rows */}
+          {loading ? (
+            Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} />)
+          ) : !responseOk ? (
+            <div style={{ padding: '48px 24px', textAlign: 'center', color: '#6b7280', fontSize: 14 }}>
+              Failed to load problems. Please try again.
+            </div>
+          ) : problems.length === 0 ? (
+            <div style={{ padding: '48px 24px', textAlign: 'center', color: '#9ca3af', fontSize: 14 }}>
+              No problems in this course yet.
+            </div>
+          ) : (
+            problems.map((problem, index) => (
+              <ProblemRow
+                key={problem.id}
+                problem={problem}
+                index={index}
+                done={completeQuestions.includes(problem.id)}
+                role={role}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onClick={() => handleProblemClick(problem, index)}
+              />
+            ))
+          )}
+        </div>
+
+        {/* Bottom summary */}
+        {!loading && problems.length > 0 && (
+          <p style={{ textAlign: 'center', fontSize: 13, color: '#9ca3af', marginTop: 16 }}>
+            {problems.length} problem{problems.length !== 1 ? 's' : ''} · {solvedCount} completed
+          </p>
+        )}
+      </div>
+
+      <Footer2 />
+    </div>
   );
 };
 
 export default ContinueLearing;
-

@@ -1,101 +1,97 @@
 import React from 'react';
-import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-import TermsAndServise from '../TermsAndService/TermsAndServise';
+import { Link } from 'react-router-dom';
+
+const COLUMNS = [
+  {
+    heading: 'Platform',
+    links: [
+      { label: 'Problems',    to: '/ProblemSet' },
+      { label: 'Courses',     to: '/learn' },
+      { label: 'Tutorials',   to: '/Tutorials' },
+      { label: 'Editor',      to: '/EditorComponent' },
+      { label: 'Contest',     to: '/contest' },
+      { label: 'Leaderboard', to: '/leaderboard' },
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About us',  to: '/AboutUs' },
+      { label: 'Blog',      to: '/Tutorials' },
+      { label: 'Contact',   to: '/AboutUs' },
+    ],
+  },
+  {
+    heading: 'Account',
+    links: [
+      { label: 'Log in',   to: '/login' },
+      { label: 'Sign up',  to: '/register' },
+      { label: 'Profile',  to: '/yourProfile' },
+    ],
+  },
+];
+
 export default function Footer2() {
   return (
-    <MDBFooter  className='text-center text-lg-start text-muted' style={{backgroundImage:"linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)",marginTop:50}}>
-       <p style={{ width: "100%", height: 2, backgroundColor: "#BA0103" }}></p>
-      <section className='d-flex justify-content-center justify-content-lg-between  '>
-     
+    <footer style={{ background: '#f9fafb', borderTop: '1px solid #e5e7eb', marginTop: 'auto' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 32px' }}>
 
-        <div>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="facebook-f" />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="twitter" />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="google" />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="instagram" />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="linkedin" />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon fab icon="github" />
-          </a>
+        {/* Top row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 48, justifyContent: 'space-between', marginBottom: 48 }}>
+
+          {/* Brand */}
+          <div style={{ minWidth: 200, maxWidth: 280 }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#2563eb', letterSpacing: '-0.5px' }}>CFC</span>
+            <p style={{ fontSize: 13, color: '#6b7280', marginTop: 10, lineHeight: 1.7 }}>
+              Code for Challenge — a platform to learn, practice, and compete in programming challenges.
+            </p>
+          </div>
+
+          {/* Link columns */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 48 }}>
+            {COLUMNS.map((col) => (
+              <div key={col.heading} style={{ minWidth: 120 }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>
+                  {col.heading}
+                </p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        to={link.to}
+                        style={{ fontSize: 13, color: '#6b7280', textDecoration: 'none' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = '#2563eb'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = '#6b7280'; }}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
 
-      <section className=''>
-        <MDBContainer className='text-center text-md-start '>
-          <MDBRow className='mt-2'>
-            <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>
-                <MDBIcon icon="gem" className="me-3" />
-                Code For Challenge 
-              </h6>
-              <img src="/logo2.png" alt="codeforchallenge logo" width={200}/>
-            </MDBCol>
-
-
-            <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
-              <p>
-                <a href='#!' className="me-3" >
-                  Pricing
-                </a>
-              </p>
-              <p>
-                <a href='#!' className="me-3" >
-                  Settings
-                </a>
-              </p>
-              <p>
-                <a href='#!' className="me-3" >
-                  Contact
-                </a>
-              </p>
-              <p>
-                <a href='#!' className="me-3" >
-                  Help
-                </a>
-              </p>
-            </MDBCol>
-
-            <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
-              <p>
-                <MDBIcon icon="home" className="me-3" />
-                New Delhi, India
-              </p>
-              <p>
-                <MDBIcon icon="envelope" className="me-3" />
-                codeforchallenge@gmail.com
-              </p>
-              <p>
-                <MDBIcon icon="phone" className="me-3" /> +91-7818071134
-              </p>
-              {/* <p>
-                <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
-              </p> */}
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </section>
-
-      <div className='flex space-x-56 pl-44' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © 2024 Copyright:
-        <a className='text-reset fw-bold' href='./'>
-          CodeForChallenge.online
-        </a>
-        <a className='text-reset fw-bold' href='./TermsAndServise'>
-        TermsAndServise
-        </a>
+        {/* Bottom bar */}
+        <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 24, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>
+            &copy; {new Date().getFullYear()} Code for Challenge. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: 20 }}>
+            <a href="https://github.com/Priyanshu-choudhary" target="_blank" rel="noreferrer" style={{ fontSize: 13, color: '#9ca3af', textDecoration: 'none' }}
+               onMouseEnter={(e) => { e.currentTarget.style.color = '#2563eb'; }}
+               onMouseLeave={(e) => { e.currentTarget.style.color = '#9ca3af'; }}>
+              GitHub
+            </a>
+            <Link to="/AboutUs" style={{ fontSize: 13, color: '#9ca3af', textDecoration: 'none' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = '#2563eb'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = '#9ca3af'; }}>
+              Contact
+            </Link>
+          </div>
+        </div>
       </div>
-    </MDBFooter>
+    </footer>
   );
 }

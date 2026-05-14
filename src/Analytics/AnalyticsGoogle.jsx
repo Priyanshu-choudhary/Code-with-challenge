@@ -1,11 +1,22 @@
-// src/analytics.js
-import ReactGA from 'react-ga';
+/**
+ * Google Analytics 4 integration.
+ * Migrated from deprecated react-ga → react-ga4.
+ */
+import ReactGA from 'react-ga4';
 
-const trackingId = "G-EPJP95785S"; // Replace with your tracking ID
-ReactGA.initialize(trackingId);
+const TRACKING_ID = 'G-EPJP95785S';
+
+let initialised = false;
+
+function init() {
+  if (initialised) return;
+  ReactGA.initialize(TRACKING_ID);
+  initialised = true;
+}
 
 export const logPageView = () => {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  init();
+  ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
 };
 
+export default { logPageView };

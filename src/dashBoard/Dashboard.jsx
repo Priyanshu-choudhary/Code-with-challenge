@@ -1,315 +1,195 @@
-import { Fragment, useEffect } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import React, { useContext } from 'react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import logo from "/logo2.png";
-import award from "/award.png";
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
-import "./css.css"
-import Avatar from '@mui/material/Avatar';
-import { deepPurple } from '@mui/material/colors';
-import { Link, useNavigate } from 'react-router-dom';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
-import { Tooltip, IconButton } from '@mui/material';
-import NotificationButton from './Notification';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-// Dummy user data
-const myuser = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+const NAV_LINKS = [
+  { name: 'Problems', href: '/ProblemSet' },
+  { name: 'Learn',    href: '/Tutorials' },
+  { name: 'Courses',  href: '/learn' },
+  { name: 'Editor',   href: '/EditorComponent' },
+  { name: 'Contest',  href: '/contest' },
+];
+
+const USER_MENU = [
+  { name: 'Your profile',    href: '/yourProfile' },
+  { name: 'Leaderboard',     href: '/leaderboard' },
+  { name: 'About us',        href: '/AboutUs' },
+  { name: 'Admin dashboard', href: '/Doc',      adminOnly: true },
+  { name: 'Documentation',   href: '/Document', adminOnly: true },
+  { name: 'Sign out',        href: '/logout',   danger: true },
+];
+
+function Avatar({ name }) {
+  const initial = name ? name[0].toUpperCase() : '?';
+  return (
+    <span style={{
+      width: 34, height: 34, borderRadius: '50%', background: '#2563eb',
+      color: '#fff', fontSize: 13, fontWeight: 500, display: 'flex',
+      alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+    }}>
+      {initial}
+    </span>
+  );
 }
 
-// Navigation items
-const navigation = [
-
-    { name: 'Learn', href: '/Tutorials', current: false },
-    { name: 'Courses', href: '/learn', current: false },
-    { name: 'Editor', href: '/EditorComponent', current: false },
-    { name: 'Problems', href: '/ProblemSet', current: false },
-    { name: 'Contest', href: '/contest', current: false },
-
-]
-
-// User menu items
-const userNavigation = [
-    { name: 'Your Profile', href: '/yourProfile' },
-    { name: 'Settings', href: '#' },
-    { name: 'Admins Management', href: '/Doc' },
-    { name: 'Documentation', href: '/Document' },
-    { name: 'About us', href: '/AboutUs' },
-    { name: 'Sign out', href: '/logout' },
-
-]
-
-// Utility function to combine class names
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+const MenuIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+);
+const CloseIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+const ChevronDown = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
 
 function Dashboard() {
-    const navigate = useNavigate();
-    console.log("Dashboard rerender");
-    const { user, setcurrentthemes, currentthemes, profileImage, role } = useContext(UserContext);
-    const displayName = typeof user === 'string' ? user : user?.name || '';
-    const primaryRole = Array.isArray(role) ? role[0] : role;
+  const location  = useLocation();
+  const { user, role } = useContext(UserContext);
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('currentthemes');
-        if (savedTheme !== null) {
-            setcurrentthemes(JSON.parse(savedTheme));
+  const [menuOpen,     setMenuOpen]     = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const displayName = typeof user === 'string' ? user : (user?.name || '');
+  const primaryRole = Array.isArray(role) ? role[0] : role;
+  const isAdmin     = primaryRole === 'ADMIN';
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  useEffect(() => setMenuOpen(false), [location.pathname]);
+
+  const isActive = (href) => location.pathname === href;
+
+  return (
+    <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: '#ffffff', borderBottom: '1px solid #e5e7eb', width: '100%' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ height: 60, display: 'flex', alignItems: 'center', gap: 32 }}>
+
+          {/* Logo */}
+          <Link to="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#2563eb', letterSpacing: '-0.5px' }}>CFC</span>
+          </Link>
+
+          {/* Desktop links */}
+          <div className="cfc-desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+            {NAV_LINKS.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                style={{
+                  padding: '5px 12px', borderRadius: 6, fontSize: 14, fontWeight: 500,
+                  color: isActive(item.href) ? '#2563eb' : '#4b5563',
+                  background: isActive(item.href) ? '#eff6ff' : 'transparent',
+                  textDecoration: 'none',
+                }}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Right cluster */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' }}>
+            {user ? (
+              <div ref={dropdownRef} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setDropdownOpen((o) => !o)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px 8px 4px 4px', borderRadius: 8 }}
+                >
+                  <Avatar name={displayName} />
+                  <span className="cfc-desktop-name" style={{ fontSize: 14, fontWeight: 500, color: '#111827', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {displayName}
+                  </span>
+                  <span className="cfc-desktop-name" style={{ color: '#9ca3af' }}><ChevronDown /></span>
+                </button>
+
+                {dropdownOpen && (
+                  <div style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', width: 200, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', zIndex: 100 }}>
+                    <div style={{ padding: '10px 16px', borderBottom: '1px solid #f3f4f6' }}>
+                      <p style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Signed in as</p>
+                      <p style={{ fontSize: 13, fontWeight: 500, color: '#111827', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{displayName}</p>
+                    </div>
+                    {USER_MENU.filter((item) => !item.adminOnly || isAdmin).map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        onClick={() => setDropdownOpen(false)}
+                        style={{ display: 'block', padding: '9px 16px', fontSize: 13, color: item.danger ? '#dc2626' : '#374151', textDecoration: 'none' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = item.danger ? '#fef2f2' : '#f9fafb'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: 8 }}>
+                <Link to="/login"    style={{ padding: '7px 16px', borderRadius: 7, fontSize: 14, fontWeight: 500, color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}>Log in</Link>
+                <Link to="/register" style={{ padding: '7px 16px', borderRadius: 7, fontSize: 14, fontWeight: 500, color: '#fff', background: '#2563eb', textDecoration: 'none' }}>Sign up</Link>
+              </div>
+            )}
+
+            <button
+              className="cfc-mobile-btn"
+              onClick={() => setMenuOpen((o) => !o)}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 4, color: '#6b7280', display: 'none' }}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div style={{ borderTop: '1px solid #e5e7eb', background: '#fff', padding: '12px 24px 16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {NAV_LINKS.map((item) => (
+              <Link key={item.name} to={item.href} style={{ padding: '9px 12px', borderRadius: 7, fontSize: 14, fontWeight: 500, color: isActive(item.href) ? '#2563eb' : '#374151', background: isActive(item.href) ? '#eff6ff' : 'transparent', textDecoration: 'none' }}>
+                {item.name}
+              </Link>
+            ))}
+            <div style={{ borderTop: '1px solid #f3f4f6', margin: '8px 0' }} />
+            {user ? (
+              USER_MENU.filter((item) => !item.adminOnly || isAdmin).map((item) => (
+                <Link key={item.name} to={item.href} style={{ padding: '9px 12px', borderRadius: 7, fontSize: 14, color: item.danger ? '#dc2626' : '#374151', textDecoration: 'none' }}>
+                  {item.name}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link to="/login"    style={{ padding: '9px 12px', borderRadius: 7, fontSize: 14, color: '#374151', textDecoration: 'none' }}>Log in</Link>
+                <Link to="/register" style={{ padding: '9px 12px', borderRadius: 7, fontSize: 14, fontWeight: 500, color: '#fff', background: '#2563eb', textDecoration: 'none', textAlign: 'center', marginTop: 4 }}>Sign up</Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .cfc-desktop-nav  { display: none !important; }
+          .cfc-desktop-name { display: none !important; }
+          .cfc-mobile-btn   { display: flex !important; }
         }
-    }, [setcurrentthemes]);
-
-    const handleClick = () => {
-        navigate('/leaderboard');
-
-    };
-
-    const handleSwitchChange = (event) => {
-        const isChecked = event.target.checked;
-        console.log("Switch value:", isChecked);
-        setcurrentthemes(isChecked);
-        localStorage.setItem('currentthemes', JSON.stringify(isChecked));
-    };
-
-    const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-        width: 62,
-        height: 34,
-        padding: 7,
-        '& .MuiSwitch-switchBase': {
-            margin: 1,
-            padding: 0,
-            transform: 'translateX(6px)',
-            '&.Mui-checked': {
-                color: '#fff',
-                transform: 'translateX(22px)',
-                '& .MuiSwitch-thumb:before': {
-                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                        '#fff',
-                    )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
-                },
-                '& + .MuiSwitch-track': {
-                    opacity: 1,
-                    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-                },
-            },
-        },
-        '& .MuiSwitch-thumb': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
-            width: 32,
-            height: 32,
-            '&::before': {
-                content: "''",
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                left: 0,
-                top: 0,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                    '#fff',
-                )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
-            },
-        },
-        '& .MuiSwitch-track': {
-            opacity: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-            borderRadius: 20 / 2,
-        },
-    }));
-    return (
-        <>
-            <div className="min-h-full">
-                <Disclosure as="nav" className="  bg-opacity-900">
-                    {({ open }) => (
-                        <>
-                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-2">
-                                <div className="flex h-16 items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0">
-                                            <Link to="/">
-                                                <img
-                                                    width={60}
-                                                    height={70}
-                                                    src={logo}
-                                                    alt="CFC"
-                                                />
-                                            </Link>
-
-                                        </div>
-                                        <div className="hidden md:block">
-                                            <div className="ml-10 flex items-baseline space-x-4">
-                                                {navigation.map((item) => (
-                                                    <Link
-                                                        key={item.name}
-                                                        to={item.href} // Use to instead of href
-                                                        className={classNames(
-                                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-700 hover:border-b-2 hover:border-blue-600',
-                                                            'px-3 py-2 text-sm font-medium'
-                                                        )}
-                                                        aria-current={item.current ? 'page' : undefined}
-                                                    >
-                                                        {item.name}
-                                                    </Link>
-                                                ))}
-
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div className="hidden md:block">
-
-                                        <div className="ml-4 flex items-center md:ml-6">
-                                            <FormControlLabel
-                                                control={<MaterialUISwitch checked={currentthemes} />}
-                                                onChange={handleSwitchChange}
-                                            />
-
-                                            <EmojiEventsIcon className='text-gray-400 mt-0 mr-2 hover:text-white' onClick={() => handleClick()} />
-
-                                            {primaryRole == "ADMIN" && <div><NotificationButton /></div>}
-
-                                            {user ? <Menu as="div" className="relative ml-3">
-                                                <div>
-                                                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                                        <span className="sr-only">Open user menu</span>
-
-                                                        {/* <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{user[0]}</Avatar> */}
-                                                        {profileImage ? (
-                                                            <Avatar alt={displayName} src={profileImage} sx={{ width: 40, height: 40 }} />
-                                                        ) : (
-                                                            <Avatar style={{ fontSize: "18px" }} sx={{ bgcolor: deepPurple[500], width: 40, height: 40 }}>{displayName[0]}</Avatar>
-                                                        )}
-                                                    </Menu.Button>
-                                                </div>
-                                                <Transition
-                                                    as={Fragment}
-                                                    enter="transition ease-out duration-100"
-                                                    enterFrom="transform opacity-0 scale-95"
-                                                    enterTo="transform opacity-100 scale-100"
-                                                    leave="transition ease-in duration-75"
-                                                    leaveFrom="transform opacity-100 scale-100"
-                                                    leaveTo="transform opacity-0 scale-95"
-                                                >
-                                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 bg-white shadow-lg">
-                                                        {userNavigation.map((item) => (
-                                                            <Menu.Item key={item.name}>
-                                                                {({ active }) => (
-                                                                    <Link
-                                                                        to={item.href} // Use to instead of href
-                                                                        className={classNames(
-                                                                            active ? 'bg-gray-100' : '',
-                                                                            'block px-4 py-2 text-sm text-gray-700'
-                                                                        )}
-                                                                    >
-                                                                        {item.name}
-                                                                    </Link>
-                                                                )}
-                                                            </Menu.Item>
-                                                        ))}
-
-                                                    </Menu.Items>
-                                                </Transition>
-                                            </Menu> : <button className="button-85" role="button">
-                                                <a href="/login">LogIn</a>
-                                            </button>}
-
-
-                                        </div>
-                                    </div>
-                                    <div className="-mr-2 flex md:hidden">
-                                        {/* Mobile menu button */}
-                                        {user ? <></> : <button style={{ marginRight: "30px" }} className="button-85" role="button">
-                                            <a href="/login">LogIn</a>
-
-                                        </button>}
-                                        <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                            <span className="sr-only">Open main menu</span>
-                                            {open ? (
-                                                <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                                            ) : (
-                                                <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                                            )}
-                                        </Disclosure.Button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <Disclosure.Panel className="md:hidden">
-                                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                                    {navigation.map((item) => (
-                                        <Disclosure.Button
-                                            key={item.name}
-                                            as="a"
-                                            href={item.href}
-                                            className={classNames(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                'block rounded-md px-3 py-2 text-base font-medium'
-                                            )}
-                                            aria-current={item.current ? 'page' : undefined}
-                                        >
-                                            {item.name}
-                                        </Disclosure.Button>
-                                    ))}
-                                </div>
-                                <div className="border-t border-gray-700 pb-3 pt-4">
-                                    <div className="flex items-center px-5">
-
-
-                                        {user ? <Avatar style={{ fontSize: "18px" }} sx={{ marginRight: "100px", bgcolor: deepPurple[500], width: 40, height: 40 }}>{displayName[0]}</Avatar>
-                                            : <></>}
-                                        <EmojiEventsIcon className='text-gray-400' onClick={() => handleClick()} />
-
-
-
-                                        {/* bell icon */}
-                                        <NotificationButton />
-
-
-
-
-                                    </div>
-                                    <div className="mt-3 space-y-1 px-2">
-                                        {userNavigation.map((item) => (
-                                            <Disclosure.Button
-                                                key={`${primaryRole != "ADMIN" && item.name}`}
-                                                as="a"
-                                                href={item.href}
-                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                                            >
-                                                {item.name}
-                                            </Disclosure.Button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </Disclosure.Panel>
-                        </>
-                    )}
-                </Disclosure>
-
-                <main className="editorsection" >
-
-
-
-
-                </main>
-            </div>
-        </>
-    )
+      `}</style>
+    </nav>
+  );
 }
 
-export default React.memo(Dashboard)
-
+export default React.memo(Dashboard);

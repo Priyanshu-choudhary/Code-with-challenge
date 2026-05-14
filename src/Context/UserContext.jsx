@@ -6,32 +6,17 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
-  const [bg, setbg] = useState("#121418");
-  const [dark, setdark] = useState("#1f202a");
-  const [light, setlight] = useState("#27293a");
-  const [bc, setbc] = useState("#5D12A8");
-  const [ibg, setibc] = useState("white");
-  const [currentthemes, setcurrentthemes] = useState(true);
+  // Light mode only — these values are kept so legacy components don't crash
+  const [bg, setbg] = useState("#f9fafb");
+  const [dark, setdark] = useState("#f3f4f6");
+  const [light, setlight] = useState("#ffffff");
+  const [bc, setbc] = useState("#2563eb");
+  const [ibg, setibc] = useState("#111827");
+  const [currentthemes, setcurrentthemes] = useState(false); // always light
   const [URL, setURL] = useState(import.meta.env.VITE_API_URL || 'http://localhost:9090');
   const [fontSize, setFontSize] = useState('14px');
   const [profileImage, setprofileImage] = useState("");
   const [authReady, setAuthReady] = useState(false);
-
-  useEffect(() => {
-    if (currentthemes === true) {
-      setbg("#121418");
-      setdark("#1f202a");
-      setlight("#27293a");
-      setbc("#5D12A8");
-      setibc("white");
-    } else if (currentthemes === false) {
-      setbg("#f8f9fa");
-      setdark("#e9ecef");
-      setlight("#ced4da");
-      setbc("#adb5bd");
-      setibc("black");
-    }
-  }, [currentthemes]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');

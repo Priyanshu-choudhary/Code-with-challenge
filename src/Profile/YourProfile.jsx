@@ -1,278 +1,247 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './YourProfile.css';
-import Grid from '@mui/material/Unstable_Grid2';
 import Dashboard from '../dashBoard/Dashboard';
 import { UserContext } from '../Context/UserContext';
-import ValidationTextFields from './EditProfile';
-import Avatar from '@mui/material/Avatar';
-import CircularProgress from '@mui/material/CircularProgress';
-import BoxLoader from '/src/Loader/BoxLoader';
-import Modal from '@mui/material/Modal';
-import Backdrop from '@mui/material/Backdrop';
-import Fade from '@mui/material/Fade';
-import YourProgressCard from '../learnPath/YourProgressCard';
+import Footer2 from '../home/Footer2';
 
-const tags = ["Basics", "Array", "String", "Hash Table", "Maths", "Statics", "Heap", "Dynamic Programming", "Sliding Window", "Sorting", "Greedy", "BinarySearch"];
+// ─── Stat card ────────────────────────────────────────────────────────────────
+function StatCard({ label, value, color = '#2563eb' }) {
+  return (
+    <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: '16px 20px', flex: 1, minWidth: 100 }}>
+      <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 6px' }}>{label}</p>
+      <p style={{ fontSize: 26, fontWeight: 700, color, margin: 0 }}>{value ?? '—'}</p>
+    </div>
+  );
+}
 
+// ─── Progress bar ─────────────────────────────────────────────────────────────
+function ProgressBar({ value, total }) {
+  const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6b7280', marginBottom: 4 }}>
+        <span>{pct}%</span>
+        <span>{value}/{total}</span>
+      </div>
+      <div style={{ height: 5, borderRadius: 4, background: '#f3f4f6', overflow: 'hidden' }}>
+        <div style={{ width: `${pct}%`, height: '100%', background: '#2563eb', borderRadius: 4 }} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Section box ─────────────────────────────────────────────────────────────
+function Section({ title, children, action }) {
+  return (
+    <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 600, color: '#111827', margin: 0 }}>{title}</h2>
+        {action}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ─── Edit profile modal ───────────────────────────────────────────────────────
+function EditModal({ user, onClose }) {
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      onClick={onClose}>
+      <div style={{ background: '#fff', borderRadius: 14, padding: 28, width: '90%', maxWidth: 420, boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
+        onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 600, color: '#111827', margin: 0 }}>Edit profile</h2>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', fontSize: 20 }}>×</button>
+        </div>
+        <p style={{ fontSize: 14, color: '#6b7280' }}>Profile editing is managed via your account settings.</p>
+        <button onClick={onClose}
+          style={{ marginTop: 16, padding: '9px 20px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: '#fff', background: '#2563eb', border: 'none', cursor: 'pointer' }}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main profile page ────────────────────────────────────────────────────────
 const YourProfile = () => {
-  const [problems, setProblems] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hoverIndex, setHoverIndex] = useState(null); // State to track which card is hovered
-  const [lastModified, setLastModified] = useState(null); // State to store the last modified time
-  const [open, setOpen] = useState(false); // State for modal open/close
-  const navigate = useNavigate();
-  const { bg, bc, dark, light, ibg, user, password, role, profileImage } = useContext(UserContext);
-  const [userData, setUserData] = useState({});
-  const [noOfQuestion, setNoOfQuestion] = useState(0);
-  const [avatarName, setAvatarName] = useState('');
+  const navigate  = useNavigate();
+  const { user, role } = useContext(UserContext);
+  const [userData,   setUserData]   = useState({});
+  const [isLoading,  setIsLoading]  = useState(true);
+  const [editOpen,   setEditOpen]   = useState(false);
+
   const username = typeof user === 'string' ? user : user?.name;
-
-
+  const initial  = username ? username[0].toUpperCase() : '?';
 
   useEffect(() => {
-    const fetchData = async () => {
-
-      try {
-        // Fetch user data
-        if (!username) {
-          setIsLoading(false);
-          return;
-        }
-
-        const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${username}`, {
-          method: 'GET',
-        });
-
-        if (userResponse.status === 200) {
-          const userData = await userResponse.json();
-          console.log(userData);
-
-          setUserData(userData);
-
-          // Set avatar name (e.g., first letter of the user's name)
-          setAvatarName(userData.name ? userData.name[0] : '');
-          localStorage.setItem('userData', JSON.stringify(userData));
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [username, password]);
+    if (!username) { setIsLoading(false); return; }
+    fetch(`${import.meta.env.VITE_API_URL}/Public/showUser/${username}`)
+      .then((r) => r.json())
+      .then((d) => { setUserData(d); })
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
+  }, [username]);
 
   const handleProblemClick = (problem) => {
-    // navigate(`/question/${problem.id}`, { state: problem });
     navigate(`/question/${problem.id}/ProblemSet`, {
-      state: {
-        problems: [problem],
-        currentIndex: 0,
-        navHistory: "no def",
-        currentPage: "no current page",
-        CourseDescription: "description",
-        totalProblems: 0,
-        language: [problem.language ? problem.language : "java"]
-      }
+      state: { problems: [problem], currentIndex: 0, navHistory: 'no def', currentPage: 'no current page', CourseDescription: 'description', totalProblems: 0, language: [problem.language || 'java'] },
     });
   };
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
-  };
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  if (isLoading) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#f9fafb' }}>
+        <Dashboard />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'calc(100vh - 60px)' }}>
+          <div style={{ width: 36, height: 36, border: '3px solid #e5e7eb', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ backgroundColor: bg }}>
+    <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', flexDirection: 'column' }}>
       <Dashboard />
-      {isLoading ? (
-        <div className="loading-screen">
-          <BoxLoader />
-        </div>
-      ) : (
-        <Grid container spacing={3} style={{ marginRight: "3px" }}>
-          <Grid xs>
-            <div style={{ margin: "10px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
-              <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                <div className="p-4" style={{ backgroundColor: light, color: ibg }}>
-                  <div className="text-center">
-                    <div className="inline-block relative" onClick={handleOpen} style={{ cursor: 'pointer' }}>
-                      {profileImage ? (
-                        <Avatar alt={userData.name} src={userData.profileImg} sx={{ width: 120, height: 120 }} />
-                      ) : (
-                        <Avatar style={{ fontSize: "70px" }} sx={{ bgcolor: bc, width: 120, height: 120 }}>{avatarName}</Avatar>
-                      )}
-                    </div>
-                    <h2 className="mt-2 text-lg font-semibold text-gray-900" style={{ backgroundColor: light, color: ibg }}>{userData.name}</h2>
-                    <p className="mt-1 text-sm text-gray-600" style={{ backgroundColor: light, color: ibg }}>Rating: {userData.rating}</p>
-                    <button className="mt-4 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-full" style={{ backgroundColor: bc, color: ibg }} onClick={toggleForm}>Edit Profile</button>
-                  </div>
+
+      <div style={{ flex: 1, maxWidth: 1100, margin: '0 auto', width: '100%', padding: '24px', boxSizing: 'border-box' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr 260px', gap: 16, alignItems: 'start' }}>
+
+          {/* ── Left: identity card ── */}
+          <div>
+            <Section title="">
+              <div style={{ textAlign: 'center', paddingTop: 4 }}>
+                {/* Avatar */}
+                <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#2563eb', color: '#fff', fontSize: 30, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
+                  {initial}
                 </div>
-                <div style={{ backgroundColor: light, color: ibg }} >
-                  <div className="p-4">
-                    <p><b>Personal info:</b></p>
-                    Ph: {userData.number} <br />
-                    gmail: {userData.email}
-                  </div>
-                  <div className="p-4">
-                    <p><b>Collage:</b></p>
-                    {userData.collage} <br />
-                    <p><b>Branch:</b></p>
-                    {userData.branch}
-                    <p><b>Year:</b></p>
-                    {userData.year}
-                  </div>
-                  <div className="p-4">
-                    <p><b>Links:</b></p>
-                    Github<br />
-                    Instagram <br />
-                    Linkdin
-                  </div>
-                </div>
+                <h2 style={{ fontSize: 17, fontWeight: 700, color: '#111827', margin: '0 0 4px' }}>{userData.name || username}</h2>
+                <p style={{ fontSize: 13, color: '#6b7280', margin: '0 0 14px' }}>Rating: <strong style={{ color: '#111827' }}>{userData.rating ?? '—'}</strong></p>
+                <button
+                  onClick={() => setEditOpen(true)}
+                  style={{ padding: '7px 18px', borderRadius: 8, fontSize: 13, fontWeight: 500, color: '#374151', background: '#fff', border: '1px solid #e5e7eb', cursor: 'pointer' }}
+                >
+                  Edit profile
+                </button>
               </div>
+
+              {/* Info */}
+              <div style={{ marginTop: 20, borderTop: '1px solid #f3f4f6', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {userData.email && (
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 2px' }}>Email</p>
+                    <p style={{ fontSize: 13, color: '#374151', margin: 0, wordBreak: 'break-all' }}>{userData.email}</p>
+                  </div>
+                )}
+                {userData.number && (
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 2px' }}>Phone</p>
+                    <p style={{ fontSize: 13, color: '#374151', margin: 0 }}>{userData.number}</p>
+                  </div>
+                )}
+                {userData.collage && (
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 2px' }}>College</p>
+                    <p style={{ fontSize: 13, color: '#374151', margin: 0 }}>{userData.collage}</p>
+                  </div>
+                )}
+                {userData.branch && (
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 2px' }}>Branch / Year</p>
+                    <p style={{ fontSize: 13, color: '#374151', margin: 0 }}>{userData.branch}{userData.year ? ` · ${userData.year}` : ''}</p>
+                  </div>
+                )}
+                {userData.skills && (
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 6px' }}>Skills</p>
+                    <p style={{ fontSize: 13, color: '#374151', margin: 0 }}>{userData.skills}</p>
+                  </div>
+                )}
+              </div>
+            </Section>
+          </div>
+
+          {/* ── Middle: stats + solved problems ── */}
+          <div>
+            {/* Stats row */}
+            <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+              <StatCard label="Problems solved" value={userData.postCount} color="#2563eb" />
+              <StatCard label="Courses"         value={userData.courses?.length ?? 0} color="#7c3aed" />
+              <StatCard label="Contests"        value={userData.userContestDetails?.length ?? 0} color="#059669" />
             </div>
-          </Grid>
-          <Grid xs={6}>
-            <div className="skill" style={{ backgroundColor: dark, color: ibg }}>
-              <p style={{ fontSize: "large", fontWeight: "bold" }}>Skill</p>
-              <div className='skillinside' style={{ backgroundColor: light, color: ibg }}>
-                <p>{userData.skills}</p>
-              </div>
-            </div>
 
-            <div className=' ml-3 mt-3 side-navbar ' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
-              <div className='rounded-lg' style={{ backgroundColor: dark }}>
-                <div className='flex '>
-                  <p className='font-bold pt-2 pl-2'>Courses:</p>
-                  <p className=' pr-5 text-lg pt-2 pl-60 font-bold'>{userData?.courses?.length}</p>
-                </div>
-                {!isLoading && userData?.courses?.map((course, index) => (
-                  <div className='p-3 ml-4' style={{ minWidth: 1000 }}>
-                    <YourProgressCard
-                      key={index}
-                      title={course.title}
-                      progress={course.progress}
-                      totalQuestions={course.totalQuestions}
-                      rating={course.rating}
-                      completeQuestions={course.completeQuestions}
-                      course={course}
-
-                    />
-                  </div>
-                ))}
-                {userData.courses?.length === 0 && <p style={{ color: ibg, fontSize: "13px" }}>Please enroll in any course.</p>}
-
-              </div>
-            </div>
-          </Grid>
-          <Grid xs>
-            <div className="Profileleetcode-clone">
-              <div className="Profileheader">
-                <div className="Profiletags"></div>
-              </div>
-              <div className="Profilecontent" style={{ backgroundColor: dark, color: ibg }}>
-                <div className='Profileheading' style={{ backgroundColor: dark, color: ibg }}>
-                  <Grid container spacing={2}>
-                    <Grid xs={10}>Problem Solved:</Grid>
-                    <Grid>{userData.postCount}</Grid>
-                  </Grid>
-                </div>
-                <div className="Profileproblem-list" style={{ backgroundColor: light, color: ibg }}  >
-                  {userData.posts?.length > 0 ? userData.posts.map((problem, index) => (
-                    <div key={problem.id} className="Profileproblem" style={{
-                      backgroundColor: hoverIndex === index ? bc : light, // Change background color on hover
-                      transition: 'background-color 0.3s', // Smooth transition for background color change
-                      cursor: 'pointer',
-                      color: ibg,
-                      borderRadius: "5px"
-                    }}
-                      onMouseEnter={() => setHoverIndex(index)}
-                      onMouseLeave={() => setHoverIndex(null)}>
-                      <div className="Profileproblem-title" onClick={() => handleProblemClick(problem)}>{index + 1}. {problem.title}</div>
+            {/* Solved problems */}
+            <Section title={`Solved problems (${userData.posts?.length ?? 0})`}>
+              {userData.posts?.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 440, overflowY: 'auto' }}>
+                  {userData.posts.map((problem, index) => (
+                    <div
+                      key={problem.id}
+                      onClick={() => handleProblemClick(problem)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', borderRadius: 7, cursor: 'pointer', transition: 'background 0.1s' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f9fafb'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      <span style={{ fontSize: 13, color: '#374151' }}>{index + 1}. {problem.title}</span>
                     </div>
-                  )) : <p>Solve Your First Problems...</p>}
-                </div>
-
-              </div>
-              <div className='mt-5  side-navbar' style={{ maxHeight: 520, display: 'flex', flexWrap: 'wrap', gap: '20px', color: ibg, overflowY: "scroll", maxWidth: 350, overflowX: "hidden" }}>
-                <div className='rounded-lg' style={{ backgroundColor: dark }}>
-                  <div style={{ justifyContent: "space-between" }} className='flex '>
-                    <p className='font-bold pt-2 pl-2'>Contests:</p>
-                    <p className='text-right pr-5 text-lg pt-1 pl-2 font-bold'>{userData?.userContestDetails?.length}</p>
-
-                  </div>
-                  {userData?.userContestDetails?.map((Contest, index) => (
-
-                    <div className='m-2 mt-2 p-2 rounded-xl' style={{ backgroundColor: light }}>
-
-                      <div className='flex '>
-                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 60 }} className='flex gap-2'>Contest:</p><p className='font-bold'>{Contest.nameOfContest}</p>
-                      </div>
-                      {/* <p>{Contest.posts?.length}</p> */}
-                      <div className='flex gap-2 mt-3'>
-                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 52 }}>By:</p ><p className='font-bold'>{Contest.nameOfOrganization}</p>
-                      </div>
-                      <div className='flex gap-2 mt-3'>
-                        <p style={{ fontSize: 14, fontWeight: "blod", minWidth: 52 }}>Date:</p ><p className='font-bold'>{Contest.date}</p>
-                      </div>
-
-                    </div>
-
                   ))}
                 </div>
-              </div>
-            </div>
-          </Grid>
+              ) : (
+                <p style={{ fontSize: 14, color: '#9ca3af', textAlign: 'center', padding: '24px 0' }}>No problems solved yet. Start practicing!</p>
+              )}
+            </Section>
+          </div>
 
-        </Grid>
-      )}
-      {showForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <ValidationTextFields />
-            <button onClick={toggleForm}>Close</button>
+          {/* ── Right: courses + contests ── */}
+          <div>
+            {/* Courses */}
+            <Section title={`Courses (${userData.courses?.length ?? 0})`}>
+              {userData.courses?.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxHeight: 280, overflowY: 'auto' }}>
+                  {userData.courses.map((course, i) => (
+                    <div key={i}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#111827', margin: '0 0 6px' }}>{course.title}</p>
+                      <ProgressBar value={course.progress} total={course.totalQuestions} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p style={{ fontSize: 13, color: '#9ca3af' }}>No courses enrolled.</p>
+              )}
+            </Section>
+
+            {/* Contests */}
+            <Section title={`Contests (${userData.userContestDetails?.length ?? 0})`}>
+              {userData.userContestDetails?.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 260, overflowY: 'auto' }}>
+                  {userData.userContestDetails.map((contest, i) => (
+                    <div key={i} style={{ padding: '10px 12px', background: '#f9fafb', borderRadius: 8, border: '1px solid #f3f4f6' }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#111827', margin: '0 0 4px' }}>{contest.nameOfContest}</p>
+                      <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 2px' }}>By {contest.nameOfOrganization}</p>
+                      <p style={{ fontSize: 11, color: '#9ca3af', margin: 0 }}>{contest.date}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p style={{ fontSize: 13, color: '#9ca3af' }}>No contests participated.</p>
+              )}
+            </Section>
           </div>
+
         </div>
-      )}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        // BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '40%',
-            backgroundColor: 'white',
-            // boxShadow: 24,
-            // padding: 'px',
-            // outline: 'none',
-            textAlign: 'center',
-          }}>
-            {profileImage ? (
-              <img src={userData.profileImg} alt={userData.name} className="modal-image" style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />
-            ) : (
-              <Avatar style={{ fontSize: "150px" }} sx={{ bgcolor: bc, width: 300, height: 300 }}>{avatarName}</Avatar>
-            )}
-          </div>
-        </Fade>
-      </Modal>
+      </div>
+
+      <Footer2 />
+
+      {editOpen && <EditModal user={userData} onClose={() => setEditOpen(false)} />}
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 };
 
 export default YourProfile;
-

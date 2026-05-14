@@ -1,171 +1,192 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import "./ReceiveQuestion.css";
 import axios from 'axios';
-import Grid from '@mui/material/Unstable_Grid2';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import React, { useRef, useContext, useEffect, useState } from 'react';
-import MyEditor from "./SoleSecEditor";
+import React, { useRef, useContext, useEffect, useState, useCallback } from 'react';
+import MyEditor from './SoleSecEditor';
 import { UserContext } from '../Context/UserContext';
-import Button from '@mui/material/Button';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-import IconBreadcrumbs from '../dashBoard/BreadCrumb';
 import Mcq from './Mcq';
-import CircularProgress from '@mui/material/CircularProgress';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import SettingsIcon from '@mui/icons-material/Settings';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import AlarmOnIcon from '@mui/icons-material/AlarmOn';
-import Timer from './timer'; // Adjust the import path as necessary
+import Timer from './timer';
 import useCreateCourse from '../learnPath/CourseCreateApi';
 import useCreateUserContestDetail from '/src/Contest/UserDetails/CreateUserDetails';
-import { useUpdateCourse } from '../SolvingSection/UpdateCourse'; // Ensure this is correctly imported
-import { Upload } from '@mui/icons-material';
+import { useUpdateCourse } from '../SolvingSection/UpdateCourse';
 import YouTubePlayer from './youtubeVideo';
-import AnchorTemporaryDrawer from './SideDrover';
+import SettingsPanel from './SideDrover';
 import Spinner from 'react-bootstrap/Spinner';
 import HtmlRenderer from '../Leetcode/HtmlRenderer';
 import MiniProblemDrawerComponent from './MiniProblemList';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
 import TestModeHeading from './TestModeHeading';
 import SecurityChecks from '../Contest/Security/SecurityChecks';
 import SubmitButton from '../Buttons/SubmitButton';
 import CodeBlock from './prismjsCodeViewer';
+import IconBreadcrumbs from '../dashBoard/BreadCrumb';
+
+// ─── Inline SVG icons ─────────────────────────────────────────────────────────
+const PrevIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+);
+const NextIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6"/>
+  </svg>
+);
+const RunIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+    <polygon points="5 3 19 12 5 21 5 3"/>
+  </svg>
+);
+const ListIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+    <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+  </svg>
+);
+const SettingsIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+);
+const TimerIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+const EditIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+);
+const ChevronDown = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+
+// ─── Difficulty badge ─────────────────────────────────────────────────────────
+const DIFF = {
+  easy:   { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
+  medium: { color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+  hard:   { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
+};
+function DiffBadge({ value }) {
+  const key = (value || '').toLowerCase();
+  const s = DIFF[key] || { color: '#6b7280', bg: '#f3f4f6', border: '#e5e7eb' };
+  return (
+    <span style={{ fontSize: 11, fontWeight: 600, color: s.color, background: s.bg, border: `1px solid ${s.border}`, padding: '2px 10px', borderRadius: 999 }}>
+      {value}
+    </span>
+  );
+}
+
+// ─── Toast notification ───────────────────────────────────────────────────────
+function Toast({ open, onClose, children }) {
+  useEffect(() => {
+    if (open) { const t = setTimeout(onClose, 4000); return () => clearTimeout(t); }
+  }, [open, onClose]);
+  if (!open) return null;
+  return (
+    <div style={{
+      position: 'fixed', top: 20, right: 20, zIndex: 1000,
+      background: '#fff', border: '1px solid #bbf7d0', borderRadius: 10,
+      padding: '12px 18px', boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+      display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#15803d', fontWeight: 600,
+    }}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      {children}
+    </div>
+  );
+}
+
+// ─── Section divider label ────────────────────────────────────────────────────
+function SectionLabel({ children }) {
+  return (
+    <p style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '16px 0 6px' }}>
+      {children}
+    </p>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
 function QuestionApi() {
   const { id, detailsType } = useParams();
-  const { bc, ibg, bg, light, role, dark, currentthemes, setcurrentthemes, user, password } = useContext(UserContext);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { contest = '', timeLeft, language, CourseDescription = '', totalProblems = '', problems = [], currentIndex = 0, navHistory = '', currentPage = '' } = location.state || {};
+  const { role, user, password } = useContext(UserContext);
+  const location  = useNavigate ? useLocation() : {};
+  const navigate  = useNavigate();
+  const {
+    contest = '', timeLeft, language,
+    CourseDescription = '', totalProblems = '',
+    problems = [], currentIndex = 0,
+    navHistory = '', currentPage = '',
+  } = location.state || {};
+
   const [currentProblemIndex, setCurrentProblemIndex] = useState(currentIndex);
-  const [problem, setProblem] = useState(problems[currentIndex] || {});
+  const [problem, setProblem]           = useState(problems[currentIndex] || {});
   const { title = '', description = '', example = '', difficulty = '', type = '', answer = '', optionA = '', optionB = '', optionC = '', optionD = '' } = problem;
-  const [themes, setthemes] = useState("vs-dark");
+
+  const [activeTab, setActiveTab]       = useState('problem'); // 'problem' | 'solution' | 'discuss'
   const [selectedOption, setSelectedOption] = useState('');
-  const [flag, setflag] = useState("true");
-  const [loading, setLoading] = useState(false); // State for button loading
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for snackbar visibility
-  const [currentans, setcurrentans] = useState('');
-  const [state, setState] = useState(false);
-  const [state2, setState2] = useState(false);
-  const [iSubmit, setiSubmit] = useState(false);
+  const [flag, setflag]                 = useState('true');
+  const [loading, setLoading]           = useState(false);
+  const [toastOpen, setToastOpen]       = useState(false);
+  const [iSubmit, setiSubmit]           = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [problemListOpen, setProblemListOpen] = useState(false);
+  const [resetMcq, setResetMcq]         = useState(false);
+  const [contestStartDate, setcontestStartDate] = useState('');
+  const [UserDetailsContestId, setUserDetailsContestId] = useState();
+  const [editorValue, seteditorValue]   = useState();
+  const [submitProblem, setsubmitProblem] = useState([]);
+  const [submitProblemTitle, setsubmitProblemTitle] = useState([]);
+  const [btnTitle, setBtnTitle]         = useState('Submit');
+  const [currentans, setcurrentans]     = useState('');
+
+  // Language dropdown
+  const normalizedLanguages = Array.isArray(language) && language.length > 0 ? language : ['java'];
+  const [selectedLang, setSelectedLang] = useState(
+    normalizedLanguages[0] === 'java' ? normalizedLanguages[0] : normalizedLanguages[normalizedLanguages.length - 1]
+  );
+  const [langOpen, setLangOpen]         = useState(false);
+  const langRef                         = useRef(null);
+
+  const editorRef    = useRef();
+  const containerRef = useRef(null);
 
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse();
 
-  const containerRef = useRef(null);
-  const dividerRef = useRef(null); // Ref for the divider
-  const [dragging, setDragging] = useState(false);
-  const [dividerPosition, setDividerPosition] = useState(40); // Initial position in percentage
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [level, setlevel] = useState(1);
-  const [btn1BG, set1btnBG] = useState(light);
-  const [btn2BG, set2btnBG] = useState(light);
-  const [btn3BG, set3btnBG] = useState(light);
-  const normalizedLanguages = Array.isArray(language) && language.length > 0 ? language : ["java"];
-  const [selectedOption2, setSelectedOption2] = useState(
-    normalizedLanguages[0] === "java"
-      ? normalizedLanguages[0]
-      : normalizedLanguages[normalizedLanguages.length - 1]
-  );
-  const [dropdownToggle, setdropdownToggle] = useState(false)
-  const [resetMcq, setResetMcq] = useState(false);
-  const [contestStartDate, setcontestStartDate] = useState("")
-  const [UserDetailsContestId, setUserDetailsContestId] = useState()
-  const [editorValue, seteditorValue] = useState()
-  const [submitProblem, setsubmitProblem] = useState([])
-  const [submitProblemTitle, setsubmitProblemTitle] = useState([])
-  const [btnTitle, setBtnTitle] = useState("Submit Question");
-
-  // console.log("type "+detailsType);
-  const options = {
-    option1: 'ChatGPT',
-    option2: 'ChatGPT',
-  };
-  const handleSelect = (options) => {
-    setSelectedOption(options);
-    setResetMcq(true); // Trigger MCQ reset
-  };
+  // ── Close lang dropdown on outside click ───────────────────────────────────
   useEffect(() => {
-    const checkIfProblemAttempted = () => {
-      const attempted = submitProblem.some(
-        (doneproblem) => problem.title === doneproblem.title
-      );
-      setBtnTitle(attempted ? "Submit Again" : "Submit Question");
-    };
+    const handler = (e) => { if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
-    checkIfProblemAttempted();
-  }, [currentProblemIndex, problem, submitProblem]);
-  const toggleTimer = () => {
-    setIsTimerRunning(prevState => !prevState);
-  };
-
-  const openSetting = () => {
-    if (state == true) {
-      setState(false);
-    } else {
-      setState(true);
-    }
-
-  };
-
-
-  const openMiniProblemDrswer = () => {
-    if (state2 == true) {
-      setState2(false);
-    } else {
-      setState2(true);
-    }
-
-  };
-  const setinglevel = (val) => {
-    setlevel(val);
-  }
-
-
-
-  useEffect(() => {
-    if (level == 1) {
-      set1btnBG("grey");
-
-      set2btnBG(light);
-      set3btnBG(light);
-    } else if (level == 2) {
-      set2btnBG("grey");
-
-      set1btnBG(light);
-      set3btnBG(light);
-    }
-    else if (level == 3) {
-      set3btnBG("grey");
-
-      set1btnBG(light);
-      set2btnBG(light);
-    }
-
-
-  }, [level, light])
-
-  useEffect(() => {
-
-    const timer = setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    }, 250); // 1 second delay
-
-    return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
-  }, []); // Empty dependency array ensures this runs only once on mount
-
-
-
+  // ── Sync problem on index change ───────────────────────────────────────────
   useEffect(() => {
     setProblem(problems[currentProblemIndex] || {});
     setSelectedOption('');
+    setActiveTab('problem');
   }, [currentProblemIndex, problems]);
+
+  // ── Scroll to top on mount ─────────────────────────────────────────────────
+  useEffect(() => {
+    const t = setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 250);
+    return () => clearTimeout(t);
+  }, []);
+
+  // ── Submit tracking ────────────────────────────────────────────────────────
+  useEffect(() => {
+    const attempted = submitProblem.some((p) => p.title === problem.title);
+    setBtnTitle(attempted ? 'Submit Again' : 'Submit');
+  }, [currentProblemIndex, problem, submitProblem]);
+
+  // ── Contest init ───────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (detailsType === 'Contest') userContestDetailsCreate();
+  }, []);
 
   const questionOptions = [
     { value: 'optionA', label: optionA },
@@ -174,72 +195,40 @@ function QuestionApi() {
     { value: 'optionD', label: optionD },
   ];
 
+  // ─── Handlers ─────────────────────────────────────────────────────────────
+  const getRating = () => {
+    const d = (difficulty || '').toLowerCase();
+    return d === 'easy' ? 30 : d === 'medium' ? 60 : d === 'hard' ? 80 : 10;
+  };
+
   const update = async () => {
-    // Start loading spinner
-
-    // Update course if already created
-    const progress = 1; // Example progress value, replace with actual logic
-    const completeQuestions = [problem.id]; // Initialize with the current problem ID
-
-    // Rating calculation based on difficulty
-    let rating = 10; // Default rating
-    if (difficulty) {
-      const lowerDifficulty = difficulty.toLowerCase();
-      if (lowerDifficulty === 'easy') {
-        rating = 30;
-      } else if (lowerDifficulty === 'medium') {
-        rating = 60;
-      } else if (lowerDifficulty === 'hard') {
-        rating = 80;
-      }
-    }
-
+    const completeQuestions = [problem.id];
+    const rating = getRating();
     try {
-      // Find the course ID matching navHistory
-
-      const existingCourses = JSON.parse(localStorage.getItem("courses") || "[]");
-      const courseToUpdate = existingCourses.find(course => course.title === navHistory);
-
+      const existingCourses = JSON.parse(localStorage.getItem('courses') || '[]');
+      const courseToUpdate  = existingCourses.find((c) => c.title === navHistory);
       if (courseToUpdate) {
-        const result = await updateCourse(courseToUpdate.id, progress, completeQuestions, rating, totalProblems);
-        if (result.success) {
-          setSnackbarOpen(true); // Show snackbar on successful update
-        } else {
-          alert(`Error updating course: ${result.error}`);
-        }
+        const result = await updateCourse(courseToUpdate.id, 1, completeQuestions, rating, totalProblems);
+        if (result.success) setToastOpen(true);
+        else alert(`Error updating course: ${result.error}`);
       } else {
-        alert(`Course with title '${navHistory}' not found.`);
+        alert(`Course '${navHistory}' not found.`);
       }
-    } catch (updateError) {
-      console.error('Error updating course:', updateError);
+    } catch (e) {
+      console.error('Error updating course:', e);
     } finally {
-      setLoading(false); // Stop loading spinner
+      setLoading(false);
     }
   };
 
   const checkAnswer = async () => {
     setLoading(true);
-    console.log("answer>> " + answer);
-    console.log("selectedOption>> " + selectedOption);
-
-    if (selectedOption == answer) {
+    if (selectedOption === answer) {
       try {
-        const progress = 0; // Example progress value, replace with actual logic
-        const completeQuestions = [problem.id]; // Initialize with the current problem ID
-
-        const response = await createCourse(navHistory, description);
-        console.log('Course created:', response);
-        // alert('You got it!');
-        if (flag) {
-          update();
-          setflag("false");
-        }
-
-      } catch (error) {
-        console.error('Error creating course:', error);
+        await createCourse(navHistory, description);
+        if (flag) { update(); setflag('false'); }
+      } catch {
         update();
-        // alert('You got it!');
-
       }
     } else if (selectedOption) {
       alert('Sorry, wrong answer!');
@@ -250,524 +239,473 @@ function QuestionApi() {
     }
   };
 
-  const handleOptionSelect = (value) => {
-    setSelectedOption(value);
-
-  };
-
-
-  const getDifficultyLabel = () => {
-    if (difficulty) {
-      return difficulty.toLowerCase();
-    } else if (type) {
-      return type;
-    } else {
-      return 'Unknown';
-    }
-  };
+  const handleOptionSelect = (value) => setSelectedOption(value);
 
   const handleNext = () => {
     setResetMcq(true);
     if (currentProblemIndex < problems.length - 1) {
-      setCurrentProblemIndex(currentProblemIndex + 1);
-      setResetMcq(true);
-      if (editorRef.current) {
-        setResetMcq(true);
-        editorRef.current.resetEditorState();
-      }
+      setCurrentProblemIndex((p) => p + 1);
+      if (editorRef.current) editorRef.current.resetEditorState();
     }
   };
-  const setIndex = (index) => {
-    setCurrentProblemIndex(index);
-  }
+
   const handlePrevious = () => {
     setResetMcq(true);
     if (currentProblemIndex > 0) {
-      setResetMcq(true);
-      setCurrentProblemIndex(currentProblemIndex - 1);
-
-      if (editorRef.current) {
-        editorRef.current.resetEditorState();
-        setResetMcq(true);
-      }
+      setCurrentProblemIndex((p) => p - 1);
+      if (editorRef.current) editorRef.current.resetEditorState();
     }
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-  const UploadAnswer = (ans) => {
-    // console.log("run automic", ans);
-    if (ans.id) {
-      setcurrentans(ans)
-    }
+  const setIndex = (index) => setCurrentProblemIndex(index);
 
+  const handleRunCode = () => { if (editorRef.current) editorRef.current.getCode(); };
 
-  };
+  const getSolution = (code) => seteditorValue(code);
 
+  const UploadAnswer = (ans) => { if (ans.id) setcurrentans(ans); };
 
-  const userContestDetailsCreate = async () => {
-    try {
-      // Make API call to create the contest
-      // console.log(user + " " + password);
-      const newContest = {
-        nameOfContest: contest.nameOfContest,
-        nameOfOrganization: contest.nameOfOrganization,
-        date: new Date(),
-
-      };
-
-      const basicAuth = 'Bearer ' + localStorage.getItem('token');
-      console.log("contest detail " + JSON.stringify(newContest));
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/UserDetailsContest`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': basicAuth,
-        },
-        body: JSON.stringify(newContest)
-      });
-
-      const contentType = response.headers.get('content-type');
-      let data;
-
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json();
-      } else {
-        const text = await response.text();
-        console.error('Unexpected response format:', text);
-        throw new Error('Failed to create contest: Unexpected response format');
-      }
-      if (response.ok) {
-        setUserDetailsContestId(data);
-      }
-      if (!response.ok) {
-        throw new Error('Failed to create contest');
-      }
-
-
-      console.log('contest created:', data);
-      setcontestStartDate(data.date)
-
-
-    } catch (error) {
-      console.error('Error creating contest:', error);
-      throw error; // Rethrow the error to handle it in the calling component
-    }
-
-  }
-  useEffect(() => {
-    console.log("ans " + answer);
-  }, [])
-
-  useEffect(() => {
-    if (detailsType == "Contest") {
-      userContestDetailsCreate();
-    }
-
-  }, [])
-
+  const handleEditProblem = (problemId) => navigate(`/edit/${problemId}/OfficialCources`);
 
   function generateObjectId() {
-    let timestamp = (new Date().getTime() / 1000 | 0).toString(16);
-    let machineId = 'xxxxxxxxxxxx'.replace(/[x]/g, function () {
-      return (Math.random() * 16 | 0).toString(16);
-    }).toLowerCase();
-    let processId = 'xx';
-    let counter = 'xxxxxxxx'.replace(/[x]/g, function () {
-      return (Math.random() * 16 | 0).toString(16);
-    }).toLowerCase();
-
-    return timestamp + machineId + processId + counter;
+    const ts  = (new Date().getTime() / 1000 | 0).toString(16);
+    const mid = 'xxxxxxxxxxxx'.replace(/[x]/g, () => (Math.random() * 16 | 0).toString(16));
+    const cnt = 'xxxxxxxx'.replace(/[x]/g,    () => (Math.random() * 16 | 0).toString(16));
+    return ts + mid + 'xx' + cnt;
   }
 
   const handleSubmitContestQuestion = async () => {
-    if (!currentans.id) {
-      alert('Correctly Run the code First.');
-    } else {
-      try {
-        setLoading(true);
-        console.log("current ans: " + JSON.stringify(currentans));
-
-        // Ensure currentans.solution is an object
-        if (!currentans.solution) {
-          currentans.solution = {};
-        }
-
-        // Add the Java solution to the currentans.solution object
-        currentans.solution["java"] = {
-          solution: editorValue
-        };
-        if (btnTitle == "Submit Question") {
-          currentans.id = generateObjectId();
-        }
-        // currentans.id = generateObjectId();
-        // Optional: You can add solutions for other languages similarly
-        // currentans.solution["python"] = {
-        //     solution: pythonEditorValue
-        // };
-        // console.log("current ans "+currentans);
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
-          currentans,
-          {
-
-          }
-        );
-        console.log('Post created:', response.data);
-
-        setLoading(false);
-        // setSnackbarOpen(true);
-        setcurrentans('');
-      } catch (error) {
-        console.error('Error upload post to user contest solving:', error);
-        setLoading(false);
-        setcurrentans('');
-      }
+    if (!currentans.id) { alert('Run your code successfully first.'); return; }
+    try {
+      setLoading(true);
+      if (!currentans.solution) currentans.solution = {};
+      currentans.solution['java'] = { solution: editorValue };
+      if (btnTitle === 'Submit') currentans.id = generateObjectId();
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/UserDetailsContest/${contest.nameOfContest}/username/${user}`,
+        currentans
+      );
+      setLoading(false);
+      setcurrentans('');
+    } catch (e) {
+      console.error('Error submitting contest question:', e);
+      setLoading(false);
+      setcurrentans('');
     }
   };
-
 
   const handleSubmit = async () => {
-    if (!currentans.id) {
-      alert('Correctly Run the code First.');
-    } else {
-      try {
-        setLoading(true);
-        try {
-          await createCourse(navHistory, CourseDescription || description, normalizedLanguages);
-        } catch (error) {
-          console.log('Course already exists or could not be created, continuing with progress update.');
-        }
-
-        const updateResult = await update();
-        if (updateResult?.success === false) {
-          throw new Error(updateResult.error || 'Failed to update progress');
-        }
-
-        setSnackbarOpen(true);
-        setLoading(false);
-        setcurrentans('');
-      } catch (error) {
-        console.error('Error submitting solved problem:', error);
-        alert('Solved code passed, but progress could not be saved.');
-        setLoading(false);
-        setcurrentans('');
-      }
-
+    if (!currentans.id) { alert('Run your code successfully first.'); return; }
+    try {
+      setLoading(true);
+      try { await createCourse(navHistory, CourseDescription || description, normalizedLanguages); } catch { /* already exists */ }
+      await update();
+      setcurrentans('');
+    } catch (e) {
+      console.error('Error submitting:', e);
+      alert('Solved, but progress could not be saved.');
+      setLoading(false);
+      setcurrentans('');
     }
   };
 
-  const editorRef = useRef();
-
-  const handleRunCode = () => {
-    if (editorRef.current) {
-      editorRef.current.getCode();
+  const handleSubmitNormalQuestion = async () => {
+    if (!currentans.id) { alert('Run your code successfully first.'); return; }
+    try {
+      const { id: _id, ...problemWithoutId } = problem;
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/Posts/username/${user}`,
+        JSON.stringify(problemWithoutId),
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (e) {
+      console.error('Error submitting normal question:', e);
     }
   };
 
-  const getSolution = (code) => {
-    seteditorValue(code)
+  const userContestDetailsCreate = async () => {
+    try {
+      const newContest = {
+        nameOfContest:      contest.nameOfContest,
+        nameOfOrganization: contest.nameOfOrganization,
+        date: new Date(),
+      };
+      const basicAuth = 'Bearer ' + localStorage.getItem('token');
+      const response  = await fetch(`${import.meta.env.VITE_API_URL}/UserDetailsContest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: basicAuth },
+        body: JSON.stringify(newContest),
+      });
+      const contentType = response.headers.get('content-type');
+      const data = contentType?.includes('application/json') ? await response.json() : null;
+      if (data) { setUserDetailsContestId(data); setcontestStartDate(data.date); }
+    } catch (e) {
+      console.error('Error creating contest details:', e);
+    }
   };
 
-
-  useEffect(() => {
-    // console.log("id data> ", JSON.stringify(UserDetailsContestId.id));
-  }, [UserDetailsContestId])
   const handleTestSubmit = async () => {
     try {
-      const endTime = new Date().toISOString();;
-      const response = await axios.put(
+      const endTime = new Date().toISOString();
+      await axios.put(
         `${import.meta.env.VITE_API_URL}/UserDetailsContest/id/${UserDetailsContestId.id}`,
         { endTime },
-        {
-          auth: {
-            username: user,
-            password: password,
-          },
-        }
+        { auth: { username: user, password } }
       );
-      if (response.status === 200) {
-        console.log("End time updated successfully.");
-      }
-    } catch (error) {
-      console.error("Error updating end time:", error);
+    } catch (e) {
+      console.error('Error updating end time:', e);
     } finally {
-      navigate("/contest")
+      navigate('/contest');
     }
   };
 
-  const handleEditProblem = (problemId) => {
-    navigate(`/edit/${problemId}/OfficialCources`);
+  const getDifficultyLabel = () => difficulty?.toLowerCase() || type || 'Unknown';
+
+  // ─── Submit button renderer ────────────────────────────────────────────────
+  const renderSubmitBtn = () => {
+    if (detailsType === 'Course') {
+      return optionA
+        ? <ActionBtn onClick={checkAnswer} loading={loading} label="Submit MCQ" primary />
+        : <ActionBtn onClick={handleSubmit} loading={loading} label="Submit" primary />;
+    }
+    if (detailsType === 'Contest') {
+      return <ActionBtn onClick={handleSubmitContestQuestion} loading={loading} label={btnTitle} primary />;
+    }
+    return <ActionBtn onClick={handleSubmitNormalQuestion} loading={loading} label="Submit" primary />;
   };
-  const buttonStyle = {
-    margin: "4px",
-    backgroundColor: bc,
-    color: ibg
-  };
-  const renderButton = (onClick, text) => (
-    <Button onClick={onClick} style={buttonStyle}>
-      {text}
-      {loading && <CircularProgress size={24} style={{ marginLeft: 10 }} />}
-    </Button>
+
+  // ─── Problem description content ───────────────────────────────────────────
+  const descriptionPanel = (
+    <div style={{ padding: '0 20px 24px', fontSize: 14, color: '#374151', lineHeight: 1.7 }}>
+      {/* Title + badge */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 0 14px', borderBottom: '1px solid #f3f4f6' }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: '#111827' }}>
+          {currentProblemIndex + 1}. {title}
+        </span>
+        {difficulty && <DiffBadge value={getDifficultyLabel()} />}
+        {type && <span style={{ fontSize: 11, fontWeight: 600, color: '#7c3aed', background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '2px 8px', borderRadius: 999 }}>{type}</span>}
+        {role === 'ADMIN' && (
+          <button
+            onClick={() => handleEditProblem(problem.id)}
+            style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', borderRadius: 6, fontSize: 12, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', cursor: 'pointer' }}
+          >
+            <EditIcon /> Edit
+          </button>
+        )}
+      </div>
+
+      {/* Description */}
+      <div style={{ paddingTop: 14 }}>
+        <HtmlRenderer htmlContent={description} />
+      </div>
+
+      {/* Examples */}
+      {example && (
+        <>
+          <SectionLabel>Examples</SectionLabel>
+          <pre style={{ margin: 0, fontSize: 13, fontFamily: "'JetBrains Mono', monospace", background: '#f9fafb', border: '1px solid #e5e7eb', padding: '12px 14px', borderRadius: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#374151' }}>
+            {example}
+          </pre>
+        </>
+      )}
+
+      {/* Input format */}
+      {problem.input && (
+        <>
+          <SectionLabel>Input Format</SectionLabel>
+          <pre style={{ margin: 0, fontSize: 13, fontFamily: "'JetBrains Mono', monospace", background: '#f9fafb', border: '1px solid #e5e7eb', padding: '12px 14px', borderRadius: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#374151' }}>
+            {problem.input}
+          </pre>
+        </>
+      )}
+
+      {/* Constraints */}
+      {problem.constrain && (
+        <>
+          <SectionLabel>Constraints</SectionLabel>
+          <pre style={{ margin: 0, fontSize: 13, fontFamily: "'JetBrains Mono', monospace", background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 14px', borderRadius: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#92400e' }}>
+            {problem.constrain}
+          </pre>
+        </>
+      )}
+    </div>
   );
 
-  const handleSubmitNormaltQuestion = async () => {
-    if (!currentans.id) {
-      alert('Correctly Run the code First.');
-    } else {
-      try {
-        // Create a copy of the problem object without the 'id' property
-        const { id, ...problemWithoutId } = problem;
+  const solutionPanel = (
+    <div style={{ padding: '16px 20px' }}>
+      {problem.videoUrl && <YouTubePlayer url={problem.videoUrl} />}
+      {problem.solution?.[selectedLang]?.solution ? (
+        <div style={{ marginTop: 10 }}>
+          <SectionLabel>Solution — {selectedLang}</SectionLabel>
+          <CodeBlock code={problem.solution[selectedLang].solution} Codelanguage={selectedLang} />
+        </div>
+      ) : (
+        <p style={{ fontSize: 14, color: '#9ca3af', padding: '24px 0', textAlign: 'center' }}>
+          No solution available for this language.
+        </p>
+      )}
+    </div>
+  );
 
-        // Convert the modified object to a JSON string
-        let dataupload = JSON.stringify(problemWithoutId);
-        console.log(dataupload);
-
-        // Send the data to the server
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/Posts/username/${user}`,
-          dataupload,
-          {
-            headers: {
-              'Content-Type': 'application/json', // explicitly set content type
-            },
-
-          }
-        );
-
-        if (response.status === 200) {
-          console.log("Submit successfully.");
-        }
-      } catch (error) {
-        console.error("Error in Submitting", error);
-      }
-    }
-  }
+  const discussPanel = (
+    <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+      <p style={{ fontSize: 14, color: '#9ca3af' }}>No discussions yet for this problem.</p>
+    </div>
+  );
 
   return (
-    <div style={{ backgroundColor: bg, color: ibg, paddingBottom: 1 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#0d1117' }}>
 
-      {detailsType == "Contest" && <SecurityChecks />}
-      {detailsType == "Course" && <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />}
-      {detailsType == "Contest" && <TestModeHeading initialTimeLeft={timeLeft} startedAt={contestStartDate} />}
-
-      <div style={{ background: dark, color: ibg, height: "100vh" }}>
-        <div className='' style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ display: "flex" }}>
-            <KeyboardDoubleArrowRightIcon fontSize='large' style={{ marginTop: 13, marginLeft: 20, borderRadius: 10, borderColor: ibg, borderRadius: "10px 10px 0px 0px", borderWidth: 1 }} onClick={() => state2 ? setState2(false) : setState2(true)} />
-            <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn1BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(1)}>Problem</button>
-
-            <div>
-              <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn2BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(2)}>Solution/Hints</button>
-              <button style={{ marginTop: 3, marginLeft: 20, color: ibg, backgroundColor: btn3BG, paddingLeft: 10, paddingRight: 10, padding: 5, borderRadius: 10, borderRadius: "10px 10px 0px 0px" }} onClick={() => setinglevel(3)}>Discuss</button>
-            </div>
-
-            {detailsType == "Contest" && detailsType == "Course" && <div style={{ marginTop: 15 }}>
-              <MiniProblemDrawerComponent setsubmitProblemTitle={setsubmitProblemTitle} setsubmitProblem={setsubmitProblem} contestName={contest.nameOfContest} user={user} setIndex={setIndex} problems={problems} open={state2} onClose={() => { setState2(false) }} />
-            </div>}
-          </div>
-
-          {detailsType == "Contest" &&
-            <div style={{ position: "absolute", right: 10, top: 10 }}>
-              <SubmitButton onClick={() => { handleTestSubmit(); }} />
-            </div>
-          }
-
-          {!optionA &&
-            <div>
-              {normalizedLanguages[0] && <div className='dropdown'>
-                <button style={{ marginTop: 10, padding: 5, borderWidth: 1, borderRadius: 5, borderColor: ibg }} onClick={() => dropdownToggle ? setdropdownToggle(false) : setdropdownToggle(true)} class=" dropdown-toggle" type="button"   >
-                  {selectedOption2}
-
-                </button>
-                {dropdownToggle &&
-                  <div className='overlay' style={{ borderRadius: 5, marginTop: 5, background: light, color: ibg, borderRadius: 5, borderColor: bg }}>
-                      <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[0]); setdropdownToggle(false) }}>
-                      {normalizedLanguages[0]}
-                    </button>
-
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[1]); setdropdownToggle(false) }}>
-                      {normalizedLanguages[1]}
-                    </button>
-
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[2]); setdropdownToggle(false) }}>
-                      {normalizedLanguages[2]}
-                    </button>
-
-                    <button className='LanguagebuttonMenu' style={{ padding: 5 }} onClick={() => { setSelectedOption2(normalizedLanguages[3]); setdropdownToggle(false) }}>
-                      {normalizedLanguages[3]}
-                    </button>
-
-                  </div>}
-
-              </div>
-              }
-            </div>
-          }
-
-
-          <div style={{ display: "flex" }}>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
-              {role === "ADMIN" && (
-                <Button
-                  style={{ background: bc, color: ibg }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent navigating to the problem detail page
-                    handleEditProblem(problem.id);
-                  }}
-                  size='small'
-                >
-                  Edit
-                </Button>
-              )}
-              <AlarmOnIcon onClick={toggleTimer} />
-              <Timer running={isTimerRunning} />
-              <SettingsIcon onClick={openSetting} />
-              <RestartAltIcon />
-              <AnchorTemporaryDrawer open={state} />
-            </div>
-          </div>
+      {/* Security & breadcrumb */}
+      {detailsType === 'Contest' && <SecurityChecks />}
+      {detailsType === 'Course'  && (
+        <div style={{ background: '#fff', flexShrink: 0 }}>
+          <IconBreadcrumbs currentPage={currentPage} title={navHistory} question={title} />
         </div>
-        <Container fluid>
-          <Row>
-            <Col className="questionSection no-scroll" sm={2} style={{ height: "70vh", width: `${dividerPosition}%`, overflowY: "scroll" }}>
+      )}
+      {detailsType === 'Contest' && <TestModeHeading initialTimeLeft={timeLeft} startedAt={contestStartDate} />}
 
-              <Grid container spacing={2}>
-                <Grid className='title' xs={9.5} >
-                  <pre style={{ background: dark }}>{currentProblemIndex + 1}.{title}</pre><hr />
-                </Grid>
-                <Grid xs={2.5}>
-                  <p className={`button ${getDifficultyLabel()}`} style={{ color: ibg }} >{getDifficultyLabel()}</p>
-                </Grid>
-                {level == 1 && <div>
-                  <Grid xs={14} style={{ width: "100%" }}>
-                    <pre style={{ background: dark }}>  <HtmlRenderer htmlContent={description} /> </pre>
-                  </Grid>
-                  <Grid xs={0}></Grid>
+      {/* ── Top toolbar ── */}
+      <div style={{
+        height: 46, background: '#16161f', borderBottom: '1px solid #2d2d3d',
+        display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px',
+        flexShrink: 0,
+      }}>
+        {/* Problem list toggle */}
+        <button
+          onClick={() => setProblemListOpen((v) => !v)}
+          title="Problem list"
+          style={{ padding: '5px 8px', borderRadius: 6, background: 'transparent', border: '1px solid #3d3d55', color: '#c9d1d9', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+        >
+          <ListIcon />
+        </button>
 
-                  {example && <>
-                    <Grid className='subtitle' xs={15} style={{}}><hr />
-                      Examples:
-                    </Grid>
-                    <Grid xs={16}>
-                      <pre style={{ background: dark, width: "80%" }}>{example}</pre>
-                    </Grid>
-                  </>}
+        {/* Left tabs */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {[['problem', 'Problem'], ['solution', 'Solution'], ['discuss', 'Discuss']].map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              style={{
+                padding: '5px 12px', borderRadius: 6, fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                background: activeTab === key ? '#2d2d3d' : 'transparent',
+                border: activeTab === key ? '1px solid #3d3d55' : '1px solid transparent',
+                color: activeTab === key ? '#e2e8f0' : '#6b7280',
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
 
-                  {problem.input && <>
-                    <Grid className='subtitle' xs={12}><hr />
-                      Input Format:
-                    </Grid>
-                    <Grid xs={16}>
-                      <pre style={{ background: dark }}>{problem.input}</pre>
-                      {/* {typeof problem.solution === 'string' ? problem.solution : JSON.stringify(problem.solution, null, 2)} */}
-                    </Grid>
-                  </>}
-                  {problem.constrain && <Grid className='subtitle' xs={12}><hr />
-                    Constrain:
+        <div style={{ flex: 1 }} />
 
-                    <br />
-                    <pre> {problem.constrain}</pre>
-                  </Grid>}
-                </div>
-                }
-                {level == 2 && <div>
-                  {problem.videoUrl && <YouTubePlayer url={problem.videoUrl} />}
-                  {problem.solution[selectedOption2] ?
-                    <Grid className='subtitle' xs={8}>
-                      <div style={{ marginTop: 10 }}>
-                        <br />
-                        {problem.solution[selectedOption2].solution && <CodeBlock code={problem.solution[selectedOption2].solution} Codelanguage={selectedOption2} />}
-                      </div>
-                    </Grid> : <p style={{ margin: 20 }}>Solution code is not available.</p>}
+        {/* Progress indicator */}
+        {problems.length > 0 && (
+          <span style={{ fontSize: 12, color: '#6b7280', marginRight: 4 }}>
+            {currentProblemIndex + 1} / {problems.length}
+          </span>
+        )}
 
-                </div>}
-                {level == 3 &&
-                  <p style={{ margin: 20 }}>No discuss for this question.</p>
-                }
-              </Grid>
-
-
-            </Col>
-            {/* <div 
-              ref={dividerRef} 
-              className="divider" 
-              onMouseDown={handleMouseDown}
-            /> */}
-            <Col sm className="editorsection no-scroll" style={{ height: "80vh", overflowY: "scroll", width: `${100 - dividerPosition}%` }} id="scrollContainer" ref={containerRef}>
-              {optionA ?
-                <Mcq title={"questionTitle"} problem={problem} options={questionOptions} onOptionSelect={handleOptionSelect} reset={resetMcq} />
-                :
-                <>
-                  <MyEditor getSolution={getSolution} CourseLanguage={selectedOption2} spin={setiSubmit} ref={editorRef} input={problem.input} saveToDatabase={UploadAnswer} problem={problem} themes={themes} courseTitle={navHistory} answer={answer} title={title} description={description} example={example} difficulty={difficulty} />
-
-                </>
-
-              }
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <div className="sticky-bottom-center" style={{ backgroundColor: light, width: "100%" }}>
-        <div style={{ display: "flex", marginLeft: "30%" }}>
-          <Button
-            startIcon={<SkipPreviousIcon />}
-            style={{ margin: "4px", backgroundColor: light, color: ibg }}
-            onClick={handlePrevious}
-            disabled={currentProblemIndex === 0}
-          >
-            Previous
-          </Button>
-          {!optionA && <Button
-            // startIcon={<SkipPreviousIcon />}
-            style={{ margin: "4px", backgroundColor: dark, color: ibg }}
-            onClick={handleRunCode}
-
-          >
-            Run
-            {iSubmit && <Spinner style={{ marginLeft: "5px" }} animation="border" size="sm" />}
-          </Button>}
-
-          <div>
-            {detailsType === "Course" ? (
-              <div>
-                {optionA ? (
-                  renderButton(checkAnswer, "Submit mcq")
-                ) : (
-                  renderButton(handleSubmit, "Submit code")
-                )}
+        {/* Language dropdown (only for code problems) */}
+        {!optionA && normalizedLanguages.length > 0 && (
+          <div ref={langRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setLangOpen((v) => !v)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 6, background: '#2d2d3d', border: '1px solid #3d3d55', color: '#c9d1d9', fontSize: 13, cursor: 'pointer' }}
+            >
+              {selectedLang}
+              <ChevronDown />
+            </button>
+            {langOpen && (
+              <div style={{ position: 'absolute', top: 'calc(100% + 5px)', right: 0, minWidth: 140, background: '#1e1e2e', border: '1px solid #3d3d55', borderRadius: 8, overflow: 'hidden', zIndex: 100 }}>
+                {normalizedLanguages.filter(Boolean).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => { setSelectedLang(lang); setLangOpen(false); }}
+                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 14px', fontSize: 13, cursor: 'pointer', color: lang === selectedLang ? '#60a5fa' : '#c9d1d9', background: lang === selectedLang ? '#2563eb22' : 'transparent', border: 'none' }}
+                    onMouseEnter={(e) => { if (lang !== selectedLang) e.currentTarget.style.background = '#2d2d3d'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = lang === selectedLang ? '#2563eb22' : 'transparent'; }}
+                  >
+                    {lang}
+                  </button>
+                ))}
               </div>
-            ) : detailsType === "Contest" ? (
-              renderButton(handleSubmitContestQuestion, btnTitle)
-            ) : (
-              renderButton(handleSubmitNormaltQuestion, "Normal Question")
             )}
           </div>
-          <Button
-            endIcon={<SkipNextIcon />}
-            style={{ paddingLeft: "20px", paddingRight: "20px", margin: "4px", backgroundColor: light, color: ibg }}
-            onClick={handleNext}
-            disabled={currentProblemIndex === problems.length - 1}
-          >
-            Next
-          </Button>
+        )}
+
+        {/* Timer toggle */}
+        <button
+          onClick={() => setIsTimerRunning((v) => !v)}
+          title="Toggle timer"
+          style={{ padding: '5px 8px', borderRadius: 6, background: isTimerRunning ? '#1e3a5f' : 'transparent', border: '1px solid #3d3d55', color: isTimerRunning ? '#60a5fa' : '#6b7280', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}
+        >
+          <TimerIcon />
+          <Timer running={isTimerRunning} />
+        </button>
+
+        {/* Settings */}
+        <button
+          onClick={() => setSettingsOpen(true)}
+          style={{ padding: '5px 8px', borderRadius: 6, background: 'transparent', border: '1px solid #3d3d55', color: '#6b7280', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+        >
+          <SettingsIcon />
+        </button>
+
+        {/* Contest finish button */}
+        {detailsType === 'Contest' && (
+          <SubmitButton onClick={handleTestSubmit} />
+        )}
+      </div>
+
+      {/* ── Main split ── */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+
+        {/* Problem list drawer overlay */}
+        {problemListOpen && detailsType !== 'normal' && (
+          <MiniProblemDrawerComponent
+            setsubmitProblemTitle={setsubmitProblemTitle}
+            setsubmitProblem={setsubmitProblem}
+            contestName={contest.nameOfContest}
+            user={user}
+            setIndex={setIndex}
+            problems={problems}
+            open={problemListOpen}
+            onClose={() => setProblemListOpen(false)}
+          />
+        )}
+
+        {/* ── Left panel: problem description ── */}
+        <div style={{
+          width: '42%', minWidth: 320, flexShrink: 0,
+          background: '#fff', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column',
+          borderRight: '1px solid #2d2d3d',
+        }}>
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            {activeTab === 'problem'  && descriptionPanel}
+            {activeTab === 'solution' && solutionPanel}
+            {activeTab === 'discuss'  && discussPanel}
+          </div>
+        </div>
+
+        {/* ── Right panel: editor ── */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1e1e2e' }}>
+          {/* Editor area */}
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            {optionA ? (
+              <div style={{ padding: 20, background: '#fff', height: '100%', overflowY: 'auto' }}>
+                <Mcq
+                  title={title}
+                  problem={problem}
+                  options={questionOptions}
+                  onOptionSelect={handleOptionSelect}
+                  reset={resetMcq}
+                />
+              </div>
+            ) : (
+              <MyEditor
+                getSolution={getSolution}
+                CourseLanguage={selectedLang}
+                spin={setiSubmit}
+                ref={editorRef}
+                input={problem.input}
+                saveToDatabase={UploadAnswer}
+                problem={problem}
+                courseTitle={navHistory}
+                answer={answer}
+                title={title}
+                description={description}
+                difficulty={difficulty}
+              />
+            )}
+          </div>
         </div>
       </div>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-          Correct answer!
-        </Alert>
-      </Snackbar>
+
+      {/* ── Bottom action bar ── */}
+      <div style={{
+        height: 50, background: '#16161f', borderTop: '1px solid #2d2d3d',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 16px', flexShrink: 0,
+      }}>
+        {/* Left: prev/next */}
+        <div style={{ display: 'flex', gap: 6 }}>
+          <NavBtn onClick={handlePrevious} disabled={currentProblemIndex === 0} icon={<PrevIcon />} label="Prev" />
+          <NavBtn onClick={handleNext} disabled={currentProblemIndex === problems.length - 1} icon={<NextIcon />} label="Next" reverse />
+        </div>
+
+        {/* Right: run + submit */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          {!optionA && (
+            <ActionBtn
+              onClick={handleRunCode}
+              loading={iSubmit}
+              label="Run"
+              icon={<RunIcon />}
+            />
+          )}
+          {renderSubmitBtn()}
+        </div>
+      </div>
+
+      {/* Settings panel */}
+      <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+
+      {/* Toast */}
+      <Toast open={toastOpen} onClose={() => setToastOpen(false)}>
+        Progress saved!
+      </Toast>
     </div>
   );
 }
 
-export default QuestionApi;
+// ─── Button helpers ───────────────────────────────────────────────────────────
+function NavBtn({ onClick, disabled, icon, label, reverse }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 5,
+        flexDirection: reverse ? 'row-reverse' : 'row',
+        padding: '6px 12px', borderRadius: 6, fontSize: 13, fontWeight: 500,
+        color: disabled ? '#4b5563' : '#c9d1d9',
+        background: 'transparent', border: '1px solid #3d3d55',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.4 : 1,
+        transition: 'background 0.15s',
+      }}
+      onMouseEnter={(e) => { if (!disabled) e.currentTarget.style.background = '#2d2d3d'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+    >
+      {icon} {label}
+    </button>
+  );
+}
 
+function ActionBtn({ onClick, loading, label, icon, primary }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={loading}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '6px 16px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+        color: primary ? '#fff' : '#c9d1d9',
+        background: loading ? '#1d4ed8' : primary ? '#2563eb' : '#2d2d3d',
+        border: primary ? 'none' : '1px solid #3d3d55',
+        cursor: loading ? 'not-allowed' : 'pointer',
+        transition: 'background 0.15s',
+      }}
+    >
+      {loading ? (
+        <Spinner animation="border" size="sm" style={{ width: 13, height: 13 }} />
+      ) : icon ? icon : null}
+      {loading ? 'Running...' : label}
+    </button>
+  );
+}
+
+export default QuestionApi;

@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+// Inline chevron — replaces @fortawesome/react-fontawesome
+const ChevronRight = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+    <path d="M9 18l6-6-6-6"/>
+  </svg>
+);
 import { UserContext } from '/src/Context/UserContext';
 import '/src/ProblemList.css';
 import Dashboard from '../../dashBoard/Dashboard';
@@ -72,7 +76,7 @@ function ContestProblemList() {
                         {problems.map((problem, index) => (
                             <div className='miniProblem' style={{ display: "flex", marginTop: 15 }} onClick={() => { navigate(`/edit/${problem.id}/Contest`) }}>
                                 <div>{index + 1}. {problem.title}</div>
-                                <FontAwesomeIcon icon={faAngleRight} style={{ position: "absolute", right: 10 }} />
+                                <ChevronRight style={{ position: "absolute", right: 10 }} />
                             </div>
                         ))}
                     </div>
